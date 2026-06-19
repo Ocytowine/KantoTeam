@@ -214,7 +214,7 @@ function renderSlots() {
       <div class="slot-actions">
         ${team ? `<button class="small-button" type="button" data-action="analysis" data-slot="${index}">Analyser</button>
         <button class="small-button" type="button" data-action="composition" data-slot="${index}">Composition</button>
-        <button class="small-button" type="button" data-action="simulation" data-slot="${index}">Simulation</button>
+        <button class="small-button" type="button" data-action="simulation" data-slot="${index}">Versus</button>
         <button class="small-button" type="button" data-action="edit" data-slot="${index}">Editer</button>
         <button class="small-button danger" type="button" data-action="delete" data-slot="${index}">Supprimer</button>` : ""}
         ${team ? "" : `<button class="small-button" type="button" data-action="edit" data-slot="${index}">Creer</button>`}
@@ -656,7 +656,7 @@ function renderSimulation(team) {
       simulationDraft.enemies.splice(Number(button.dataset.deleteEnemy), 1);
       simulationDraft.editingIndex = null;
       el.simulationResults.className = "simulation-results empty-state";
-      el.simulationResults.innerHTML = "Simulation modifiee. Confirme a nouveau pour recalculer.";
+      el.simulationResults.innerHTML = "Versus modifie. Relance-le pour mettre les conseils a jour.";
       renderSimulation(team);
     });
   });
@@ -758,7 +758,7 @@ function saveSimulationEnemy(editor) {
   simulationDraft.editingIndex = null;
   el.simulationEnemyEditor.classList.add("hidden");
   el.simulationResults.className = "simulation-results empty-state";
-  el.simulationResults.innerHTML = "Simulation modifiee. Confirme pour calculer le helper.";
+  el.simulationResults.innerHTML = "Versus modifie. Lance-le pour afficher les meilleurs choix.";
   renderSimulation(state.teams[state.selectedSlot]);
 }
 
@@ -779,21 +779,34 @@ function renderSimulationResults() {
       return `<article class="simulation-result-card muted-result"><span class="slot-meta">Aucun adversaire ${index + 1}</span></article>`;
     }
 
-    const defender = bestTeamDefenders(team, enemy)[0];
-    const attacker = bestTeamAttackers(team, enemy)[0];
+    const matchup = bestTeamMatchups(team, enemy)[0];
 
     return `
-      <article class="simulation-result-card">
+      <article class="simulation-result-card interactive-result" tabindex="0" role="button" aria-expanded="false" aria-label="Afficher la justification du choix ${index + 1}">
         <div class="pokemon-card-header">
-          <h3>${escapeHtml(enemy.name || `Adversaire ${index + 1}`)} <span class="name-type-logos">${enemy.types.map(typeLogoOnly).join("")}</span></h3>
+          <span class="choice-kicker">Choix recommande ${index + 1}</span>
+          <span class="detail-hint">Pourquoi ?</span>
         </div>
-        <div class="simulation-helper-grid compact">
-          ${renderBestDefender(defender, enemy)}
-          ${renderBestAttacker(attacker, enemy)}
-        </div>
+        ${renderMatchupChoice(matchup)}
+        ${renderVersusExplanation(matchup, enemy)}
       </article>
     `;
   }).join("");
+
+  el.simulationResults.querySelectorAll(".interactive-result").forEach((card) => {
+    const toggleDetail = () => {
+      const expanded = card.classList.toggle("show-details");
+      card.setAttribute("aria-expanded", String(expanded));
+      card.querySelector(".versus-explanation")?.setAttribute("aria-hidden", String(!expanded));
+    };
+
+    card.addEventListener("click", toggleDetail);
+    card.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      toggleDetail();
+    });
+  });
 }
 
 function bestDefensiveTypes(enemy) {
@@ -819,66 +832,90 @@ function bestOffensiveTypes(enemy) {
     .slice(0, 5);
 }
 
-function bestTeamDefenders(team, enemy) {
-  return team.pokemon
-    .map((pokemon) => ({
-      pokemon,
-      multiplier: enemy.attacks.length
-        ? Math.max(...enemy.attacks.map((attackType) => pokemon.types.reduce((value, pokemonType) => value * getEffectiveness(attackType, pokemonType), 1)))
-        : 1
-    }))
-    .sort((a, b) => a.multiplier - b.multiplier || a.pokemon.name.localeCompare(b.pokemon.name))
-    .slice(0, 3);
-}
+function bestTeamMatchups(team, enemy) {
+  const defenseKnown = enemy.attacks.length > 0;
 
-function bestTeamAttackers(team, enemy) {
   return team.pokemon
-    .map((pokemon) => ({
-      pokemon,
-      multiplier: pokemon.attacks.length
-        ? Math.max(...pokemon.attacks.map((attackType) => enemy.types.reduce((value, enemyType) => value * getEffectiveness(attackType, enemyType), 1)))
-        : 1,
-      bestAttacks: pokemon.attacks
+    .map((pokemon) => {
+      const defensiveMultiplier = defenseKnown
+        ? Math.max(...enemy.attacks.map((attackType) => pokemon.types.reduce((value, pokemonType) => value * getEffectiveness(attackType, pokemonType), 1)))
+        : 1;
+      const attacks = pokemon.attacks || [];
+      const rankedAttacks = attacks
         .map((attackType) => ({
           type: attackType,
           multiplier: enemy.types.reduce((value, enemyType) => value * getEffectiveness(attackType, enemyType), 1)
         }))
-        .sort((a, b) => b.multiplier - a.multiplier)
-    }))
-    .sort((a, b) => b.multiplier - a.multiplier || a.pokemon.name.localeCompare(b.pokemon.name))
-    .slice(0, 3);
+        .sort((a, b) => b.multiplier - a.multiplier);
+
+      return {
+        pokemon,
+        defenseKnown,
+        defensiveMultiplier,
+        bestAttack: rankedAttacks[0] || null
+      };
+    })
+    .sort((a, b) => (
+      a.defensiveMultiplier - b.defensiveMultiplier
+      || (b.bestAttack?.multiplier || 0) - (a.bestAttack?.multiplier || 0)
+      || a.pokemon.name.localeCompare(b.pokemon.name)
+    ));
 }
 
-function renderBestDefender(item, enemy) {
-  if (!item) return `<div class="helper-chip">Aucun Pokemon dans l'equipe.</div>`;
-  const label = item.multiplier < 1 ? "Résiste" : item.multiplier === 1 ? "Neutre" : "Fragile";
-  const enemyAttacks = enemy.attacks.length ? enemy.attacks.map(typeLogoOnly).join("") : `<span class="slot-meta">attaques inconnues</span>`;
+function renderMatchupChoice(matchup) {
+  if (!matchup) return `<div class="empty-state">Aucun Pokemon disponible dans ton equipe.</div>`;
+
+  const attack = matchup.bestAttack;
+  const warnings = [];
+  if (!matchup.defenseKnown) {
+    warnings.push("Defense non evaluee : attaques adverses inconnues.");
+  } else if (matchup.defensiveMultiplier > 1) {
+    warnings.push("Matchup risque : aucun choix plus resistant dans l'equipe.");
+  } else if (matchup.defensiveMultiplier === 1 && (!attack || attack.multiplier <= 1)) {
+    warnings.push("Matchup neutre : aucun avantage de type disponible.");
+  }
+  if (!attack) warnings.push("Attaques de ce Pokemon a renseigner.");
+  if (attack && attack.multiplier < 1) warnings.push("Couverture offensive limitee pour ce duel.");
+
   return `
-    <div class="helper-chip compact-helper">
-      <span class="slot-meta">Defense</span>
-      <strong>${escapeHtml(item.pokemon.name)}</strong>
-      <span class="helper-line">${label} ${enemyAttacks}</span>
-      <span class="multiplier ${item.multiplier === 0 ? "immune" : item.multiplier > 1 ? "weak" : item.multiplier < 1 ? "resist" : ""}">${formatMultiplierLabel(item.multiplier)}</span>
+    <div class="matchup-choice">
+      <div class="matchup-pokemon">
+        <h3>${escapeHtml(matchup.pokemon.name)}</h3>
+        <span class="name-type-logos">${matchup.pokemon.types.map(typeLogoOnly).join("")}</span>
+      </div>
+      <div class="matchup-metrics">
+        <div>
+          <span class="choice-kicker">Encaisse</span>
+          <strong>${matchup.defenseKnown ? formatMultiplierLabel(matchup.defensiveMultiplier) : "?"}</strong>
+        </div>
+        <div>
+          <span class="choice-kicker">Frappe</span>
+          <strong>${attack ? `${typeLogo(attack.type)} ${formatMultiplierLabel(attack.multiplier)}` : "?"}</strong>
+        </div>
+      </div>
+      ${warnings.length ? `<div class="matchup-alert">${warnings.join(" ")}</div>` : `<div class="matchup-positive">Choix favorable pour ce duel.</div>`}
     </div>
   `;
 }
 
-function renderBestAttacker(item) {
-  if (!item) return `<div class="helper-chip">Aucun Pokemon dans l'equipe.</div>`;
-  const usefulAttacks = item.bestAttacks.filter((attack) => attack.multiplier > 1);
-  const preferred = usefulAttacks.length ? usefulAttacks : item.bestAttacks.slice(0, 1);
-  const reason = usefulAttacks.length
-    ? `Attaque a privilegier`
-    : item.pokemon.attacks.length
-      ? `Aucune attaque super efficace. Meilleure option disponible`
-      : `Aucune attaque renseignee pour ce Pokemon.`;
+function renderVersusExplanation(matchup, enemy) {
+  if (!matchup) {
+    return `<div class="versus-explanation" aria-hidden="true"><p>Aucun Pokemon disponible dans ton equipe.</p></div>`;
+  }
+
+  const defenseText = !matchup.defenseKnown
+    ? "Les attaques adverses doivent etre renseignees pour evaluer la defense."
+    : `${escapeHtml(matchup.pokemon.name)} recoit au maximum ${formatMultiplierLabel(matchup.defensiveMultiplier)} face aux attaques de ${escapeHtml(enemy.name)}.`;
+  const attackText = matchup.bestAttack
+    ? `Sa meilleure option offensive est le type ${matchup.bestAttack.type} (${formatMultiplierLabel(matchup.bestAttack.multiplier)}).`
+    : "Aucune attaque n'est renseignee pour ce Pokemon.";
 
   return `
-    <div class="helper-chip compact-helper">
-      <span class="slot-meta">Attaque</span>
-      <strong>${escapeHtml(item.pokemon.name)}</strong>
-      <div class="mini-line">${preferred.length ? preferred.map((attack) => `${typeBadge(attack.type)} <span class="multiplier ${attack.multiplier > 1 ? "weak" : ""}">${formatMultiplierLabel(attack.multiplier)}</span>`).join("") : ""}</div>
-      ${usefulAttacks.length ? "" : `<span class="slot-meta">${reason}</span>`}
+    <div class="versus-explanation" aria-hidden="true">
+      <span class="choice-kicker">Justification</span>
+      <p>${defenseText}</p>
+      <p>${attackText}</p>
+      <span class="detail-hint">Cliquer pour revenir</span>
     </div>
   `;
 }

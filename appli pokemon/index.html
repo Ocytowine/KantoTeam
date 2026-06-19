@@ -53,24 +53,44 @@
         <section class="panel simulation-panel hidden" id="simulation-panel" aria-labelledby="simulation-title">
           <div class="panel-heading">
             <div>
-              <p class="eyebrow">Simulation</p>
+              <p class="eyebrow">Versus</p>
               <h2 id="simulation-title">Aucune equipe</h2>
             </div>
             <span class="pill" id="simulation-count">0 adversaire</span>
           </div>
 
+          <div class="versus-launcher">
+            <span class="versus-launcher-line" aria-hidden="true"></span>
+            <button class="versus-launch-button" id="simulation-confirm" type="button" aria-label="Lancer le versus">
+              <span>VS</span>
+              <small>Lancer</small>
+            </button>
+            <span class="versus-launcher-line" aria-hidden="true"></span>
+          </div>
+
           <div class="simulation-layout">
-            <section>
-              <h3>Ton adversaire</h3>
+            <section class="versus-column">
+              <div class="versus-column-heading">
+                <div>
+                  <p class="eyebrow">Equipe adverse</p>
+                  <h3>Ton adversaire</h3>
+                </div>
+                <span class="slot-meta">Jusqu'a 6 Pokemon</span>
+              </div>
               <div id="simulation-enemies" class="enemy-grid"></div>
               <div id="simulation-enemy-editor" class="pokemon-edit-panel hidden"></div>
-              <button class="primary-button confirm simulation-confirm" id="simulation-confirm" type="button">Confirmer la simulation</button>
             </section>
 
-            <section>
-              <h3>Ton equipe</h3>
+            <section class="versus-column">
+              <div class="versus-column-heading">
+                <div>
+                  <p class="eyebrow">Recommandations</p>
+                  <h3>Les meilleurs choix de ton equipe</h3>
+                </div>
+                <span class="slot-meta">Cliquer pour le detail</span>
+              </div>
               <div id="simulation-results" class="simulation-results empty-state">
-                Ajoute au moins un adversaire, puis confirme la simulation.
+                Ajoute au moins un adversaire, puis lance le versus.
               </div>
             </section>
           </div>
