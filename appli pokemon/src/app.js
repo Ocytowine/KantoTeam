@@ -15,6 +15,7 @@ let simulationDraft = {
 };
 
 const el = {
+  intro: document.querySelector("#app-intro"),
   slots: document.querySelector("#team-slots"),
   backToSlots: document.querySelector("#back-to-slots"),
   manageSavedPokemon: document.querySelector("#manage-saved-pokemon"),
@@ -80,6 +81,8 @@ const el = {
 init();
 
 function init() {
+  state.activeView = "slots";
+  saveState();
   fillTypeSelect(el.customTypeOne, false);
   fillTypeSelect(el.customTypeTwo, true);
   fillTypeSelect(el.typeMatchupOne, false);
@@ -93,6 +96,21 @@ function init() {
   draftTeam = state.teams[state.selectedSlot] ? structuredClone(state.teams[state.selectedSlot]) : createEmptyTeam(state.selectedSlot || 0);
   el.teamName.value = draftTeam.name || "";
   renderAll();
+  startIntro();
+}
+
+function startIntro() {
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const displayDuration = reducedMotion ? 200 : 1450;
+  const fadeDuration = reducedMotion ? 100 : 520;
+
+  window.setTimeout(() => {
+    el.intro.classList.add("leaving");
+    window.setTimeout(() => {
+      el.intro.classList.add("hidden");
+      document.body.classList.remove("intro-active");
+    }, fadeDuration);
+  }, displayDuration);
 }
 
 function bindEvents() {
