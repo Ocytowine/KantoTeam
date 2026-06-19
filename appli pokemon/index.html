@@ -115,9 +115,9 @@
               <label class="field">
                 <span>Mode d'ajout</span>
                 <select id="add-mode">
-                  <option value="official">Pokemon original</option>
-                  <option value="saved">Pokemon personnalise sauvegarde</option>
-                  <option value="custom">Nouveau personnalise</option>
+                  <option value="official">Pokemon de Kanto</option>
+                  <option value="saved">Ma bibliotheque</option>
+                  <option value="custom">Creer un Pokemon</option>
                 </select>
               </label>
 
@@ -132,7 +132,7 @@
               </label>
 
               <label class="field mode-field hidden" data-mode="saved">
-                <span>Personnalise</span>
+                <span>Pokemon sauvegarde</span>
                 <select id="saved-custom-select"></select>
               </label>
 
@@ -158,10 +158,19 @@
                 <strong id="attack-count">0/4</strong>
               </legend>
               <p class="field-help">
-                Selectionne les types offensifs avant de cliquer sur ajouter. Ils seront sauvegardes sur ce Pokemon.
+                Selectionne jusqu'a 4 types offensifs, ou pars directement des types du Pokemon.
               </p>
+              <button class="small-button auto-attacks" id="use-pokemon-types" type="button">Utiliser ses types</button>
               <div id="attack-types" class="type-checks"></div>
             </fieldset>
+
+            <label class="library-save-option" id="library-save-option">
+              <input id="save-to-library" type="checkbox" checked>
+              <span>
+                <strong>Ajouter a ma bibliotheque</strong>
+                <small>Conserve ce Pokemon et ses attaques pour les prochaines equipes.</small>
+              </span>
+            </label>
 
             <div class="preview-row" id="pokemon-preview"></div>
 

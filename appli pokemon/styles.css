@@ -227,6 +227,57 @@ button:focus-visible {
   font-size: 0.78rem;
 }
 
+.auto-attacks {
+  margin-bottom: 10px;
+}
+
+.library-save-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  border: 1px solid rgba(115, 211, 162, 0.42);
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  background: rgba(115, 211, 162, 0.07);
+}
+
+.library-save-option input {
+  width: 18px;
+  min-height: 18px;
+  margin: 2px 0 0;
+  accent-color: var(--ok);
+}
+
+.library-save-option > span {
+  display: grid;
+  gap: 3px;
+}
+
+.library-save-option strong {
+  font-size: 0.86rem;
+}
+
+.library-save-option small {
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.library-kind {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0 7px;
+  color: var(--muted);
+  background: rgba(18, 23, 32, 0.74);
+  font-size: 0.66rem;
+  font-weight: 800;
+  vertical-align: middle;
+}
+
 .field-help {
   margin: 2px 0 12px;
   color: var(--muted);

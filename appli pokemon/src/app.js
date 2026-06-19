@@ -48,6 +48,9 @@ const el = {
   customName: document.querySelector("#custom-name"),
   customTypeOne: document.querySelector("#custom-type-one"),
   customTypeTwo: document.querySelector("#custom-type-two"),
+  usePokemonTypes: document.querySelector("#use-pokemon-types"),
+  librarySaveOption: document.querySelector("#library-save-option"),
+  saveToLibrary: document.querySelector("#save-to-library"),
   attackCount: document.querySelector("#attack-count"),
   attackTypes: document.querySelector("#attack-types"),
   preview: document.querySelector("#pokemon-preview"),
@@ -82,6 +85,7 @@ function init() {
   renderAttackChecks();
   renderOfficialOptions();
   renderSavedCustomOptions();
+  syncAttackChecksFromCurrentSelection();
   bindEvents();
   draftTeam = state.teams[state.selectedSlot] ? structuredClone(state.teams[state.selectedSlot]) : createEmptyTeam(state.selectedSlot || 0);
   el.teamName.value = draftTeam.name || "";
@@ -98,9 +102,10 @@ function bindEvents() {
   el.analysisToComposition.addEventListener("click", () => openView("composition"));
   el.simulationConfirm.addEventListener("click", renderSimulationResults);
   el.typeMatchupSubmit.addEventListener("click", renderTypeMatchupAnalysis);
+  el.usePokemonTypes.addEventListener("click", selectCurrentPokemonTypesAsAttacks);
 
   el.reset.addEventListener("click", () => {
-    if (!confirm("Reinitialiser toutes les equipes et Pokemon personnalises ?")) return;
+    if (!confirm("Reinitialiser toutes les equipes et la bibliotheque Pokemon ?")) return;
     state = structuredClone(defaultState);
     draftTeam = createEmptyTeam(0);
     saveState();
@@ -115,6 +120,7 @@ function bindEvents() {
 
   el.officialSearch.addEventListener("input", () => {
     renderOfficialOptions();
+    syncAttackChecksFromCurrentSelection();
     renderPreview();
   });
 
@@ -130,7 +136,7 @@ function bindEvents() {
 
   el.officialSelect.addEventListener("change", () => {
     if (el.addMode.value === "official") {
-      clearAttackTypes();
+      syncAttackChecksFromCurrentSelection();
       renderPreview();
     }
   });
@@ -276,14 +282,21 @@ function renderOfficialOptions() {
 }
 
 function renderSavedCustomOptions() {
+  const selectedId = el.savedCustomSelect.value;
   if (!state.customPokemon.length) {
-    el.savedCustomSelect.innerHTML = `<option value="">Aucun Pokemon personnalise</option>`;
+    el.savedCustomSelect.innerHTML = `<option value="">Bibliotheque vide</option>`;
     return;
   }
 
   el.savedCustomSelect.innerHTML = state.customPokemon
-    .map((pokemon) => `<option value="${pokemon.id}">${escapeHtml(pokemon.name)} - ${pokemon.types.join("/")}</option>`)
+    .map((pokemon) => {
+      const attacks = pokemon.attacks?.length ? ` · ${pokemon.attacks.join("/")}` : " · sans attaque";
+      return `<option value="${pokemon.id}">${escapeHtml(pokemon.name)} - ${pokemon.types.join("/")}${attacks}</option>`;
+    })
     .join("");
+  if (state.customPokemon.some((pokemon) => String(pokemon.id) === String(selectedId))) {
+    el.savedCustomSelect.value = selectedId;
+  }
 }
 
 function fillTypeSelect(select, optional) {
@@ -307,6 +320,7 @@ function updateModeFields() {
   el.modeFields.forEach((field) => {
     field.classList.toggle("hidden", field.dataset.mode !== el.addMode.value);
   });
+  el.librarySaveOption.classList.toggle("hidden", el.addMode.value === "saved");
 }
 
 function renderPreview() {
@@ -379,6 +393,20 @@ function clearAttackTypes() {
   updateAttackCount();
 }
 
+function selectCurrentPokemonTypesAsAttacks() {
+  const pokemon = getCurrentPokemon(false);
+  if (!pokemon) {
+    alert("Choisis d'abord un Pokemon.");
+    return;
+  }
+
+  el.attackTypes.querySelectorAll("input").forEach((input) => {
+    input.checked = pokemon.types.includes(input.value);
+  });
+  updateAttackCount();
+  renderPreview();
+}
+
 function updateAttackCount() {
   el.attackCount.textContent = `${getSelectedAttackTypes().length}/4`;
 }
@@ -398,20 +426,31 @@ function addCurrentPokemon() {
     return;
   }
 
-  const createsSavedPokemon = el.addMode.value === "custom";
+  const shouldSave = el.addMode.value !== "saved" && el.saveToLibrary.checked;
+  const matchingSavedPokemon = shouldSave
+    ? state.customPokemon.find((item) => (
+        (el.addMode.value === "official"
+          ? Number(item.officialId) === Number(pokemon.id)
+          : normalize(item.name) === normalize(pokemon.name))
+        && item.types.join("|") === pokemon.types.join("|")
+        && (item.attacks || []).join("|") === attacks.join("|")
+      ))
+    : null;
+  const savedPokemon = shouldSave
+    ? matchingSavedPokemon || {
+        ...structuredClone(pokemon),
+        id: `saved-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        officialId: el.addMode.value === "official" ? pokemon.id : null,
+        custom: el.addMode.value === "custom",
+        attacks
+      }
+    : null;
 
-  if (createsSavedPokemon && state.customPokemon.some((item) => normalize(item.name) === normalize(pokemon.name))) {
-    alert("Un Pokemon sauvegarde porte deja ce nom. Choisis un autre nom pour eviter d'ecraser un Pokemon existant.");
-    return;
-  }
-
-  if (createsSavedPokemon) {
-    state.customPokemon.push({ ...structuredClone(pokemon), attacks });
-  }
+  if (savedPokemon && !matchingSavedPokemon) state.customPokemon.push(savedPokemon);
 
   draftTeam.pokemon.push({
     instanceId: `member-${Date.now()}-${Math.random().toString(16).slice(2)}`,
-    sourceId: pokemon.id,
+    sourceId: savedPokemon?.id ?? pokemon.id,
     name: pokemon.name,
     types: pokemon.types,
     attacks
@@ -420,8 +459,10 @@ function addCurrentPokemon() {
   saveState();
   renderSavedCustomOptions();
   renderDraftTeam();
-  renderPreview();
   clearAttackTypes();
+  if (el.addMode.value === "custom") el.customName.value = "";
+  syncAttackChecksFromCurrentSelection();
+  renderPreview();
 }
 
 function renderDraftTeam() {
@@ -489,7 +530,7 @@ function renderSavedPokemonManager() {
   el.savedPokemonEditPanel.innerHTML = "";
 
   if (!state.customPokemon.length) {
-    el.savedPokemonList.innerHTML = `<div class="empty-state">Aucun Pokemon personnalise sauvegarde pour le moment.</div>`;
+    el.savedPokemonList.innerHTML = `<div class="empty-state">Aucun Pokemon sauvegarde pour le moment.</div>`;
     return;
   }
 
@@ -499,7 +540,7 @@ function renderSavedPokemonManager() {
     card.setAttribute("style", pokemonCardStyle(pokemon));
     card.innerHTML = `
       <div class="pokemon-card-header">
-        <h3>${index + 1}. ${escapeHtml(pokemon.name)} <span class="name-type-logos">${pokemon.types.map(typeLogoOnly).join("")}</span></h3>
+        <h3>${index + 1}. ${escapeHtml(pokemon.name)} <span class="library-kind">${pokemon.custom === false ? "Kanto" : "Personnalise"}</span> <span class="name-type-logos">${pokemon.types.map(typeLogoOnly).join("")}</span></h3>
         <div class="card-actions">
           <button class="small-button" type="button" data-edit-saved-pokemon="${pokemon.id}">Editer</button>
           <button class="small-button danger" type="button" data-delete-saved-pokemon="${pokemon.id}">Supprimer</button>
@@ -1038,15 +1079,6 @@ function savePokemonEdit(sourceId, panel = el.pokemonEditPanel, includeAttacks =
   }
 
   const types = [typeOne, typeTwo].filter(Boolean).filter((type, index, all) => all.indexOf(type) === index);
-  const duplicate = state.customPokemon.some((pokemon) => (
-    String(pokemon.id) !== String(sourceId) && normalize(pokemon.name) === normalize(name)
-  ));
-
-  if (duplicate) {
-    alert("Un Pokemon sauvegarde porte deja ce nom. La mise a jour est bloquee pour eviter d'ecraser un autre Pokemon.");
-    return;
-  }
-
   updatePokemonEverywhere(sourceId, { name, types, attacks });
   saveState();
   renderAll();
@@ -1076,6 +1108,15 @@ function updatePokemonEverywhere(sourceId, updates) {
 }
 
 function syncAttackChecksFromCurrentSelection() {
+  if (el.addMode.value === "official") {
+    const pokemon = KANTO_POKEMON.find((item) => item.id === Number(el.officialSelect.value));
+    el.attackTypes.querySelectorAll("input").forEach((input) => {
+      input.checked = pokemon?.types.includes(input.value) || false;
+    });
+    updateAttackCount();
+    return;
+  }
+
   if (el.addMode.value !== "saved") {
     clearAttackTypes();
     return;
