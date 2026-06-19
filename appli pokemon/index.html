@@ -116,6 +116,7 @@
                 <span>Mode d'ajout</span>
                 <select id="add-mode">
                   <option value="official">Pokemon de Kanto</option>
+                  <option value="reforged">Kanto Reforged</option>
                   <option value="saved">Ma bibliotheque</option>
                   <option value="custom">Creer un Pokemon</option>
                 </select>
@@ -129,6 +130,16 @@
               <label class="field mode-field" data-mode="official">
                 <span>Pokemon</span>
                 <select id="official-select"></select>
+              </label>
+
+              <label class="field mode-field hidden" data-mode="reforged">
+                <span>Rechercher dans Kanto Reforged</span>
+                <input id="reforged-search" type="search" placeholder="Nom du Pokemon...">
+              </label>
+
+              <label class="field mode-field hidden" data-mode="reforged">
+                <span>Pokemon Reforged</span>
+                <select id="reforged-select"></select>
               </label>
 
               <label class="field mode-field hidden" data-mode="saved">
@@ -260,6 +271,7 @@
     </main>
 
     <script src="src/data.js"></script>
+    <script src="src/reforged-data.js"></script>
     <script src="src/app.js"></script>
   </body>
 </html>

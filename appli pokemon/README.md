@@ -2,6 +2,8 @@
 
 KantoTeam est une petite application web locale pour creer jusqu'a 3 equipes Pokemon de generation 1 et analyser leurs faiblesses, resistances, immunites et couvertures offensives.
 
+Le selecteur propose la liste Kanto originale ainsi qu'une liste `Kanto Reforged` locale, dont les types alternatifs sont conserves independamment.
+
 ## Lancer le site
 
 Le projet est une app statique en HTML, CSS et JavaScript pur.

@@ -44,6 +44,8 @@ const el = {
   modeFields: Array.from(document.querySelectorAll(".mode-field")),
   officialSearch: document.querySelector("#official-search"),
   officialSelect: document.querySelector("#official-select"),
+  reforgedSearch: document.querySelector("#reforged-search"),
+  reforgedSelect: document.querySelector("#reforged-select"),
   savedCustomSelect: document.querySelector("#saved-custom-select"),
   customName: document.querySelector("#custom-name"),
   customTypeOne: document.querySelector("#custom-type-one"),
@@ -84,6 +86,7 @@ function init() {
   fillTypeSelect(el.typeMatchupTwo, true);
   renderAttackChecks();
   renderOfficialOptions();
+  renderReforgedOptions();
   renderSavedCustomOptions();
   syncAttackChecksFromCurrentSelection();
   bindEvents();
@@ -124,7 +127,13 @@ function bindEvents() {
     renderPreview();
   });
 
-  [el.officialSelect, el.savedCustomSelect, el.customName, el.customTypeOne, el.customTypeTwo].forEach((field) => {
+  el.reforgedSearch.addEventListener("input", () => {
+    renderReforgedOptions();
+    syncAttackChecksFromCurrentSelection();
+    renderPreview();
+  });
+
+  [el.officialSelect, el.reforgedSelect, el.savedCustomSelect, el.customName, el.customTypeOne, el.customTypeTwo].forEach((field) => {
     field.addEventListener("input", renderPreview);
     field.addEventListener("change", renderPreview);
   });
@@ -136,6 +145,13 @@ function bindEvents() {
 
   el.officialSelect.addEventListener("change", () => {
     if (el.addMode.value === "official") {
+      syncAttackChecksFromCurrentSelection();
+      renderPreview();
+    }
+  });
+
+  el.reforgedSelect.addEventListener("change", () => {
+    if (el.addMode.value === "reforged") {
       syncAttackChecksFromCurrentSelection();
       renderPreview();
     }
@@ -281,6 +297,16 @@ function renderOfficialOptions() {
     .join("");
 }
 
+function renderReforgedOptions() {
+  const selectedId = el.reforgedSelect.value;
+  const query = normalize(el.reforgedSearch.value);
+  const matches = KANTO_REFORGED_POKEMON.filter((pokemon) => normalize(pokemon.name).includes(query));
+  el.reforgedSelect.innerHTML = matches
+    .map((pokemon) => `<option value="${pokemon.id}">${escapeHtml(pokemon.name)} - ${pokemon.types.join("/")}</option>`)
+    .join("");
+  if (matches.some((pokemon) => pokemon.id === selectedId)) el.reforgedSelect.value = selectedId;
+}
+
 function renderSavedCustomOptions() {
   const selectedId = el.savedCustomSelect.value;
   if (!state.customPokemon.length) {
@@ -291,7 +317,7 @@ function renderSavedCustomOptions() {
   el.savedCustomSelect.innerHTML = state.customPokemon
     .map((pokemon) => {
       const attacks = pokemon.attacks?.length ? ` · ${pokemon.attacks.join("/")}` : " · sans attaque";
-      return `<option value="${pokemon.id}">${escapeHtml(pokemon.name)} - ${pokemon.types.join("/")}${attacks}</option>`;
+      return `<option value="${pokemon.id}">[${savedPokemonOriginLabel(pokemon)}] ${escapeHtml(pokemon.name)} - ${pokemon.types.join("/")}${attacks}</option>`;
     })
     .join("");
   if (state.customPokemon.some((pokemon) => String(pokemon.id) === String(selectedId))) {
@@ -354,6 +380,11 @@ function getCurrentPokemon(validate) {
   if (mode === "official") {
     const id = Number(el.officialSelect.value);
     const pokemon = KANTO_POKEMON.find((item) => item.id === id);
+    return pokemon ? structuredClone(pokemon) : null;
+  }
+
+  if (mode === "reforged") {
+    const pokemon = KANTO_REFORGED_POKEMON.find((item) => item.id === el.reforgedSelect.value);
     return pokemon ? structuredClone(pokemon) : null;
   }
 
@@ -431,7 +462,9 @@ function addCurrentPokemon() {
     ? state.customPokemon.find((item) => (
         (el.addMode.value === "official"
           ? Number(item.officialId) === Number(pokemon.id)
-          : normalize(item.name) === normalize(pokemon.name))
+          : el.addMode.value === "reforged"
+            ? item.reforgedId === pokemon.id
+            : normalize(item.name) === normalize(pokemon.name))
         && item.types.join("|") === pokemon.types.join("|")
         && (item.attacks || []).join("|") === attacks.join("|")
       ))
@@ -441,6 +474,8 @@ function addCurrentPokemon() {
         ...structuredClone(pokemon),
         id: `saved-${Date.now()}-${Math.random().toString(16).slice(2)}`,
         officialId: el.addMode.value === "official" ? pokemon.id : null,
+        reforgedId: el.addMode.value === "reforged" ? pokemon.id : null,
+        origin: el.addMode.value,
         custom: el.addMode.value === "custom",
         attacks
       }
@@ -524,6 +559,12 @@ function renderComposition(team) {
   });
 }
 
+function savedPokemonOriginLabel(pokemon) {
+  if (pokemon.origin === "reforged" || pokemon.reforgedId) return "Reforged";
+  if (pokemon.origin === "official" || pokemon.officialId || pokemon.custom === false) return "Kanto";
+  return "Personnalise";
+}
+
 function renderSavedPokemonManager() {
   el.savedPokemonList.innerHTML = "";
   el.savedPokemonEditPanel.classList.add("hidden");
@@ -540,7 +581,7 @@ function renderSavedPokemonManager() {
     card.setAttribute("style", pokemonCardStyle(pokemon));
     card.innerHTML = `
       <div class="pokemon-card-header">
-        <h3>${index + 1}. ${escapeHtml(pokemon.name)} <span class="library-kind">${pokemon.custom === false ? "Kanto" : "Personnalise"}</span> <span class="name-type-logos">${pokemon.types.map(typeLogoOnly).join("")}</span></h3>
+        <h3>${index + 1}. ${escapeHtml(pokemon.name)} <span class="library-kind">${savedPokemonOriginLabel(pokemon)}</span> <span class="name-type-logos">${pokemon.types.map(typeLogoOnly).join("")}</span></h3>
         <div class="card-actions">
           <button class="small-button" type="button" data-edit-saved-pokemon="${pokemon.id}">Editer</button>
           <button class="small-button danger" type="button" data-delete-saved-pokemon="${pokemon.id}">Supprimer</button>
@@ -728,7 +769,8 @@ function renderSimulationEnemyEditorMarkup(index, enemy) {
           <span>Source</span>
           <select class="enemy-pick-source">
             <option value="official">Originaux</option>
-            <option value="saved">Personnalises</option>
+            <option value="reforged">Kanto Reforged</option>
+            <option value="saved">Ma bibliotheque</option>
           </select>
         </label>
         <label class="field">
@@ -774,15 +816,26 @@ function getEnemyAttackTypes(editor) {
 }
 
 function enemyPokemonOptions(source) {
-  const list = source === "saved" ? state.customPokemon : KANTO_POKEMON;
-  return list.map((pokemon) => `<option value="${escapeHtml(pokemon.name)}"></option>`).join("");
+  const list = pokemonListForSource(source);
+  return list.map((pokemon) => `<option value="${escapeHtml(pokemonOptionLabel(pokemon))}"></option>`).join("");
 }
 
 function findEnemyPick(source, query) {
-  const list = source === "saved" ? state.customPokemon : KANTO_POKEMON;
+  const list = pokemonListForSource(source);
   const normalized = normalize(query);
-  return list.find((pokemon) => normalize(pokemon.name) === normalized)
+  return list.find((pokemon) => normalize(pokemonOptionLabel(pokemon)) === normalized)
+    || list.find((pokemon) => normalize(pokemon.name) === normalized)
     || list.find((pokemon) => normalize(pokemon.name).includes(normalized));
+}
+
+function pokemonListForSource(source) {
+  if (source === "saved") return state.customPokemon;
+  if (source === "reforged") return KANTO_REFORGED_POKEMON;
+  return KANTO_POKEMON;
+}
+
+function pokemonOptionLabel(pokemon) {
+  return `${pokemon.name} - ${pokemon.types.join("/")}`;
 }
 
 function updateEnemyAttackCount(editor) {
@@ -1110,6 +1163,15 @@ function updatePokemonEverywhere(sourceId, updates) {
 function syncAttackChecksFromCurrentSelection() {
   if (el.addMode.value === "official") {
     const pokemon = KANTO_POKEMON.find((item) => item.id === Number(el.officialSelect.value));
+    el.attackTypes.querySelectorAll("input").forEach((input) => {
+      input.checked = pokemon?.types.includes(input.value) || false;
+    });
+    updateAttackCount();
+    return;
+  }
+
+  if (el.addMode.value === "reforged") {
+    const pokemon = KANTO_REFORGED_POKEMON.find((item) => item.id === el.reforgedSelect.value);
     el.attackTypes.querySelectorAll("input").forEach((input) => {
       input.checked = pokemon?.types.includes(input.value) || false;
     });
