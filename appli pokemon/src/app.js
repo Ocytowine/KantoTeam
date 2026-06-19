@@ -65,6 +65,10 @@ const el = {
   advantageDetail: document.querySelector("#advantage-detail"),
   offenseSummary: document.querySelector("#offense-summary"),
   offenseDetail: document.querySelector("#offense-detail"),
+  typeMatchupOne: document.querySelector("#type-matchup-one"),
+  typeMatchupTwo: document.querySelector("#type-matchup-two"),
+  typeMatchupSubmit: document.querySelector("#type-matchup-submit"),
+  typeMatchupResults: document.querySelector("#type-matchup-results"),
   adviceList: document.querySelector("#advice-list")
 };
 
@@ -73,6 +77,8 @@ init();
 function init() {
   fillTypeSelect(el.customTypeOne, false);
   fillTypeSelect(el.customTypeTwo, true);
+  fillTypeSelect(el.typeMatchupOne, false);
+  fillTypeSelect(el.typeMatchupTwo, true);
   renderAttackChecks();
   renderOfficialOptions();
   renderSavedCustomOptions();
@@ -91,6 +97,7 @@ function bindEvents() {
   el.compositionToAnalysis.addEventListener("click", () => openView("analysis"));
   el.analysisToComposition.addEventListener("click", () => openView("composition"));
   el.simulationConfirm.addEventListener("click", renderSimulationResults);
+  el.typeMatchupSubmit.addEventListener("click", renderTypeMatchupAnalysis);
 
   el.reset.addEventListener("click", () => {
     if (!confirm("Reinitialiser toutes les equipes et Pokemon personnalises ?")) return;
@@ -1107,6 +1114,8 @@ function renderAnalysis(team) {
   el.teamCount.textContent = team ? `${team.pokemon.length}/6` : "0/6";
   el.analysisEmpty.classList.toggle("hidden", Boolean(team));
   el.analysisContent.classList.toggle("hidden", !team);
+  el.typeMatchupResults.className = "type-matchup-results empty-state";
+  el.typeMatchupResults.innerHTML = "Choisis un ou deux types pour classer les attaquants et les resistances de ton equipe.";
 
   if (!team) return;
 
@@ -1265,6 +1274,103 @@ function renderOffenseDetail(analysis, defenderType) {
 function renderCoverageWarning(defenderType, item) {
   if (item.defensiveRisk <= 1) return "";
   return `<span class="risk-warning">Attention : ${escapeHtml(item.pokemon)} menace ${defenderType}, mais subit ${formatMultiplierLabel(item.defensiveRisk)} contre ${defenderType}.</span>`;
+}
+
+function renderTypeMatchupAnalysis() {
+  const team = state.teams[state.selectedSlot];
+  if (!team?.pokemon.length) {
+    el.typeMatchupResults.className = "type-matchup-results empty-state";
+    el.typeMatchupResults.innerHTML = "Aucun Pokemon disponible dans cette equipe.";
+    return;
+  }
+
+  const targetTypes = [el.typeMatchupOne.value, el.typeMatchupTwo.value]
+    .filter(Boolean)
+    .filter((type, index, all) => all.indexOf(type) === index);
+  const defensiveRanking = team.pokemon
+    .map((pokemon) => {
+      const received = targetTypes.map((attackType) => ({
+        type: attackType,
+        multiplier: pokemon.types.reduce((value, pokemonType) => value * getEffectiveness(attackType, pokemonType), 1)
+      }));
+      return {
+        pokemon,
+        received,
+        worstMultiplier: Math.max(...received.map((item) => item.multiplier))
+      };
+    })
+    .sort((a, b) => a.worstMultiplier - b.worstMultiplier || a.pokemon.name.localeCompare(b.pokemon.name));
+  const offensiveRanking = team.pokemon
+    .map((pokemon) => {
+      const attacks = (pokemon.attacks || [])
+        .map((attackType) => ({
+          type: attackType,
+          multiplier: targetTypes.reduce((value, targetType) => value * getEffectiveness(attackType, targetType), 1)
+        }))
+        .sort((a, b) => b.multiplier - a.multiplier);
+      return { pokemon, bestAttack: attacks[0] || null };
+    })
+    .sort((a, b) => (
+      (b.bestAttack?.multiplier ?? -1) - (a.bestAttack?.multiplier ?? -1)
+      || a.pokemon.name.localeCompare(b.pokemon.name)
+    ));
+
+  el.typeMatchupResults.className = "type-matchup-results";
+  el.typeMatchupResults.innerHTML = `
+    <div class="type-matchup-summary">
+      <span class="slot-meta">Profil teste</span>
+      <div class="mini-line">${targetTypes.map(typeBadge).join("")}</div>
+    </div>
+    <div class="type-ranking-grid">
+      <section class="type-ranking-column">
+        <div class="type-ranking-title">
+          <span class="ranking-icon defense">D</span>
+          <div><span class="choice-kicker">Defense</span><h3>Meilleurs resistants</h3></div>
+        </div>
+        <div class="type-ranking-list">
+          ${defensiveRanking.map((item, index) => renderDefensiveRankingRow(item, index)).join("")}
+        </div>
+      </section>
+      <section class="type-ranking-column">
+        <div class="type-ranking-title">
+          <span class="ranking-icon offense">A</span>
+          <div><span class="choice-kicker">Attaque</span><h3>Meilleurs attaquants</h3></div>
+        </div>
+        <div class="type-ranking-list">
+          ${offensiveRanking.map((item, index) => renderOffensiveRankingRow(item, index)).join("")}
+        </div>
+      </section>
+    </div>
+  `;
+}
+
+function renderDefensiveRankingRow(item, index) {
+  const kind = item.worstMultiplier === 0 ? "immune" : item.worstMultiplier < 1 ? "resist" : item.worstMultiplier > 1 ? "weak" : "";
+  return `
+    <div class="type-ranking-row ${index === 0 ? "best" : ""}">
+      <span class="ranking-position">${index + 1}</span>
+      <div class="ranking-pokemon">
+        <strong>${escapeHtml(item.pokemon.name)}</strong>
+        <span class="ranking-detail">${item.received.map((entry) => `${typeLogo(entry.type)} ${formatMultiplierLabel(entry.multiplier)}`).join(" · ")}</span>
+      </div>
+      <span class="multiplier ${kind}">${formatMultiplierLabel(item.worstMultiplier)}</span>
+    </div>
+  `;
+}
+
+function renderOffensiveRankingRow(item, index) {
+  const attack = item.bestAttack;
+  const kind = attack?.multiplier > 1 ? "weak" : attack?.multiplier === 0 ? "immune" : "";
+  return `
+    <div class="type-ranking-row ${index === 0 && attack ? "best" : ""} ${attack ? "" : "unavailable-choice"}">
+      <span class="ranking-position">${index + 1}</span>
+      <div class="ranking-pokemon">
+        <strong>${escapeHtml(item.pokemon.name)}</strong>
+        <span class="ranking-detail">${attack ? `${typeLogo(attack.type)} ${attack.type}` : "Aucune attaque renseignee"}</span>
+      </div>
+      <span class="multiplier ${kind}">${attack ? formatMultiplierLabel(attack.multiplier) : "?"}</span>
+    </div>
+  `;
 }
 
 function buildAdvice(threats, uncoveredTypes, overusedAttacks, team) {

@@ -216,6 +216,31 @@
               </div>
             </section>
 
+            <section class="type-matchup-panel" aria-labelledby="type-matchup-title">
+              <div class="type-matchup-heading">
+                <div>
+                  <p class="eyebrow">Analyse ponctuelle</p>
+                  <h3 id="type-matchup-title">Tester une combinaison de types</h3>
+                </div>
+                <span class="slot-meta">Classe toute l'equipe</span>
+              </div>
+              <div class="type-matchup-controls">
+                <label class="field">
+                  <span>Type principal</span>
+                  <select id="type-matchup-one"></select>
+                </label>
+                <label class="field">
+                  <span>Type secondaire</span>
+                  <select id="type-matchup-two"></select>
+                </label>
+                <button class="primary-button type-matchup-submit" id="type-matchup-submit" type="button">Analyser</button>
+              </div>
+              <p class="field-help">Les types choisis servent de types defensifs et de types d'attaque adverses.</p>
+              <div id="type-matchup-results" class="type-matchup-results empty-state">
+                Choisis un ou deux types pour classer les attaquants et les resistances de ton equipe.
+              </div>
+            </section>
+
             <section>
               <h3>Conseils</h3>
               <div id="advice-list" class="advice-list"></div>

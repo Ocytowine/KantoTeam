@@ -985,6 +985,165 @@ button:focus-visible {
   font-weight: 750;
 }
 
+.type-matchup-panel {
+  border: 1px solid rgba(244, 200, 74, 0.42);
+  border-radius: 8px;
+  padding: 16px;
+  background: linear-gradient(145deg, rgba(244, 200, 74, 0.07), rgba(20, 25, 34, 0.84));
+}
+
+.type-matchup-heading,
+.type-matchup-summary,
+.type-ranking-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.type-matchup-heading h3,
+.type-ranking-title h3 {
+  margin: 3px 0 0;
+}
+
+.type-matchup-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: end;
+  margin-top: 14px;
+}
+
+.type-matchup-submit {
+  min-height: 42px;
+}
+
+.type-matchup-panel .field-help {
+  margin: 10px 0 14px;
+}
+
+.type-matchup-results {
+  display: grid;
+  gap: 14px;
+}
+
+.type-matchup-results.empty-state {
+  display: block;
+  margin-top: 0;
+}
+
+.type-matchup-summary {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 12px;
+}
+
+.type-ranking-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.type-ranking-column {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  background: rgba(20, 25, 34, 0.76);
+}
+
+.type-ranking-title {
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
+
+.ranking-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.ranking-icon.defense {
+  color: #bdf3d4;
+  background: rgba(115, 211, 162, 0.2);
+}
+
+.ranking-icon.offense {
+  color: #ffd2d2;
+  background: rgba(240, 127, 127, 0.22);
+}
+
+.type-ranking-list {
+  display: grid;
+  gap: 6px;
+}
+
+.type-ranking-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  min-height: 52px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  padding: 7px 8px;
+  background: rgba(36, 43, 54, 0.58);
+}
+
+.type-ranking-row.best {
+  border-color: rgba(244, 200, 74, 0.62);
+  background: rgba(244, 200, 74, 0.08);
+}
+
+.ranking-position {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: var(--muted);
+  background: #121720;
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+.type-ranking-row.best .ranking-position {
+  color: #111318;
+  background: var(--accent);
+}
+
+.ranking-pokemon {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.ranking-pokemon strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ranking-detail {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.ranking-detail .type-logo {
+  width: 15px;
+  height: 15px;
+}
+
 .empty-state {
   margin-top: 16px;
   border: 1px dashed var(--line);
@@ -1021,6 +1180,10 @@ button:focus-visible {
   .versus-column-heading {
     min-height: 0;
   }
+
+  .type-ranking-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 640px) {
@@ -1040,6 +1203,10 @@ button:focus-visible {
   }
 
   .picker-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .type-matchup-controls {
     grid-template-columns: 1fr;
   }
 
