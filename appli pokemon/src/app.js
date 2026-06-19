@@ -1,0 +1,1399 @@
+const STORAGE_KEY = "kantoTeamState:v1";
+
+const defaultState = {
+  selectedSlot: 0,
+  activeView: "slots",
+  teams: [null, null, null],
+  customPokemon: []
+};
+
+let state = loadState();
+let draftTeam = createEmptyTeam(0);
+let simulationDraft = {
+  editingIndex: null,
+  enemies: []
+};
+
+const el = {
+  slots: document.querySelector("#team-slots"),
+  backToSlots: document.querySelector("#back-to-slots"),
+  manageSavedPokemon: document.querySelector("#manage-saved-pokemon"),
+  reset: document.querySelector("#reset-data"),
+  savedManagerPanel: document.querySelector("#saved-manager-panel"),
+  savedPokemonList: document.querySelector("#saved-pokemon-list"),
+  savedPokemonEditPanel: document.querySelector("#saved-pokemon-edit-panel"),
+  compositionPanel: document.querySelector("#composition-panel"),
+  compositionTitle: document.querySelector("#composition-title"),
+  compositionCount: document.querySelector("#composition-count"),
+  compositionList: document.querySelector("#composition-list"),
+  compositionToAnalysis: document.querySelector("#composition-to-analysis"),
+  pokemonEditPanel: document.querySelector("#pokemon-edit-panel"),
+  simulationPanel: document.querySelector("#simulation-panel"),
+  simulationTitle: document.querySelector("#simulation-title"),
+  simulationCount: document.querySelector("#simulation-count"),
+  simulationEnemies: document.querySelector("#simulation-enemies"),
+  simulationEnemyEditor: document.querySelector("#simulation-enemy-editor"),
+  simulationConfirm: document.querySelector("#simulation-confirm"),
+  simulationResults: document.querySelector("#simulation-results"),
+  editorPanel: document.querySelector("#editor-panel"),
+  analysisPanel: document.querySelector("#analysis-panel"),
+  slotLabel: document.querySelector("#slot-label"),
+  editorTitle: document.querySelector("#editor-title"),
+  teamName: document.querySelector("#team-name"),
+  addMode: document.querySelector("#add-mode"),
+  modeFields: Array.from(document.querySelectorAll(".mode-field")),
+  officialSearch: document.querySelector("#official-search"),
+  officialSelect: document.querySelector("#official-select"),
+  savedCustomSelect: document.querySelector("#saved-custom-select"),
+  customName: document.querySelector("#custom-name"),
+  customTypeOne: document.querySelector("#custom-type-one"),
+  customTypeTwo: document.querySelector("#custom-type-two"),
+  attackCount: document.querySelector("#attack-count"),
+  attackTypes: document.querySelector("#attack-types"),
+  preview: document.querySelector("#pokemon-preview"),
+  addPokemon: document.querySelector("#add-pokemon"),
+  teamForm: document.querySelector("#team-form"),
+  teamList: document.querySelector("#team-list"),
+  analysisTitle: document.querySelector("#analysis-title"),
+  analysisToComposition: document.querySelector("#analysis-to-composition"),
+  teamCount: document.querySelector("#team-count"),
+  analysisEmpty: document.querySelector("#analysis-empty"),
+  analysisContent: document.querySelector("#analysis-content"),
+  threatTable: document.querySelector("#threat-table"),
+  threatDetail: document.querySelector("#threat-detail"),
+  advantageTable: document.querySelector("#advantage-table"),
+  advantageDetail: document.querySelector("#advantage-detail"),
+  offenseSummary: document.querySelector("#offense-summary"),
+  offenseDetail: document.querySelector("#offense-detail"),
+  adviceList: document.querySelector("#advice-list")
+};
+
+init();
+
+function init() {
+  fillTypeSelect(el.customTypeOne, false);
+  fillTypeSelect(el.customTypeTwo, true);
+  renderAttackChecks();
+  renderOfficialOptions();
+  renderSavedCustomOptions();
+  bindEvents();
+  draftTeam = state.teams[state.selectedSlot] ? structuredClone(state.teams[state.selectedSlot]) : createEmptyTeam(state.selectedSlot || 0);
+  el.teamName.value = draftTeam.name || "";
+  renderAll();
+}
+
+function bindEvents() {
+  el.backToSlots.addEventListener("click", () => {
+    openView("slots");
+  });
+
+  el.manageSavedPokemon.addEventListener("click", () => openView("savedManager"));
+  el.compositionToAnalysis.addEventListener("click", () => openView("analysis"));
+  el.analysisToComposition.addEventListener("click", () => openView("composition"));
+  el.simulationConfirm.addEventListener("click", renderSimulationResults);
+
+  el.reset.addEventListener("click", () => {
+    if (!confirm("Reinitialiser toutes les equipes et Pokemon personnalises ?")) return;
+    state = structuredClone(defaultState);
+    draftTeam = createEmptyTeam(0);
+    saveState();
+    renderAll();
+  });
+
+  el.addMode.addEventListener("change", () => {
+    updateModeFields();
+    syncAttackChecksFromCurrentSelection();
+    renderPreview();
+  });
+
+  el.officialSearch.addEventListener("input", () => {
+    renderOfficialOptions();
+    renderPreview();
+  });
+
+  [el.officialSelect, el.savedCustomSelect, el.customName, el.customTypeOne, el.customTypeTwo].forEach((field) => {
+    field.addEventListener("input", renderPreview);
+    field.addEventListener("change", renderPreview);
+  });
+
+  el.savedCustomSelect.addEventListener("change", () => {
+    syncAttackChecksFromCurrentSelection();
+    renderPreview();
+  });
+
+  el.officialSelect.addEventListener("change", () => {
+    if (el.addMode.value === "official") {
+      clearAttackTypes();
+      renderPreview();
+    }
+  });
+
+  el.attackTypes.addEventListener("change", (event) => {
+    const checked = getSelectedAttackTypes();
+    if (checked.length > 4) {
+      event.target.checked = false;
+      alert("Un Pokemon peut avoir au maximum 4 types d'attaque.");
+    }
+    updateAttackCount();
+    renderPreview();
+  });
+
+  el.addPokemon.addEventListener("click", addCurrentPokemon);
+
+  el.teamForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    confirmTeam();
+  });
+}
+
+function loadState() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (!stored) return structuredClone(defaultState);
+    return {
+      selectedSlot: stored.selectedSlot ?? 0,
+      activeView: stored.activeView || "slots",
+      teams: Array.isArray(stored.teams) ? [stored.teams[0] || null, stored.teams[1] || null, stored.teams[2] || null] : [null, null, null],
+      customPokemon: Array.isArray(stored.customPokemon) ? stored.customPokemon : []
+    };
+  } catch {
+    return structuredClone(defaultState);
+  }
+}
+
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function createEmptyTeam(slot) {
+  return {
+    id: `team-${Date.now()}-${slot}`,
+    name: "",
+    pokemon: []
+  };
+}
+
+function selectSlot(slot, view) {
+  state.selectedSlot = slot;
+  state.activeView = view || (state.teams[slot] ? "analysis" : "editor");
+  saveState();
+  draftTeam = state.teams[slot] ? structuredClone(state.teams[slot]) : createEmptyTeam(slot);
+  el.teamName.value = draftTeam.name || "";
+  renderAll();
+}
+
+function openView(view) {
+  state.activeView = view;
+  saveState();
+  renderAll();
+}
+
+function renderAll() {
+  renderSlots();
+  renderActiveView();
+  renderSavedPokemonManager();
+  renderSavedCustomOptions();
+  updateModeFields();
+  renderDraftTeam();
+  renderComposition(state.teams[state.selectedSlot]);
+  renderSimulation(state.teams[state.selectedSlot]);
+  renderPreview();
+  renderAnalysis(state.teams[state.selectedSlot]);
+}
+
+function renderSlots() {
+  el.slots.innerHTML = "";
+  state.teams.forEach((team, index) => {
+    const card = document.createElement("article");
+    card.className = `slot-card ${index === state.selectedSlot ? "active" : ""}`;
+    const status = team ? `${team.pokemon.length}/6 Pokemon` : "Slot vide";
+    card.innerHTML = `
+      <span class="eyebrow">Slot ${index + 1}</span>
+      <strong>${team ? escapeHtml(team.name || `Equipe ${index + 1}`) : "Nouvelle equipe"}</strong>
+      <span class="slot-meta">${status}</span>
+      <div class="slot-actions">
+        ${team ? `<button class="small-button" type="button" data-action="analysis" data-slot="${index}">Analyser</button>
+        <button class="small-button" type="button" data-action="composition" data-slot="${index}">Composition</button>
+        <button class="small-button" type="button" data-action="simulation" data-slot="${index}">Simulation</button>
+        <button class="small-button" type="button" data-action="edit" data-slot="${index}">Editer</button>
+        <button class="small-button danger" type="button" data-action="delete" data-slot="${index}">Supprimer</button>` : ""}
+        ${team ? "" : `<button class="small-button" type="button" data-action="edit" data-slot="${index}">Creer</button>`}
+      </div>
+    `;
+    el.slots.append(card);
+  });
+
+  el.slots.querySelectorAll("button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const slot = Number(button.dataset.slot);
+      if (button.dataset.action === "delete") {
+        if (!confirm("Supprimer cette equipe ?")) return;
+        state.teams[slot] = null;
+        state.activeView = "slots";
+        state.selectedSlot = slot;
+        draftTeam = createEmptyTeam(slot);
+        saveState();
+        renderAll();
+        return;
+      }
+      const actionToView = {
+        analysis: "analysis",
+        composition: "composition",
+        simulation: "simulation",
+        edit: "editor"
+      };
+      selectSlot(slot, actionToView[button.dataset.action] || "editor");
+    });
+  });
+}
+
+function renderActiveView() {
+  const hasTeam = Boolean(state.teams[state.selectedSlot]);
+  const view = ["slots", "savedManager"].includes(state.activeView) ? state.activeView : hasTeam ? state.activeView : "editor";
+  el.slots.classList.toggle("hidden", view !== "slots");
+  el.backToSlots.classList.toggle("hidden", view === "slots");
+  el.manageSavedPokemon.classList.toggle("hidden", view !== "slots");
+  el.savedManagerPanel.classList.toggle("hidden", view !== "savedManager");
+  el.compositionPanel.classList.toggle("hidden", view !== "composition");
+  el.simulationPanel.classList.toggle("hidden", view !== "simulation");
+  el.editorPanel.classList.toggle("hidden", view !== "editor");
+  el.analysisPanel.classList.toggle("hidden", view !== "analysis");
+}
+
+function renderOfficialOptions() {
+  const query = normalize(el.officialSearch.value);
+  const matches = KANTO_POKEMON.filter((pokemon) => normalize(pokemon.name).includes(query));
+  el.officialSelect.innerHTML = matches
+    .map((pokemon) => `<option value="${pokemon.id}">#${pokemon.id} ${pokemon.name} - ${pokemon.types.join("/")}</option>`)
+    .join("");
+}
+
+function renderSavedCustomOptions() {
+  if (!state.customPokemon.length) {
+    el.savedCustomSelect.innerHTML = `<option value="">Aucun Pokemon personnalise</option>`;
+    return;
+  }
+
+  el.savedCustomSelect.innerHTML = state.customPokemon
+    .map((pokemon) => `<option value="${pokemon.id}">${escapeHtml(pokemon.name)} - ${pokemon.types.join("/")}</option>`)
+    .join("");
+}
+
+function fillTypeSelect(select, optional) {
+  select.innerHTML = [
+    optional ? `<option value="">Aucun</option>` : "",
+    ...KANTO_TYPES.map((type) => `<option value="${type}">${type}</option>`)
+  ].join("");
+}
+
+function renderAttackChecks() {
+  el.attackTypes.innerHTML = KANTO_TYPES.map((type) => `
+    <label class="type-check">
+      <input type="checkbox" value="${type}">
+      ${typeBadge(type)}
+    </label>
+  `).join("");
+  updateAttackCount();
+}
+
+function updateModeFields() {
+  el.modeFields.forEach((field) => {
+    field.classList.toggle("hidden", field.dataset.mode !== el.addMode.value);
+  });
+}
+
+function renderPreview() {
+  updateAttackCount();
+  const pokemon = getCurrentPokemon(false);
+  if (!pokemon) {
+    el.preview.innerHTML = `<div class="empty-state">Choisis ou cree un Pokemon pour afficher ses chiffres.</div>`;
+    return;
+  }
+
+  const defensive = analyzePokemonDefense(pokemon.types);
+  const weaknesses = defensive.filter((item) => item.multiplier > 1);
+  const resistances = defensive.filter((item) => item.multiplier > 0 && item.multiplier < 1);
+  const immunities = defensive.filter((item) => item.multiplier === 0);
+  const attacks = getSelectedAttackTypes();
+
+  el.preview.innerHTML = `
+    <div class="mini-analysis">
+      <div class="mini-line"><strong>${escapeHtml(pokemon.name)}</strong>${pokemon.types.map(typeBadge).join("")}</div>
+      <div class="mini-line"><span class="slot-meta">Faiblesses</span>${renderMultiplierList(weaknesses)}</div>
+      <div class="mini-line"><span class="slot-meta">Resistances</span>${renderMultiplierList(resistances)}</div>
+      <div class="mini-line"><span class="slot-meta">Immunites</span>${renderMultiplierList(immunities)}</div>
+      <div class="mini-line"><span class="slot-meta">Attaques</span>${attacks.length ? attacks.map(typeBadge).join("") : `<span class="slot-meta">Aucune</span>`}</div>
+    </div>
+  `;
+}
+
+function getCurrentPokemon(validate) {
+  const mode = el.addMode.value;
+
+  if (mode === "official") {
+    const id = Number(el.officialSelect.value);
+    const pokemon = KANTO_POKEMON.find((item) => item.id === id);
+    return pokemon ? structuredClone(pokemon) : null;
+  }
+
+  if (mode === "saved") {
+    const id = el.savedCustomSelect.value;
+    const pokemon = state.customPokemon.find((item) => item.id === id);
+    return pokemon ? structuredClone(pokemon) : null;
+  }
+
+  const name = el.customName.value.trim();
+  const typeOne = el.customTypeOne.value;
+  const typeTwo = el.customTypeTwo.value;
+
+  if (validate && !name) {
+    alert("Donne un nom au Pokemon personnalise.");
+    return null;
+  }
+
+  if (!name && !validate) return null;
+
+  return {
+    id: `custom-${Date.now()}`,
+    name,
+    types: [typeOne, typeTwo].filter(Boolean).filter((type, index, all) => all.indexOf(type) === index),
+    custom: true
+  };
+}
+
+function getSelectedAttackTypes() {
+  return Array.from(el.attackTypes.querySelectorAll("input:checked")).map((input) => input.value);
+}
+
+function clearAttackTypes() {
+  el.attackTypes.querySelectorAll("input").forEach((input) => {
+    input.checked = false;
+  });
+  updateAttackCount();
+}
+
+function updateAttackCount() {
+  el.attackCount.textContent = `${getSelectedAttackTypes().length}/4`;
+}
+
+function addCurrentPokemon() {
+  if (draftTeam.pokemon.length >= 6) {
+    alert("Une equipe peut contenir au maximum 6 Pokemon.");
+    return;
+  }
+
+  const pokemon = getCurrentPokemon(true);
+  if (!pokemon) return;
+
+  const attacks = getSelectedAttackTypes();
+  if (attacks.length > 4) {
+    alert("Un Pokemon peut avoir au maximum 4 types d'attaque.");
+    return;
+  }
+
+  const createsSavedPokemon = el.addMode.value === "custom";
+
+  if (createsSavedPokemon && state.customPokemon.some((item) => normalize(item.name) === normalize(pokemon.name))) {
+    alert("Un Pokemon sauvegarde porte deja ce nom. Choisis un autre nom pour eviter d'ecraser un Pokemon existant.");
+    return;
+  }
+
+  if (createsSavedPokemon) {
+    state.customPokemon.push({ ...structuredClone(pokemon), attacks });
+  }
+
+  draftTeam.pokemon.push({
+    instanceId: `member-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    sourceId: pokemon.id,
+    name: pokemon.name,
+    types: pokemon.types,
+    attacks
+  });
+
+  saveState();
+  renderSavedCustomOptions();
+  renderDraftTeam();
+  renderPreview();
+  clearAttackTypes();
+}
+
+function renderDraftTeam() {
+  const slotNumber = state.selectedSlot + 1;
+  el.slotLabel.textContent = `Slot ${slotNumber}`;
+  el.editorTitle.textContent = state.teams[state.selectedSlot] ? "Editer l'equipe" : "Nouvelle equipe";
+  el.teamList.innerHTML = "";
+
+  if (!draftTeam.pokemon.length) {
+    el.teamList.innerHTML = `<div class="empty-state">Ajoute au moins 1 Pokemon. Tu peux confirmer jusqu'a 6 Pokemon.</div>`;
+    return;
+  }
+
+  draftTeam.pokemon.forEach((pokemon, index) => {
+    const card = document.createElement("article");
+    card.className = "pokemon-card";
+    card.setAttribute("style", pokemonCardStyle(pokemon));
+    card.innerHTML = renderPokemonSummary(pokemon, index, true);
+    el.teamList.append(card);
+  });
+
+  el.teamList.querySelectorAll("[data-remove]").forEach((button) => {
+    button.addEventListener("click", () => {
+      draftTeam.pokemon = draftTeam.pokemon.filter((pokemon) => pokemon.instanceId !== button.dataset.remove);
+      renderDraftTeam();
+    });
+  });
+}
+
+function renderComposition(team) {
+  el.compositionTitle.textContent = team ? team.name : "Aucune equipe";
+  el.compositionCount.textContent = team ? `${team.pokemon.length}/6` : "0/6";
+  el.compositionList.innerHTML = "";
+  el.pokemonEditPanel.classList.add("hidden");
+  el.pokemonEditPanel.innerHTML = "";
+
+  if (!team) {
+    el.compositionList.innerHTML = `<div class="empty-state">Retourne aux equipes et cree un slot pour afficher sa composition.</div>`;
+    return;
+  }
+
+  team.pokemon.forEach((pokemon, index) => {
+    const card = document.createElement("article");
+    card.className = "pokemon-card";
+    card.setAttribute("style", pokemonCardStyle(pokemon));
+    card.innerHTML = renderPokemonSummary(pokemon, index, false, true);
+    el.compositionList.append(card);
+  });
+
+  el.compositionList.querySelectorAll("[data-remove-from-team]").forEach((button) => {
+    button.addEventListener("click", () => removePokemonFromCurrentTeam(button.dataset.removeFromTeam));
+  });
+
+  el.compositionList.querySelectorAll("[data-edit-pokemon]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const pokemon = team.pokemon.find((item) => item.instanceId === button.dataset.editPokemon);
+      if (pokemon) renderPokemonEditPanel(pokemon, el.pokemonEditPanel, true);
+    });
+  });
+}
+
+function renderSavedPokemonManager() {
+  el.savedPokemonList.innerHTML = "";
+  el.savedPokemonEditPanel.classList.add("hidden");
+  el.savedPokemonEditPanel.innerHTML = "";
+
+  if (!state.customPokemon.length) {
+    el.savedPokemonList.innerHTML = `<div class="empty-state">Aucun Pokemon personnalise sauvegarde pour le moment.</div>`;
+    return;
+  }
+
+  state.customPokemon.forEach((pokemon, index) => {
+    const card = document.createElement("article");
+    card.className = "pokemon-card";
+    card.setAttribute("style", pokemonCardStyle(pokemon));
+    card.innerHTML = `
+      <div class="pokemon-card-header">
+        <h3>${index + 1}. ${escapeHtml(pokemon.name)} <span class="name-type-logos">${pokemon.types.map(typeLogoOnly).join("")}</span></h3>
+        <div class="card-actions">
+          <button class="small-button" type="button" data-edit-saved-pokemon="${pokemon.id}">Editer</button>
+          <button class="small-button danger" type="button" data-delete-saved-pokemon="${pokemon.id}">Supprimer</button>
+        </div>
+      </div>
+      <div class="pokemon-card-body stacked">
+        <div class="mini-line"><span class="slot-meta">Types</span>${pokemon.types.map(typeBadge).join("")}</div>
+        <div class="mini-line"><span class="slot-meta">Attaques</span>${pokemon.attacks?.length ? pokemon.attacks.map(typeBadge).join("") : `<span class="multiplier">Aucune</span>`}</div>
+      </div>
+    `;
+    el.savedPokemonList.append(card);
+  });
+
+  el.savedPokemonList.querySelectorAll("[data-edit-saved-pokemon]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const pokemon = state.customPokemon.find((item) => String(item.id) === String(button.dataset.editSavedPokemon));
+      if (pokemon) renderPokemonEditPanel(pokemon, el.savedPokemonEditPanel, true);
+    });
+  });
+
+  el.savedPokemonList.querySelectorAll("[data-delete-saved-pokemon]").forEach((button) => {
+    button.addEventListener("click", () => {
+      if (!confirm("Supprimer ce Pokemon de la bibliotheque ? Les equipes existantes ne seront pas modifiees.")) return;
+      state.customPokemon = state.customPokemon.filter((pokemon) => String(pokemon.id) !== String(button.dataset.deleteSavedPokemon));
+      saveState();
+      renderAll();
+    });
+  });
+}
+
+function removePokemonFromCurrentTeam(instanceId) {
+  const team = state.teams[state.selectedSlot];
+  if (!team) return;
+  team.pokemon = team.pokemon.filter((pokemon) => pokemon.instanceId !== instanceId);
+  state.teams[state.selectedSlot] = team;
+  draftTeam = structuredClone(team);
+  saveState();
+  renderAll();
+}
+
+function renderPokemonSummary(pokemon, index, removable, editable = false) {
+  const defensive = analyzePokemonDefense(pokemon.types);
+  const weaknesses = defensive.filter((item) => item.multiplier > 1);
+  const resistances = defensive.filter((item) => item.multiplier > 0 && item.multiplier < 1);
+
+  return `
+    <div class="pokemon-card-header">
+      <h3>${index + 1}. ${escapeHtml(pokemon.name)} <span class="name-type-logos">${pokemon.types.map(typeLogoOnly).join("")}</span></h3>
+      <div class="card-actions">
+        ${editable ? `<button class="small-button" type="button" data-edit-pokemon="${pokemon.instanceId}">Editer</button>` : ""}
+        ${editable ? `<button class="small-button danger" type="button" data-remove-from-team="${pokemon.instanceId}">Enlever</button>` : ""}
+        ${removable ? `<button class="small-button danger" type="button" data-remove="${pokemon.instanceId}">Retirer</button>` : ""}
+      </div>
+    </div>
+    <div class="pokemon-card-body stacked">
+      <div class="mini-line summary-line weakness-line"><span class="slot-meta">Faiblesses</span>${renderMultiplierList(weaknesses)}</div>
+      <div class="mini-line summary-line resistance-line"><span class="slot-meta">Resistances</span>${renderMultiplierList(resistances)}</div>
+      <div class="mini-line summary-line attack-line"><span class="slot-meta">Attaques</span>${pokemon.attacks.length ? pokemon.attacks.map(typeBadge).join("") : `<span class="multiplier">Aucune</span>`}</div>
+    </div>
+  `;
+}
+
+function renderSimulation(team) {
+  el.simulationTitle.textContent = team ? team.name : "Aucune equipe";
+  const enemyCount = simulationDraft.enemies.filter(Boolean).length;
+  el.simulationCount.textContent = `${enemyCount}/6 adversaire${enemyCount > 1 ? "s" : ""}`;
+  el.simulationEnemies.innerHTML = "";
+
+  for (let index = 0; index < 6; index += 1) {
+    const enemy = simulationDraft.enemies[index];
+    const card = document.createElement("article");
+    card.className = "enemy-card";
+
+    if (simulationDraft.editingIndex === index) {
+      card.classList.add("editing");
+      card.innerHTML = renderSimulationEnemyEditorMarkup(index, enemy || { types: ["Normal"], attacks: [] });
+    } else if (enemy) {
+      card.innerHTML = `
+        <div class="pokemon-card-header">
+          <h3>${escapeHtml(enemy.name || `Adversaire ${index + 1}`)} <span class="name-type-logos">${enemy.types.map(typeLogoOnly).join("")}</span></h3>
+          <div class="card-actions">
+            <button class="small-button" type="button" data-edit-enemy="${index}">Editer</button>
+            <button class="small-button danger" type="button" data-delete-enemy="${index}">Enlever</button>
+          </div>
+        </div>
+        <div class="pokemon-card-body stacked">
+          <div class="mini-line"><span class="slot-meta">Types</span>${enemy.types.map(typeBadge).join("")}</div>
+          <div class="mini-line"><span class="slot-meta">Attaques</span>${enemy.attacks.length ? enemy.attacks.map(typeBadge).join("") : `<span class="multiplier">Aucune</span>`}</div>
+        </div>
+      `;
+    } else {
+      card.innerHTML = `<button class="enemy-add" type="button" data-add-enemy="${index}">+</button>`;
+    }
+
+    el.simulationEnemies.append(card);
+  }
+
+  el.simulationEnemies.querySelectorAll("[data-add-enemy], [data-edit-enemy]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const index = Number(button.dataset.addEnemy ?? button.dataset.editEnemy);
+      renderSimulationEnemyEditor(index);
+    });
+  });
+
+  el.simulationEnemies.querySelectorAll("[data-cancel-enemy-edit]").forEach((button) => {
+    button.addEventListener("click", () => {
+      simulationDraft.editingIndex = null;
+      renderSimulation(team);
+    });
+  });
+
+  el.simulationEnemies.querySelectorAll(".enemy-attack-input").forEach((input) => {
+    input.addEventListener("change", () => {
+      const editor = input.closest("[data-enemy-editor]");
+      const attacks = getEnemyAttackTypes(editor);
+      if (attacks.length > 4) {
+        input.checked = false;
+        alert("Un adversaire peut avoir au maximum 4 types d'attaque.");
+      }
+      updateEnemyAttackCount(editor);
+    });
+  });
+
+  el.simulationEnemies.querySelectorAll("[data-save-enemy]").forEach((button) => {
+    button.addEventListener("click", () => saveSimulationEnemy(button.closest("[data-enemy-editor]")));
+  });
+
+  el.simulationEnemies.querySelectorAll(".enemy-pick-source").forEach((select) => {
+    select.addEventListener("change", () => {
+      const editor = select.closest("[data-enemy-editor]");
+      const datalist = editor.querySelector("datalist");
+      const query = editor.querySelector(".enemy-pick-query");
+      datalist.innerHTML = enemyPokemonOptions(select.value);
+      query.value = "";
+    });
+  });
+
+  el.simulationEnemies.querySelectorAll("[data-apply-enemy-pokemon]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const editor = button.closest("[data-enemy-editor]");
+      const source = editor.querySelector(".enemy-pick-source").value;
+      const query = editor.querySelector(".enemy-pick-query").value;
+      const pokemon = findEnemyPick(source, query);
+      if (!pokemon) {
+        alert("Pokemon introuvable dans cette source.");
+        return;
+      }
+      editor.querySelector("#enemy-type-one").value = pokemon.types[0] || "Normal";
+      editor.querySelector("#enemy-type-two").value = pokemon.types[1] || "";
+      editor.dataset.enemyName = pokemon.name;
+      const attacks = pokemon.attacks?.length ? pokemon.attacks : pokemon.types;
+      editor.querySelectorAll(".enemy-attack-input").forEach((input) => {
+        input.checked = attacks.includes(input.value);
+      });
+      updateEnemyAttackCount(editor);
+    });
+  });
+
+  el.simulationEnemies.querySelectorAll("[data-delete-enemy]").forEach((button) => {
+    button.addEventListener("click", () => {
+      simulationDraft.enemies.splice(Number(button.dataset.deleteEnemy), 1);
+      simulationDraft.editingIndex = null;
+      el.simulationResults.className = "simulation-results empty-state";
+      el.simulationResults.innerHTML = "Simulation modifiee. Confirme a nouveau pour recalculer.";
+      renderSimulation(team);
+    });
+  });
+}
+
+function renderSimulationEnemyEditor(index) {
+  simulationDraft.editingIndex = index;
+  el.simulationEnemyEditor.classList.add("hidden");
+  renderSimulation(state.teams[state.selectedSlot]);
+}
+
+function renderSimulationEnemyEditorMarkup(index, enemy) {
+  return `
+    <div class="enemy-inline-editor" data-enemy-editor="${index}" data-enemy-name="${escapeHtml(enemy.name || "")}">
+      <div class="pokemon-card-header">
+        <h3>${escapeHtml(enemy.name || `Adversaire ${index + 1}`)}</h3>
+        <button class="small-button" type="button" data-cancel-enemy-edit>Fermer</button>
+      </div>
+      <div class="enemy-quick-pick">
+        <label class="field">
+          <span>Source</span>
+          <select class="enemy-pick-source">
+            <option value="official">Originaux</option>
+            <option value="saved">Personnalises</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Recherche</span>
+          <input class="enemy-pick-query" type="search" list="enemy-pokemon-options-${index}" placeholder="Pikachu, Dracaufeu...">
+          <datalist id="enemy-pokemon-options-${index}">${enemyPokemonOptions("official")}</datalist>
+        </label>
+        <button class="small-button" type="button" data-apply-enemy-pokemon>Charger</button>
+      </div>
+      <div class="picker-grid">
+        <label class="field">
+          <span>Type 1</span>
+          <select id="enemy-type-one">${typeOptions(enemy.types[0])}</select>
+        </label>
+        <label class="field">
+          <span>Type 2 optionnel</span>
+          <select id="enemy-type-two">${typeOptions(enemy.types[1], true)}</select>
+        </label>
+      </div>
+      <fieldset class="attack-picker">
+        <legend>
+          <span>Types d'attaque adverses</span>
+          <strong id="enemy-attack-count">${enemy.attacks.length}/4</strong>
+        </legend>
+        <div class="type-checks">
+          ${KANTO_TYPES.map((type) => `
+            <label class="type-check">
+              <input class="enemy-attack-input" type="checkbox" value="${type}" ${enemy.attacks.includes(type) ? "checked" : ""}>
+              ${typeLogoOnly(type)}
+            </label>
+          `).join("")}
+        </div>
+      </fieldset>
+      <div class="form-actions">
+        <button class="primary-button confirm" type="button" data-save-enemy>Confirmer l'adversaire</button>
+      </div>
+    </div>
+  `;
+}
+
+function getEnemyAttackTypes(editor) {
+  return Array.from(editor.querySelectorAll(".enemy-attack-input:checked")).map((input) => input.value);
+}
+
+function enemyPokemonOptions(source) {
+  const list = source === "saved" ? state.customPokemon : KANTO_POKEMON;
+  return list.map((pokemon) => `<option value="${escapeHtml(pokemon.name)}"></option>`).join("");
+}
+
+function findEnemyPick(source, query) {
+  const list = source === "saved" ? state.customPokemon : KANTO_POKEMON;
+  const normalized = normalize(query);
+  return list.find((pokemon) => normalize(pokemon.name) === normalized)
+    || list.find((pokemon) => normalize(pokemon.name).includes(normalized));
+}
+
+function updateEnemyAttackCount(editor) {
+  const count = editor.querySelector("#enemy-attack-count");
+  if (count) count.textContent = `${getEnemyAttackTypes(editor).length}/4`;
+}
+
+function saveSimulationEnemy(editor) {
+  const typeOne = editor.querySelector("#enemy-type-one").value;
+  const typeTwo = editor.querySelector("#enemy-type-two").value;
+  const attacks = getEnemyAttackTypes(editor);
+  const name = editor.dataset.enemyName || `Adversaire ${simulationDraft.editingIndex + 1}`;
+
+  if (attacks.length > 4) {
+    alert("Un adversaire peut avoir au maximum 4 types d'attaque.");
+    return;
+  }
+
+  const types = [typeOne, typeTwo].filter(Boolean).filter((type, index, all) => all.indexOf(type) === index);
+  simulationDraft.enemies[simulationDraft.editingIndex] = { name, types, attacks };
+  simulationDraft.editingIndex = null;
+  el.simulationEnemyEditor.classList.add("hidden");
+  el.simulationResults.className = "simulation-results empty-state";
+  el.simulationResults.innerHTML = "Simulation modifiee. Confirme pour calculer le helper.";
+  renderSimulation(state.teams[state.selectedSlot]);
+}
+
+function renderSimulationResults() {
+  const team = state.teams[state.selectedSlot];
+  const hasEnemies = simulationDraft.enemies.some(Boolean);
+
+  if (!team || !hasEnemies) {
+    el.simulationResults.className = "simulation-results empty-state";
+    el.simulationResults.innerHTML = "Ajoute au moins un adversaire avant de confirmer.";
+    return;
+  }
+
+  el.simulationResults.className = "simulation-results";
+  el.simulationResults.innerHTML = Array.from({ length: 6 }, (_, index) => {
+    const enemy = simulationDraft.enemies[index];
+    if (!enemy) {
+      return `<article class="simulation-result-card muted-result"><span class="slot-meta">Aucun adversaire ${index + 1}</span></article>`;
+    }
+
+    const defender = bestTeamDefenders(team, enemy)[0];
+    const attacker = bestTeamAttackers(team, enemy)[0];
+
+    return `
+      <article class="simulation-result-card">
+        <div class="pokemon-card-header">
+          <h3>${escapeHtml(enemy.name || `Adversaire ${index + 1}`)} <span class="name-type-logos">${enemy.types.map(typeLogoOnly).join("")}</span></h3>
+        </div>
+        <div class="simulation-helper-grid compact">
+          ${renderBestDefender(defender, enemy)}
+          ${renderBestAttacker(attacker, enemy)}
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+function bestDefensiveTypes(enemy) {
+  if (!enemy.attacks.length) return [];
+  return KANTO_TYPES
+    .map((type) => ({
+      type,
+      multiplier: Math.max(...enemy.attacks.map((attackType) => getEffectiveness(attackType, type)))
+    }))
+    .filter((item) => item.multiplier < 1)
+    .sort((a, b) => a.multiplier - b.multiplier)
+    .slice(0, 5);
+}
+
+function bestOffensiveTypes(enemy) {
+  return KANTO_TYPES
+    .map((type) => ({
+      type,
+      multiplier: enemy.types.reduce((value, enemyType) => value * getEffectiveness(type, enemyType), 1)
+    }))
+    .filter((item) => item.multiplier > 1)
+    .sort((a, b) => b.multiplier - a.multiplier)
+    .slice(0, 5);
+}
+
+function bestTeamDefenders(team, enemy) {
+  return team.pokemon
+    .map((pokemon) => ({
+      pokemon,
+      multiplier: enemy.attacks.length
+        ? Math.max(...enemy.attacks.map((attackType) => pokemon.types.reduce((value, pokemonType) => value * getEffectiveness(attackType, pokemonType), 1)))
+        : 1
+    }))
+    .sort((a, b) => a.multiplier - b.multiplier || a.pokemon.name.localeCompare(b.pokemon.name))
+    .slice(0, 3);
+}
+
+function bestTeamAttackers(team, enemy) {
+  return team.pokemon
+    .map((pokemon) => ({
+      pokemon,
+      multiplier: pokemon.attacks.length
+        ? Math.max(...pokemon.attacks.map((attackType) => enemy.types.reduce((value, enemyType) => value * getEffectiveness(attackType, enemyType), 1)))
+        : 1,
+      bestAttacks: pokemon.attacks
+        .map((attackType) => ({
+          type: attackType,
+          multiplier: enemy.types.reduce((value, enemyType) => value * getEffectiveness(attackType, enemyType), 1)
+        }))
+        .sort((a, b) => b.multiplier - a.multiplier)
+    }))
+    .sort((a, b) => b.multiplier - a.multiplier || a.pokemon.name.localeCompare(b.pokemon.name))
+    .slice(0, 3);
+}
+
+function renderBestDefender(item, enemy) {
+  if (!item) return `<div class="helper-chip">Aucun Pokemon dans l'equipe.</div>`;
+  const label = item.multiplier < 1 ? "Résiste" : item.multiplier === 1 ? "Neutre" : "Fragile";
+  const enemyAttacks = enemy.attacks.length ? enemy.attacks.map(typeLogoOnly).join("") : `<span class="slot-meta">attaques inconnues</span>`;
+  return `
+    <div class="helper-chip compact-helper">
+      <span class="slot-meta">Defense</span>
+      <strong>${escapeHtml(item.pokemon.name)}</strong>
+      <span class="helper-line">${label} ${enemyAttacks}</span>
+      <span class="multiplier ${item.multiplier === 0 ? "immune" : item.multiplier > 1 ? "weak" : item.multiplier < 1 ? "resist" : ""}">${formatMultiplierLabel(item.multiplier)}</span>
+    </div>
+  `;
+}
+
+function renderBestAttacker(item) {
+  if (!item) return `<div class="helper-chip">Aucun Pokemon dans l'equipe.</div>`;
+  const usefulAttacks = item.bestAttacks.filter((attack) => attack.multiplier > 1);
+  const preferred = usefulAttacks.length ? usefulAttacks : item.bestAttacks.slice(0, 1);
+  const reason = usefulAttacks.length
+    ? `Attaque a privilegier`
+    : item.pokemon.attacks.length
+      ? `Aucune attaque super efficace. Meilleure option disponible`
+      : `Aucune attaque renseignee pour ce Pokemon.`;
+
+  return `
+    <div class="helper-chip compact-helper">
+      <span class="slot-meta">Attaque</span>
+      <strong>${escapeHtml(item.pokemon.name)}</strong>
+      <div class="mini-line">${preferred.length ? preferred.map((attack) => `${typeBadge(attack.type)} <span class="multiplier ${attack.multiplier > 1 ? "weak" : ""}">${formatMultiplierLabel(attack.multiplier)}</span>`).join("") : ""}</div>
+      ${usefulAttacks.length ? "" : `<span class="slot-meta">${reason}</span>`}
+    </div>
+  `;
+}
+
+function pokemonCardStyle(pokemon) {
+  const first = TYPE_COLORS[pokemon.types[0]] || "#343d4b";
+  const second = TYPE_COLORS[pokemon.types[1]] || first;
+  return [
+    `--card-type-one:${hexToRgba(first, 0.42)}`,
+    `--card-type-two:${hexToRgba(second, 0.42)}`,
+    `--card-border:${hexToRgba(first, 0.86)}`
+  ].join(";");
+}
+
+function renderPokemonEditPanel(pokemon, panel = el.pokemonEditPanel, includeAttacks = true) {
+  const attacks = pokemon.attacks || [];
+  const sourceId = pokemon.sourceId ?? pokemon.id;
+  panel.classList.remove("hidden");
+  panel.innerHTML = `
+    <div class="panel-heading">
+      <div>
+        <p class="eyebrow">Edition Pokemon</p>
+        <h2>${escapeHtml(pokemon.name)}</h2>
+      </div>
+      <button class="small-button" type="button" data-cancel-pokemon-edit>Fermer</button>
+    </div>
+    <div class="team-form">
+      <label class="field">
+        <span>Nom</span>
+        <input id="edit-pokemon-name" type="text" maxlength="32" value="${escapeHtml(pokemon.name)}">
+      </label>
+      <div class="picker-grid">
+        <label class="field">
+          <span>Type 1</span>
+          <select id="edit-pokemon-type-one">${typeOptions(pokemon.types[0])}</select>
+        </label>
+        <label class="field">
+          <span>Type 2 optionnel</span>
+          <select id="edit-pokemon-type-two">${typeOptions(pokemon.types[1], true)}</select>
+        </label>
+      </div>
+      ${includeAttacks ? `<fieldset class="attack-picker">
+        <legend>
+          <span>Types d'attaque</span>
+          <strong id="edit-attack-count">${attacks.length}/4</strong>
+        </legend>
+        <div class="type-checks">
+          ${KANTO_TYPES.map((type) => `
+            <label class="type-check">
+              <input class="edit-attack-input" type="checkbox" value="${type}" ${attacks.includes(type) ? "checked" : ""}>
+              ${typeBadge(type)}
+            </label>
+          `).join("")}
+        </div>
+      </fieldset>` : ""}
+      <div class="form-actions">
+        <button class="primary-button confirm" type="button" data-save-pokemon-edit="${sourceId}">Mettre a jour partout</button>
+      </div>
+    </div>
+  `;
+
+  panel.querySelector("[data-cancel-pokemon-edit]").addEventListener("click", () => {
+    panel.classList.add("hidden");
+    panel.innerHTML = "";
+  });
+
+  panel.querySelectorAll(".edit-attack-input").forEach((input) => {
+    input.addEventListener("change", () => {
+      const selected = getEditAttackTypes(panel);
+      if (selected.length > 4) {
+        input.checked = false;
+        alert("Un Pokemon peut avoir au maximum 4 types d'attaque.");
+      }
+      updateEditAttackCount(panel);
+    });
+  });
+
+  panel.querySelector("[data-save-pokemon-edit]").addEventListener("click", (event) => {
+    savePokemonEdit(event.currentTarget.dataset.savePokemonEdit, panel, includeAttacks);
+  });
+}
+
+function typeOptions(selected, optional = false) {
+  return [
+    optional ? `<option value="">Aucun</option>` : "",
+    ...KANTO_TYPES.map((type) => `<option value="${type}" ${type === selected ? "selected" : ""}>${type}</option>`)
+  ].join("");
+}
+
+function getEditAttackTypes(panel = el.pokemonEditPanel) {
+  return Array.from(panel.querySelectorAll(".edit-attack-input:checked")).map((input) => input.value);
+}
+
+function updateEditAttackCount(panel = el.pokemonEditPanel) {
+  const count = panel.querySelector("#edit-attack-count");
+  if (count) count.textContent = `${getEditAttackTypes(panel).length}/4`;
+}
+
+function savePokemonEdit(sourceId, panel = el.pokemonEditPanel, includeAttacks = true) {
+  const name = panel.querySelector("#edit-pokemon-name").value.trim();
+  const typeOne = panel.querySelector("#edit-pokemon-type-one").value;
+  const typeTwo = panel.querySelector("#edit-pokemon-type-two").value;
+  const attacks = includeAttacks ? getEditAttackTypes(panel) : undefined;
+
+  if (!name) {
+    alert("Donne un nom au Pokemon.");
+    return;
+  }
+
+  if (includeAttacks && attacks.length > 4) {
+    alert("Un Pokemon peut avoir au maximum 4 types d'attaque.");
+    return;
+  }
+
+  const types = [typeOne, typeTwo].filter(Boolean).filter((type, index, all) => all.indexOf(type) === index);
+  const duplicate = state.customPokemon.some((pokemon) => (
+    String(pokemon.id) !== String(sourceId) && normalize(pokemon.name) === normalize(name)
+  ));
+
+  if (duplicate) {
+    alert("Un Pokemon sauvegarde porte deja ce nom. La mise a jour est bloquee pour eviter d'ecraser un autre Pokemon.");
+    return;
+  }
+
+  updatePokemonEverywhere(sourceId, { name, types, attacks });
+  saveState();
+  renderAll();
+}
+
+function updatePokemonEverywhere(sourceId, updates) {
+  const sameSource = (value) => String(value) === String(sourceId);
+
+  state.customPokemon = state.customPokemon.map((pokemon) => (
+    sameSource(pokemon.id) ? { ...pokemon, name: updates.name, types: updates.types, attacks: updates.attacks ?? pokemon.attacks ?? [] } : pokemon
+  ));
+
+  state.teams = state.teams.map((team) => {
+    if (!team) return team;
+    return {
+      ...team,
+      pokemon: team.pokemon.map((pokemon) => (
+        sameSource(pokemon.sourceId)
+          ? { ...pokemon, name: updates.name, types: updates.types, attacks: updates.attacks ?? pokemon.attacks }
+          : pokemon
+      ))
+    };
+  });
+
+  draftTeam = state.teams[state.selectedSlot] ? structuredClone(state.teams[state.selectedSlot]) : createEmptyTeam(state.selectedSlot);
+  el.teamName.value = draftTeam.name || "";
+}
+
+function syncAttackChecksFromCurrentSelection() {
+  if (el.addMode.value !== "saved") {
+    clearAttackTypes();
+    return;
+  }
+
+  const saved = state.customPokemon.find((pokemon) => String(pokemon.id) === String(el.savedCustomSelect.value));
+  const attacks = saved?.attacks || [];
+  el.attackTypes.querySelectorAll("input").forEach((input) => {
+    input.checked = attacks.includes(input.value);
+  });
+  updateAttackCount();
+}
+
+function confirmTeam() {
+  const name = el.teamName.value.trim();
+  if (!name) {
+    alert("Donne un nom a l'equipe.");
+    return;
+  }
+
+  if (!draftTeam.pokemon.length) {
+    alert("Ajoute au moins un Pokemon avant de confirmer.");
+    return;
+  }
+
+  draftTeam.name = name;
+  draftTeam.updatedAt = new Date().toISOString();
+  state.teams[state.selectedSlot] = structuredClone(draftTeam);
+  state.activeView = "analysis";
+  saveState();
+  renderAll();
+}
+
+function renderAnalysis(team) {
+  el.analysisTitle.textContent = team ? team.name : "Aucune equipe confirmee";
+  el.teamCount.textContent = team ? `${team.pokemon.length}/6` : "0/6";
+  el.analysisEmpty.classList.toggle("hidden", Boolean(team));
+  el.analysisContent.classList.toggle("hidden", !team);
+
+  if (!team) return;
+
+  const analysis = analyzeTeam(team);
+  el.threatTable.innerHTML = renderScoreRows(analysis.threats, "threat", "Aucune menace majeure");
+  el.advantageTable.innerHTML = renderScoreRows(analysis.advantages, "advantage", "Aucune resistance marquee");
+  renderScoreDetail(analysis, "threat", analysis.threats[0]?.type);
+  renderScoreDetail(analysis, "advantage", analysis.advantages[0]?.type);
+  el.offenseSummary.innerHTML = analysis.coveredTypes.length
+    ? analysis.coveredTypes.map((type, index) => typeButton(type, index === 0)).join("")
+    : `<span class="slot-meta">Aucune attaque renseignee</span>`;
+  renderOffenseDetail(analysis, analysis.coveredTypes[0]);
+  el.adviceList.innerHTML = analysis.advice.map((text) => `<div class="advice">${text}</div>`).join("");
+
+  bindScoreButtons(analysis, "threat");
+  bindScoreButtons(analysis, "advantage");
+
+  el.offenseSummary.querySelectorAll("[data-covered-type]").forEach((button) => {
+    button.addEventListener("click", () => {
+      el.offenseSummary.querySelectorAll("[data-covered-type]").forEach((item) => item.classList.remove("active"));
+      button.classList.add("active");
+      renderOffenseDetail(analysis, button.dataset.coveredType);
+    });
+  });
+}
+
+function analyzePokemonDefense(types) {
+  return KANTO_TYPES.map((attackType) => ({
+    type: attackType,
+    multiplier: types.reduce((value, defenderType) => value * getEffectiveness(attackType, defenderType), 1)
+  }));
+}
+
+function getEffectiveness(attackType, defenderType) {
+  return ATTACK_CHART[attackType]?.[defenderType] ?? 1;
+}
+
+function analyzeTeam(team) {
+  const defensiveRows = KANTO_TYPES.map((type) => {
+    let score = 0;
+    let weak = 0;
+    let veryWeak = 0;
+    let resist = 0;
+    let immune = 0;
+
+    const members = team.pokemon.map((pokemon) => {
+      const multiplier = pokemon.types.reduce((value, defenderType) => value * getEffectiveness(type, defenderType), 1);
+      if (multiplier >= 4) {
+        score += 2;
+        veryWeak += 1;
+      } else if (multiplier > 1) {
+        score += 1;
+        weak += 1;
+      } else if (multiplier === 0) {
+        score -= 2;
+        immune += 1;
+      } else if (multiplier < 1) {
+        score -= 1;
+        resist += 1;
+      }
+      return { pokemon: pokemon.name, multiplier };
+    });
+
+    return { type, score, weak, veryWeak, resist, immune, members };
+  });
+
+  const threats = defensiveRows
+    .filter((row) => row.score > 0 || row.veryWeak > 0)
+    .sort((a, b) => b.score - a.score || b.veryWeak - a.veryWeak || b.weak - a.weak)
+    .slice(0, 6);
+
+  const advantages = defensiveRows
+    .filter((row) => row.score < 0)
+    .sort((a, b) => a.score - b.score || b.immune - a.immune || b.resist - a.resist)
+    .slice(0, 6);
+
+  const attackCounts = countAttacks(team);
+  const offensiveDetails = getOffensiveDetails(team);
+  const coveredTypes = Object.keys(offensiveDetails).sort((a, b) => KANTO_TYPES.indexOf(a) - KANTO_TYPES.indexOf(b));
+  const uncoveredTypes = KANTO_TYPES.filter((type) => !coveredTypes.includes(type));
+  const overusedAttacks = Object.entries(attackCounts).filter(([, count]) => count >= 3).map(([type]) => type);
+  const advice = buildAdvice(threats, uncoveredTypes, overusedAttacks, team);
+
+  return { threats, advantages, coveredTypes, uncoveredTypes, overusedAttacks, offensiveDetails, advice };
+}
+
+function countAttacks(team) {
+  return team.pokemon.reduce((acc, pokemon) => {
+    pokemon.attacks.forEach((type) => {
+      acc[type] = (acc[type] || 0) + 1;
+    });
+    return acc;
+  }, {});
+}
+
+function getCoveredDefenderTypes(attackTypes) {
+  const covered = new Set();
+  attackTypes.forEach((attackType) => {
+    KANTO_TYPES.forEach((defenderType) => {
+      if (getEffectiveness(attackType, defenderType) > 1) covered.add(defenderType);
+    });
+  });
+  return Array.from(covered).sort((a, b) => KANTO_TYPES.indexOf(a) - KANTO_TYPES.indexOf(b));
+}
+
+function getOffensiveDetails(team) {
+  return team.pokemon.reduce((details, pokemon) => {
+    pokemon.attacks.forEach((attackType) => {
+      KANTO_TYPES.forEach((defenderType) => {
+        const multiplier = getEffectiveness(attackType, defenderType);
+        if (multiplier <= 1) return;
+        if (!details[defenderType]) details[defenderType] = [];
+        const defensiveRisk = pokemon.types.reduce((value, pokemonType) => value * getEffectiveness(defenderType, pokemonType), 1);
+        details[defenderType].push({
+          pokemon: pokemon.name,
+          attackType,
+          multiplier,
+          defensiveRisk
+        });
+      });
+    });
+    return details;
+  }, {});
+}
+
+function renderOffenseDetail(analysis, defenderType) {
+  if (!defenderType || !analysis.offensiveDetails[defenderType]) {
+    el.offenseDetail.className = "offense-detail empty-state";
+    el.offenseDetail.innerHTML = "Aucune attaque super efficace renseignee.";
+    return;
+  }
+
+  const rows = analysis.offensiveDetails[defenderType]
+    .sort((a, b) => b.multiplier - a.multiplier || a.pokemon.localeCompare(b.pokemon))
+    .map((item) => `
+      <div class="offense-row">
+        <strong>${escapeHtml(item.pokemon)}</strong>
+        <span class="offense-hit">
+          ${typeBadge(item.attackType)}
+          <span class="multiplier weak">${formatMultiplierLabel(item.multiplier)}</span>
+          ${renderCoverageWarning(defenderType, item)}
+        </span>
+      </div>
+    `).join("");
+
+  el.offenseDetail.className = "offense-detail";
+  el.offenseDetail.innerHTML = `
+    <div class="offense-detail-heading">
+      <span class="slot-meta">Contre</span>
+      ${typeBadge(defenderType)}
+    </div>
+    <div class="offense-rows">${rows}</div>
+  `;
+}
+
+function renderCoverageWarning(defenderType, item) {
+  if (item.defensiveRisk <= 1) return "";
+  return `<span class="risk-warning">Attention : ${escapeHtml(item.pokemon)} menace ${defenderType}, mais subit ${formatMultiplierLabel(item.defensiveRisk)} contre ${defenderType}.</span>`;
+}
+
+function buildAdvice(threats, uncoveredTypes, overusedAttacks, team) {
+  const advice = [];
+
+  if (threats.length) {
+    const main = threats[0];
+    advice.push(`Defense : le type ${main.type} est la menace principale avec un score ${main.score}. ${main.veryWeak ? `${main.veryWeak} Pokemon prend x4.` : `${main.weak} Pokemon prend x2.`}`);
+    const candidates = KANTO_TYPES.filter((type) => getEffectiveness(main.type, type) < 1);
+    if (candidates.length) {
+      advice.push(`Defense : cherche une resistance ou immunite contre ${main.type}. Types utiles : ${candidates.slice(0, 5).join(", ")}.`);
+    }
+  } else {
+    advice.push("Defense : aucune faiblesse globale importante ne ressort pour le moment.");
+  }
+
+  if (uncoveredTypes.length) {
+    advice.push(`Attaque : la couverture ne touche pas encore efficacement ${uncoveredTypes.slice(0, 6).join(", ")}${uncoveredTypes.length > 6 ? "..." : ""}.`);
+  } else {
+    advice.push("Attaque : les types d'attaque renseignes couvrent tous les types adverses au moins une fois.");
+  }
+
+  if (overusedAttacks.length) {
+    advice.push(`Attaque : ${overusedAttacks.join(", ")} est tres present. Remplacer un doublon peut ameliorer la couverture.`);
+  }
+
+  if (team.pokemon.length < 6) {
+    advice.push(`Equipe : il reste ${6 - team.pokemon.length} place(s), tu peux ajouter un Pokemon pour corriger les manques.`);
+  }
+
+  return advice;
+}
+
+function bindScoreButtons(analysis, kind) {
+  const table = kind === "threat" ? el.threatTable : el.advantageTable;
+  table.querySelectorAll("[data-score-type]").forEach((button) => {
+    button.addEventListener("click", () => {
+      table.querySelectorAll("[data-score-type]").forEach((item) => item.classList.remove("active"));
+      button.classList.add("active");
+      renderScoreDetail(analysis, kind, button.dataset.scoreType);
+    });
+  });
+}
+
+function renderScoreDetail(analysis, kind, type) {
+  const detail = kind === "threat" ? el.threatDetail : el.advantageDetail;
+  const source = kind === "threat" ? analysis.threats : analysis.advantages;
+  const row = source.find((item) => item.type === type);
+
+  if (!row) {
+    detail.className = "score-detail empty-state";
+    detail.innerHTML = kind === "threat" ? "Aucune menace majeure." : "Aucune resistance marquee.";
+    return;
+  }
+
+  const members = row.members
+    .filter((member) => kind === "threat" ? member.multiplier > 1 : member.multiplier < 1)
+    .sort((a, b) => kind === "threat" ? b.multiplier - a.multiplier : a.multiplier - b.multiplier);
+
+  detail.className = "score-detail";
+  detail.innerHTML = `
+    <div class="offense-detail-heading">
+      <span class="slot-meta">${kind === "threat" ? "Menace" : "Resistance"}</span>
+      ${typeBadge(row.type)}
+    </div>
+    <div class="offense-rows">
+      ${members.map((member) => `
+        <div class="offense-row">
+          <strong>${escapeHtml(member.pokemon)}</strong>
+          <span class="multiplier ${member.multiplier === 0 ? "immune" : member.multiplier > 1 ? "weak" : "resist"}">${formatMultiplierLabel(member.multiplier)}</span>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderScoreRows(rows, kind, emptyText) {
+  if (!rows.length) return `<div class="empty-state">${emptyText}</div>`;
+  return rows.map((row, index) => `
+    <button class="score-row ${index === 0 ? "active" : ""} ${kind}" style="${scoreStyle(row, kind)}" type="button" data-score-kind="${kind}" data-score-type="${row.type}">
+      ${typeLogoOnly(row.type)}
+      <span class="score-value">${row.score > 0 ? "+" : ""}${row.score}</span>
+    </button>
+  `).join("");
+}
+
+function renderMultiplierList(items) {
+  if (!items.length) return `<span class="slot-meta">Aucune</span>`;
+  return items.map((item) => {
+    const kind = item.multiplier === 0 ? "immune" : item.multiplier > 1 ? "weak" : "resist";
+    return `<span class="multiplier ${kind}" title="${item.type}">${typeLogo(item.type)} ${formatMultiplierLabel(item.multiplier)}</span>`;
+  }).join("");
+}
+
+function typeBadge(type) {
+  const color = TYPE_COLORS[type] || "#a9b3c3";
+  const icon = TYPE_ICONS[type] || "#";
+  const logo = TYPE_LOGOS[type];
+  const media = logo
+    ? `<img class="type-logo" src="${logo}" alt="" aria-hidden="true">`
+    : `<span aria-hidden="true">${icon}</span>`;
+  return `<span class="type-badge" style="background:${color}">${media}<span>${type}</span></span>`;
+}
+
+function typeButton(type, active) {
+  return `<button class="type-button ${active ? "active" : ""}" type="button" data-covered-type="${type}">${typeBadge(type)}</button>`;
+}
+
+function typeLogo(type) {
+  const icon = TYPE_ICONS[type] || "#";
+  const logo = TYPE_LOGOS[type];
+  return logo
+    ? `<img class="type-logo" src="${logo}" alt="${type}">`
+    : `<span aria-label="${type}">${icon}</span>`;
+}
+
+function typeLogoOnly(type) {
+  return `<span class="type-logo-only" title="${type}">${typeLogo(type)}</span>`;
+}
+
+function scoreStyle(row, kind) {
+  const ratio = Math.min(1, Math.abs(row.score) / 6);
+  if (kind === "threat") {
+    const lightness = 88 - ratio * 54;
+    const saturation = 82 + ratio * 18;
+    const text = ratio > 0.34 ? "#ffffff" : "#16181d";
+    return `--score-bg:hsl(0 ${saturation}% ${lightness}%);--score-fg:${text};`;
+  }
+
+  const hue = 135 + ratio * 90;
+  const lightness = 78 - ratio * 42;
+  const saturation = 72 + ratio * 22;
+  const text = ratio > 0.42 ? "#ffffff" : "#101217";
+  return `--score-bg:hsl(${hue} ${saturation}% ${lightness}%);--score-fg:${text};`;
+}
+
+function formatMultiplierLabel(value) {
+  return value === 0 ? "immunisé" : `x${formatMultiplier(value)}`;
+}
+
+function formatMultiplier(value) {
+  return Number.isInteger(value) ? String(value) : String(value).replace(".", ",");
+}
+
+function hexToRgba(hex, alpha) {
+  const clean = hex.replace("#", "");
+  const value = Number.parseInt(clean.length === 3 ? clean.split("").map((char) => char + char).join("") : clean, 16);
+  const red = (value >> 16) & 255;
+  const green = (value >> 8) & 255;
+  const blue = value & 255;
+  return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+}
+
+function normalize(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}

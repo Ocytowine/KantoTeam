@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KantoTeam</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">Analyse d'equipes Pokemon - Gen 1</p>
+          <h1>KantoTeam</h1>
+        </div>
+        <div class="header-actions">
+          <button class="ghost-button hidden" id="back-to-slots" type="button">Retour aux equipes</button>
+          <button class="ghost-button" id="manage-saved-pokemon" type="button">Pokemon sauvegardes</button>
+          <button class="ghost-button danger" id="reset-data" type="button">Reinitialiser</button>
+        </div>
+      </header>
+
+      <section class="team-slots" aria-label="Slots d'equipe" id="team-slots"></section>
+
+      <section class="workspace">
+        <section class="panel saved-manager-panel hidden" id="saved-manager-panel" aria-labelledby="saved-manager-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Bibliotheque</p>
+              <h2 id="saved-manager-title">Pokemon sauvegardes</h2>
+            </div>
+          </div>
+          <div class="team-list" id="saved-pokemon-list"></div>
+          <div id="saved-pokemon-edit-panel" class="pokemon-edit-panel hidden"></div>
+        </section>
+
+        <section class="panel composition-panel hidden" id="composition-panel" aria-labelledby="composition-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Composition</p>
+              <h2 id="composition-title">Aucune equipe</h2>
+            </div>
+            <div class="panel-actions">
+              <button class="small-button" id="composition-to-analysis" type="button">Analyse</button>
+              <span class="pill" id="composition-count">0/6</span>
+            </div>
+          </div>
+          <div class="team-list" id="composition-list"></div>
+          <div id="pokemon-edit-panel" class="pokemon-edit-panel hidden"></div>
+        </section>
+
+        <section class="panel simulation-panel hidden" id="simulation-panel" aria-labelledby="simulation-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Simulation</p>
+              <h2 id="simulation-title">Aucune equipe</h2>
+            </div>
+            <span class="pill" id="simulation-count">0 adversaire</span>
+          </div>
+
+          <div class="simulation-layout">
+            <section>
+              <h3>Ton adversaire</h3>
+              <div id="simulation-enemies" class="enemy-grid"></div>
+              <div id="simulation-enemy-editor" class="pokemon-edit-panel hidden"></div>
+              <button class="primary-button confirm simulation-confirm" id="simulation-confirm" type="button">Confirmer la simulation</button>
+            </section>
+
+            <section>
+              <h3>Ton equipe</h3>
+              <div id="simulation-results" class="simulation-results empty-state">
+                Ajoute au moins un adversaire, puis confirme la simulation.
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="panel editor-panel" id="editor-panel" aria-labelledby="editor-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Composition</p>
+              <h2 id="editor-title">Nouvelle equipe</h2>
+            </div>
+            <span class="pill" id="slot-label">Slot 1</span>
+          </div>
+
+          <form id="team-form" class="team-form">
+            <label class="field">
+              <span>Nom de l'equipe</span>
+              <input id="team-name" type="text" maxlength="32" placeholder="Ex: Ligue Kanto">
+            </label>
+
+            <div class="picker-grid">
+              <label class="field">
+                <span>Mode d'ajout</span>
+                <select id="add-mode">
+                  <option value="official">Pokemon original</option>
+                  <option value="saved">Pokemon personnalise sauvegarde</option>
+                  <option value="custom">Nouveau personnalise</option>
+                </select>
+              </label>
+
+              <label class="field mode-field" data-mode="official">
+                <span>Rechercher</span>
+                <input id="official-search" type="search" placeholder="Pikachu, Dracaufeu...">
+              </label>
+
+              <label class="field mode-field" data-mode="official">
+                <span>Pokemon</span>
+                <select id="official-select"></select>
+              </label>
+
+              <label class="field mode-field hidden" data-mode="saved">
+                <span>Personnalise</span>
+                <select id="saved-custom-select"></select>
+              </label>
+
+              <label class="field mode-field hidden" data-mode="custom">
+                <span>Nom personnalise</span>
+                <input id="custom-name" type="text" maxlength="32" placeholder="Ex: Tank mystere">
+              </label>
+
+              <label class="field mode-field hidden" data-mode="custom">
+                <span>Type 1</span>
+                <select id="custom-type-one"></select>
+              </label>
+
+              <label class="field mode-field hidden" data-mode="custom">
+                <span>Type 2 optionnel</span>
+                <select id="custom-type-two"></select>
+              </label>
+            </div>
+
+            <fieldset class="attack-picker">
+              <legend>
+                <span>2. Types d'attaque du Pokemon</span>
+                <strong id="attack-count">0/4</strong>
+              </legend>
+              <p class="field-help">
+                Selectionne les types offensifs avant de cliquer sur ajouter. Ils seront sauvegardes sur ce Pokemon.
+              </p>
+              <div id="attack-types" class="type-checks"></div>
+            </fieldset>
+
+            <div class="preview-row" id="pokemon-preview"></div>
+
+            <div class="form-actions">
+              <button class="primary-button" id="add-pokemon" type="button">+ Ajouter</button>
+              <button class="primary-button confirm" type="submit">Confirmer l'equipe</button>
+            </div>
+          </form>
+
+          <div class="team-list" id="team-list"></div>
+        </section>
+
+        <section class="panel analysis-panel" id="analysis-panel" aria-labelledby="analysis-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Analyse</p>
+              <h2 id="analysis-title">Aucune equipe confirmee</h2>
+            </div>
+            <div class="panel-actions">
+              <button class="small-button" id="analysis-to-composition" type="button">Composition</button>
+              <span class="pill" id="team-count">0/6</span>
+            </div>
+          </div>
+
+          <div id="analysis-empty" class="empty-state">
+            Selectionne ou cree une equipe pour afficher ses menaces, resistances et conseils.
+          </div>
+
+          <div id="analysis-content" class="analysis-content hidden">
+            <div class="summary-grid">
+              <section>
+                <h3>Menaces</h3>
+                <div id="threat-table" class="score-list"></div>
+                <div id="threat-detail" class="score-detail empty-state">
+                  Clique sur une menace pour voir les Pokemon concernes.
+                </div>
+              </section>
+              <section>
+                <h3>Resistances de l'equipe</h3>
+                <div id="advantage-table" class="score-list"></div>
+                <div id="advantage-detail" class="score-detail empty-state">
+                  Clique sur une resistance pour voir les Pokemon concernes.
+                </div>
+              </section>
+            </div>
+
+            <section>
+              <h3>Types ennemis couverts par vos attaques</h3>
+              <div id="offense-summary" class="badge-cloud"></div>
+              <div id="offense-detail" class="offense-detail empty-state">
+                Clique sur un type couvert pour voir quels Pokemon le touchent efficacement.
+              </div>
+            </section>
+
+            <section>
+              <h3>Conseils</h3>
+              <div id="advice-list" class="advice-list"></div>
+            </section>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="src/data.js"></script>
+    <script src="src/app.js"></script>
+  </body>
+</html>
