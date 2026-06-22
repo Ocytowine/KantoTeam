@@ -4,6 +4,8 @@ KantoTeam est une petite application web locale pour creer jusqu'a 3 equipes Pok
 
 Le selecteur propose la liste Kanto originale ainsi qu'une liste `Kanto Reforged` locale, dont les types alternatifs sont conserves independamment.
 
+Les sprites sont optionnels. Lorsqu'une connexion est disponible, le bouton `Afficher les sprites` charge uniquement les images des Pokemon presents dans les equipes via PokéAPI. Hors ligne, le bouton et les images restent masques sans avertissement.
+
 ## Lancer le site
 
 Le projet est une app statique en HTML, CSS et JavaScript pur.

@@ -288,12 +288,23 @@ h3 {
   align-items: center;
   gap: 14px;
   width: 100%;
-  min-height: 110px;
+  min-height: 138px;
   border: 0;
   padding: 14px 16px;
   color: var(--text);
   background: transparent;
   text-align: left;
+}
+
+.empty-team-versions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.empty-team-versions .small-button {
+  border-color: rgba(244, 200, 74, 0.4);
 }
 
 .empty-team-slot > span {
@@ -651,15 +662,13 @@ button:focus-visible {
 }
 
 .simulation-layout {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
-  align-items: start;
-  margin-top: 8px;
+  display: none;
 }
 
 .mobile-versus-list {
-  display: none;
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
 }
 
 .mobile-duel {
@@ -794,12 +803,195 @@ button:focus-visible {
   box-shadow: none;
 }
 
+.mobile-opponent-identity {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.confirmed-enemy-sprite {
+  width: 58px;
+  height: 58px;
+  flex: 0 0 auto;
+}
+
+.desktop-duel {
+  padding: 14px;
+}
+
+.desktop-duel-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 190px minmax(0, 1fr);
+  gap: 14px;
+  align-items: stretch;
+}
+
+.desktop-duel-recap {
+  position: relative;
+  min-width: 0;
+  min-height: 188px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  overflow: hidden;
+  background: rgba(20, 25, 34, 0.72);
+}
+
+.opponent-recap {
+  border-color: rgba(240, 127, 127, 0.34);
+}
+
+.desktop-duel-choice {
+  border-color: rgba(115, 211, 162, 0.38);
+  cursor: pointer;
+}
+
+.desktop-duel-choice:hover,
+.desktop-duel-choice:focus-visible {
+  border-color: var(--ok);
+}
+
+.desktop-duel-pane-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.desktop-duel-recap h3 {
+  margin: 0;
+}
+
+.desktop-duel-lines {
+  display: grid;
+  gap: 9px;
+  margin-top: 14px;
+}
+
+.desktop-duel-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 5px;
+  min-height: 188px;
+  border-radius: 9px;
+  background:
+    radial-gradient(circle at center, rgba(244, 200, 74, 0.13), transparent 55%),
+    rgba(12, 15, 20, 0.58);
+}
+
+.desktop-duel-stage > span {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 2px solid var(--accent-strong);
+  border-radius: 50%;
+  color: #111318;
+  background: radial-gradient(circle at 35% 28%, #fff0a3, var(--accent) 58%, #c99816);
+  box-shadow: 0 7px 16px rgba(0, 0, 0, 0.3);
+  font-size: 0.72rem;
+  font-weight: 950;
+}
+
+.desktop-duel-sprite-slot {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+}
+
+.desktop-duel-stage .versus-pokemon-sprite {
+  width: 92px;
+  height: 92px;
+}
+
+.desktop-duel-pending {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  gap: 9px;
+  border-style: dashed;
+  color: var(--muted);
+}
+
+.desktop-duel-pending strong {
+  color: var(--text);
+}
+
 .versus-launcher {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 14px;
   margin: 14px 0 4px;
+}
+
+.versus-heading-actions,
+.versus-auto-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.versus-heading-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.versus-auto-toggle {
+  position: relative;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.versus-auto-toggle input {
+  position: absolute;
+  width: 1px;
+  min-height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.toggle-track {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 42px;
+  height: 24px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 2px;
+  background: #121720;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.toggle-track > span {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--muted);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
+  transition: transform 160ms ease, background 160ms ease;
+}
+
+.versus-auto-toggle input:checked + .toggle-track {
+  border-color: var(--accent);
+  background: rgba(244, 200, 74, 0.16);
+}
+
+.versus-auto-toggle input:checked + .toggle-track > span {
+  background: var(--accent);
+  transform: translateX(18px);
+}
+
+.versus-auto-toggle input:focus-visible + .toggle-track {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .versus-launcher-line {
@@ -1088,6 +1280,49 @@ button:focus-visible {
   min-width: 0;
 }
 
+.simulation-result-card:has(.versus-sprite-faceoff) .matchup-pokemon {
+  min-height: 52px;
+  padding-right: 132px;
+}
+
+.versus-sprite-faceoff {
+  position: absolute;
+  z-index: 1;
+  top: 34px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+  height: 54px;
+  pointer-events: none;
+}
+
+.versus-sprite-faceoff > span {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: #111318;
+  background: var(--accent);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.28);
+  font-size: 0.62rem;
+  font-weight: 950;
+}
+
+.versus-pokemon-sprite {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.32));
+}
+
+.versus-pokemon-sprite.enemy {
+  transform: scaleX(-1);
+}
+
 .matchup-pokemon h3 {
   margin: 0;
   overflow: hidden;
@@ -1234,6 +1469,22 @@ button:focus-visible {
 
 .pokemon-title > span {
   min-width: 0;
+}
+
+.pokemon-heading-with-sprite {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.pokemon-sprite {
+  width: 72px;
+  height: 72px;
+  flex: 0 0 auto;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 7px 10px rgba(0, 0, 0, 0.32));
 }
 
 .team-pokeball-icon {
@@ -1548,6 +1799,10 @@ button:focus-visible {
   white-space: nowrap;
 }
 
+.ranking-sprite {
+  display: none;
+}
+
 .ranking-detail {
   display: flex;
   align-items: center;
@@ -1660,10 +1915,57 @@ button:focus-visible {
     grid-template-columns: 1fr;
   }
 
+  .ranking-pokemon.has-sprite {
+    grid-template-columns: 54px minmax(0, 1fr);
+    align-items: center;
+    gap: 4px 8px;
+  }
+
+  .ranking-pokemon.has-sprite strong {
+    display: none;
+  }
+
+  .ranking-pokemon.has-sprite .ranking-sprite {
+    display: block;
+    grid-row: 1 / 3;
+    width: 54px;
+    height: 54px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 5px 7px rgba(0, 0, 0, 0.3));
+  }
+
   .versus-column-heading {
     align-items: flex-start;
     flex-direction: column;
     gap: 6px;
+  }
+
+  .versus-heading-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .versus-auto-toggle {
+    justify-content: space-between;
+    min-height: 38px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    padding: 0 10px;
+    background: var(--surface-soft);
+  }
+
+  .simulation-result-card:has(.versus-sprite-faceoff) .matchup-pokemon {
+    padding-right: 108px;
+  }
+
+  .versus-pokemon-sprite {
+    width: 42px;
+    height: 42px;
+  }
+
+  .versus-sprite-faceoff {
+    right: 8px;
   }
 
   .primary-button,

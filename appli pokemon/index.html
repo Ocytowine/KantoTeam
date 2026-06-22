@@ -28,6 +28,7 @@
         <div class="header-actions">
           <button class="ghost-button hidden" id="back-to-slots" type="button">Retour aux equipes</button>
           <button class="ghost-button" id="manage-saved-pokemon" type="button">Pokemon sauvegardes</button>
+          <button class="ghost-button hidden" id="load-team-sprites" type="button">Afficher les sprites</button>
         </div>
       </header>
 
@@ -66,7 +67,15 @@
               <p class="eyebrow">Versus</p>
               <h2 id="simulation-title">Aucune equipe</h2>
             </div>
-            <span class="pill" id="simulation-count">0 adversaire</span>
+            <div class="versus-heading-actions">
+              <label class="versus-auto-toggle" title="Choisir les recommandations dans l'equipe ou la bibliotheque">
+                <span>Equipe</span>
+                <input id="versus-auto-opponent" type="checkbox">
+                <span class="toggle-track" aria-hidden="true"><span></span></span>
+                <span>Pokemon sauvegardes</span>
+              </label>
+              <span class="pill" id="simulation-count">0 adversaire</span>
+            </div>
           </div>
 
           <div class="versus-launcher">
@@ -287,6 +296,7 @@
 
     <script src="src/data.js"></script>
     <script src="src/reforged-data.js"></script>
+    <script src="src/sprite-data.js"></script>
     <script src="src/app.js"></script>
   </body>
 </html>

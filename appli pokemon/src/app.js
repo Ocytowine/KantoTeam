@@ -12,16 +12,29 @@ let draftTeam = createEmptyTeam(0);
 let simulationDraft = {
   editingIndex: null,
   enemies: [],
-  showResults: false
+  showResults: false,
+  autoOpponent: false
 };
 
 const mobileVersusMedia = window.matchMedia("(max-width: 920px)");
+const spriteUrls = new Map();
+const SPRITE_NAME_ALIASES = {
+  "nœunœuf": 102,
+  carmarche: 444,
+  mamochon: 473,
+  boguerise: 651,
+  feunec: 653,
+  bagguiguane: 559
+};
+let spritesEnabled = false;
+let spritesLoading = false;
 
 const el = {
   intro: document.querySelector("#app-intro"),
   slots: document.querySelector("#team-slots"),
   backToSlots: document.querySelector("#back-to-slots"),
   manageSavedPokemon: document.querySelector("#manage-saved-pokemon"),
+  loadTeamSprites: document.querySelector("#load-team-sprites"),
   savedManagerPanel: document.querySelector("#saved-manager-panel"),
   savedPokemonList: document.querySelector("#saved-pokemon-list"),
   savedPokemonEditPanel: document.querySelector("#saved-pokemon-edit-panel"),
@@ -34,6 +47,7 @@ const el = {
   simulationPanel: document.querySelector("#simulation-panel"),
   simulationTitle: document.querySelector("#simulation-title"),
   simulationCount: document.querySelector("#simulation-count"),
+  versusAutoOpponent: document.querySelector("#versus-auto-opponent"),
   simulationEnemies: document.querySelector("#simulation-enemies"),
   simulationEnemyEditor: document.querySelector("#simulation-enemy-editor"),
   simulationConfirm: document.querySelector("#simulation-confirm"),
@@ -98,6 +112,8 @@ function init() {
   bindEvents();
   draftTeam = state.teams[state.selectedSlot] ? structuredClone(state.teams[state.selectedSlot]) : createEmptyTeam(state.selectedSlot || 0);
   el.teamName.value = draftTeam.name || "";
+  el.addMode.value = getTeamPreferredSource(draftTeam);
+  syncAttackChecksFromCurrentSelection();
   renderAll();
   startIntro();
 }
@@ -122,13 +138,24 @@ function bindEvents() {
   });
 
   el.manageSavedPokemon.addEventListener("click", () => openView("savedManager"));
+  el.loadTeamSprites.addEventListener("click", loadTeamSprites);
+  window.addEventListener("online", () => {
+    updateSpriteButton();
+  });
+  window.addEventListener("offline", () => {
+    spritesEnabled = false;
+    spriteUrls.clear();
+    updateSpriteButton();
+    renderComposition(state.teams[state.selectedSlot]);
+  });
   el.compositionToAnalysis.addEventListener("click", () => openView("analysis"));
   el.analysisToComposition.addEventListener("click", () => openView("composition"));
   el.simulationConfirm.addEventListener("click", renderSimulationResults);
+  el.versusAutoOpponent.addEventListener("change", toggleAutomaticOpponent);
   mobileVersusMedia.addEventListener("change", () => {
     if (state.activeView === "simulation") renderSimulation(state.teams[state.selectedSlot]);
   });
-  el.typeMatchupSubmit.addEventListener("click", renderTypeMatchupAnalysis);
+  el.typeMatchupSubmit.addEventListener("click", () => renderTypeMatchupAnalysis());
   el.usePokemonTypes.addEventListener("click", selectCurrentPokemonTypesAsAttacks);
 
   el.addMode.addEventListener("change", () => {
@@ -214,17 +241,34 @@ function createEmptyTeam(slot) {
   return {
     id: `team-${Date.now()}-${slot}`,
     name: "",
+    preferredSource: "official",
     pokemon: []
   };
 }
 
-function selectSlot(slot, view) {
+function selectSlot(slot, view, preferredSource) {
+  if (simulationDraft.autoOpponent) {
+    simulationDraft.autoOpponent = false;
+    simulationDraft.showResults = false;
+    el.versusAutoOpponent.checked = false;
+  }
   state.selectedSlot = slot;
   state.activeView = view || (state.teams[slot] ? "analysis" : "editor");
   saveState();
   draftTeam = state.teams[slot] ? structuredClone(state.teams[slot]) : createEmptyTeam(slot);
+  if (!state.teams[slot] && preferredSource) draftTeam.preferredSource = preferredSource;
   el.teamName.value = draftTeam.name || "";
+  el.addMode.value = getTeamPreferredSource(draftTeam);
+  syncAttackChecksFromCurrentSelection();
   renderAll();
+}
+
+function getTeamPreferredSource(team) {
+  return team?.preferredSource === "reforged" ? "reforged" : "official";
+}
+
+function preferredSourceLabel(source) {
+  return source === "reforged" ? "Kanto Reforged" : "Kanto classique";
 }
 
 function openView(view) {
@@ -251,7 +295,7 @@ function renderSlots() {
   state.teams.forEach((team, index) => {
     const card = document.createElement("article");
     card.className = `slot-card ${team ? "" : "empty"} ${index === state.selectedSlot ? "active" : ""}`;
-    const status = team ? `${team.pokemon.length}/6 Pokemon` : "Slot vide";
+    const status = team ? `${team.pokemon.length}/6 Pokemon · ${preferredSourceLabel(getTeamPreferredSource(team))}` : "Slot vide";
     card.innerHTML = team ? `
       <span class="eyebrow">Slot ${index + 1}</span>
       <strong>${escapeHtml(team.name || `Equipe ${index + 1}`)}</strong>
@@ -264,14 +308,18 @@ function renderSlots() {
         <button class="small-button danger" type="button" data-action="delete" data-slot="${index}">Supprimer</button>
       </div>
     ` : `
-      <button class="empty-team-slot" type="button" data-action="edit" data-slot="${index}">
+      <div class="empty-team-slot">
         <img class="empty-team-logo" src="assets/add-pokeball.svg" alt="" aria-hidden="true">
         <span>
           <span class="eyebrow">Slot ${index + 1}</span>
           <strong>Creer une equipe</strong>
-          <small>Commencer une nouvelle composition</small>
+          <small>Choisis la liste utilisee pour les recherches.</small>
+          <span class="empty-team-versions">
+            <button class="small-button" type="button" data-action="edit" data-slot="${index}" data-version="official">Kanto</button>
+            <button class="small-button" type="button" data-action="edit" data-slot="${index}" data-version="reforged">Reforged</button>
+          </span>
         </span>
-      </button>
+      </div>
     `;
     el.slots.append(card);
   });
@@ -295,7 +343,7 @@ function renderSlots() {
         simulation: "simulation",
         edit: "editor"
       };
-      selectSlot(slot, actionToView[button.dataset.action] || "editor");
+      selectSlot(slot, actionToView[button.dataset.action] || "editor", button.dataset.version);
     });
   });
 }
@@ -306,11 +354,88 @@ function renderActiveView() {
   el.slots.classList.toggle("hidden", view !== "slots");
   el.backToSlots.classList.toggle("hidden", view === "slots");
   el.manageSavedPokemon.classList.toggle("hidden", view !== "slots");
+  updateSpriteButton();
   el.savedManagerPanel.classList.toggle("hidden", view !== "savedManager");
   el.compositionPanel.classList.toggle("hidden", view !== "composition");
   el.simulationPanel.classList.toggle("hidden", view !== "simulation");
   el.editorPanel.classList.toggle("hidden", view !== "editor");
   el.analysisPanel.classList.toggle("hidden", view !== "analysis");
+}
+
+function updateSpriteButton() {
+  const visible = state.activeView === "slots" && navigator.onLine;
+  el.loadTeamSprites.classList.toggle("hidden", !visible);
+  el.loadTeamSprites.disabled = spritesLoading;
+  el.loadTeamSprites.textContent = spritesLoading
+    ? "Chargement des sprites..."
+    : spritesEnabled
+      ? "Actualiser les sprites"
+      : "Afficher les sprites";
+}
+
+async function loadTeamSprites() {
+  if (!navigator.onLine || spritesLoading) return;
+  const pokemon = state.teams.filter(Boolean).flatMap((team) => team.pokemon);
+  spritesLoading = true;
+  updateSpriteButton();
+  await syncPokemonSprites(pokemon);
+  spritesLoading = false;
+  updateSpriteButton();
+  renderComposition(state.teams[state.selectedSlot]);
+}
+
+async function syncPokemonSprites(pokemon) {
+  if (!navigator.onLine) return;
+  const list = Array.isArray(pokemon) ? pokemon : [pokemon];
+  const ids = Array.from(new Set(list.map(getPokemonNationalId).filter(Boolean)))
+    .filter((id) => !spriteUrls.has(id));
+  await Promise.allSettled(ids.map(async (id) => {
+    try {
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+      if (!response.ok) return;
+      const data = await response.json();
+      const sprite = data.sprites?.front_default;
+      if (sprite) spriteUrls.set(id, sprite);
+    } catch {
+      // Une image indisponible reste simplement masquee.
+    }
+  }));
+  spritesEnabled = navigator.onLine && spriteUrls.size > 0;
+  updateSpriteButton();
+}
+
+function getPokemonNationalId(pokemon) {
+  if (Number.isInteger(pokemon?.nationalId)) return pokemon.nationalId;
+  if (Number.isInteger(pokemon?.officialId)) return pokemon.officialId;
+  if (Number.isInteger(pokemon?.id)) return pokemon.id;
+  if (Number.isInteger(pokemon.sourceId)) return pokemon.sourceId;
+  const saved = state.customPokemon.find((item) => String(item.id) === String(pokemon.sourceId));
+  if (Number.isInteger(saved?.officialId)) return saved.officialId;
+  const name = normalize(saved?.name || pokemon.name);
+  return SPRITE_NAME_ALIASES[name] || POKEMON_SPRITE_IDS[name] || null;
+}
+
+function renderPokemonSprite(pokemon) {
+  if (!spritesEnabled || !navigator.onLine) return "";
+  const nationalId = getPokemonNationalId(pokemon);
+  const url = nationalId ? spriteUrls.get(nationalId) : null;
+  if (!url) return "";
+  return `<img class="pokemon-sprite" src="${escapeHtml(url)}" alt="${escapeHtml(pokemon.name)}" loading="lazy" onerror="this.remove()">`;
+}
+
+function renderVersusSprite(pokemon, side) {
+  if (!spritesEnabled || !navigator.onLine || !pokemon) return "";
+  const nationalId = getPokemonNationalId(pokemon);
+  const url = nationalId ? spriteUrls.get(nationalId) : null;
+  if (!url) return "";
+  return `<img class="versus-pokemon-sprite ${side}" src="${escapeHtml(url)}" alt="${escapeHtml(pokemon.name)}" onerror="this.remove()">`;
+}
+
+function renderVersusSpriteFaceoff(enemy, choice) {
+  const enemySprite = renderVersusSprite(enemy, "enemy");
+  const choiceSprite = renderVersusSprite(choice, "choice");
+  if (!enemySprite && !choiceSprite) return "";
+  return `<div class="versus-sprite-faceoff">${enemySprite}<span>VS</span>${choiceSprite}</div>`;
 }
 
 function renderOfficialOptions() {
@@ -367,6 +492,15 @@ function renderAttackChecks() {
 }
 
 function updateModeFields() {
+  const preferredSource = getTeamPreferredSource(draftTeam);
+  Array.from(el.addMode.options).forEach((option) => {
+    if (!["official", "reforged"].includes(option.value)) return;
+    option.hidden = option.value !== preferredSource;
+    option.disabled = option.value !== preferredSource;
+  });
+  if (["official", "reforged"].includes(el.addMode.value) && el.addMode.value !== preferredSource) {
+    el.addMode.value = preferredSource;
+  }
   el.modeFields.forEach((field) => {
     field.classList.toggle("hidden", field.dataset.mode !== el.addMode.value);
   });
@@ -507,13 +641,14 @@ function addCurrentPokemon() {
 
   if (savedPokemon && !matchingSavedPokemon) state.customPokemon.push(savedPokemon);
 
-  draftTeam.pokemon.push({
+  const teamMember = {
     instanceId: `member-${Date.now()}-${Math.random().toString(16).slice(2)}`,
     sourceId: savedPokemon?.id ?? pokemon.id,
     name: pokemon.name,
     types: pokemon.types,
     attacks
-  });
+  };
+  draftTeam.pokemon.push(teamMember);
 
   saveState();
   renderSavedCustomOptions();
@@ -522,11 +657,12 @@ function addCurrentPokemon() {
   if (el.addMode.value === "custom") el.customName.value = "";
   syncAttackChecksFromCurrentSelection();
   renderPreview();
+  void syncPokemonSprites(savedPokemon || teamMember);
 }
 
 function renderDraftTeam() {
   const slotNumber = state.selectedSlot + 1;
-  el.slotLabel.textContent = `Slot ${slotNumber}`;
+  el.slotLabel.textContent = `Slot ${slotNumber} · ${preferredSourceLabel(getTeamPreferredSource(draftTeam))}`;
   el.editorTitle.textContent = state.teams[state.selectedSlot] ? "Editer l'equipe" : "Nouvelle equipe";
   el.teamList.innerHTML = "";
 
@@ -654,7 +790,10 @@ function renderPokemonSummary(pokemon, index, removable, editable = false) {
   return `
     <img class="team-pokeball-icon" src="assets/team-pokeball.svg" alt="" aria-hidden="true">
     <div class="pokemon-card-header">
-      <h3 class="pokemon-title"><span>${index + 1}. ${escapeHtml(pokemon.name)} <span class="name-type-logos">${pokemon.types.map(typeLogoOnly).join("")}</span></span></h3>
+      <div class="pokemon-heading-with-sprite">
+        ${editable ? renderPokemonSprite(pokemon) : ""}
+        <h3 class="pokemon-title"><span>${index + 1}. ${escapeHtml(pokemon.name)} <span class="name-type-logos">${pokemon.types.map(typeLogoOnly).join("")}</span></span></h3>
+      </div>
       <div class="card-actions">
         ${editable ? `<button class="small-button" type="button" data-edit-pokemon="${pokemon.instanceId}">Editer</button>` : ""}
         ${editable ? `<button class="small-button danger" type="button" data-remove-from-team="${pokemon.instanceId}">Enlever</button>` : ""}
@@ -672,13 +811,16 @@ function renderPokemonSummary(pokemon, index, removable, editable = false) {
 function renderSimulation(team) {
   el.simulationTitle.textContent = team ? team.name : "Aucune equipe";
   const enemyCount = simulationDraft.enemies.filter(Boolean).length;
+  const slotCount = 6;
+  el.versusAutoOpponent.checked = simulationDraft.autoOpponent;
+  el.versusAutoOpponent.disabled = !state.customPokemon.length;
   el.simulationCount.textContent = `${enemyCount}/6 adversaire${enemyCount > 1 ? "s" : ""}`;
   el.simulationEnemies.innerHTML = "";
   el.simulationMobile.innerHTML = "";
   const isMobile = mobileVersusMedia.matches;
-  const enemyContainer = isMobile ? el.simulationMobile : el.simulationEnemies;
+  const enemyContainer = el.simulationMobile;
 
-  for (let index = 0; index < 6; index += 1) {
+  for (let index = 0; index < slotCount; index += 1) {
     const enemy = simulationDraft.enemies[index];
     const card = document.createElement("article");
     if (isMobile) {
@@ -692,9 +834,12 @@ function renderSimulation(team) {
         card.innerHTML = `
           <div class="mobile-duel-label"><span>Duel ${index + 1}</span><span>${simulationDraft.showResults ? "Analyse terminee" : "Pret"}</span></div>
           <div class="mobile-opponent">
-            <div>
-              <span class="choice-kicker">Adversaire</span>
-              <h3>${escapeHtml(enemy.name || `Adversaire ${index + 1}`)} <span class="name-type-logos">${enemy.types.map(typeLogoOnly).join("")}</span></h3>
+            <div class="mobile-opponent-identity">
+              ${simulationDraft.showResults ? "" : renderVersusSprite(enemy, "enemy confirmed-enemy-sprite")}
+              <div>
+                <span class="choice-kicker">Adversaire</span>
+                <h3>${escapeHtml(enemy.name || `Adversaire ${index + 1}`)} <span class="name-type-logos">${enemy.types.map(typeLogoOnly).join("")}</span></h3>
+              </div>
             </div>
             <div class="card-actions">
               <button class="small-button" type="button" data-edit-enemy="${index}">Editer</button>
@@ -709,26 +854,17 @@ function renderSimulation(team) {
         card.innerHTML = `<button class="mobile-duel-add" type="button" data-add-enemy="${index}"><img class="add-pokeball-icon" src="assets/add-pokeball.svg" alt="" aria-hidden="true"> Ajouter l'adversaire ${index + 1}</button>`;
       }
     } else {
-      card.className = "enemy-card";
+      card.className = `mobile-duel desktop-duel ${simulationDraft.editingIndex === index ? "editing" : ""}`;
       if (simulationDraft.editingIndex === index) {
-        card.classList.add("editing");
-        card.innerHTML = renderSimulationEnemyEditorMarkup(index, enemy || { types: ["Normal"], attacks: [] });
-      } else if (enemy) {
         card.innerHTML = `
-          <div class="pokemon-card-header">
-            <h3>${escapeHtml(enemy.name || `Adversaire ${index + 1}`)} <span class="name-type-logos">${enemy.types.map(typeLogoOnly).join("")}</span></h3>
-            <div class="card-actions">
-              <button class="small-button" type="button" data-edit-enemy="${index}">Editer</button>
-              <button class="small-button danger" type="button" data-delete-enemy="${index}">Enlever</button>
-            </div>
-          </div>
-          <div class="pokemon-card-body stacked">
-            <div class="mini-line"><span class="slot-meta">Types</span>${enemy.types.map(typeBadge).join("")}</div>
-            <div class="mini-line"><span class="slot-meta">Attaques</span>${enemy.attacks.length ? enemy.attacks.map(typeBadge).join("") : `<span class="multiplier">Aucune</span>`}</div>
-          </div>
+          <div class="mobile-duel-label"><span>Duel ${index + 1}</span><span>Edition adversaire</span></div>
+          ${renderSimulationEnemyEditorMarkup(index, enemy || { types: ["Normal"], attacks: [] })}
         `;
+      } else if (enemy) {
+        card.innerHTML = renderDesktopDuel(team, enemy, index);
       } else {
-        card.innerHTML = `<button class="enemy-add" type="button" data-add-enemy="${index}" aria-label="Ajouter l'adversaire ${index + 1}"><img class="add-pokeball-icon large" src="assets/add-pokeball.svg" alt="" aria-hidden="true"></button>`;
+        card.classList.add("empty");
+        card.innerHTML = `<button class="mobile-duel-add" type="button" data-add-enemy="${index}"><img class="add-pokeball-icon" src="assets/add-pokeball.svg" alt="" aria-hidden="true"> Ajouter l'adversaire ${index + 1}</button>`;
       }
     }
 
@@ -788,6 +924,7 @@ function renderSimulation(team) {
       editor.querySelector("#enemy-type-one").value = pokemon.types[0] || "Normal";
       editor.querySelector("#enemy-type-two").value = pokemon.types[1] || "";
       editor.dataset.enemyName = pokemon.name;
+      editor.dataset.enemyNationalId = getPokemonNationalId(pokemon) || "";
       const attacks = pokemon.attacks?.length ? pokemon.attacks : pokemon.types;
       editor.querySelectorAll(".enemy-attack-input").forEach((input) => {
         input.checked = attacks.includes(input.value);
@@ -807,11 +944,58 @@ function renderSimulation(team) {
     });
   });
 
-  if (isMobile) {
-    bindInteractiveResults(el.simulationMobile);
-  } else if (simulationDraft.showResults && team) {
-    renderDesktopSimulationResults(team);
-  }
+  bindInteractiveResults(el.simulationMobile);
+}
+
+function renderDesktopDuel(team, enemy, index) {
+  const matchup = simulationDraft.showResults
+    ? bestTeamMatchups(getVersusCandidateTeam(team), enemy)[0]
+    : null;
+  const enemySprite = renderVersusSprite(enemy, "enemy");
+  const choiceSprite = renderVersusSprite(matchup?.pokemon, "choice");
+
+  return `
+    <div class="mobile-duel-label"><span>Duel ${index + 1}</span><span>${simulationDraft.showResults ? "Analyse terminee" : "Pret a lancer"}</span></div>
+    <div class="desktop-duel-grid">
+      <section class="desktop-duel-recap opponent-recap">
+        <div class="desktop-duel-pane-heading">
+          <span class="choice-kicker">Adversaire</span>
+          <div class="card-actions">
+            <button class="small-button" type="button" data-edit-enemy="${index}">Editer</button>
+            <button class="small-button danger" type="button" data-delete-enemy="${index}">Enlever</button>
+          </div>
+        </div>
+        <h3>${escapeHtml(enemy.name || `Adversaire ${index + 1}`)} <span class="name-type-logos">${enemy.types.map(typeLogoOnly).join("")}</span></h3>
+        <div class="desktop-duel-lines">
+          <div class="mini-line"><span class="slot-meta">Types</span>${enemy.types.map(typeBadge).join("")}</div>
+          <div class="mini-line"><span class="slot-meta">Attaques</span>${enemy.attacks.length ? enemy.attacks.map(typeBadge).join("") : `<span class="multiplier">Aucune</span>`}</div>
+        </div>
+      </section>
+
+      <div class="desktop-duel-stage" aria-hidden="true">
+        <div class="desktop-duel-sprite-slot">${enemySprite}</div>
+        <span>VS</span>
+        <div class="desktop-duel-sprite-slot">${choiceSprite}</div>
+      </div>
+
+      ${matchup ? `
+        <section class="desktop-duel-recap desktop-duel-choice interactive-result" tabindex="0" role="button" aria-expanded="false" aria-label="Afficher la justification du choix ${index + 1}">
+          <div class="desktop-duel-pane-heading">
+            <span class="choice-kicker">${simulationDraft.autoOpponent ? "Choix sauvegarde" : "Choix de l'equipe"}</span>
+            <span class="detail-hint">Pourquoi ?</span>
+          </div>
+          ${renderMatchupChoice(matchup)}
+          ${renderVersusExplanation(matchup, enemy)}
+        </section>
+      ` : `
+        <section class="desktop-duel-recap desktop-duel-pending">
+          <span class="choice-kicker">Recommandation</span>
+          <strong>En attente du VS</strong>
+          <span class="slot-meta">Le meilleur choix apparaitra ici sans modifier l'adversaire.</span>
+        </section>
+      `}
+    </div>
+  `;
 }
 
 function renderSimulationEnemyEditor(index) {
@@ -822,7 +1006,7 @@ function renderSimulationEnemyEditor(index) {
 
 function renderSimulationEnemyEditorMarkup(index, enemy) {
   return `
-    <div class="enemy-inline-editor" data-enemy-editor="${index}" data-enemy-name="${escapeHtml(enemy.name || "")}">
+    <div class="enemy-inline-editor" data-enemy-editor="${index}" data-enemy-name="${escapeHtml(enemy.name || "")}" data-enemy-national-id="${getPokemonNationalId(enemy) || ""}">
       <div class="pokemon-card-header">
         <h3>${escapeHtml(enemy.name || `Adversaire ${index + 1}`)}</h3>
         <button class="small-button" type="button" data-cancel-enemy-edit>Fermer</button>
@@ -831,8 +1015,7 @@ function renderSimulationEnemyEditorMarkup(index, enemy) {
         <label class="field">
           <span>Source</span>
           <select class="enemy-pick-source">
-            <option value="official">Originaux</option>
-            <option value="reforged">Kanto Reforged</option>
+            ${versusSourceOption()}
             <option value="saved">Ma bibliotheque</option>
           </select>
         </label>
@@ -897,6 +1080,11 @@ function pokemonListForSource(source) {
   return KANTO_POKEMON;
 }
 
+function versusSourceOption() {
+  const source = getTeamPreferredSource(state.teams[state.selectedSlot] || draftTeam);
+  return `<option value="${source}">${preferredSourceLabel(source)}</option>`;
+}
+
 function pokemonOptionLabel(pokemon) {
   return `${pokemon.name} - ${pokemon.types.join("/")}`;
 }
@@ -911,6 +1099,11 @@ function saveSimulationEnemy(editor) {
   const typeTwo = editor.querySelector("#enemy-type-two").value;
   const attacks = getEnemyAttackTypes(editor);
   const name = editor.dataset.enemyName || `Adversaire ${simulationDraft.editingIndex + 1}`;
+  const normalizedName = normalize(name);
+  const nationalId = Number(editor.dataset.enemyNationalId)
+    || SPRITE_NAME_ALIASES[normalizedName]
+    || POKEMON_SPRITE_IDS[normalizedName]
+    || null;
 
   if (attacks.length > 4) {
     alert("Un adversaire peut avoir au maximum 4 types d'attaque.");
@@ -918,16 +1111,42 @@ function saveSimulationEnemy(editor) {
   }
 
   const types = [typeOne, typeTwo].filter(Boolean).filter((type, index, all) => all.indexOf(type) === index);
-  simulationDraft.enemies[simulationDraft.editingIndex] = { name, types, attacks };
+  const enemy = { name, types, attacks, nationalId };
+  simulationDraft.enemies[simulationDraft.editingIndex] = enemy;
   simulationDraft.editingIndex = null;
   simulationDraft.showResults = false;
   el.simulationEnemyEditor.classList.add("hidden");
   el.simulationResults.className = "simulation-results empty-state";
   el.simulationResults.innerHTML = "Versus modifie. Lance-le pour afficher les meilleurs choix.";
   renderSimulation(state.teams[state.selectedSlot]);
+  void syncPokemonSprites(enemy).then(() => renderSimulation(state.teams[state.selectedSlot]));
 }
 
-function renderSimulationResults() {
+function toggleAutomaticOpponent() {
+  const team = state.teams[state.selectedSlot];
+  if (el.versusAutoOpponent.checked && !state.customPokemon.length) {
+    el.versusAutoOpponent.checked = false;
+    return;
+  }
+  simulationDraft.autoOpponent = el.versusAutoOpponent.checked;
+  simulationDraft.showResults = false;
+  el.simulationResults.className = "simulation-results empty-state";
+  el.simulationResults.innerHTML = "Source de recommandation modifiee. Relance le VS pour recalculer.";
+  renderSimulation(team);
+}
+
+function getVersusCandidateTeam(team) {
+  if (!simulationDraft.autoOpponent) return team;
+  return {
+    pokemon: state.customPokemon.map((pokemon) => ({
+      ...structuredClone(pokemon),
+      sourceId: pokemon.id,
+      attacks: pokemon.attacks || []
+    }))
+  };
+}
+
+async function renderSimulationResults() {
   const team = state.teams[state.selectedSlot];
   const hasEnemies = simulationDraft.enemies.some(Boolean);
 
@@ -940,6 +1159,13 @@ function renderSimulationResults() {
 
   simulationDraft.showResults = true;
   renderSimulation(team);
+  const candidateTeam = getVersusCandidateTeam(team);
+  const enemies = simulationDraft.enemies.filter(Boolean);
+  const choices = enemies
+    .map((enemy) => bestTeamMatchups(candidateTeam, enemy)[0]?.pokemon)
+    .filter(Boolean);
+  await syncPokemonSprites([...enemies, ...choices]);
+  if (simulationDraft.showResults) renderSimulation(team);
 }
 
 function renderMobileDuelResult(team, enemy, index) {
@@ -947,19 +1173,21 @@ function renderMobileDuelResult(team, enemy, index) {
     return `<div class="mobile-result-pending"><span>?</span><p>Lance le VS pour afficher le meilleur choix.</p></div>`;
   }
 
-  const matchup = bestTeamMatchups(team, enemy)[0];
+  const matchup = bestTeamMatchups(getVersusCandidateTeam(team), enemy)[0];
   return renderSimulationResultCard(matchup, enemy, index, "mobile-result-card");
 }
 
 function renderDesktopSimulationResults(team) {
   el.simulationResults.className = "simulation-results";
-  el.simulationResults.innerHTML = Array.from({ length: 6 }, (_, index) => {
+  const resultCount = 6;
+  const candidateTeam = getVersusCandidateTeam(team);
+  el.simulationResults.innerHTML = Array.from({ length: resultCount }, (_, index) => {
     const enemy = simulationDraft.enemies[index];
     if (!enemy) {
       return `<article class="simulation-result-card muted-result"><span class="slot-meta">Aucun adversaire ${index + 1}</span></article>`;
     }
 
-    const matchup = bestTeamMatchups(team, enemy)[0];
+    const matchup = bestTeamMatchups(candidateTeam, enemy)[0];
     return renderSimulationResultCard(matchup, enemy, index);
   }).join("");
 
@@ -970,9 +1198,10 @@ function renderSimulationResultCard(matchup, enemy, index, extraClass = "") {
   return `
     <article class="simulation-result-card interactive-result ${extraClass}" tabindex="0" role="button" aria-expanded="false" aria-label="Afficher la justification du choix ${index + 1}">
       <div class="pokemon-card-header">
-        <span class="choice-kicker">Choix recommande</span>
+        <span class="choice-kicker">${simulationDraft.autoOpponent ? "Choix sauvegarde" : "Choix recommande"}</span>
         <span class="detail-hint">Pourquoi ?</span>
       </div>
+      ${renderVersusSpriteFaceoff(enemy, matchup?.pokemon)}
       ${renderMatchupChoice(matchup)}
       ${renderVersusExplanation(matchup, enemy)}
     </article>
@@ -1232,6 +1461,9 @@ function savePokemonEdit(sourceId, panel = el.pokemonEditPanel, includeAttacks =
   updatePokemonEverywhere(sourceId, { name, types, attacks });
   saveState();
   renderAll();
+  const updatedPokemon = state.customPokemon.find((pokemon) => String(pokemon.id) === String(sourceId))
+    || state.teams.filter(Boolean).flatMap((team) => team.pokemon).find((pokemon) => String(pokemon.sourceId) === String(sourceId));
+  if (updatedPokemon) void syncPokemonSprites(updatedPokemon);
 }
 
 function updatePokemonEverywhere(sourceId, updates) {
@@ -1302,6 +1534,7 @@ function confirmTeam() {
   }
 
   draftTeam.name = name;
+  draftTeam.preferredSource = getTeamPreferredSource(draftTeam);
   draftTeam.updatedAt = new Date().toISOString();
   state.teams[state.selectedSlot] = structuredClone(draftTeam);
   state.activeView = "analysis";
@@ -1476,7 +1709,7 @@ function renderCoverageWarning(defenderType, item) {
   return `<span class="risk-warning">Attention : ${escapeHtml(item.pokemon)} menace ${defenderType}, mais subit ${formatMultiplierLabel(item.defensiveRisk)} contre ${defenderType}.</span>`;
 }
 
-function renderTypeMatchupAnalysis() {
+async function renderTypeMatchupAnalysis(loadSprites = true) {
   const team = state.teams[state.selectedSlot];
   if (!team?.pokemon.length) {
     el.typeMatchupResults.className = "type-matchup-results empty-state";
@@ -1551,14 +1784,32 @@ function renderTypeMatchupAnalysis() {
       </section>
     </div>
   `;
+
+  if (loadSprites && navigator.onLine) {
+    const previousSpriteCount = spriteUrls.size;
+    await syncPokemonSprites(team.pokemon);
+    if (spriteUrls.size > previousSpriteCount && state.teams[state.selectedSlot] === team) {
+      await renderTypeMatchupAnalysis(false);
+    }
+  }
+}
+
+function renderRankingSprite(pokemon) {
+  if (!spritesEnabled || !navigator.onLine) return "";
+  const nationalId = getPokemonNationalId(pokemon);
+  const url = nationalId ? spriteUrls.get(nationalId) : null;
+  if (!url) return "";
+  return `<img class="ranking-sprite" src="${escapeHtml(url)}" alt="${escapeHtml(pokemon.name)}" title="${escapeHtml(pokemon.name)}" onerror="this.parentElement.classList.remove('has-sprite');this.remove()">`;
 }
 
 function renderDefensiveRankingRow(item, index) {
   const kind = item.worstMultiplier === 0 ? "immune" : item.worstMultiplier < 1 ? "resist" : item.worstMultiplier > 1 ? "weak" : "";
+  const sprite = renderRankingSprite(item.pokemon);
   return `
     <div class="type-ranking-row ${index === 0 ? "best" : ""}">
       <span class="ranking-position">${index + 1}</span>
-      <div class="ranking-pokemon">
+      <div class="ranking-pokemon ${sprite ? "has-sprite" : ""}">
+        ${sprite}
         <strong>${escapeHtml(item.pokemon.name)}</strong>
         <span class="ranking-detail">${item.received.map((entry) => `${typeLogo(entry.type)} ${formatMultiplierLabel(entry.multiplier)}`).join(" · ")}</span>
       </div>
@@ -1570,10 +1821,12 @@ function renderDefensiveRankingRow(item, index) {
 function renderOffensiveRankingRow(item, index) {
   const attack = item.bestAttack;
   const kind = attack?.multiplier > 1 ? "weak" : attack?.multiplier === 0 ? "immune" : "";
+  const sprite = renderRankingSprite(item.pokemon);
   return `
     <div class="type-ranking-row ${index === 0 && attack ? "best" : ""} ${attack ? "" : "unavailable-choice"}">
       <span class="ranking-position">${index + 1}</span>
-      <div class="ranking-pokemon">
+      <div class="ranking-pokemon ${sprite ? "has-sprite" : ""}">
+        ${sprite}
         <strong>${escapeHtml(item.pokemon.name)}</strong>
         <span class="ranking-detail">${attack ? `${typeLogo(attack.type)} ${attack.type}` : "Aucune attaque renseignee"}</span>
       </div>
