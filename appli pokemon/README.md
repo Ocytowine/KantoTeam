@@ -29,7 +29,4 @@ Les equipes et la bibliotheque de Pokemon sont sauvegardees dans `localStorage`.
 
 La bibliotheque peut contenir des Pokemon de Kanto ou personnalises avec leurs types d'attaque, afin de reutiliser rapidement une configuration dans plusieurs equipes.
 
-La reinitialisation depuis l'interface supprime :
-
-- les 3 equipes ;
-- les Pokemon sauvegardes dans la bibliotheque.
+Les equipes se suppriment individuellement depuis leurs slots. Les Pokemon sauvegardes se gerent depuis la bibliotheque.

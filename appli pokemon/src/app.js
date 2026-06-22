@@ -22,7 +22,6 @@ const el = {
   slots: document.querySelector("#team-slots"),
   backToSlots: document.querySelector("#back-to-slots"),
   manageSavedPokemon: document.querySelector("#manage-saved-pokemon"),
-  reset: document.querySelector("#reset-data"),
   savedManagerPanel: document.querySelector("#saved-manager-panel"),
   savedPokemonList: document.querySelector("#saved-pokemon-list"),
   savedPokemonEditPanel: document.querySelector("#saved-pokemon-edit-panel"),
@@ -131,14 +130,6 @@ function bindEvents() {
   });
   el.typeMatchupSubmit.addEventListener("click", renderTypeMatchupAnalysis);
   el.usePokemonTypes.addEventListener("click", selectCurrentPokemonTypesAsAttacks);
-
-  el.reset.addEventListener("click", () => {
-    if (!confirm("Reinitialiser toutes les equipes et la bibliotheque Pokemon ?")) return;
-    state = structuredClone(defaultState);
-    draftTeam = createEmptyTeam(0);
-    saveState();
-    renderAll();
-  });
 
   el.addMode.addEventListener("change", () => {
     updateModeFields();
