@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="gold" cx="34%" cy="20%" r="82%">
+      <stop offset="0" stop-color="#fff3ae"/>
+      <stop offset="0.38" stop-color="#f8d864"/>
+      <stop offset="0.72" stop-color="#f4c84a"/>
+      <stop offset="1" stop-color="#bd8610"/>
+    </radialGradient>
+    <linearGradient id="black" x1="0" y1="0" x2="0.78" y2="1">
+      <stop offset="0" stop-color="#343b47"/>
+      <stop offset="0.42" stop-color="#171b23"/>
+      <stop offset="1" stop-color="#07090d"/>
+    </linearGradient>
+    <linearGradient id="plus" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff8cf"/>
+      <stop offset="0.4" stop-color="#f8d864"/>
+      <stop offset="1" stop-color="#d89f1d"/>
+    </linearGradient>
+    <clipPath id="ball">
+      <circle cx="32" cy="32" r="28"/>
+    </clipPath>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="3" stdDeviation="2.4" flood-color="#000" flood-opacity="0.42"/>
+    </filter>
+    <filter id="glow" x="-80%" y="-80%" width="260%" height="260%">
+      <feDropShadow dx="0" dy="0" stdDeviation="1.8" flood-color="#ffe88b" flood-opacity="0.62"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#shadow)">
+    <g clip-path="url(#ball)">
+      <path d="M4 32a28 28 0 0 1 56 0H4Z" fill="url(#black)"/>
+      <path d="M4 32a28 28 0 0 0 56 0H4Z" fill="url(#gold)"/>
+      <path d="M10 21c8-12 27-17 41-5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity="0.34"/>
+      <path d="M13 45c8 10 27 12 38 1" fill="none" stroke="#59606d" stroke-width="1.5" stroke-linecap="round" opacity="0.18"/>
+    </g>
+    <path d="M4.5 32h55" stroke="#111318" stroke-width="3"/>
+  </g>
+
+  <g filter="url(#glow)">
+    <path d="M32 23.5v17M23.5 32h17" stroke="#111318" stroke-width="7" stroke-linecap="round"/>
+    <path d="M32 23.5v17M23.5 32h17" stroke="url(#plus)" stroke-width="3.5" stroke-linecap="round"/>
+  </g>
+</svg>

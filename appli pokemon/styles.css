@@ -167,6 +167,26 @@ button {
   cursor: pointer;
 }
 
+.add-with-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.add-pokeball-icon {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+}
+
+.add-pokeball-icon.large {
+  width: 48px;
+  height: 48px;
+  filter: drop-shadow(0 8px 13px rgba(0, 0, 0, 0.28));
+  transition: transform 160ms ease, filter 160ms ease;
+}
+
 .app-shell {
   width: min(1180px, calc(100% - 28px));
   margin: 0 auto;
@@ -256,6 +276,55 @@ h3 {
   padding: 14px;
   text-align: left;
   color: var(--text);
+}
+
+.slot-card.empty {
+  padding: 0;
+  overflow: hidden;
+}
+
+.empty-team-slot {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 110px;
+  border: 0;
+  padding: 14px 16px;
+  color: var(--text);
+  background: transparent;
+  text-align: left;
+}
+
+.empty-team-slot > span {
+  display: grid;
+  min-width: 0;
+}
+
+.empty-team-slot strong {
+  margin: 3px 0 2px;
+}
+
+.empty-team-slot small {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.empty-team-logo {
+  width: 52px;
+  height: 52px;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 9px 14px rgba(0, 0, 0, 0.3));
+  transition: transform 160ms ease, filter 160ms ease;
+}
+
+.empty-team-slot:hover {
+  background: rgba(244, 200, 74, 0.06);
+}
+
+.empty-team-slot:hover .empty-team-logo {
+  filter: drop-shadow(0 11px 17px rgba(0, 0, 0, 0.36));
+  transform: translateY(-2px) scale(1.05);
 }
 
 .slot-card.active {
@@ -589,6 +658,142 @@ button:focus-visible {
   margin-top: 8px;
 }
 
+.mobile-versus-list {
+  display: none;
+}
+
+.mobile-duel {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 12px;
+  background: linear-gradient(145deg, rgba(36, 43, 54, 0.72), rgba(21, 26, 35, 0.96));
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.mobile-duel.empty {
+  padding: 0;
+  background: rgba(20, 25, 34, 0.62);
+  box-shadow: none;
+}
+
+.mobile-duel.editing {
+  border-color: var(--accent);
+  background: rgba(244, 200, 74, 0.06);
+}
+
+.mobile-duel-label,
+.mobile-opponent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mobile-duel-label {
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.mobile-duel-label span:first-child {
+  color: var(--accent);
+}
+
+.mobile-opponent > div:first-child {
+  min-width: 0;
+}
+
+.mobile-opponent h3 {
+  margin: 4px 0 0;
+  overflow-wrap: anywhere;
+}
+
+.mobile-duel-divider {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
+  margin: 11px 0;
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 950;
+}
+
+.mobile-duel-divider::before,
+.mobile-duel-divider::after {
+  content: "";
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(244, 200, 74, 0.42));
+}
+
+.mobile-duel-divider::after {
+  background: linear-gradient(90deg, rgba(244, 200, 74, 0.42), transparent);
+}
+
+.mobile-duel-add {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 50px;
+  border: 0;
+  border-radius: inherit;
+  padding: 0 13px;
+  color: var(--muted);
+  background: transparent;
+  font-weight: 750;
+  text-align: left;
+}
+
+.mobile-duel-add .add-pokeball-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.mobile-duel-add:hover {
+  color: var(--text);
+  background: rgba(244, 200, 74, 0.06);
+}
+
+.mobile-result-pending {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 58px;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--muted);
+  background: rgba(20, 25, 34, 0.56);
+}
+
+.mobile-result-pending span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: var(--accent);
+  background: var(--surface-soft);
+  font-weight: 900;
+}
+
+.mobile-result-pending p {
+  color: inherit;
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.mobile-result-card {
+  width: 100%;
+  box-shadow: none;
+}
+
 .versus-launcher {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -740,8 +945,12 @@ button:focus-visible {
   border-radius: 8px;
   color: var(--accent);
   background: rgba(244, 200, 74, 0.05);
-  font-size: 2rem;
-  font-weight: 900;
+  font-size: 0;
+}
+
+.enemy-add:hover .add-pokeball-icon.large {
+  filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.34));
+  transform: translateY(-2px) scale(1.06);
 }
 
 .simulation-results {
@@ -1013,6 +1222,34 @@ button:focus-visible {
 .pokemon-card h3 {
   margin: 0;
   font-size: 0.98rem;
+}
+
+.pokemon-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding-left: 8px;
+}
+
+.pokemon-title > span {
+  min-width: 0;
+}
+
+.team-pokeball-icon {
+  position: absolute;
+  z-index: 4;
+  top: -17px;
+  left: -17px;
+  width: 34px;
+  height: 34px;
+  filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.38));
+}
+
+.pokemon-card:has(.team-pokeball-icon) {
+  margin-top: 8px;
+  margin-left: 8px;
+  overflow: visible;
 }
 
 .pokemon-card-body {
@@ -1360,6 +1597,38 @@ button:focus-visible {
 
   .versus-column-heading {
     min-height: 0;
+  }
+
+  .simulation-layout {
+    display: none;
+  }
+
+  .mobile-versus-list {
+    display: grid;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .versus-launcher {
+    position: sticky;
+    z-index: 20;
+    top: 8px;
+    margin: 10px 0;
+    border-radius: 999px;
+    padding: 6px 10px;
+    background: rgba(17, 19, 24, 0.9);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+  }
+
+  .versus-launch-button {
+    width: 62px;
+    height: 62px;
+  }
+
+  .mobile-opponent .card-actions {
+    align-items: center;
+    flex-direction: row;
   }
 
   .type-ranking-grid {

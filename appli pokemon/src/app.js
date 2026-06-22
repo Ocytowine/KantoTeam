@@ -11,8 +11,11 @@ let state = loadState();
 let draftTeam = createEmptyTeam(0);
 let simulationDraft = {
   editingIndex: null,
-  enemies: []
+  enemies: [],
+  showResults: false
 };
+
+const mobileVersusMedia = window.matchMedia("(max-width: 920px)");
 
 const el = {
   intro: document.querySelector("#app-intro"),
@@ -36,6 +39,7 @@ const el = {
   simulationEnemyEditor: document.querySelector("#simulation-enemy-editor"),
   simulationConfirm: document.querySelector("#simulation-confirm"),
   simulationResults: document.querySelector("#simulation-results"),
+  simulationMobile: document.querySelector("#mobile-versus-list"),
   editorPanel: document.querySelector("#editor-panel"),
   analysisPanel: document.querySelector("#analysis-panel"),
   slotLabel: document.querySelector("#slot-label"),
@@ -122,6 +126,9 @@ function bindEvents() {
   el.compositionToAnalysis.addEventListener("click", () => openView("analysis"));
   el.analysisToComposition.addEventListener("click", () => openView("composition"));
   el.simulationConfirm.addEventListener("click", renderSimulationResults);
+  mobileVersusMedia.addEventListener("change", () => {
+    if (state.activeView === "simulation") renderSimulation(state.teams[state.selectedSlot]);
+  });
   el.typeMatchupSubmit.addEventListener("click", renderTypeMatchupAnalysis);
   el.usePokemonTypes.addEventListener("click", selectCurrentPokemonTypesAsAttacks);
 
@@ -252,20 +259,28 @@ function renderSlots() {
   el.slots.innerHTML = "";
   state.teams.forEach((team, index) => {
     const card = document.createElement("article");
-    card.className = `slot-card ${index === state.selectedSlot ? "active" : ""}`;
+    card.className = `slot-card ${team ? "" : "empty"} ${index === state.selectedSlot ? "active" : ""}`;
     const status = team ? `${team.pokemon.length}/6 Pokemon` : "Slot vide";
-    card.innerHTML = `
+    card.innerHTML = team ? `
       <span class="eyebrow">Slot ${index + 1}</span>
-      <strong>${team ? escapeHtml(team.name || `Equipe ${index + 1}`) : "Nouvelle equipe"}</strong>
+      <strong>${escapeHtml(team.name || `Equipe ${index + 1}`)}</strong>
       <span class="slot-meta">${status}</span>
       <div class="slot-actions">
-        ${team ? `<button class="small-button" type="button" data-action="analysis" data-slot="${index}">Analyser</button>
+        <button class="small-button" type="button" data-action="analysis" data-slot="${index}">Analyser</button>
         <button class="small-button" type="button" data-action="composition" data-slot="${index}">Composition</button>
         <button class="small-button" type="button" data-action="simulation" data-slot="${index}">Versus</button>
         <button class="small-button" type="button" data-action="edit" data-slot="${index}">Editer</button>
-        <button class="small-button danger" type="button" data-action="delete" data-slot="${index}">Supprimer</button>` : ""}
-        ${team ? "" : `<button class="small-button" type="button" data-action="edit" data-slot="${index}">Creer</button>`}
+        <button class="small-button danger" type="button" data-action="delete" data-slot="${index}">Supprimer</button>
       </div>
+    ` : `
+      <button class="empty-team-slot" type="button" data-action="edit" data-slot="${index}">
+        <img class="empty-team-logo" src="assets/add-pokeball.svg" alt="" aria-hidden="true">
+        <span>
+          <span class="eyebrow">Slot ${index + 1}</span>
+          <strong>Creer une equipe</strong>
+          <small>Commencer une nouvelle composition</small>
+        </span>
+      </button>
     `;
     el.slots.append(card);
   });
@@ -646,8 +661,9 @@ function renderPokemonSummary(pokemon, index, removable, editable = false) {
   const resistances = defensive.filter((item) => item.multiplier > 0 && item.multiplier < 1);
 
   return `
+    <img class="team-pokeball-icon" src="assets/team-pokeball.svg" alt="" aria-hidden="true">
     <div class="pokemon-card-header">
-      <h3>${index + 1}. ${escapeHtml(pokemon.name)} <span class="name-type-logos">${pokemon.types.map(typeLogoOnly).join("")}</span></h3>
+      <h3 class="pokemon-title"><span>${index + 1}. ${escapeHtml(pokemon.name)} <span class="name-type-logos">${pokemon.types.map(typeLogoOnly).join("")}</span></span></h3>
       <div class="card-actions">
         ${editable ? `<button class="small-button" type="button" data-edit-pokemon="${pokemon.instanceId}">Editer</button>` : ""}
         ${editable ? `<button class="small-button danger" type="button" data-remove-from-team="${pokemon.instanceId}">Enlever</button>` : ""}
@@ -667,51 +683,82 @@ function renderSimulation(team) {
   const enemyCount = simulationDraft.enemies.filter(Boolean).length;
   el.simulationCount.textContent = `${enemyCount}/6 adversaire${enemyCount > 1 ? "s" : ""}`;
   el.simulationEnemies.innerHTML = "";
+  el.simulationMobile.innerHTML = "";
+  const isMobile = mobileVersusMedia.matches;
+  const enemyContainer = isMobile ? el.simulationMobile : el.simulationEnemies;
 
   for (let index = 0; index < 6; index += 1) {
     const enemy = simulationDraft.enemies[index];
     const card = document.createElement("article");
-    card.className = "enemy-card";
-
-    if (simulationDraft.editingIndex === index) {
-      card.classList.add("editing");
-      card.innerHTML = renderSimulationEnemyEditorMarkup(index, enemy || { types: ["Normal"], attacks: [] });
-    } else if (enemy) {
-      card.innerHTML = `
-        <div class="pokemon-card-header">
-          <h3>${escapeHtml(enemy.name || `Adversaire ${index + 1}`)} <span class="name-type-logos">${enemy.types.map(typeLogoOnly).join("")}</span></h3>
-          <div class="card-actions">
-            <button class="small-button" type="button" data-edit-enemy="${index}">Editer</button>
-            <button class="small-button danger" type="button" data-delete-enemy="${index}">Enlever</button>
+    if (isMobile) {
+      card.className = `mobile-duel ${simulationDraft.editingIndex === index ? "editing" : ""}`;
+      if (simulationDraft.editingIndex === index) {
+        card.innerHTML = `
+          <div class="mobile-duel-label"><span>Duel ${index + 1}</span><span>Edition adversaire</span></div>
+          ${renderSimulationEnemyEditorMarkup(index, enemy || { types: ["Normal"], attacks: [] })}
+        `;
+      } else if (enemy) {
+        card.innerHTML = `
+          <div class="mobile-duel-label"><span>Duel ${index + 1}</span><span>${simulationDraft.showResults ? "Analyse terminee" : "Pret"}</span></div>
+          <div class="mobile-opponent">
+            <div>
+              <span class="choice-kicker">Adversaire</span>
+              <h3>${escapeHtml(enemy.name || `Adversaire ${index + 1}`)} <span class="name-type-logos">${enemy.types.map(typeLogoOnly).join("")}</span></h3>
+            </div>
+            <div class="card-actions">
+              <button class="small-button" type="button" data-edit-enemy="${index}">Editer</button>
+              <button class="small-button danger" type="button" data-delete-enemy="${index}">Enlever</button>
+            </div>
           </div>
-        </div>
-        <div class="pokemon-card-body stacked">
-          <div class="mini-line"><span class="slot-meta">Types</span>${enemy.types.map(typeBadge).join("")}</div>
-          <div class="mini-line"><span class="slot-meta">Attaques</span>${enemy.attacks.length ? enemy.attacks.map(typeBadge).join("") : `<span class="multiplier">Aucune</span>`}</div>
-        </div>
-      `;
+          <div class="mobile-duel-divider"><span>VS</span></div>
+          ${renderMobileDuelResult(team, enemy, index)}
+        `;
+      } else {
+        card.classList.add("empty");
+        card.innerHTML = `<button class="mobile-duel-add" type="button" data-add-enemy="${index}"><img class="add-pokeball-icon" src="assets/add-pokeball.svg" alt="" aria-hidden="true"> Ajouter l'adversaire ${index + 1}</button>`;
+      }
     } else {
-      card.innerHTML = `<button class="enemy-add" type="button" data-add-enemy="${index}">+</button>`;
+      card.className = "enemy-card";
+      if (simulationDraft.editingIndex === index) {
+        card.classList.add("editing");
+        card.innerHTML = renderSimulationEnemyEditorMarkup(index, enemy || { types: ["Normal"], attacks: [] });
+      } else if (enemy) {
+        card.innerHTML = `
+          <div class="pokemon-card-header">
+            <h3>${escapeHtml(enemy.name || `Adversaire ${index + 1}`)} <span class="name-type-logos">${enemy.types.map(typeLogoOnly).join("")}</span></h3>
+            <div class="card-actions">
+              <button class="small-button" type="button" data-edit-enemy="${index}">Editer</button>
+              <button class="small-button danger" type="button" data-delete-enemy="${index}">Enlever</button>
+            </div>
+          </div>
+          <div class="pokemon-card-body stacked">
+            <div class="mini-line"><span class="slot-meta">Types</span>${enemy.types.map(typeBadge).join("")}</div>
+            <div class="mini-line"><span class="slot-meta">Attaques</span>${enemy.attacks.length ? enemy.attacks.map(typeBadge).join("") : `<span class="multiplier">Aucune</span>`}</div>
+          </div>
+        `;
+      } else {
+        card.innerHTML = `<button class="enemy-add" type="button" data-add-enemy="${index}" aria-label="Ajouter l'adversaire ${index + 1}"><img class="add-pokeball-icon large" src="assets/add-pokeball.svg" alt="" aria-hidden="true"></button>`;
+      }
     }
 
-    el.simulationEnemies.append(card);
+    enemyContainer.append(card);
   }
 
-  el.simulationEnemies.querySelectorAll("[data-add-enemy], [data-edit-enemy]").forEach((button) => {
+  enemyContainer.querySelectorAll("[data-add-enemy], [data-edit-enemy]").forEach((button) => {
     button.addEventListener("click", () => {
       const index = Number(button.dataset.addEnemy ?? button.dataset.editEnemy);
       renderSimulationEnemyEditor(index);
     });
   });
 
-  el.simulationEnemies.querySelectorAll("[data-cancel-enemy-edit]").forEach((button) => {
+  enemyContainer.querySelectorAll("[data-cancel-enemy-edit]").forEach((button) => {
     button.addEventListener("click", () => {
       simulationDraft.editingIndex = null;
       renderSimulation(team);
     });
   });
 
-  el.simulationEnemies.querySelectorAll(".enemy-attack-input").forEach((input) => {
+  enemyContainer.querySelectorAll(".enemy-attack-input").forEach((input) => {
     input.addEventListener("change", () => {
       const editor = input.closest("[data-enemy-editor]");
       const attacks = getEnemyAttackTypes(editor);
@@ -723,11 +770,11 @@ function renderSimulation(team) {
     });
   });
 
-  el.simulationEnemies.querySelectorAll("[data-save-enemy]").forEach((button) => {
+  enemyContainer.querySelectorAll("[data-save-enemy]").forEach((button) => {
     button.addEventListener("click", () => saveSimulationEnemy(button.closest("[data-enemy-editor]")));
   });
 
-  el.simulationEnemies.querySelectorAll(".enemy-pick-source").forEach((select) => {
+  enemyContainer.querySelectorAll(".enemy-pick-source").forEach((select) => {
     select.addEventListener("change", () => {
       const editor = select.closest("[data-enemy-editor]");
       const datalist = editor.querySelector("datalist");
@@ -737,7 +784,7 @@ function renderSimulation(team) {
     });
   });
 
-  el.simulationEnemies.querySelectorAll("[data-apply-enemy-pokemon]").forEach((button) => {
+  enemyContainer.querySelectorAll("[data-apply-enemy-pokemon]").forEach((button) => {
     button.addEventListener("click", () => {
       const editor = button.closest("[data-enemy-editor]");
       const source = editor.querySelector(".enemy-pick-source").value;
@@ -758,15 +805,22 @@ function renderSimulation(team) {
     });
   });
 
-  el.simulationEnemies.querySelectorAll("[data-delete-enemy]").forEach((button) => {
+  enemyContainer.querySelectorAll("[data-delete-enemy]").forEach((button) => {
     button.addEventListener("click", () => {
       simulationDraft.enemies.splice(Number(button.dataset.deleteEnemy), 1);
       simulationDraft.editingIndex = null;
+      simulationDraft.showResults = false;
       el.simulationResults.className = "simulation-results empty-state";
       el.simulationResults.innerHTML = "Versus modifie. Relance-le pour mettre les conseils a jour.";
       renderSimulation(team);
     });
   });
+
+  if (isMobile) {
+    bindInteractiveResults(el.simulationMobile);
+  } else if (simulationDraft.showResults && team) {
+    renderDesktopSimulationResults(team);
+  }
 }
 
 function renderSimulationEnemyEditor(index) {
@@ -875,6 +929,7 @@ function saveSimulationEnemy(editor) {
   const types = [typeOne, typeTwo].filter(Boolean).filter((type, index, all) => all.indexOf(type) === index);
   simulationDraft.enemies[simulationDraft.editingIndex] = { name, types, attacks };
   simulationDraft.editingIndex = null;
+  simulationDraft.showResults = false;
   el.simulationEnemyEditor.classList.add("hidden");
   el.simulationResults.className = "simulation-results empty-state";
   el.simulationResults.innerHTML = "Versus modifie. Lance-le pour afficher les meilleurs choix.";
@@ -888,9 +943,24 @@ function renderSimulationResults() {
   if (!team || !hasEnemies) {
     el.simulationResults.className = "simulation-results empty-state";
     el.simulationResults.innerHTML = "Ajoute au moins un adversaire avant de confirmer.";
+    if (mobileVersusMedia.matches) alert("Ajoute au moins un adversaire avant de lancer le VS.");
     return;
   }
 
+  simulationDraft.showResults = true;
+  renderSimulation(team);
+}
+
+function renderMobileDuelResult(team, enemy, index) {
+  if (!simulationDraft.showResults) {
+    return `<div class="mobile-result-pending"><span>?</span><p>Lance le VS pour afficher le meilleur choix.</p></div>`;
+  }
+
+  const matchup = bestTeamMatchups(team, enemy)[0];
+  return renderSimulationResultCard(matchup, enemy, index, "mobile-result-card");
+}
+
+function renderDesktopSimulationResults(team) {
   el.simulationResults.className = "simulation-results";
   el.simulationResults.innerHTML = Array.from({ length: 6 }, (_, index) => {
     const enemy = simulationDraft.enemies[index];
@@ -899,21 +969,34 @@ function renderSimulationResults() {
     }
 
     const matchup = bestTeamMatchups(team, enemy)[0];
-
-    return `
-      <article class="simulation-result-card interactive-result" tabindex="0" role="button" aria-expanded="false" aria-label="Afficher la justification du choix ${index + 1}">
-        <div class="pokemon-card-header">
-          <span class="choice-kicker">Choix recommande ${index + 1}</span>
-          <span class="detail-hint">Pourquoi ?</span>
-        </div>
-        ${renderMatchupChoice(matchup)}
-        ${renderVersusExplanation(matchup, enemy)}
-      </article>
-    `;
+    return renderSimulationResultCard(matchup, enemy, index);
   }).join("");
 
-  el.simulationResults.querySelectorAll(".interactive-result").forEach((card) => {
+  bindInteractiveResults(el.simulationResults);
+}
+
+function renderSimulationResultCard(matchup, enemy, index, extraClass = "") {
+  return `
+    <article class="simulation-result-card interactive-result ${extraClass}" tabindex="0" role="button" aria-expanded="false" aria-label="Afficher la justification du choix ${index + 1}">
+      <div class="pokemon-card-header">
+        <span class="choice-kicker">Choix recommande</span>
+        <span class="detail-hint">Pourquoi ?</span>
+      </div>
+      ${renderMatchupChoice(matchup)}
+      ${renderVersusExplanation(matchup, enemy)}
+    </article>
+  `;
+}
+
+function bindInteractiveResults(container) {
+  container.querySelectorAll(".interactive-result").forEach((card) => {
     const toggleDetail = () => {
+      container.querySelectorAll(".interactive-result.show-details").forEach((otherCard) => {
+        if (otherCard === card) return;
+        otherCard.classList.remove("show-details");
+        otherCard.setAttribute("aria-expanded", "false");
+        otherCard.querySelector(".versus-explanation")?.setAttribute("aria-hidden", "true");
+      });
       const expanded = card.classList.toggle("show-details");
       card.setAttribute("aria-expanded", String(expanded));
       card.querySelector(".versus-explanation")?.setAttribute("aria-hidden", String(!expanded));
@@ -956,9 +1039,10 @@ function bestTeamMatchups(team, enemy) {
 
   return team.pokemon
     .map((pokemon) => {
-      const defensiveMultiplier = defenseKnown
-        ? Math.max(...enemy.attacks.map((attackType) => pokemon.types.reduce((value, pokemonType) => value * getEffectiveness(attackType, pokemonType), 1)))
-        : 1;
+      const receivedMultipliers = defenseKnown
+        ? enemy.attacks.map((attackType) => pokemon.types.reduce((value, pokemonType) => value * getEffectiveness(attackType, pokemonType), 1))
+        : [1];
+      const defensiveMultiplier = Math.max(...receivedMultipliers);
       const attacks = pokemon.attacks || [];
       const rankedAttacks = attacks
         .map((attackType) => ({
@@ -971,11 +1055,15 @@ function bestTeamMatchups(team, enemy) {
         pokemon,
         defenseKnown,
         defensiveMultiplier,
+        defensiveTotal: receivedMultipliers.reduce((sum, multiplier) => sum + multiplier, 0),
+        immunityCount: receivedMultipliers.filter((multiplier) => multiplier === 0).length,
         bestAttack: rankedAttacks[0] || null
       };
     })
     .sort((a, b) => (
       a.defensiveMultiplier - b.defensiveMultiplier
+      || a.defensiveTotal - b.defensiveTotal
+      || b.immunityCount - a.immunityCount
       || (b.bestAttack?.multiplier || 0) - (a.bestAttack?.multiplier || 0)
       || a.pokemon.name.localeCompare(b.pokemon.name)
     ));
@@ -1417,10 +1505,19 @@ function renderTypeMatchupAnalysis() {
       return {
         pokemon,
         received,
-        worstMultiplier: Math.max(...received.map((item) => item.multiplier))
+        worstMultiplier: Math.max(...received.map((item) => item.multiplier)),
+        totalMultiplier: received.reduce((sum, item) => sum + item.multiplier, 0),
+        immunityCount: received.filter((item) => item.multiplier === 0).length,
+        resistanceCount: received.filter((item) => item.multiplier > 0 && item.multiplier < 1).length
       };
     })
-    .sort((a, b) => a.worstMultiplier - b.worstMultiplier || a.pokemon.name.localeCompare(b.pokemon.name));
+    .sort((a, b) => (
+      a.worstMultiplier - b.worstMultiplier
+      || a.totalMultiplier - b.totalMultiplier
+      || b.immunityCount - a.immunityCount
+      || b.resistanceCount - a.resistanceCount
+      || a.pokemon.name.localeCompare(b.pokemon.name)
+    ));
   const offensiveRanking = team.pokemon
     .map((pokemon) => {
       const attacks = (pokemon.attacks || [])
