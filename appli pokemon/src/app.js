@@ -40,6 +40,11 @@ const el = {
   typeHelperCount: document.querySelector("#type-helper-count"),
   helperTypeOne: document.querySelector("#helper-type-one"),
   helperTypeTwo: document.querySelector("#helper-type-two"),
+  helperMode: Array.from(document.querySelectorAll("[name='helper-mode']")),
+  helperThreatSearchToggle: document.querySelector("#helper-threat-search-toggle"),
+  helperThreatSearchField: document.querySelector("#helper-threat-search-field"),
+  helperThreatPokemon: document.querySelector("#helper-threat-pokemon"),
+  helperThreatOptions: document.querySelector("#helper-threat-options"),
   helperSource: document.querySelector("#helper-source"),
   helperTargetBase: document.querySelector("#helper-target-base"),
   helperDefense: document.querySelector("#helper-defense"),
@@ -126,7 +131,7 @@ function init() {
   fillTypeSelect(el.typeMatchupTwo, true);
   fillTypeSelect(el.helperTypeOne, false);
   fillTypeSelect(el.helperTypeTwo, true);
-  fillTypeSelect(el.helperTargetBase, false);
+  fillTypeSelect(el.helperTargetBase, true);
   enhanceTypeSelects(document);
   renderAttackChecks();
   renderOfficialOptions();
@@ -167,6 +172,9 @@ function bindEvents() {
   [el.helperTypeOne, el.helperTypeTwo, el.helperSource, el.helperTargetBase].forEach((field) => {
     field.addEventListener("change", () => renderTypeHelper());
   });
+  el.helperMode.forEach((field) => field.addEventListener("change", () => renderTypeHelper()));
+  el.helperThreatSearchToggle.addEventListener("click", toggleHelperThreatSearch);
+  el.helperThreatPokemon.addEventListener("input", applyHelperThreatPokemon);
   el.shareMenuToggle.addEventListener("click", toggleShareMenu);
   el.shareTeam.addEventListener("click", shareActiveTeam);
   el.copyShareLink.addEventListener("click", copyActiveTeamLink);
@@ -1060,22 +1068,72 @@ function savedPokemonOriginLabel(pokemon) {
 }
 
 function renderTypeHelper(selectedTypes = null) {
-  const profileTypes = getHelperProfileTypes();
-  const targetBase = el.helperTargetBase.value || KANTO_TYPES[0];
+  const threatTypes = getHelperProfileTypes();
+  const mode = getHelperMode();
   const source = el.helperSource.value;
+  const requiredType = el.helperTargetBase.value;
   const pokemonList = getHelperPokemonSource(source);
-  const exactTypes = selectedTypes || profileTypes;
+  const responseRows = getHelperResponseRows(threatTypes, pokemonList, mode, requiredType);
+  const exactTypes = selectedTypes || responseRows[0]?.types || [];
   const filteredPokemon = filterPokemonByTypes(pokemonList, exactTypes);
 
   el.typeHelperCount.textContent = `${pokemonList.length} Pokemon`;
-  el.helperDefense.innerHTML = renderHelperDefense(profileTypes);
-  el.helperOffense.innerHTML = renderHelperOffense(profileTypes);
-  el.helperGridTitle.textContent = `Double types ${targetBase} / ...`;
-  el.helperMatchupGrid.innerHTML = renderHelperMatchupGrid(profileTypes, targetBase, pokemonList);
-  el.helperPokemonTitle.textContent = `Pokemon ${exactTypes.join(" / ")}`;
+  renderHelperThreatOptions(pokemonList);
+  el.helperDefense.innerHTML = renderHelperDefense(threatTypes);
+  el.helperOffense.innerHTML = renderHelperOffense(threatTypes);
+  el.helperGridTitle.textContent = helperGridTitle(mode, threatTypes, requiredType);
+  el.helperMatchupGrid.innerHTML = renderHelperMatchupGrid(responseRows, mode, exactTypes);
+  el.helperPokemonTitle.textContent = exactTypes.length
+    ? `Pokemon disponibles : ${exactTypes.join(" / ")}`
+    : "Pokemon disponibles";
   el.helperPokemonList.innerHTML = renderHelperPokemonList(filteredPokemon, exactTypes);
   bindTypeHelperGrid(pokemonList);
   bindTypeHelperPokemonActions();
+}
+
+function getHelperMode() {
+  return el.helperMode.find((field) => field.checked)?.value || "attack";
+}
+
+function renderHelperThreatOptions(pokemonList) {
+  const threatTypes = getHelperProfileTypes();
+  const options = getHelperThreatPokemonOptions(pokemonList, threatTypes);
+  el.helperThreatPokemon.placeholder = threatTypes.length
+    ? `Pokemon ${threatTypes.join(" / ")}`
+    : "Ex: Florizarre";
+  el.helperThreatOptions.innerHTML = options
+    .map((pokemon) => `<option value="${escapeHtml(pokemonOptionLabel(pokemon))}"></option>`)
+    .join("");
+}
+
+function getHelperThreatPokemonOptions(pokemonList, threatTypes) {
+  if (!threatTypes.length) return pokemonList;
+  return pokemonList.filter((pokemon) => threatTypes.every((type) => pokemon.types.includes(type)));
+}
+
+function toggleHelperThreatSearch() {
+  el.helperThreatSearchField.classList.toggle("hidden");
+  if (!el.helperThreatSearchField.classList.contains("hidden")) {
+    el.helperThreatPokemon.focus();
+  }
+}
+
+function applyHelperThreatPokemon() {
+  const value = normalize(el.helperThreatPokemon.value);
+  if (!value) return;
+  const threatTypes = getHelperProfileTypes();
+  const pokemonList = getHelperPokemonSource(el.helperSource.value);
+  const options = getHelperThreatPokemonOptions(pokemonList, threatTypes);
+  const pokemon = options.find((item) => (
+    normalize(pokemonOptionLabel(item)) === value || normalize(item.name) === value
+  ));
+  if (!pokemon) return;
+  if (!threatTypes.length) {
+    el.helperTypeOne.value = pokemon.types[0] || "";
+    el.helperTypeTwo.value = pokemon.types[1] || "";
+    syncTypeWheels(el.typeHelperPanel);
+  }
+  renderTypeHelper();
 }
 
 function getHelperProfileTypes() {
@@ -1090,9 +1148,9 @@ function renderHelperDefense(types) {
   const resist = rows.filter((item) => item.multiplier > 0 && item.multiplier < 1);
   const immune = rows.filter((item) => item.multiplier === 0);
   return `
-    <div class="helper-summary-row"><span class="slot-meta">Faiblesses</span>${renderMultiplierList(weak)}</div>
-    <div class="helper-summary-row"><span class="slot-meta">Resistances</span>${renderMultiplierList(resist)}</div>
-    <div class="helper-summary-row"><span class="slot-meta">Immunites</span>${renderMultiplierList(immune)}</div>
+    <div class="helper-summary-row"><span class="slot-meta">Faible face a</span>${renderMultiplierList(weak)}</div>
+    <div class="helper-summary-row"><span class="slot-meta">Resiste a</span>${renderMultiplierList(resist)}</div>
+    <div class="helper-summary-row"><span class="slot-meta">Ignore</span>${renderMultiplierList(immune)}</div>
   `;
 }
 
@@ -1107,36 +1165,139 @@ function renderHelperOffense(types) {
   const strong = rows.filter((item) => item.multiplier > 1);
   const poor = rows.filter((item) => item.multiplier < 1);
   return `
-    <div class="helper-summary-row"><span class="slot-meta">Attaque fort</span>${renderMultiplierList(strong)}</div>
-    <div class="helper-summary-row"><span class="slot-meta">Peu efficace</span>${renderMultiplierList(poor)}</div>
+    <div class="helper-summary-row"><span class="slot-meta">Fort contre</span>${renderMultiplierList(strong)}</div>
+    <div class="helper-summary-row"><span class="slot-meta">Faible contre</span>${renderMultiplierList(poor)}</div>
   `;
 }
 
-function renderHelperMatchupGrid(profileTypes, baseType, pokemonList) {
-  const combos = [
-    [baseType],
-    ...KANTO_TYPES
-      .filter((type) => type !== baseType)
-      .map((type) => [baseType, type])
-  ];
+function getHelperResponseRows(threatTypes, pokemonList, mode, requiredType) {
+  const combos = getAllTypeCombos()
+    .filter((types) => !requiredType || types.includes(requiredType));
 
   return combos.map((types) => {
-    const bestAttack = Math.max(...profileTypes.map((attackType) => (
-      types.reduce((value, defenderType) => value * getEffectiveness(attackType, defenderType), 1)
-    )));
-    const received = profileTypes.reduce((sum, attackType) => (
-      sum + types.reduce((value, defenderType) => value * getEffectiveness(attackType, defenderType), 1)
-    ), 0);
-    const matches = filterPokemonByTypes(pokemonList, types).length;
-    const kind = bestAttack > 1 ? "weak" : bestAttack === 0 ? "immune" : bestAttack < 1 ? "resist" : "";
-    return `
-      <button class="type-helper-row" type="button" data-helper-types="${types.join("|")}">
-        <span class="helper-type-combo">${types.map(typeBadge).join("")}</span>
-        <span class="multiplier ${kind}">${formatMultiplierLabel(bestAttack)}</span>
-        <span class="slot-meta">${matches} Pokemon</span>
-      </button>
-    `;
-  }).join("");
+    const multiplier = mode === "defense"
+      ? Math.max(...threatTypes.map((attackType) => getTypeComboDefenseMultiplier(attackType, types)))
+      : Math.max(...types.map((attackType) => getTypeComboAttackMultiplier(attackType, threatTypes)));
+    return {
+      types,
+      multiplier,
+      matches: filterPokemonByTypes(pokemonList, types).length
+    };
+  }).filter((row) => row.matches > 0).sort((a, b) => (
+    helperMultiplierSortValue(a.multiplier, mode) - helperMultiplierSortValue(b.multiplier, mode)
+    || b.matches - a.matches
+    || a.types.length - b.types.length
+    || KANTO_TYPES.indexOf(a.types[0]) - KANTO_TYPES.indexOf(b.types[0])
+  ));
+}
+
+function getAllTypeCombos() {
+  const combos = KANTO_TYPES.map((type) => [type]);
+  KANTO_TYPES.forEach((type, index) => {
+    KANTO_TYPES.slice(index + 1).forEach((secondType) => combos.push([type, secondType]));
+  });
+  return combos;
+}
+
+function getTypeComboAttackMultiplier(attackType, defenderTypes) {
+  return defenderTypes.reduce((value, defenderType) => value * getEffectiveness(attackType, defenderType), 1);
+}
+
+function getTypeComboDefenseMultiplier(attackType, defenderTypes) {
+  return defenderTypes.reduce((value, defenderType) => value * getEffectiveness(attackType, defenderType), 1);
+}
+
+function helperMultiplierSortValue(multiplier, mode) {
+  if (mode === "defense") return multiplier;
+  if (multiplier === 0) return 999;
+  return -multiplier;
+}
+
+function helperGridTitle(mode, threatTypes, requiredType) {
+  const target = threatTypes.join(" / ");
+  const suffix = requiredType ? ` avec ${requiredType}` : "";
+  return mode === "defense"
+    ? `Reponses defensives contre ${target}${suffix}`
+    : `Reponses offensives contre ${target}${suffix}`;
+}
+
+function renderHelperMatchupGrid(rows, mode, selectedTypes) {
+  if (!rows.length) {
+    return `<div class="empty-state">Aucune association ne correspond a cette source et a ce filtre.</div>`;
+  }
+  const groups = groupHelperRows(rows, mode);
+  return groups.map((group) => `
+    <section class="type-helper-group">
+      <div class="type-helper-group-heading">
+        <h4>${group.label}</h4>
+        <span class="slot-meta">${group.rows.length} associations</span>
+      </div>
+      <div class="type-helper-group-list">
+        ${group.rows.map((row) => renderHelperRow(row, mode, selectedTypes)).join("")}
+      </div>
+    </section>
+  `).join("");
+}
+
+function groupHelperRows(rows, mode) {
+  const groupDefs = mode === "defense"
+    ? [
+      { key: "immune", label: "Excellent : immunise", test: (value) => value === 0 },
+      { key: "resist", label: "Solide : resiste", test: (value) => value > 0 && value < 1 },
+      { key: "neutral", label: "Neutre", test: (value) => value === 1 },
+      { key: "weak", label: "Fragile : prend cher", test: (value) => value > 1 }
+    ]
+    : [
+      { key: "strong", label: "Efficace", test: (value) => value > 1 },
+      { key: "neutral", label: "Neutre", test: (value) => value === 1 },
+      { key: "poor", label: "Peu efficace", test: (value) => value > 0 && value < 1 },
+      { key: "useless", label: "Inutile", test: (value) => value === 0 }
+    ];
+
+  return groupDefs
+    .map((group) => ({
+      ...group,
+      rows: rows.filter((row) => group.test(row.multiplier))
+    }))
+    .filter((group) => group.rows.length);
+}
+
+function renderHelperRow(row, mode, selectedTypes) {
+  const kind = helperMultiplierKind(row.multiplier, mode);
+  const label = mode === "defense"
+    ? helperDefenseResultLabel(row.multiplier)
+    : formatMultiplierLabel(row.multiplier);
+  const active = typesMatch(row.types, selectedTypes) ? " active" : "";
+  return `
+    <button class="type-helper-row${active}" type="button" data-helper-types="${row.types.join("|")}">
+      <span class="helper-type-combo">${row.types.map(typeBadge).join("")}</span>
+      <span class="multiplier ${kind}">${label}</span>
+      <span class="slot-meta">${row.matches} Pokemon</span>
+    </button>
+  `;
+}
+
+function helperMultiplierKind(multiplier, mode) {
+  if (mode === "defense") {
+    if (multiplier === 0) return "helper-good";
+    if (multiplier < 1) return "helper-good";
+    if (multiplier > 1) return "helper-bad";
+    return "helper-neutral";
+  }
+  if (multiplier === 0) return "helper-bad";
+  if (multiplier > 1) return "helper-good";
+  if (multiplier < 1) return "helper-bad";
+  return "helper-neutral";
+}
+
+function helperDefenseResultLabel(multiplier) {
+  if (multiplier === 0) return "immunise";
+  return `recoit x${formatMultiplier(multiplier)}`;
+}
+
+function typesMatch(left, right) {
+  if (!left?.length || !right?.length) return false;
+  return [...left].sort().join("|") === [...right].sort().join("|");
 }
 
 function bindTypeHelperGrid(pokemonList) {
@@ -1145,7 +1306,7 @@ function bindTypeHelperGrid(pokemonList) {
       const types = button.dataset.helperTypes.split("|").filter(Boolean);
       el.helperMatchupGrid.querySelectorAll("[data-helper-types]").forEach((item) => item.classList.remove("active"));
       button.classList.add("active");
-      el.helperPokemonTitle.textContent = `Pokemon ${types.join(" / ")}`;
+      el.helperPokemonTitle.textContent = `Pokemon disponibles : ${types.join(" / ")}`;
       el.helperPokemonList.innerHTML = renderHelperPokemonList(filterPokemonByTypes(pokemonList, types), types);
       bindTypeHelperPokemonActions();
     });
@@ -1168,6 +1329,9 @@ function filterPokemonByTypes(pokemonList, types) {
 }
 
 function renderHelperPokemonList(pokemonList, types) {
+  if (!types.length) {
+    return `<div class="empty-state">Aucune reponse disponible avec cette source et ce filtre.</div>`;
+  }
   if (!pokemonList.length) {
     return `<div class="empty-state">Aucun Pokemon ${types.join(" / ")} dans cette source.</div>`;
   }

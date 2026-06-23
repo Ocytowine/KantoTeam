@@ -75,61 +75,115 @@
               <img class="panel-title-icon" src="assets/Logo-aide-type.png" alt="" aria-hidden="true">
               <div>
                 <p class="eyebrow">Guide des types</p>
-                <h2 id="type-helper-title">Interactions des types</h2>
+                <h2 id="type-helper-title">Assistant types</h2>
               </div>
             </div>
             <span class="pill" id="type-helper-count">0 Pokemon</span>
           </div>
 
-          <div class="type-helper-controls">
-            <label class="field">
-              <span>Type principal</span>
-              <select id="helper-type-one"></select>
-            </label>
-            <label class="field">
-              <span>Type secondaire</span>
-              <select id="helper-type-two"></select>
-            </label>
-            <label class="field">
-              <span>Source Pokemon</span>
-              <select id="helper-source">
-                <option value="all">Toutes les sources</option>
-                <option value="official">Kanto</option>
-                <option value="reforged">Kanto Reforged</option>
-                <option value="saved">Bibliotheque</option>
-              </select>
-            </label>
-            <label class="field">
-              <span>Double type a comparer</span>
-              <select id="helper-target-base"></select>
-            </label>
-          </div>
+          <p class="type-helper-intro">
+            Pars d'une menace adverse, choisis si tu veux l'attaquer ou l'encaisser, puis ouvre les associations de types pour trouver les Pokemon qui repondent au besoin.
+          </p>
 
-          <div class="type-helper-results">
-            <section>
-              <h3>Profil defensif</h3>
-              <div id="helper-defense" class="badge-cloud"></div>
-            </section>
-            <section>
-              <h3>Couverture offensive</h3>
-              <div id="helper-offense" class="badge-cloud"></div>
-            </section>
-          </div>
-
-          <section>
-            <div class="type-helper-subheading">
-              <h3 id="helper-grid-title">Double types</h3>
-              <span class="slot-meta">Clique une ligne pour voir les Pokemon correspondants.</span>
+          <section class="type-helper-step">
+            <div class="type-helper-step-heading">
+              <span class="step-number">1</span>
+              <div>
+                <h3>Dis ce que tu cherches</h3>
+                <p>L'objectif change la lecture du tableau : attaquer fort ou trouver un Pokemon qui encaisse.</p>
+              </div>
             </div>
-            <div id="helper-matchup-grid" class="type-helper-grid"></div>
+            <div class="helper-mode-switch" role="radiogroup" aria-label="Objectif de recherche">
+              <label>
+                <input type="radio" name="helper-mode" value="attack" checked>
+                <span>Je veux attaquer efficacement</span>
+              </label>
+              <label>
+                <input type="radio" name="helper-mode" value="defense">
+                <span>Je veux me defendre contre</span>
+              </label>
+            </div>
+            <div class="type-helper-controls">
+              <label class="field">
+                <span>Liste a consulter</span>
+                <select id="helper-source">
+                  <option value="all">Toutes les sources</option>
+                  <option value="official">Kanto</option>
+                  <option value="reforged">Kanto Reforged</option>
+                  <option value="saved">Bibliotheque</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Type adverse connu</span>
+                <select id="helper-type-one"></select>
+              </label>
+              <label class="field">
+                <span>Second type adverse</span>
+                <select id="helper-type-two"></select>
+              </label>
+              <label class="field">
+                <span>Type obligatoire en reponse</span>
+                <select id="helper-target-base"></select>
+              </label>
+            </div>
+            <div class="helper-threat-search">
+              <button class="helper-search-toggle" id="helper-threat-search-toggle" type="button" aria-label="Rechercher un Pokemon adverse">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <circle cx="11" cy="11" r="6"></circle>
+                  <path d="M16 16l4 4"></path>
+                </svg>
+              </button>
+              <label class="field hidden" id="helper-threat-search-field">
+                <span>Pokemon adverse connu</span>
+                <input id="helper-threat-pokemon" list="helper-threat-options" type="search" placeholder="Filtre par les types choisis">
+                <datalist id="helper-threat-options"></datalist>
+              </label>
+            </div>
           </section>
 
-          <section>
-            <div class="type-helper-subheading">
-              <h3 id="helper-pokemon-title">Pokemon filtres</h3>
-              <span class="slot-meta">Mono ou double type exact.</span>
+          <section class="type-helper-step">
+            <div class="type-helper-step-heading">
+              <span class="step-number">2</span>
+              <div>
+                <h3>Lis la menace analysee</h3>
+                <p>Ces blocs expliquent ce que la menace craint et ce qu'elle touche avec ses types.</p>
+              </div>
             </div>
-            <div id="helper-pokemon-list" class="team-list"></div>
+            <div class="type-helper-results">
+              <section>
+                <h3>La menace craint</h3>
+                <div id="helper-defense" class="badge-cloud"></div>
+              </section>
+              <section>
+                <h3>La menace attaque</h3>
+                <div id="helper-offense" class="badge-cloud"></div>
+              </section>
+            </div>
+          </section>
+
+          <section class="type-helper-step">
+            <div class="type-helper-step-heading">
+              <span class="step-number">3</span>
+              <div>
+                <h3>Choisis une reponse possible</h3>
+                <p>Les associations sont classees par resultat. Clique une ligne pour afficher les Pokemon disponibles.</p>
+              </div>
+            </div>
+            <section>
+              <div class="type-helper-subheading">
+                <h3 id="helper-grid-title">Reponses classees</h3>
+                <span class="slot-meta">Le compteur indique les Pokemon disponibles dans la source choisie.</span>
+              </div>
+              <div id="helper-matchup-grid" class="type-helper-grid"></div>
+            </section>
+
+            <section>
+              <div class="type-helper-subheading">
+                <h3 id="helper-pokemon-title">Pokemon disponibles avec ce type</h3>
+                <span class="slot-meta">Mono ou double type exact, selon la ligne choisie.</span>
+              </div>
+              <div id="helper-pokemon-list" class="team-list"></div>
+            </section>
           </section>
         </section>
 
