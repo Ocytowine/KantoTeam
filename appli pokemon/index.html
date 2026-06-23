@@ -27,8 +27,8 @@
         </div>
         <div class="header-actions">
           <button class="ghost-button hidden" id="back-to-slots" type="button">Retour aux equipes</button>
+          <button class="ghost-button" id="open-type-helper" type="button">Aide types</button>
           <button class="ghost-button" id="manage-saved-pokemon" type="button">Pokemon sauvegardes</button>
-          <button class="ghost-button hidden" id="load-team-sprites" type="button">Afficher les sprites</button>
         </div>
       </header>
 
@@ -46,6 +46,67 @@
           <div id="saved-pokemon-edit-panel" class="pokemon-edit-panel hidden"></div>
         </section>
 
+        <section class="panel type-helper-panel hidden" id="type-helper-panel" aria-labelledby="type-helper-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Aide de jeu</p>
+              <h2 id="type-helper-title">Tableau des types</h2>
+            </div>
+            <span class="pill" id="type-helper-count">0 Pokemon</span>
+          </div>
+
+          <div class="type-helper-controls">
+            <label class="field">
+              <span>Type principal</span>
+              <select id="helper-type-one"></select>
+            </label>
+            <label class="field">
+              <span>Type secondaire</span>
+              <select id="helper-type-two"></select>
+            </label>
+            <label class="field">
+              <span>Source Pokemon</span>
+              <select id="helper-source">
+                <option value="all">Toutes les sources</option>
+                <option value="official">Kanto</option>
+                <option value="reforged">Kanto Reforged</option>
+                <option value="saved">Bibliotheque</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Double type a comparer</span>
+              <select id="helper-target-base"></select>
+            </label>
+          </div>
+
+          <div class="type-helper-results">
+            <section>
+              <h3>Profil defensif</h3>
+              <div id="helper-defense" class="badge-cloud"></div>
+            </section>
+            <section>
+              <h3>Couverture offensive</h3>
+              <div id="helper-offense" class="badge-cloud"></div>
+            </section>
+          </div>
+
+          <section>
+            <div class="type-helper-subheading">
+              <h3 id="helper-grid-title">Double types</h3>
+              <span class="slot-meta">Clique une ligne pour voir les Pokemon correspondants.</span>
+            </div>
+            <div id="helper-matchup-grid" class="type-helper-grid"></div>
+          </section>
+
+          <section>
+            <div class="type-helper-subheading">
+              <h3 id="helper-pokemon-title">Pokemon filtres</h3>
+              <span class="slot-meta">Mono ou double type exact.</span>
+            </div>
+            <div id="helper-pokemon-list" class="team-list"></div>
+          </section>
+        </section>
+
         <section class="panel composition-panel hidden" id="composition-panel" aria-labelledby="composition-title">
           <div class="panel-heading">
             <div>
@@ -56,6 +117,12 @@
               <button class="small-button" id="composition-to-analysis" type="button">Analyse</button>
               <span class="pill" id="composition-count">0/6</span>
             </div>
+          </div>
+          <div class="share-actions hidden" id="share-actions" aria-label="Partager l'equipe">
+            <button class="small-button" id="share-team" type="button">Partager</button>
+            <button class="small-button" id="copy-share-link" type="button">Copier lien</button>
+            <button class="small-button" id="share-whatsapp" type="button">WhatsApp</button>
+            <button class="small-button" id="share-sms" type="button">SMS</button>
           </div>
           <div class="team-list" id="composition-list"></div>
           <div id="pokemon-edit-panel" class="pokemon-edit-panel hidden"></div>
