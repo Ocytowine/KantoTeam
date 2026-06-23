@@ -1061,11 +1061,49 @@ function renderHelperPokemonList(pokemonList, types) {
         originLabel: helperSourceLabel(pokemon.helperSource),
         toggleable: true
       })}
+      ${renderHelperGuideInfo(pokemon)}
       <div class="helper-card-actions">
         <button class="small-button" type="button" data-save-helper-pokemon="${escapeHtml(pokemonOptionLabel(pokemon))}" data-helper-source="${pokemon.helperSource}">Ajouter aux sauvegardes</button>
       </div>
     </article>
   `).join("");
+}
+
+function renderHelperGuideInfo(pokemon) {
+  if (!isReforgedGuidePokemon(pokemon)) return "";
+  const guide = getReforgedGuideInfo(pokemon.name);
+  if (!guide) return "";
+  const locations = guide.locations || [];
+  const evolution = guide.evolution || "";
+  if (!locations.length && !evolution) return "";
+
+  return `
+    <div class="helper-guide-info">
+      ${locations.length ? `
+        <div class="helper-guide-block">
+          <span class="slot-meta">Localisation</span>
+          <div class="helper-guide-list">
+            ${locations.map((item) => `<span>${escapeHtml(item.label)}</span>`).join("")}
+          </div>
+        </div>
+      ` : ""}
+      ${evolution ? `
+        <div class="helper-guide-block">
+          <span class="slot-meta">Evolution</span>
+          <p>${escapeHtml(evolution)}</p>
+        </div>
+      ` : ""}
+    </div>
+  `;
+}
+
+function isReforgedGuidePokemon(pokemon) {
+  return pokemon.helperSource === "reforged" || pokemon.origin === "reforged" || Boolean(pokemon.reforgedId);
+}
+
+function getReforgedGuideInfo(name) {
+  if (typeof KANTO_REFORGED_GUIDE === "undefined") return null;
+  return KANTO_REFORGED_GUIDE[normalize(name)] || null;
 }
 
 function helperSourceLabel(source) {
