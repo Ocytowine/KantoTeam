@@ -94,6 +94,8 @@ const el = {
   analysisToComposition: document.querySelector("#analysis-to-composition"),
   teamCount: document.querySelector("#team-count"),
   shareActions: document.querySelector("#share-actions"),
+  shareMenuToggle: document.querySelector("#share-menu-toggle"),
+  shareMenu: document.querySelector("#share-menu"),
   shareTeam: document.querySelector("#share-team"),
   copyShareLink: document.querySelector("#copy-share-link"),
   shareWhatsapp: document.querySelector("#share-whatsapp"),
@@ -164,10 +166,16 @@ function bindEvents() {
   [el.helperTypeOne, el.helperTypeTwo, el.helperSource, el.helperTargetBase].forEach((field) => {
     field.addEventListener("change", () => renderTypeHelper());
   });
+  el.shareMenuToggle.addEventListener("click", toggleShareMenu);
   el.shareTeam.addEventListener("click", shareActiveTeam);
   el.copyShareLink.addEventListener("click", copyActiveTeamLink);
   el.shareWhatsapp.addEventListener("click", () => openMessageShare("whatsapp"));
   el.shareSms.addEventListener("click", () => openMessageShare("sms"));
+  document.addEventListener("click", (event) => {
+    if (el.shareActions.classList.contains("hidden")) return;
+    if (el.shareActions.contains(event.target)) return;
+    closeShareMenu();
+  });
   window.addEventListener("online", () => {
     void syncAppSprites().then(renderAll);
   });
@@ -823,6 +831,7 @@ function renderComposition(team) {
   el.compositionTitle.textContent = team ? `${team.name}${sharedTeam ? " · lien partage" : ""}` : "Aucune equipe";
   el.compositionCount.textContent = team ? `${team.pokemon.length}/6` : "0/6";
   el.shareActions.classList.toggle("hidden", !team);
+  if (!team) closeShareMenu();
   el.compositionList.innerHTML = "";
   el.pokemonEditPanel.classList.add("hidden");
   el.pokemonEditPanel.innerHTML = "";
@@ -1795,6 +1804,7 @@ function renderPokemonEditPanel(pokemon, panel = el.pokemonEditPanel, includeAtt
 async function shareActiveTeam() {
   const team = getActiveTeam();
   if (!team) return;
+  closeShareMenu();
   const url = createTeamShareLink(team);
   const title = `KantoTeam - ${team.name || "Equipe Pokemon"}`;
   const text = `Consulte mon equipe Pokemon sur KantoTeam : ${team.name || "Equipe Pokemon"}`;
@@ -1815,6 +1825,7 @@ async function shareActiveTeam() {
 async function copyActiveTeamLink() {
   const team = getActiveTeam();
   if (!team) return;
+  closeShareMenu();
   await copyText(createTeamShareLink(team));
   setTemporaryButtonText(el.copyShareLink, "Copie");
 }
@@ -1822,12 +1833,24 @@ async function copyActiveTeamLink() {
 function openMessageShare(target) {
   const team = getActiveTeam();
   if (!team) return;
+  closeShareMenu();
   const url = createTeamShareLink(team);
   const message = `Consulte mon equipe Pokemon sur KantoTeam : ${team.name || "Equipe Pokemon"} ${url}`;
   const href = target === "whatsapp"
     ? `https://wa.me/?text=${encodeURIComponent(message)}`
     : `sms:?body=${encodeURIComponent(message)}`;
   window.open(href, "_blank", "noopener");
+}
+
+function toggleShareMenu(event) {
+  event?.stopPropagation?.();
+  const open = el.shareMenu.classList.toggle("hidden");
+  el.shareMenuToggle.setAttribute("aria-expanded", String(!open));
+}
+
+function closeShareMenu() {
+  el.shareMenu.classList.add("hidden");
+  el.shareMenuToggle.setAttribute("aria-expanded", "false");
 }
 
 async function copyText(text) {

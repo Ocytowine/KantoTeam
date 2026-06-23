@@ -119,10 +119,15 @@
             </div>
           </div>
           <div class="share-actions hidden" id="share-actions" aria-label="Partager l'equipe">
-            <button class="small-button" id="share-team" type="button">Partager</button>
-            <button class="small-button" id="copy-share-link" type="button">Copier lien</button>
-            <button class="small-button" id="share-whatsapp" type="button">WhatsApp</button>
-            <button class="small-button" id="share-sms" type="button">SMS</button>
+            <button class="share-icon-button" id="share-menu-toggle" type="button" aria-label="Options de partage" aria-expanded="false">
+              <img src="assets/share-pokeball.svg" alt="" aria-hidden="true">
+            </button>
+            <div class="share-menu hidden" id="share-menu">
+              <button class="small-button" id="share-team" type="button">Partager</button>
+              <button class="small-button" id="copy-share-link" type="button">Copier lien</button>
+              <button class="small-button" id="share-whatsapp" type="button">WhatsApp</button>
+              <button class="small-button" id="share-sms" type="button">SMS</button>
+            </div>
           </div>
           <div class="team-list" id="composition-list"></div>
           <div id="pokemon-edit-panel" class="pokemon-edit-panel hidden"></div>

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="gold" cx="34%" cy="20%" r="82%">
+      <stop offset="0" stop-color="#fff3ae"/>
+      <stop offset="0.38" stop-color="#f8d864"/>
+      <stop offset="0.72" stop-color="#f4c84a"/>
+      <stop offset="1" stop-color="#bd8610"/>
+    </radialGradient>
+    <linearGradient id="black" x1="0" y1="0" x2="0.78" y2="1">
+      <stop offset="0" stop-color="#343b47"/>
+      <stop offset="0.42" stop-color="#171b23"/>
+      <stop offset="1" stop-color="#07090d"/>
+    </linearGradient>
+    <linearGradient id="link" x1="0.12" y1="0.04" x2="0.9" y2="0.98">
+      <stop offset="0" stop-color="#fff8cf"/>
+      <stop offset="0.42" stop-color="#ffe88b"/>
+      <stop offset="1" stop-color="#d89f1d"/>
+    </linearGradient>
+    <clipPath id="ball">
+      <circle cx="32" cy="32" r="28"/>
+    </clipPath>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="3" stdDeviation="2.4" flood-color="#000" flood-opacity="0.42"/>
+    </filter>
+    <filter id="glow" x="-70%" y="-70%" width="240%" height="240%">
+      <feDropShadow dx="0" dy="0" stdDeviation="1.5" flood-color="#ffe88b" flood-opacity="0.52"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#shadow)">
+    <g clip-path="url(#ball)">
+      <path d="M4 32a28 28 0 0 1 56 0H4Z" fill="url(#black)"/>
+      <path d="M4 32a28 28 0 0 0 56 0H4Z" fill="url(#gold)"/>
+      <path d="M10 21c8-12 27-17 41-5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity="0.18"/>
+      <path d="M13 45c8 10 27 12 38 1" fill="none" stroke="#fff3ae" stroke-width="1.5" stroke-linecap="round" opacity="0.24"/>
+    </g>
+    <path d="M4.5 32h55" stroke="#111318" stroke-width="3"/>
+    <circle cx="32" cy="32" r="7" fill="url(#gold)" stroke="#111318" stroke-width="3"/>
+    <circle cx="32" cy="32" r="2.2" fill="#111318"/>
+  </g>
+
+  <g filter="url(#glow)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M45 23H20M20 23l7-4M20 23l7 4M19 41h25M44 41l-7-4M44 41l-7 4" stroke="#111318" stroke-width="7"/>
+    <path d="M45 23H20M20 23l7-4M20 23l7 4M19 41h25M44 41l-7-4M44 41l-7 4" stroke="url(#link)" stroke-width="3.4"/>
+  </g>
+</svg>
