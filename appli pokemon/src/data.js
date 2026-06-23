@@ -47,6 +47,7 @@ const TYPE_ICONS = {
 };
 
 const TYPE_LOGOS = {
+  Inconnue: "data/inconnue.png",
   Normal: "data/normal.png",
   Feu: "data/feu.png",
   Eau: "data/eau.png",

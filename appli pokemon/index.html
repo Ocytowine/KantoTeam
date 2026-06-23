@@ -36,12 +36,19 @@
       <header class="app-header">
         <div>
           <p class="eyebrow">Analyse d'equipes Pokemon - Gen 1</p>
-          <h1>KantoTeam</h1>
+          <h1 class="app-title">
+            <span class="sr-only">KantoTeam</span>
+            <img src="assets/Titre.png" alt="" aria-hidden="true">
+          </h1>
         </div>
         <div class="header-actions">
           <button class="ghost-button hidden" id="back-to-slots" type="button">Retour aux equipes</button>
-          <button class="ghost-button" id="open-type-helper" type="button">Aide types</button>
-          <button class="ghost-button" id="manage-saved-pokemon" type="button">Pokemon sauvegardes</button>
+          <button class="icon-nav-button" id="open-type-helper" type="button" aria-label="Guide des types">
+            <img src="assets/Logo-aide-type.png" alt="" aria-hidden="true">
+          </button>
+          <button class="icon-nav-button" id="manage-saved-pokemon" type="button" aria-label="Pokemon sauvegardes">
+            <img src="assets/Logo-sauvegarde.png" alt="" aria-hidden="true">
+          </button>
         </div>
       </header>
 
@@ -50,9 +57,12 @@
       <section class="workspace">
         <section class="panel saved-manager-panel hidden" id="saved-manager-panel" aria-labelledby="saved-manager-title">
           <div class="panel-heading">
-            <div>
+            <div class="panel-title-with-icon">
+              <img class="panel-title-icon" src="assets/Logo-sauvegarde.png" alt="" aria-hidden="true">
+              <div>
               <p class="eyebrow">Bibliotheque</p>
               <h2 id="saved-manager-title">Pokemon sauvegardes</h2>
+              </div>
             </div>
           </div>
           <div class="team-list" id="saved-pokemon-list"></div>
@@ -61,9 +71,12 @@
 
         <section class="panel type-helper-panel hidden" id="type-helper-panel" aria-labelledby="type-helper-title">
           <div class="panel-heading">
-            <div>
-              <p class="eyebrow">Aide de jeu</p>
-              <h2 id="type-helper-title">Tableau des types</h2>
+            <div class="panel-title-with-icon">
+              <img class="panel-title-icon" src="assets/Logo-aide-type.png" alt="" aria-hidden="true">
+              <div>
+                <p class="eyebrow">Guide des types</p>
+                <h2 id="type-helper-title">Interactions des types</h2>
+              </div>
             </div>
             <span class="pill" id="type-helper-count">0 Pokemon</span>
           </div>

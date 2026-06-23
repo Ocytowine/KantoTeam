@@ -127,6 +127,7 @@ function init() {
   fillTypeSelect(el.helperTypeOne, false);
   fillTypeSelect(el.helperTypeTwo, true);
   fillTypeSelect(el.helperTargetBase, false);
+  enhanceTypeSelects(document);
   renderAttackChecks();
   renderOfficialOptions();
   renderReforgedOptions();
@@ -175,6 +176,10 @@ function bindEvents() {
     if (el.shareActions.classList.contains("hidden")) return;
     if (el.shareActions.contains(event.target)) return;
     closeShareMenu();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    document.querySelectorAll(".type-wheel.open").forEach(closeTypeWheel);
   });
   window.addEventListener("online", () => {
     void syncAppSprites().then(renderAll);
@@ -496,6 +501,7 @@ function renderAll() {
   renderTypeHelper();
   renderPreview();
   renderAnalysis(activeTeam);
+  syncTypeWheels(document);
 }
 
 function getActiveTeam() {
@@ -683,6 +689,123 @@ function fillTypeSelect(select, optional) {
     optional ? `<option value="">Aucun</option>` : "",
     ...KANTO_TYPES.map((type) => `<option value="${type}">${type}</option>`)
   ].join("");
+}
+
+function enhanceTypeSelects(root = document) {
+  root.querySelectorAll("select").forEach((select) => {
+    if (select.dataset.typeWheelReady || !isTypeSelect(select)) return;
+    select.dataset.typeWheelReady = "true";
+    select.classList.add("native-type-select");
+    const wheel = document.createElement("div");
+    wheel.className = "type-wheel";
+    wheel.dataset.typeWheelFor = select.id || "";
+    wheel.innerHTML = renderTypeWheelMarkup(select);
+    select.insertAdjacentElement("afterend", wheel);
+
+    wheel.querySelectorAll("[data-type-wheel-value]").forEach((button) => {
+      button.addEventListener("mouseenter", () => previewTypeWheelValue(select, button.dataset.typeWheelValue));
+      button.addEventListener("mouseleave", () => syncTypeWheel(select));
+      button.addEventListener("click", () => {
+        const value = button.dataset.typeWheelValue;
+        select.value = value;
+        syncTypeWheel(select);
+        closeTypeWheel(wheel);
+        select.dispatchEvent(new Event("input", { bubbles: true }));
+        select.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+    });
+    wheel.querySelector("[data-type-wheel-open]").addEventListener("click", () => openTypeWheel(wheel, select));
+    wheel.querySelector("[data-type-wheel-backdrop]").addEventListener("click", () => closeTypeWheel(wheel));
+
+    select.addEventListener("change", () => syncTypeWheel(select));
+    syncTypeWheel(select);
+  });
+}
+
+function isTypeSelect(select) {
+  const values = Array.from(select.options).map((option) => option.value);
+  const typeValues = values.filter(Boolean);
+  return typeValues.length >= KANTO_TYPES.length
+    && typeValues.every((value) => KANTO_TYPES.includes(value))
+    && values.every((value) => value === "" || KANTO_TYPES.includes(value));
+}
+
+function renderTypeWheelMarkup(select) {
+  const optional = Array.from(select.options).some((option) => option.value === "");
+  const buttons = KANTO_TYPES.map((type, index) => {
+    const angle = (360 / KANTO_TYPES.length) * index;
+    return `
+      <button class="type-wheel-item" type="button" style="--wheel-angle:${angle}deg;--wheel-angle-back:${-angle}deg;--type-color:${TYPE_COLORS[type] || "#a9b3c3"}" data-type-wheel-value="${type}" aria-label="${type}">
+        ${typeLogo(type)}
+      </button>
+    `;
+  }).join("");
+
+  return `
+    <button class="type-wheel-trigger" type="button" data-type-wheel-open aria-label="Choisir un type" aria-expanded="false">
+      <span data-type-wheel-trigger-icon></span>
+    </button>
+    <div class="type-wheel-overlay hidden">
+      <div class="type-wheel-backdrop" data-type-wheel-backdrop></div>
+      <div class="type-wheel-stage" role="dialog" aria-label="Choisir un type">
+        ${buttons}
+        <button class="type-wheel-center ${optional ? "optional" : ""}" type="button" data-type-wheel-value="${optional ? "" : select.value}">
+          <span data-type-wheel-label></span>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function openTypeWheel(wheel, select) {
+  syncTypeWheel(select);
+  wheel.classList.add("open");
+  wheel.querySelector(".type-wheel-overlay")?.classList.remove("hidden");
+  wheel.querySelector("[data-type-wheel-open]")?.setAttribute("aria-expanded", "true");
+}
+
+function closeTypeWheel(wheel) {
+  wheel.classList.remove("open");
+  wheel.querySelector(".type-wheel-overlay")?.classList.add("hidden");
+  wheel.querySelector("[data-type-wheel-open]")?.setAttribute("aria-expanded", "false");
+}
+
+function previewTypeWheelValue(select, value) {
+  const wheel = select.nextElementSibling;
+  if (!wheel?.classList.contains("type-wheel")) return;
+  updateTypeWheelLabel(wheel, value);
+}
+
+function syncTypeWheel(select) {
+  const wheel = select.nextElementSibling;
+  if (!wheel?.classList.contains("type-wheel")) return;
+  const value = select.value;
+  wheel.querySelectorAll("[data-type-wheel-value]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.typeWheelValue === value);
+  });
+  const center = wheel.querySelector(".type-wheel-center");
+  if (center) center.dataset.typeWheelValue = Array.from(select.options).some((option) => option.value === "") ? "" : value;
+  const triggerIcon = wheel.querySelector("[data-type-wheel-trigger-icon]");
+  if (triggerIcon) {
+    triggerIcon.innerHTML = value ? typeLogo(value) : typeLogo("Inconnue");
+    triggerIcon.setAttribute("title", value || "Inconnue");
+  }
+  const trigger = wheel.querySelector("[data-type-wheel-open]");
+  if (trigger) trigger.style.setProperty("--type-color", value ? TYPE_COLORS[value] || "#a9b3c3" : "#a9b3c3");
+  updateTypeWheelLabel(wheel, value);
+}
+
+function syncTypeWheels(root = document) {
+  enhanceTypeSelects(root);
+  root.querySelectorAll("select[data-type-wheel-ready]").forEach(syncTypeWheel);
+}
+
+function updateTypeWheelLabel(wheel, value) {
+  const label = wheel.querySelector("[data-type-wheel-label]");
+  if (!label) return;
+  const text = value || "Aucun";
+  label.textContent = text;
+  wheel.style.setProperty("--wheel-active-color", value ? TYPE_COLORS[value] || "#a9b3c3" : "rgba(169, 179, 195, 0.48)");
 }
 
 function renderAttackChecks() {
@@ -1338,6 +1461,8 @@ function renderSimulation(team) {
     enemyContainer.append(card);
   }
 
+  enhanceTypeSelects(enemyContainer);
+
   enemyContainer.querySelectorAll("[data-add-enemy], [data-edit-enemy]").forEach((button) => {
     button.addEventListener("click", () => {
       const index = Number(button.dataset.addEnemy ?? button.dataset.editEnemy);
@@ -1390,6 +1515,7 @@ function renderSimulation(team) {
       }
       editor.querySelector("#enemy-type-one").value = pokemon.types[0] || "Normal";
       editor.querySelector("#enemy-type-two").value = pokemon.types[1] || "";
+      syncTypeWheels(editor);
       editor.dataset.enemyName = pokemon.name;
       editor.dataset.enemyNationalId = getPokemonNationalId(pokemon) || "";
       const attacks = pokemon.attacks?.length ? pokemon.attacks : pokemon.types;
@@ -1885,6 +2011,8 @@ function renderPokemonEditPanel(pokemon, panel = el.pokemonEditPanel, includeAtt
       </div>
     </div>
   `;
+
+  enhanceTypeSelects(panel);
 
   panel.querySelector("[data-cancel-pokemon-edit]").addEventListener("click", () => {
     panel.classList.add("hidden");
