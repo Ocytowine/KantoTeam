@@ -283,8 +283,9 @@ function loadSharedTeamFromUrl() {
 
   try {
     const payload = JSON.parse(decodeSharePayload(encoded));
-    if (payload?.v !== 1 || payload?.type !== "team") return null;
-    return normalizeSharedTeam(payload.team);
+    if (payload?.v === 2 && payload?.t === "t") return normalizeSharedTeam(expandCompactSharePayload(payload));
+    if (payload?.v === 1 && payload?.type === "team") return normalizeSharedTeam(payload.team);
+    return null;
   } catch {
     return null;
   }
@@ -331,21 +332,88 @@ function normalizeSharedTeam(team) {
 
 function buildSharePayload(team) {
   return {
-    v: 1,
-    type: "team",
-    team: {
-      name: team.name,
-      preferredSource: getTeamPreferredSource(team),
-      pokemon: team.pokemon.map((pokemon) => ({
-        name: pokemon.name,
-        types: pokemon.types,
-        attacks: pokemon.attacks || [],
-        nationalId: pokemon.nationalId || null,
-        officialId: pokemon.officialId || null,
-        reforgedId: pokemon.reforgedId || null,
-        sourceId: pokemon.sourceId || null
-      }))
-    }
+    v: 2,
+    t: "t",
+    n: team.name,
+    s: getTeamPreferredSource(team) === "reforged" ? "r" : "o",
+    p: team.pokemon.map(compactSharePokemon)
+  };
+}
+
+function compactSharePokemon(pokemon) {
+  const source = state.customPokemon.find((item) => String(item.id) === String(pokemon.sourceId)) || pokemon;
+  const attacks = encodeShareTypes(pokemon.attacks || source.attacks || []);
+  let officialId = null;
+  if (Number.isInteger(source.officialId)) officialId = source.officialId;
+  else if (Number.isInteger(source.sourceId)) officialId = source.sourceId;
+  else if (Number.isInteger(source.id)) officialId = source.id;
+  else if (Number.isInteger(pokemon.sourceId)) officialId = pokemon.sourceId;
+
+  if (officialId && KANTO_POKEMON.some((item) => item.id === officialId && item.name === pokemon.name)) {
+    return { o: officialId, a: attacks };
+  }
+
+  if (source.reforgedId || String(source.sourceId || source.id || pokemon.sourceId || "").startsWith("reforged-")) {
+    return { r: source.reforgedId || source.sourceId || source.id || pokemon.sourceId, a: attacks };
+  }
+
+  return {
+    n: pokemon.name,
+    y: encodeShareTypes(pokemon.types),
+    a: attacks,
+    id: pokemon.nationalId || source.nationalId || null
+  };
+}
+
+function encodeShareTypes(types) {
+  return types.map((type) => KANTO_TYPES.indexOf(type)).filter((index) => index >= 0);
+}
+
+function decodeShareTypes(types) {
+  return Array.isArray(types)
+    ? types.map((value) => Number.isInteger(value) ? KANTO_TYPES[value] : value).filter((type) => KANTO_TYPES.includes(type))
+    : [];
+}
+
+function expandCompactSharePayload(payload) {
+  return {
+    name: payload.n,
+    preferredSource: payload.s === "r" ? "reforged" : "official",
+    pokemon: Array.isArray(payload.p) ? payload.p.map(expandCompactSharePokemon).filter(Boolean) : []
+  };
+}
+
+function expandCompactSharePokemon(item) {
+  if (Number.isInteger(item.o)) {
+    const pokemon = KANTO_POKEMON.find((entry) => entry.id === item.o);
+    if (!pokemon) return null;
+    return {
+      name: pokemon.name,
+      types: pokemon.types,
+      attacks: decodeShareTypes(item.a),
+      officialId: pokemon.id,
+      nationalId: pokemon.id,
+      sourceId: pokemon.id
+    };
+  }
+
+  if (item.r) {
+    const pokemon = KANTO_REFORGED_POKEMON.find((entry) => entry.id === item.r);
+    if (!pokemon) return null;
+    return {
+      name: pokemon.name,
+      types: pokemon.types,
+      attacks: decodeShareTypes(item.a),
+      reforgedId: pokemon.id,
+      sourceId: pokemon.id
+    };
+  }
+
+  return {
+    name: item.n,
+    types: decodeShareTypes(item.y),
+    attacks: decodeShareTypes(item.a),
+    nationalId: Number.isInteger(item.id) ? item.id : null
   };
 }
 
@@ -1811,7 +1879,11 @@ async function shareActiveTeam() {
 
   if (navigator.share) {
     try {
-      await navigator.share({ title, text, url });
+      const logo = await getShareLogoFile();
+      const shareData = logo && navigator.canShare?.({ files: [logo] })
+        ? { title, text, url, files: [logo] }
+        : { title, text, url };
+      await navigator.share(shareData);
       return;
     } catch {
       // Annulation utilisateur ou partage indisponible : fallback copie.
@@ -1820,6 +1892,17 @@ async function shareActiveTeam() {
 
   await copyText(url);
   setTemporaryButtonText(el.shareTeam, "Lien copie");
+}
+
+async function getShareLogoFile() {
+  try {
+    const response = await fetch("assets/share-pokeball.svg");
+    if (!response.ok) return null;
+    const blob = await response.blob();
+    return new File([blob], "kantoteam-partage.svg", { type: "image/svg+xml" });
+  } catch {
+    return null;
+  }
 }
 
 async function copyActiveTeamLink() {
