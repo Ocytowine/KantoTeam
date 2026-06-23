@@ -1896,10 +1896,10 @@ async function shareActiveTeam() {
 
 async function getShareLogoFile() {
   try {
-    const response = await fetch("assets/share-pokeball.svg");
+    const response = await fetch("assets/share-pokeball.png");
     if (!response.ok) return null;
     const blob = await response.blob();
-    return new File([blob], "kantoteam-partage.svg", { type: "image/svg+xml" });
+    return new File([blob], "kantoteam-partage.png", { type: "image/png" });
   } catch {
     return null;
   }
