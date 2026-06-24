@@ -16,6 +16,16 @@ let simulationDraft = {
   showResults: false,
   autoOpponent: false
 };
+let teamSettingsOpen = false;
+let teamAddPanelOpen = false;
+let teamAddMode = null;
+let teamAddSelectedPokemon = null;
+let teamAddSlotIndex = null;
+let teamAddListFilters = {
+  query: "",
+  typeOne: "",
+  typeTwo: ""
+};
 
 const mobileVersusMedia = window.matchMedia("(max-width: 920px)");
 const spriteUrls = new Map();
@@ -60,6 +70,11 @@ const el = {
   compositionTitle: document.querySelector("#composition-title"),
   compositionCount: document.querySelector("#composition-count"),
   compositionList: document.querySelector("#composition-list"),
+  teamSettingsToggle: document.querySelector("#team-settings-toggle"),
+  teamSettingsPanel: document.querySelector("#team-settings-panel"),
+  compositionTeamName: document.querySelector("#composition-team-name"),
+  compositionTeamSource: document.querySelector("#composition-team-source"),
+  compositionAddPanel: document.querySelector("#composition-add-panel"),
   compositionToAnalysis: document.querySelector("#composition-to-analysis"),
   pokemonEditPanel: document.querySelector("#pokemon-edit-panel"),
   simulationPanel: document.querySelector("#simulation-panel"),
@@ -195,9 +210,12 @@ function bindEvents() {
   window.addEventListener("offline", () => {
     spritesEnabled = false;
     spriteUrls.clear();
-    renderComposition(state.teams[state.selectedSlot]);
+    renderAll();
   });
   el.compositionToAnalysis.addEventListener("click", () => openView("analysis"));
+  el.teamSettingsToggle.addEventListener("click", toggleTeamSettings);
+  el.compositionTeamName.addEventListener("input", updateCurrentTeamSettings);
+  el.compositionTeamSource.addEventListener("change", updateCurrentTeamSettings);
   el.analysisToComposition.addEventListener("click", () => openView("composition"));
   el.simulationConfirm.addEventListener("click", renderSimulationResults);
   el.versusAutoOpponent.addEventListener("change", toggleAutomaticOpponent);
@@ -266,6 +284,7 @@ function bindEvents() {
 
   el.teamForm.addEventListener("submit", (event) => {
     event.preventDefault();
+    if (state.activeView === "composition") return;
     confirmTeam();
   });
 }
@@ -465,13 +484,16 @@ function createEmptyTeam(slot) {
 
 function selectSlot(slot, view, preferredSource) {
   sharedTeam = null;
+  teamSettingsOpen = false;
+  teamAddPanelOpen = false;
+  teamAddSlotIndex = null;
   if (simulationDraft.autoOpponent) {
     simulationDraft.autoOpponent = false;
     simulationDraft.showResults = false;
     el.versusAutoOpponent.checked = false;
   }
   state.selectedSlot = slot;
-  state.activeView = view || (state.teams[slot] ? "analysis" : "editor");
+  state.activeView = view || "composition";
   saveState();
   draftTeam = state.teams[slot] ? structuredClone(state.teams[slot]) : createEmptyTeam(slot);
   if (!state.teams[slot] && preferredSource) draftTeam.preferredSource = preferredSource;
@@ -491,6 +513,11 @@ function preferredSourceLabel(source) {
 
 function openView(view) {
   if (view === "slots") sharedTeam = null;
+  if (view !== "composition") {
+    teamSettingsOpen = false;
+    teamAddPanelOpen = false;
+    teamAddSlotIndex = null;
+  }
   state.activeView = view;
   if (!sharedTeam) saveState();
   renderAll();
@@ -504,7 +531,7 @@ function renderAll() {
   renderSavedCustomOptions();
   updateModeFields();
   renderDraftTeam();
-  renderComposition(activeTeam);
+  renderManagedComposition(activeTeam);
   if (!sharedTeam) renderSimulation(state.teams[state.selectedSlot]);
   renderTypeHelper();
   renderPreview();
@@ -528,9 +555,8 @@ function renderSlots() {
       <span class="slot-meta">${status}</span>
       <div class="slot-actions">
         <button class="small-button" type="button" data-action="analysis" data-slot="${index}">Analyser</button>
-        <button class="small-button" type="button" data-action="composition" data-slot="${index}">Composition</button>
+        <button class="small-button" type="button" data-action="composition" data-slot="${index}">Gestion d'equipe</button>
         <button class="small-button" type="button" data-action="simulation" data-slot="${index}">Versus</button>
-        <button class="small-button" type="button" data-action="edit" data-slot="${index}">Editer</button>
         <button class="small-button danger" type="button" data-action="delete" data-slot="${index}">Supprimer</button>
       </div>
     ` : `
@@ -541,8 +567,8 @@ function renderSlots() {
           <strong>Creer une equipe</strong>
           <small>Choisis la liste utilisee pour les recherches.</small>
           <span class="empty-team-versions">
-            <button class="small-button" type="button" data-action="edit" data-slot="${index}" data-version="official">Kanto</button>
-            <button class="small-button" type="button" data-action="edit" data-slot="${index}" data-version="reforged">Reforged</button>
+            <button class="small-button" type="button" data-action="composition" data-slot="${index}" data-version="official">Kanto</button>
+            <button class="small-button" type="button" data-action="composition" data-slot="${index}" data-version="reforged">Reforged</button>
           </span>
         </span>
       </div>
@@ -566,17 +592,16 @@ function renderSlots() {
       const actionToView = {
         analysis: "analysis",
         composition: "composition",
-        simulation: "simulation",
-        edit: "editor"
+        simulation: "simulation"
       };
-      selectSlot(slot, actionToView[button.dataset.action] || "editor", button.dataset.version);
+      selectSlot(slot, actionToView[button.dataset.action] || "composition", button.dataset.version);
     });
   });
 }
 
 function renderActiveView() {
   const hasTeam = Boolean(getActiveTeam());
-  const view = ["slots", "savedManager", "typeHelper"].includes(state.activeView) ? state.activeView : hasTeam ? state.activeView : "editor";
+  const view = ["slots", "savedManager", "typeHelper"].includes(state.activeView) ? state.activeView : hasTeam ? state.activeView : "composition";
   el.slots.classList.toggle("hidden", view !== "slots");
   el.backToSlots.classList.toggle("hidden", view === "slots");
   el.manageSavedPokemon.classList.toggle("hidden", view !== "slots");
@@ -585,7 +610,7 @@ function renderActiveView() {
   el.typeHelperPanel.classList.toggle("hidden", view !== "typeHelper");
   el.compositionPanel.classList.toggle("hidden", view !== "composition");
   el.simulationPanel.classList.toggle("hidden", view !== "simulation" || Boolean(sharedTeam));
-  el.editorPanel.classList.toggle("hidden", view !== "editor" || Boolean(sharedTeam));
+  el.editorPanel.classList.add("hidden");
   el.analysisPanel.classList.toggle("hidden", view !== "analysis");
 }
 
@@ -985,16 +1010,23 @@ function addCurrentPokemon() {
   };
   draftTeam.pokemon.push(teamMember);
 
-  saveState();
+  if (state.activeView === "composition") {
+    if (!draftTeam.name) draftTeam.name = el.compositionTeamName.value.trim() || `Equipe ${state.selectedSlot + 1}`;
+    persistDraftTeam();
+  } else {
+    saveState();
+  }
   renderSavedCustomOptions();
   renderDraftTeam();
   clearAttackTypes();
   if (el.addMode.value === "custom") el.customName.value = "";
   syncAttackChecksFromCurrentSelection();
   renderPreview();
+  if (state.activeView === "composition") renderAll();
   void syncPokemonSprites(savedPokemon || teamMember).then(() => {
     renderDraftTeam();
     renderPreview();
+    if (state.activeView === "composition") renderAll();
   });
 }
 
@@ -1059,6 +1091,460 @@ function renderComposition(team) {
       if (pokemon) renderPokemonEditPanel(pokemon, el.pokemonEditPanel, true);
     });
   });
+}
+
+function renderManagedComposition(team) {
+  const editable = !sharedTeam;
+  const displayTeam = editable && state.activeView === "composition" ? draftTeam : team;
+  if (displayTeam?.pokemon.length >= 6) teamAddPanelOpen = false;
+  el.compositionTitle.textContent = displayTeam ? `${displayTeam.name || `Equipe ${state.selectedSlot + 1}`}${sharedTeam ? " · lien partage" : ""}` : "Aucune equipe";
+  el.compositionCount.textContent = displayTeam ? `${displayTeam.pokemon.length}/6` : "0/6";
+  el.teamSettingsToggle.classList.toggle("hidden", !displayTeam || !editable);
+  el.teamSettingsPanel.classList.toggle("hidden", !displayTeam || !editable || !teamSettingsOpen);
+  el.compositionAddPanel.classList.add("hidden");
+  el.shareActions.classList.toggle("hidden", !team);
+  if (!team) closeShareMenu();
+  el.compositionList.innerHTML = "";
+  el.pokemonEditPanel.classList.add("hidden");
+  el.pokemonEditPanel.innerHTML = "";
+
+  if (!displayTeam) {
+    el.compositionList.innerHTML = `<div class="empty-state">Retourne aux equipes et cree un slot pour afficher sa composition.</div>`;
+    return;
+  }
+
+  syncTeamSettingsInputs(displayTeam);
+
+  displayTeam.pokemon.forEach((pokemon, index) => {
+    const card = document.createElement("article");
+    card.className = "pokemon-card collapsible";
+    card.setAttribute("style", pokemonCardStyle(pokemon));
+    card.innerHTML = renderPokemonCard(pokemon, { index, editable, showSprite: true });
+    el.compositionList.append(card);
+  });
+
+  if (editable) {
+    for (let index = displayTeam.pokemon.length; index < 6; index += 1) {
+      const emptySlot = document.createElement("button");
+      emptySlot.className = "composition-add-slot";
+      emptySlot.type = "button";
+      emptySlot.dataset.openTeamAdd = "true";
+      emptySlot.dataset.slotIndex = String(index);
+      emptySlot.innerHTML = `
+        <img class="add-pokeball-icon large" src="assets/add-pokeball.svg" alt="" aria-hidden="true">
+        <span>Ajouter un Pokemon</span>
+      `;
+      el.compositionList.append(emptySlot);
+      if (teamAddPanelOpen && teamAddSlotIndex === index) {
+        el.compositionAddPanel.classList.remove("hidden");
+        el.compositionList.append(el.compositionAddPanel);
+        renderTeamAddPanel();
+      }
+    }
+  }
+
+  bindPokemonCardToggles(el.compositionList);
+
+  el.compositionList.querySelectorAll("[data-remove-from-team]").forEach((button) => {
+    button.addEventListener("click", () => removePokemonFromCurrentTeam(button.dataset.removeFromTeam));
+  });
+
+  el.compositionList.querySelectorAll("[data-edit-pokemon]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const pokemon = displayTeam.pokemon.find((item) => item.instanceId === button.dataset.editPokemon);
+      if (pokemon) renderPokemonEditPanel(pokemon, el.pokemonEditPanel, true);
+    });
+  });
+
+  el.compositionList.querySelectorAll("[data-open-team-add]").forEach((button) => {
+    button.addEventListener("click", () => {
+      teamAddPanelOpen = true;
+      teamAddMode = null;
+      teamAddSelectedPokemon = null;
+      teamAddSlotIndex = Number(button.dataset.slotIndex);
+      renderAll();
+      el.compositionAddPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  });
+}
+
+function syncTeamSettingsInputs(team) {
+  if (document.activeElement !== el.compositionTeamName) {
+    el.compositionTeamName.value = team.name || "";
+  }
+  if (document.activeElement !== el.compositionTeamSource) {
+    el.compositionTeamSource.value = getTeamPreferredSource(team);
+  }
+}
+
+function toggleTeamSettings() {
+  teamSettingsOpen = !teamSettingsOpen;
+  renderAll();
+}
+
+function updateCurrentTeamSettings() {
+  if (sharedTeam) return;
+  draftTeam.name = el.compositionTeamName.value.trim();
+  draftTeam.preferredSource = el.compositionTeamSource.value;
+  el.teamName.value = draftTeam.name;
+  el.addMode.value = draftTeam.preferredSource;
+  persistDraftTeam();
+  updateModeFields();
+  syncAttackChecksFromCurrentSelection();
+  renderAll();
+}
+
+function persistDraftTeam() {
+  draftTeam.updatedAt = new Date().toISOString();
+  state.teams[state.selectedSlot] = structuredClone(draftTeam);
+  saveState();
+}
+
+function renderTeamAddPanel() {
+  el.compositionAddPanel.innerHTML = `
+    <div class="team-add-heading">
+      <div>
+        <p class="eyebrow">Ajouter un Pokemon</p>
+        <h3>${teamAddMode ? teamAddModeLabel(teamAddMode) : "Choisis une methode"}</h3>
+      </div>
+      ${teamAddMode ? `<button class="small-button" type="button" data-team-add-back>Retour</button>` : ""}
+    </div>
+    ${teamAddMode ? renderTeamAddMode() : renderTeamAddChoices()}
+  `;
+  enhanceTypeSelects(el.compositionAddPanel);
+  bindTeamAddPanel();
+}
+
+function teamAddModeLabel(mode) {
+  if (mode === "library") return "Depuis la bibliotheque";
+  if (mode === "list") return `Depuis la liste ${preferredSourceLabel(getTeamPreferredSource(draftTeam))}`;
+  return "Creation complete";
+}
+
+function renderTeamAddChoices() {
+  return `
+    <div class="team-add-choice-grid">
+      <button class="team-add-choice" type="button" data-team-add-mode="library">
+        <strong>Bibliotheque</strong>
+        <span>Ajouter directement un Pokemon sauvegarde.</span>
+      </button>
+      <button class="team-add-choice" type="button" data-team-add-mode="list">
+        <strong>Liste Pokemon</strong>
+        <span>Rechercher, filtrer par type, puis choisir les attaques.</span>
+      </button>
+      <button class="team-add-choice" type="button" data-team-add-mode="custom">
+        <strong>Creer un Pokemon</strong>
+        <span>Nom, sprite optionnel, types defensifs et attaques.</span>
+      </button>
+    </div>
+  `;
+}
+
+function renderTeamAddMode() {
+  if (teamAddMode === "library") return renderTeamAddLibrary();
+  if (teamAddMode === "list") return renderTeamAddList();
+  return renderTeamAddCustom();
+}
+
+function renderTeamAddLibrary() {
+  if (!state.customPokemon.length) return `<div class="empty-state">Aucun Pokemon sauvegarde pour l'instant.</div>`;
+  if (needsSpriteSync(state.customPokemon)) {
+    void syncPokemonSprites(state.customPokemon).then(() => {
+      if (state.activeView === "composition" && teamAddPanelOpen && teamAddMode === "library") renderTeamAddPanel();
+    });
+  }
+  return `
+    <div class="team-add-mini-grid">
+      ${state.customPokemon.map((pokemon) => renderTeamAddMiniCard(pokemon, "saved")).join("")}
+    </div>
+  `;
+}
+
+function renderTeamAddMiniCard(pokemon, source) {
+  return `
+    <button class="team-add-mini-card" type="button" data-team-add-pokemon="${escapeHtml(pokemonOptionLabel(pokemon))}" data-team-add-source="${source}">
+      <span class="team-add-mini-sprite">${renderPokemonSprite(pokemon) || `<span>${escapeHtml(pokemon.name.slice(0, 1))}</span>`}</span>
+      <strong>${escapeHtml(pokemon.name)}</strong>
+      <span class="team-add-type-icons" aria-label="Types defensifs">${pokemon.types.map(typeLogoOnly).join("")}</span>
+    </button>
+  `;
+}
+
+function renderTeamAddList() {
+  if (teamAddSelectedPokemon) return renderTeamAddAttackChoice(teamAddSelectedPokemon);
+
+  const source = getTeamPreferredSource(draftTeam);
+  const pokemonList = getTeamAddSourcePokemon(source);
+  const query = normalize(teamAddListFilters.query);
+  const typeOne = teamAddListFilters.typeOne;
+  const typeTwo = teamAddListFilters.typeTwo;
+  const canShowResults = query.length >= 3 || Boolean(typeOne);
+  const matches = canShowResults
+    ? pokemonList.filter((pokemon) => (
+        (!query || normalize(pokemon.name).includes(query))
+        && (!typeOne || pokemon.types.includes(typeOne))
+        && (!typeTwo || pokemon.types.includes(typeTwo))
+      ))
+    : [];
+  const selected = teamAddSelectedPokemon;
+  if (matches.length && needsSpriteSync(matches)) {
+    void syncPokemonSprites(matches).then(() => {
+      if (state.activeView === "composition" && teamAddPanelOpen && teamAddMode === "list") renderTeamAddPanel();
+    });
+  }
+  return `
+    <div class="team-add-filters">
+      <label class="field">
+        <span>Recherche par nom</span>
+        <input id="team-add-search" type="search" placeholder="Nom du Pokemon" value="${escapeHtml(teamAddListFilters.query)}">
+      </label>
+      <label class="field">
+        <span>Filtre type 1</span>
+        <select id="team-add-filter-one">${typeOptions(typeOne, true)}</select>
+      </label>
+      <label class="field">
+        <span>Filtre type 2</span>
+        <select id="team-add-filter-two">${typeOptions(typeTwo, true)}</select>
+      </label>
+    </div>
+    <div class="team-add-mini-grid">
+      ${canShowResults
+        ? matches.map((pokemon) => renderTeamAddMiniCard(pokemon, source)).join("") || `<div class="empty-state">Aucun Pokemon ne correspond aux filtres.</div>`
+        : `<div class="empty-state">Tape au moins 3 lettres ou choisis un premier type pour afficher les Pokemon.</div>`}
+    </div>
+    ${selected ? renderTeamAddAttackChoice(selected) : ""}
+  `;
+}
+
+function renderTeamAddAttackChoice(pokemon) {
+  return `
+    <div class="team-add-attack-panel">
+      <div class="team-add-selected-summary">
+        <span class="team-add-mini-sprite">${renderPokemonSprite(pokemon) || `<span>${escapeHtml(pokemon.name.slice(0, 1))}</span>`}</span>
+        <div>
+          <p class="eyebrow">Pokemon choisi</p>
+          <h4>${escapeHtml(pokemon.name)}</h4>
+          <span class="team-add-type-icons" aria-label="Types defensifs">${pokemon.types.map(typeLogoOnly).join("")}</span>
+        </div>
+        <button class="small-button" type="button" data-team-add-change-pokemon>Changer de Pokemon</button>
+      </div>
+      <button class="small-button" type="button" data-team-add-use-defensive>Utiliser ses types defensifs</button>
+      <div class="team-add-attack-slots">
+        ${[0, 1, 2, 3].map((index) => `
+          <label class="field">
+            <span>Attaque ${index + 1}</span>
+            <select class="team-add-attack-select">${typeOptions("", true)}</select>
+          </label>
+        `).join("")}
+      </div>
+      <button class="primary-button" type="button" data-team-add-confirm-list>Ajouter avec ces attaques</button>
+    </div>
+  `;
+}
+
+function renderTeamAddCustom() {
+  const allPokemon = [...KANTO_POKEMON, ...KANTO_REFORGED_POKEMON];
+  return `
+    <div class="team-add-custom-grid">
+      <label class="field">
+        <span>Nom</span>
+        <input id="team-add-custom-name" type="text" maxlength="32" placeholder="Nom du Pokemon">
+      </label>
+      <label class="field">
+        <span>Sprite optionnel</span>
+        <input id="team-add-custom-sprite" list="team-add-custom-sprites" type="search" placeholder="Nom du sprite">
+        <datalist id="team-add-custom-sprites">
+          ${allPokemon.map((pokemon) => `<option value="${escapeHtml(pokemon.name)}"></option>`).join("")}
+        </datalist>
+      </label>
+      <label class="field">
+        <span>Type defensif 1</span>
+        <select id="team-add-custom-type-one">${typeOptions("", false)}</select>
+      </label>
+      <label class="field">
+        <span>Type defensif 2</span>
+        <select id="team-add-custom-type-two">${typeOptions("", true)}</select>
+      </label>
+    </div>
+    <div class="team-add-attack-slots">
+      ${[0, 1, 2, 3].map((index) => `
+        <label class="field">
+          <span>Attaque ${index + 1}</span>
+          <select class="team-add-custom-attack">${typeOptions("", true)}</select>
+        </label>
+      `).join("")}
+    </div>
+    <button class="primary-button" type="button" data-team-add-confirm-custom>Creer et ajouter</button>
+  `;
+}
+
+function bindTeamAddPanel() {
+  el.compositionAddPanel.querySelector("[data-team-add-back]")?.addEventListener("click", () => {
+    teamAddMode = null;
+    teamAddSelectedPokemon = null;
+    teamAddListFilters = { query: "", typeOne: "", typeTwo: "" };
+    renderAll();
+  });
+  el.compositionAddPanel.querySelectorAll("[data-team-add-mode]").forEach((button) => {
+    button.addEventListener("click", () => {
+      teamAddMode = button.dataset.teamAddMode;
+      teamAddSelectedPokemon = null;
+      teamAddListFilters = { query: "", typeOne: "", typeTwo: "" };
+      renderAll();
+    });
+  });
+  el.compositionAddPanel.querySelectorAll("#team-add-search, #team-add-filter-one, #team-add-filter-two").forEach((field) => {
+    field.addEventListener("input", updateTeamAddListFilters);
+    field.addEventListener("change", updateTeamAddListFilters);
+  });
+  el.compositionAddPanel.querySelectorAll("[data-team-add-pokemon]").forEach((button) => {
+    button.addEventListener("click", () => handleTeamAddPokemonClick(button));
+  });
+  el.compositionAddPanel.querySelector("[data-team-add-change-pokemon]")?.addEventListener("click", () => {
+    teamAddSelectedPokemon = null;
+    renderAll();
+  });
+  el.compositionAddPanel.querySelector("[data-team-add-use-defensive]")?.addEventListener("click", () => {
+    if (teamAddSelectedPokemon) addPokemonToManagedTeam(teamAddSelectedPokemon, teamAddSelectedPokemon.types, getTeamPreferredSource(draftTeam));
+  });
+  el.compositionAddPanel.querySelector("[data-team-add-confirm-list]")?.addEventListener("click", () => {
+    if (!teamAddSelectedPokemon) return;
+    addPokemonToManagedTeam(teamAddSelectedPokemon, getTypeValuesFromSelects(".team-add-attack-select"), getTeamPreferredSource(draftTeam));
+  });
+  el.compositionAddPanel.querySelector("[data-team-add-confirm-custom]")?.addEventListener("click", addCustomPokemonFromManagedForm);
+}
+
+function updateTeamAddListFilters() {
+  const activeId = document.activeElement?.id || "";
+  const cursor = document.activeElement?.selectionStart ?? null;
+  teamAddListFilters = {
+    query: el.compositionAddPanel.querySelector("#team-add-search")?.value || "",
+    typeOne: el.compositionAddPanel.querySelector("#team-add-filter-one")?.value || "",
+    typeTwo: el.compositionAddPanel.querySelector("#team-add-filter-two")?.value || ""
+  };
+  teamAddSelectedPokemon = null;
+  renderTeamAddPanel();
+  if (activeId) {
+    const nextActive = el.compositionAddPanel.querySelector(`#${activeId}`);
+    nextActive?.focus();
+    if (nextActive?.setSelectionRange && cursor !== null) nextActive.setSelectionRange(cursor, cursor);
+  }
+}
+
+function handleTeamAddPokemonClick(button) {
+  const pokemon = findTeamAddPokemon(button.dataset.teamAddSource, button.dataset.teamAddPokemon);
+  if (!pokemon) return;
+  if (teamAddMode === "library") {
+    addPokemonToManagedTeam(pokemon, pokemon.attacks || pokemon.types, "saved");
+    return;
+  }
+  teamAddSelectedPokemon = pokemon;
+  renderAll();
+}
+
+function findTeamAddPokemon(source, label) {
+  const list = source === "saved" ? state.customPokemon : getTeamAddSourcePokemon(source);
+  return list.find((pokemon) => pokemonOptionLabel(pokemon) === label);
+}
+
+function getTeamAddSourcePokemon(source) {
+  return source === "reforged" ? KANTO_REFORGED_POKEMON : KANTO_POKEMON;
+}
+
+function needsSpriteSync(pokemonList) {
+  return pokemonList.some((pokemon) => {
+    const id = getPokemonNationalId(pokemon);
+    return id && !spriteUrls.has(id);
+  });
+}
+
+function getTypeValuesFromSelects(selector) {
+  return Array.from(el.compositionAddPanel.querySelectorAll(selector))
+    .map((select) => select.value)
+    .filter(Boolean)
+    .filter((type, index, all) => all.indexOf(type) === index)
+    .slice(0, 4);
+}
+
+function addCustomPokemonFromManagedForm() {
+  const name = el.compositionAddPanel.querySelector("#team-add-custom-name").value.trim();
+  const typeOne = el.compositionAddPanel.querySelector("#team-add-custom-type-one").value;
+  const typeTwo = el.compositionAddPanel.querySelector("#team-add-custom-type-two").value;
+  if (!name) {
+    alert("Donne un nom au Pokemon.");
+    return;
+  }
+  const types = [typeOne, typeTwo].filter(Boolean).filter((type, index, all) => all.indexOf(type) === index);
+  const attacks = getTypeValuesFromSelects(".team-add-custom-attack");
+  const spriteName = el.compositionAddPanel.querySelector("#team-add-custom-sprite").value.trim();
+  const spriteSource = findSpriteSourcePokemon(spriteName);
+  const pokemon = {
+    id: `custom-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    name,
+    types,
+    attacks,
+    custom: true,
+    origin: "custom",
+    nationalId: getPokemonNationalId(spriteSource) || null
+  };
+  addPokemonToManagedTeam(pokemon, attacks, "custom", true);
+}
+
+function findSpriteSourcePokemon(name) {
+  if (!name) return null;
+  const normalized = normalize(name);
+  return [...KANTO_POKEMON, ...KANTO_REFORGED_POKEMON].find((pokemon) => normalize(pokemon.name) === normalized) || null;
+}
+
+function addPokemonToManagedTeam(pokemon, attacks, source, forceSave = false) {
+  if (draftTeam.pokemon.length >= 6) {
+    alert("Une equipe peut contenir au maximum 6 Pokemon.");
+    return;
+  }
+  const cleanAttacks = (attacks?.length ? attacks : pokemon.types).filter(Boolean).slice(0, 4);
+  const shouldSave = forceSave || source !== "saved";
+  const savedPokemon = shouldSave ? saveManagedPokemonToLibrary(pokemon, cleanAttacks, source) : pokemon;
+  const teamMember = {
+    instanceId: `member-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    sourceId: savedPokemon?.id ?? pokemon.id,
+    name: pokemon.name,
+    types: [...pokemon.types],
+    attacks: cleanAttacks
+  };
+  if (Number.isInteger(getPokemonNationalId(savedPokemon || pokemon))) {
+    teamMember.nationalId = getPokemonNationalId(savedPokemon || pokemon);
+  }
+  draftTeam.pokemon.push(teamMember);
+  if (!draftTeam.name) draftTeam.name = el.compositionTeamName.value.trim() || `Equipe ${state.selectedSlot + 1}`;
+  persistDraftTeam();
+  renderSavedCustomOptions();
+  teamAddPanelOpen = false;
+  teamAddSlotIndex = null;
+  teamAddMode = null;
+  teamAddSelectedPokemon = null;
+  teamAddListFilters = { query: "", typeOne: "", typeTwo: "" };
+  renderAll();
+  void syncPokemonSprites(savedPokemon || teamMember).then(renderAll);
+}
+
+function saveManagedPokemonToLibrary(pokemon, attacks, source) {
+  const existing = state.customPokemon.find((item) => (
+    normalize(item.name) === normalize(pokemon.name)
+    && item.types.join("|") === pokemon.types.join("|")
+    && (item.attacks || []).join("|") === attacks.join("|")
+  ));
+  if (existing) return existing;
+  const savedPokemon = {
+    ...structuredClone(pokemon),
+    id: `saved-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    officialId: source === "official" ? pokemon.id : pokemon.officialId || null,
+    reforgedId: source === "reforged" ? pokemon.id : pokemon.reforgedId || null,
+    origin: source,
+    custom: source === "custom" || pokemon.custom === true,
+    attacks
+  };
+  state.customPokemon.push(savedPokemon);
+  return savedPokemon;
 }
 
 function savedPokemonOriginLabel(pokemon) {

@@ -502,6 +502,203 @@ h3 {
   margin-top: 18px;
 }
 
+.composition-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.edit-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(244, 200, 74, 0.36);
+  border-radius: 999px;
+  color: #f7d86a;
+  background: rgba(15, 18, 24, 0.62);
+}
+
+.edit-icon-button svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.edit-icon-button:hover,
+.edit-icon-button:focus-visible {
+  background: rgba(244, 200, 74, 0.13);
+  box-shadow: 0 0 14px rgba(244, 200, 74, 0.18);
+}
+
+.team-settings-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(180px, 0.8fr);
+  gap: 12px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(244, 200, 74, 0.22);
+  border-radius: 8px;
+  padding: 12px;
+  background: rgba(244, 200, 74, 0.055);
+}
+
+.composition-add-panel {
+  grid-column: 1 / -1;
+  margin-top: 14px;
+  border: 1px solid rgba(244, 200, 74, 0.24);
+  border-radius: 8px;
+  padding: 14px;
+  background: rgba(15, 18, 24, 0.58);
+}
+
+.team-add-heading,
+.team-add-attack-panel > div:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.team-add-heading h3,
+.team-add-attack-panel h4 {
+  margin: 3px 0 0;
+}
+
+.team-add-choice-grid,
+.team-add-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.team-add-choice,
+.team-add-mini-card {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  color: var(--text);
+  background: rgba(20, 25, 34, 0.76);
+  text-align: left;
+}
+
+.team-add-choice:hover,
+.team-add-mini-card:hover {
+  border-color: rgba(244, 200, 74, 0.64);
+  background: rgba(244, 200, 74, 0.08);
+}
+
+.team-add-choice span {
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.35;
+}
+
+.team-add-mini-card {
+  justify-items: center;
+  align-content: start;
+  text-align: center;
+}
+
+.team-add-type-icons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 7px;
+  min-height: 22px;
+  line-height: 0;
+}
+
+.team-add-type-icons .type-logo-only {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+}
+
+.team-add-mini-sprite {
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  margin: 0 auto;
+  border-radius: 999px;
+  background: rgba(8, 10, 14, 0.42);
+  color: var(--accent);
+  font-size: 1.45rem;
+  font-weight: 900;
+}
+
+.team-add-mini-sprite .pokemon-sprite {
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+}
+
+.team-add-filters,
+.team-add-custom-grid,
+.team-add-attack-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.team-add-attack-panel {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+  border: 1px solid rgba(244, 200, 74, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+  background: rgba(244, 200, 74, 0.055);
+}
+
+.team-add-selected-summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.team-add-selected-summary h4 {
+  margin: 3px 0 6px;
+}
+
+.composition-add-slot {
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  min-height: 150px;
+  border: 1px dashed rgba(244, 200, 74, 0.36);
+  border-radius: 8px;
+  color: var(--accent);
+  background: rgba(244, 200, 74, 0.045);
+}
+
+.composition-add-slot span {
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.composition-add-slot:hover {
+  border-color: rgba(244, 200, 74, 0.68);
+  background: rgba(244, 200, 74, 0.08);
+}
+
+.composition-add-slot:hover .add-pokeball-icon.large {
+  transform: translateY(-2px) scale(1.06);
+}
+
 .picker-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2633,6 +2830,16 @@ button:focus-visible {
 
   .picker-grid {
     grid-template-columns: 1fr;
+  }
+
+  .team-settings-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .team-add-selected-summary {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
   }
 
   .type-matchup-controls {

@@ -189,9 +189,17 @@
 
         <section class="panel composition-panel hidden" id="composition-panel" aria-labelledby="composition-title">
           <div class="panel-heading">
-            <div>
-              <p class="eyebrow">Composition</p>
-              <h2 id="composition-title">Aucune equipe</h2>
+            <div class="composition-title-block">
+              <p class="eyebrow">Gestion d'equipe</p>
+              <div class="composition-title-row">
+                <h2 id="composition-title">Aucune equipe</h2>
+                <button class="edit-icon-button hidden" id="team-settings-toggle" type="button" aria-label="Editer les reglages de l'equipe">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M4 20h4l11-11-4-4L4 16v4Z"></path>
+                    <path d="M13 7l4 4"></path>
+                  </svg>
+                </button>
+              </div>
             </div>
             <div class="panel-actions">
               <button class="small-button" id="composition-to-analysis" type="button">Analyse</button>
@@ -209,7 +217,21 @@
               <button class="small-button" id="share-sms" type="button">SMS</button>
             </div>
           </div>
+          <div class="team-settings-panel hidden" id="team-settings-panel">
+            <label class="field">
+              <span>Nom de l'equipe</span>
+              <input id="composition-team-name" type="text" maxlength="32" placeholder="Ex: Ligue Kanto">
+            </label>
+            <label class="field">
+              <span>Liste Pokemon du slot</span>
+              <select id="composition-team-source">
+                <option value="official">Kanto</option>
+                <option value="reforged">Kanto Reforged</option>
+              </select>
+            </label>
+          </div>
           <div class="team-list" id="composition-list"></div>
+          <div class="composition-add-panel hidden" id="composition-add-panel"></div>
           <div id="pokemon-edit-panel" class="pokemon-edit-panel hidden"></div>
         </section>
 
@@ -279,7 +301,7 @@
           </div>
 
           <form id="team-form" class="team-form">
-            <label class="field">
+            <label class="field team-name-field">
               <span>Nom de l'equipe</span>
               <input id="team-name" type="text" maxlength="32" placeholder="Ex: Ligue Kanto">
             </label>
@@ -377,7 +399,7 @@
               <h2 id="analysis-title">Aucune equipe confirmee</h2>
             </div>
             <div class="panel-actions">
-              <button class="small-button" id="analysis-to-composition" type="button">Composition</button>
+              <button class="small-button" id="analysis-to-composition" type="button">Gestion d'equipe</button>
               <span class="pill" id="team-count">0/6</span>
             </div>
           </div>
