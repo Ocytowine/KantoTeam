@@ -26,6 +26,9 @@ let teamAddListFilters = {
   typeOne: "",
   typeTwo: ""
 };
+let helperThreatAnalysisOpen = false;
+let helperOpenGroup = null;
+let helperSelectedTypes = null;
 
 const mobileVersusMedia = window.matchMedia("(max-width: 920px)");
 const spriteUrls = new Map();
@@ -59,8 +62,14 @@ const el = {
   helperTargetBase: document.querySelector("#helper-target-base"),
   helperDefense: document.querySelector("#helper-defense"),
   helperOffense: document.querySelector("#helper-offense"),
+  helperThreatAnalysisToggle: document.querySelector("#helper-threat-analysis-toggle"),
+  helperThreatAnalysis: document.querySelector("#helper-threat-analysis"),
+  helperFilterStep: document.querySelector("#helper-filter-step"),
+  helperFilterSummary: document.querySelector("#helper-filter-summary"),
+  helperResponseJump: document.querySelector("#helper-response-jump"),
   helperGridTitle: document.querySelector("#helper-grid-title"),
   helperMatchupGrid: document.querySelector("#helper-matchup-grid"),
+  helperPokemonHeading: document.querySelector("#helper-pokemon-heading"),
   helperPokemonTitle: document.querySelector("#helper-pokemon-title"),
   helperPokemonList: document.querySelector("#helper-pokemon-list"),
   savedManagerPanel: document.querySelector("#saved-manager-panel"),
@@ -185,9 +194,31 @@ function bindEvents() {
   el.manageSavedPokemon.addEventListener("click", () => openView("savedManager"));
   el.openTypeHelper.addEventListener("click", () => openView("typeHelper"));
   [el.helperTypeOne, el.helperTypeTwo, el.helperSource, el.helperTargetBase].forEach((field) => {
-    field.addEventListener("change", () => renderTypeHelper());
+    field.addEventListener("change", () => {
+      resetHelperResultSelection();
+      renderTypeHelper();
+    });
   });
-  el.helperMode.forEach((field) => field.addEventListener("change", () => renderTypeHelper()));
+  el.helperMode.forEach((field) => field.addEventListener("change", () => {
+    resetHelperResultSelection();
+    renderTypeHelper();
+  }));
+  el.helperThreatAnalysisToggle.addEventListener("click", () => {
+    helperThreatAnalysisOpen = !helperThreatAnalysisOpen;
+    renderTypeHelper();
+  });
+  el.helperFilterSummary.addEventListener("click", () => scrollToHelperAnchor(el.helperFilterStep));
+  el.helperFilterSummary.addEventListener("keydown", (event) => {
+    if (!["Enter", " "].includes(event.key)) return;
+    event.preventDefault();
+    scrollToHelperAnchor(el.helperFilterStep);
+  });
+  el.helperResponseJump.addEventListener("click", () => scrollToHelperAnchor(el.helperMatchupGrid));
+  el.helperResponseJump.addEventListener("keydown", (event) => {
+    if (!["Enter", " "].includes(event.key)) return;
+    event.preventDefault();
+    scrollToHelperAnchor(el.helperMatchupGrid);
+  });
   el.helperThreatSearchToggle.addEventListener("click", toggleHelperThreatSearch);
   el.helperThreatPokemon.addEventListener("input", applyHelperThreatPokemon);
   el.shareMenuToggle.addEventListener("click", toggleShareMenu);
@@ -1560,21 +1591,49 @@ function renderTypeHelper(selectedTypes = null) {
   const requiredType = el.helperTargetBase.value;
   const pokemonList = getHelperPokemonSource(source);
   const responseRows = getHelperResponseRows(threatTypes, pokemonList, mode, requiredType);
-  const exactTypes = selectedTypes || responseRows[0]?.types || [];
-  const filteredPokemon = filterPokemonByTypes(pokemonList, exactTypes);
+  const exactTypes = selectedTypes || helperSelectedTypes || [];
+  const filteredPokemon = exactTypes.length ? filterPokemonByTypes(pokemonList, exactTypes) : [];
 
   el.typeHelperCount.textContent = `${pokemonList.length} Pokemon`;
   renderHelperThreatOptions(pokemonList);
+  renderHelperThreatAnalysisState();
+  el.helperFilterSummary.innerHTML = renderHelperFilterSummary(mode, threatTypes, requiredType);
   el.helperDefense.innerHTML = renderHelperDefense(threatTypes);
   el.helperOffense.innerHTML = renderHelperOffense(threatTypes);
   el.helperGridTitle.textContent = helperGridTitle(mode, threatTypes, requiredType);
   el.helperMatchupGrid.innerHTML = renderHelperMatchupGrid(responseRows, mode, exactTypes);
+  el.helperPokemonHeading.classList.toggle("hidden", !exactTypes.length);
+  el.helperResponseJump.classList.toggle("hidden", !exactTypes.length);
   el.helperPokemonTitle.textContent = exactTypes.length
     ? `Pokemon disponibles : ${exactTypes.join(" / ")}`
     : "Pokemon disponibles";
-  el.helperPokemonList.innerHTML = renderHelperPokemonList(filteredPokemon, exactTypes);
+  el.helperPokemonList.innerHTML = exactTypes.length ? renderHelperPokemonList(filteredPokemon, exactTypes) : "";
   bindTypeHelperGrid(pokemonList);
   bindTypeHelperPokemonActions();
+}
+
+function resetHelperResultSelection() {
+  helperOpenGroup = null;
+  helperSelectedTypes = null;
+}
+
+function renderHelperThreatAnalysisState() {
+  el.helperThreatAnalysisToggle.setAttribute("aria-expanded", String(helperThreatAnalysisOpen));
+  el.helperThreatAnalysisToggle.textContent = helperThreatAnalysisOpen ? "Masquer l'analyse" : "Analyse de la menace";
+  el.helperThreatAnalysis.classList.toggle("hidden", !helperThreatAnalysisOpen);
+}
+
+function renderHelperFilterSummary(mode, threatTypes, requiredType) {
+  const modeLabel = mode === "defense" ? "Je veux me defendre contre" : "Je veux attaquer efficacement";
+  const target = threatTypes.map(typeLogoOnly).join("");
+  const required = requiredType
+    ? `<span class="slot-meta">avec</span>${typeLogoOnly(requiredType)}`
+    : `<span class="slot-meta">reponse libre</span>`;
+  return `
+    <span class="helper-summary-intent">${modeLabel}</span>
+    <span class="team-add-type-icons">${target}</span>
+    <span class="helper-summary-required">${required}</span>
+  `;
 }
 
 function getHelperMode() {
@@ -1619,6 +1678,7 @@ function applyHelperThreatPokemon() {
     el.helperTypeTwo.value = pokemon.types[1] || "";
     syncTypeWheels(el.typeHelperPanel);
   }
+  resetHelperResultSelection();
   renderTypeHelper();
 }
 
@@ -1669,12 +1729,15 @@ function getHelperResponseRows(threatTypes, pokemonList, mode, requiredType) {
       multiplier,
       matches: filterPokemonByTypes(pokemonList, types).length
     };
-  }).filter((row) => row.matches > 0).sort((a, b) => (
-    helperMultiplierSortValue(a.multiplier, mode) - helperMultiplierSortValue(b.multiplier, mode)
-    || b.matches - a.matches
-    || a.types.length - b.types.length
-    || KANTO_TYPES.indexOf(a.types[0]) - KANTO_TYPES.indexOf(b.types[0])
-  ));
+  }).filter((row) => row.matches > 0).sort((a, b) => compareTypeCombos(a.types, b.types));
+}
+
+function compareTypeCombos(left, right) {
+  const first = KANTO_TYPES.indexOf(left[0]) - KANTO_TYPES.indexOf(right[0]);
+  if (first) return first;
+  const leftSecond = left[1] ? KANTO_TYPES.indexOf(left[1]) : -1;
+  const rightSecond = right[1] ? KANTO_TYPES.indexOf(right[1]) : -1;
+  return leftSecond - rightSecond;
 }
 
 function getAllTypeCombos() {
@@ -1711,14 +1774,26 @@ function renderHelperMatchupGrid(rows, mode, selectedTypes) {
   if (!rows.length) {
     return `<div class="empty-state">Aucune association ne correspond a cette source et a ce filtre.</div>`;
   }
+  if (selectedTypes.length) {
+    const selectedRow = rows.find((row) => typesMatch(row.types, selectedTypes));
+    return `
+      <section class="type-helper-selected-result" data-helper-selected-result>
+        <div class="type-helper-subheading compact">
+          <h4>Reponse selectionnee</h4>
+          <button class="small-button" type="button" data-helper-clear-selection>Changer</button>
+        </div>
+        ${selectedRow ? renderHelperRow(selectedRow, mode, selectedTypes) : ""}
+      </section>
+    `;
+  }
   const groups = groupHelperRows(rows, mode);
   return groups.map((group) => `
     <section class="type-helper-group">
-      <div class="type-helper-group-heading">
-        <h4>${group.label}</h4>
+      <button class="type-helper-group-heading ${helperOpenGroup === group.key ? "active" : ""}" type="button" data-helper-group="${group.key}" aria-expanded="${helperOpenGroup === group.key}">
+        <span>${group.label}</span>
         <span class="slot-meta">${group.rows.length} associations</span>
-      </div>
-      <div class="type-helper-group-list">
+      </button>
+      <div class="type-helper-group-list ${helperOpenGroup === group.key ? "" : "hidden"}">
         ${group.rows.map((row) => renderHelperRow(row, mode, selectedTypes)).join("")}
       </div>
     </section>
@@ -1728,10 +1803,10 @@ function renderHelperMatchupGrid(rows, mode, selectedTypes) {
 function groupHelperRows(rows, mode) {
   const groupDefs = mode === "defense"
     ? [
-      { key: "immune", label: "Excellent : immunise", test: (value) => value === 0 },
-      { key: "resist", label: "Solide : resiste", test: (value) => value > 0 && value < 1 },
+      { key: "immune", label: "Immunise", test: (value) => value === 0 },
+      { key: "resist", label: "Resiste", test: (value) => value > 0 && value < 1 },
       { key: "neutral", label: "Neutre", test: (value) => value === 1 },
-      { key: "weak", label: "Fragile : prend cher", test: (value) => value > 1 }
+      { key: "weak", label: "Fragile", test: (value) => value > 1 }
     ]
     : [
       { key: "strong", label: "Efficace", test: (value) => value > 1 },
@@ -1756,7 +1831,7 @@ function renderHelperRow(row, mode, selectedTypes) {
   const active = typesMatch(row.types, selectedTypes) ? " active" : "";
   return `
     <button class="type-helper-row${active}" type="button" data-helper-types="${row.types.join("|")}">
-      <span class="helper-type-combo">${row.types.map(typeBadge).join("")}</span>
+      <span class="team-add-type-icons">${row.types.map(typeLogoOnly).join("")}</span>
       <span class="multiplier ${kind}">${label}</span>
       <span class="slot-meta">${row.matches} Pokemon</span>
     </button>
@@ -1786,15 +1861,47 @@ function typesMatch(left, right) {
   return [...left].sort().join("|") === [...right].sort().join("|");
 }
 
+function scrollToHelperAnchor(target) {
+  if (!target || target.classList.contains("hidden")) return;
+  target.scrollIntoView({ behavior: "smooth", block: "start" });
+  target.classList.add("helper-scroll-focus");
+  window.setTimeout(() => target.classList.remove("helper-scroll-focus"), 900);
+}
+
 function bindTypeHelperGrid(pokemonList) {
+  el.helperMatchupGrid.querySelector("[data-helper-selected-result]")?.addEventListener("click", (event) => {
+    if (event.target.closest("[data-helper-clear-selection]")) return;
+    scrollToHelperAnchor(el.helperPokemonHeading);
+  });
+
+  el.helperMatchupGrid.querySelector("[data-helper-clear-selection]")?.addEventListener("click", () => {
+    helperSelectedTypes = null;
+    renderTypeHelper();
+  });
+
+  el.helperMatchupGrid.querySelectorAll("[data-helper-group]").forEach((button) => {
+    button.addEventListener("click", () => {
+      helperOpenGroup = helperOpenGroup === button.dataset.helperGroup ? null : button.dataset.helperGroup;
+      helperSelectedTypes = null;
+      renderTypeHelper();
+    });
+  });
+
   el.helperMatchupGrid.querySelectorAll("[data-helper-types]").forEach((button) => {
     button.addEventListener("click", () => {
       const types = button.dataset.helperTypes.split("|").filter(Boolean);
-      el.helperMatchupGrid.querySelectorAll("[data-helper-types]").forEach((item) => item.classList.remove("active"));
-      button.classList.add("active");
-      el.helperPokemonTitle.textContent = `Pokemon disponibles : ${types.join(" / ")}`;
-      el.helperPokemonList.innerHTML = renderHelperPokemonList(filterPokemonByTypes(pokemonList, types), types);
-      bindTypeHelperPokemonActions();
+      if (typesMatch(helperSelectedTypes, types)) {
+        scrollToHelperAnchor(el.helperPokemonHeading);
+        return;
+      }
+      helperSelectedTypes = types;
+      const filtered = filterPokemonByTypes(pokemonList, types);
+      renderTypeHelper(types);
+      if (needsSpriteSync(filtered)) {
+        void syncPokemonSprites(filtered).then(() => {
+          if (state.activeView === "typeHelper" && typesMatch(helperSelectedTypes, types)) renderTypeHelper(types);
+        });
+      }
     });
   });
 }

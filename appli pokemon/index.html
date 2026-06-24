@@ -85,7 +85,7 @@
             Pars d'une menace adverse, choisis si tu veux l'attaquer ou l'encaisser, puis ouvre les associations de types pour trouver les Pokemon qui repondent au besoin.
           </p>
 
-          <section class="type-helper-step">
+          <section class="type-helper-step" id="helper-filter-step">
             <div class="type-helper-step-heading">
               <span class="step-number">1</span>
               <div>
@@ -141,15 +141,16 @@
             </div>
           </section>
 
-          <section class="type-helper-step">
+          <section class="type-helper-step type-helper-threat-step">
             <div class="type-helper-step-heading">
               <span class="step-number">2</span>
               <div>
                 <h3>Lis la menace analysee</h3>
                 <p>Ces blocs expliquent ce que la menace craint et ce qu'elle touche avec ses types.</p>
               </div>
+              <button class="small-button" id="helper-threat-analysis-toggle" type="button" aria-expanded="false">Analyse de la menace</button>
             </div>
-            <div class="type-helper-results">
+            <div class="type-helper-results hidden" id="helper-threat-analysis">
               <section>
                 <h3>La menace craint</h3>
                 <div id="helper-defense" class="badge-cloud"></div>
@@ -166,19 +167,23 @@
               <span class="step-number">3</span>
               <div>
                 <h3>Choisis une reponse possible</h3>
-                <p>Les associations sont classees par resultat. Clique une ligne pour afficher les Pokemon disponibles.</p>
+                <p>Ouvre un groupe, puis choisis une association pour afficher les Pokemon disponibles.</p>
               </div>
             </div>
+            <div class="type-helper-filter-summary" id="helper-filter-summary" role="button" tabindex="0" aria-label="Retour aux filtres de l'assistant"></div>
             <section>
               <div class="type-helper-subheading">
                 <h3 id="helper-grid-title">Reponses classees</h3>
-                <span class="slot-meta">Le compteur indique les Pokemon disponibles dans la source choisie.</span>
+                <span class="slot-meta">Ouvre un groupe pour voir les associations.</span>
               </div>
               <div id="helper-matchup-grid" class="type-helper-grid"></div>
             </section>
 
             <section>
-              <div class="type-helper-subheading">
+              <div class="type-helper-response-jump hidden" id="helper-response-jump" role="button" tabindex="0" aria-label="Retour au choix des reponses">
+                Retour aux reponses
+              </div>
+              <div class="type-helper-subheading hidden" id="helper-pokemon-heading">
                 <h3 id="helper-pokemon-title">Pokemon disponibles avec ce type</h3>
                 <span class="slot-meta">Mono ou double type exact, selon la ligne choisie.</span>
               </div>
