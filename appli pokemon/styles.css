@@ -590,6 +590,19 @@ h3 {
   text-align: left;
 }
 
+.team-add-choice.compact {
+  min-height: 50px;
+  justify-items: center;
+  text-align: center;
+}
+
+.team-add-choice.active,
+.team-add-choice.compact:hover {
+  border-color: rgba(115, 211, 162, 0.72);
+  background: rgba(115, 211, 162, 0.12);
+  box-shadow: 0 0 0 2px rgba(115, 211, 162, 0.12);
+}
+
 .team-add-choice:hover,
 .team-add-mini-card:hover {
   border-color: rgba(244, 200, 74, 0.64);
@@ -627,8 +640,8 @@ h3 {
 .team-add-mini-sprite {
   display: grid;
   place-items: center;
-  width: 62px;
-  height: 62px;
+  width: 74px;
+  height: 74px;
   margin: 0 auto;
   border-radius: 999px;
   background: rgba(8, 10, 14, 0.42);
@@ -638,18 +651,23 @@ h3 {
 }
 
 .team-add-mini-sprite .pokemon-sprite {
-  width: 76px;
-  height: 76px;
+  width: 92px;
+  height: 92px;
   object-fit: contain;
 }
 
 .team-add-filters,
 .team-add-custom-grid,
-.team-add-attack-slots {
+.team-add-attack-slots,
+.team-add-attack-choice {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 10px;
   margin-bottom: 12px;
+}
+
+.team-add-attack-choice {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .team-add-attack-panel {
@@ -1125,6 +1143,7 @@ button:focus-visible {
 }
 
 .mobile-opponent-identity {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 9px;
@@ -1132,8 +1151,8 @@ button:focus-visible {
 }
 
 .confirmed-enemy-sprite {
-  width: 58px;
-  height: 58px;
+  width: 78px;
+  height: 78px;
   flex: 0 0 auto;
 }
 
@@ -1143,7 +1162,7 @@ button:focus-visible {
 
 .desktop-duel-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 190px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) 250px minmax(0, 1fr);
   gap: 14px;
   align-items: stretch;
 }
@@ -1196,7 +1215,7 @@ button:focus-visible {
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: 5px;
-  min-height: 188px;
+  min-height: 220px;
   border-radius: 9px;
   background:
     radial-gradient(circle at center, rgba(244, 200, 74, 0.13), transparent 55%),
@@ -1224,8 +1243,8 @@ button:focus-visible {
 }
 
 .desktop-duel-stage .versus-pokemon-sprite {
-  width: 92px;
-  height: 92px;
+  width: 128px;
+  height: 128px;
 }
 
 .desktop-duel-pending {
@@ -1602,20 +1621,20 @@ button:focus-visible {
 }
 
 .simulation-result-card:has(.versus-sprite-faceoff) .matchup-pokemon {
-  min-height: 52px;
-  padding-right: 132px;
+  min-height: 78px;
+  padding-right: 192px;
 }
 
 .versus-sprite-faceoff {
   position: absolute;
   z-index: 1;
-  top: 34px;
+  top: 28px;
   right: 12px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 2px;
-  height: 54px;
+  gap: 4px;
+  height: 82px;
   pointer-events: none;
 }
 
@@ -1633,8 +1652,8 @@ button:focus-visible {
 }
 
 .versus-pokemon-sprite {
-  width: 52px;
-  height: 52px;
+  width: 78px;
+  height: 78px;
   object-fit: contain;
   image-rendering: pixelated;
   filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.32));
@@ -1786,6 +1805,14 @@ button:focus-visible {
   font-size: 0.98rem;
 }
 
+.pokemon-card-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 .pokemon-title {
   display: flex;
   align-items: center;
@@ -1839,12 +1866,216 @@ button:focus-visible {
 }
 
 .pokemon-sprite {
-  width: 72px;
-  height: 72px;
+  width: 88px;
+  height: 88px;
   flex: 0 0 auto;
   object-fit: contain;
   image-rendering: pixelated;
   filter: drop-shadow(0 7px 10px rgba(0, 0, 0, 0.32));
+}
+
+.pokemon-info-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #f4c84a;
+  cursor: pointer;
+  filter: drop-shadow(0 4px 7px rgba(0, 0, 0, 0.38));
+  opacity: 0.78;
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.pokemon-info-toggle svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pokemon-info-toggle:hover,
+.pokemon-info-toggle:focus-visible,
+.pokemon-info-toggle[aria-expanded="true"] {
+  opacity: 1;
+  transform: translateY(-1px) scale(1.06);
+}
+
+.pokemon-info-panel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 10px;
+  border: 1px solid rgba(244, 200, 74, 0.28);
+  border-radius: 8px;
+  background: rgba(9, 12, 18, 0.74);
+}
+
+.pokemon-info-panel[hidden] {
+  display: none;
+}
+
+.pokemon-info-section {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
+.pokemon-info-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.pokemon-info-section-heading > span:last-child {
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.2;
+  text-align: right;
+}
+
+.pokemon-evolution-tree {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.pokemon-evolution-node-wrap,
+.pokemon-evolution-children {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.pokemon-evolution-node-wrap:not(.root) {
+  padding-left: 12px;
+  border-left: 1px solid rgba(244, 200, 74, 0.24);
+}
+
+.pokemon-evolution-children.branched {
+  grid-template-columns: repeat(auto-fit, minmax(116px, 1fr));
+  align-items: start;
+}
+
+.pokemon-evolution-link {
+  width: fit-content;
+  max-width: 100%;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: rgba(244, 200, 74, 0.13);
+  color: #f6d36f;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.pokemon-evolution-card {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  align-items: center;
+  gap: 7px 9px;
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.pokemon-evolution-card > * {
+  min-width: 0;
+}
+
+.pokemon-evolution-card.current {
+  border-color: rgba(244, 200, 74, 0.68);
+  box-shadow: 0 0 0 2px rgba(244, 200, 74, 0.12);
+}
+
+.pokemon-evolution-card span:last-child,
+.pokemon-info-loading,
+.pokemon-info-empty,
+.pokemon-info-note {
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.3;
+}
+
+.pokemon-evolution-card strong {
+  max-width: 100%;
+  overflow: hidden;
+  color: #f7fbff;
+  font-size: 0.86rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pokemon-info-sprite {
+  grid-row: span 2;
+  width: 52px;
+  height: 52px;
+  justify-self: center;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 6px 9px rgba(0, 0, 0, 0.28));
+}
+
+.pokemon-capture-block {
+  grid-column: 2;
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.pokemon-capture-block > span {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.pokemon-capture-block.available > span {
+  color: #9fe0ba;
+}
+
+.pokemon-capture-block.missing > span {
+  color: #f0a2a2;
+}
+
+.pokemon-info-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  min-width: 0;
+}
+
+.pokemon-info-tags span {
+  max-width: 100%;
+  padding: 4px 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #dfe6f2;
+  font-size: 0.76rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.pokemon-info-note {
+  grid-column: 2;
+  margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .team-pokeball-icon {
@@ -2284,6 +2515,23 @@ button:focus-visible {
   gap: 16px;
 }
 
+.pokemon-search-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.pokemon-search-controls {
+  display: grid;
+  grid-template-columns: minmax(170px, 220px) minmax(220px, 1fr) repeat(2, minmax(150px, 180px));
+  gap: 12px;
+  align-items: end;
+}
+
+.pokemon-search-card {
+  display: grid;
+  gap: 10px;
+}
+
 .type-helper-intro {
   max-width: 760px;
   color: var(--muted);
@@ -2654,43 +2902,6 @@ button:focus-visible {
   justify-content: flex-end;
 }
 
-.helper-guide-info {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  gap: 8px;
-  padding: 9px;
-  border: 1px solid rgba(244, 200, 74, 0.34);
-  border-radius: 8px;
-  background: rgba(15, 18, 24, 0.58);
-}
-
-.helper-guide-block {
-  display: grid;
-  gap: 5px;
-}
-
-.helper-guide-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-
-.helper-guide-list span,
-.helper-guide-block p {
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 4px 7px;
-  background: rgba(255, 255, 255, 0.06);
-  color: #dfe6f2;
-  font-size: 0.78rem;
-  line-height: 1.25;
-}
-
-.helper-guide-block p {
-  border-radius: 7px;
-}
-
 .type-matchup-summary {
   border-bottom: 1px solid var(--line);
   padding-bottom: 12px;
@@ -2991,6 +3202,10 @@ button:focus-visible {
     justify-items: center;
   }
 
+  .pokemon-search-controls {
+    grid-template-columns: 1fr;
+  }
+
   .type-helper-intro {
     text-align: left;
   }
@@ -3043,8 +3258,22 @@ button:focus-visible {
   }
 
   .pokemon-sprite {
-    width: 58px;
-    height: 58px;
+    width: 72px;
+    height: 72px;
+  }
+
+  .pokemon-evolution-card {
+    grid-template-columns: 42px minmax(0, 1fr);
+    padding: 7px;
+  }
+
+  .pokemon-evolution-children.branched {
+    grid-template-columns: 1fr;
+  }
+
+  .pokemon-info-sprite {
+    width: 46px;
+    height: 46px;
   }
 
   .pokemon-reveal-hint {
@@ -3096,16 +3325,45 @@ button:focus-visible {
   }
 
   .simulation-result-card:has(.versus-sprite-faceoff) .matchup-pokemon {
-    padding-right: 108px;
+    min-height: 66px;
+    padding-right: 146px;
   }
 
   .versus-pokemon-sprite {
-    width: 42px;
-    height: 42px;
+    width: 58px;
+    height: 58px;
   }
 
   .versus-sprite-faceoff {
     right: 8px;
+    height: 66px;
+  }
+
+  .mobile-opponent {
+    position: relative;
+    padding-top: 42px;
+    overflow: visible;
+  }
+
+  .mobile-opponent-identity {
+    justify-content: center;
+    min-height: 92px;
+    text-align: center;
+  }
+
+  .mobile-opponent-identity .confirmed-enemy-sprite {
+    position: absolute;
+    top: -44px;
+    left: 50%;
+    z-index: 2;
+    width: 116px;
+    height: 116px;
+    transform: translateX(-50%) scaleX(-1);
+    filter: drop-shadow(0 12px 16px rgba(0, 0, 0, 0.42));
+  }
+
+  .mobile-opponent-identity > div {
+    margin-top: 26px;
   }
 
   .primary-button,

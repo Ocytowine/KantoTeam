@@ -21,6 +21,7 @@ let teamAddPanelOpen = false;
 let teamAddMode = null;
 let teamAddSelectedPokemon = null;
 let teamAddSlotIndex = null;
+let teamAddAttackMode = null;
 let teamAddListFilters = {
   query: "",
   typeOne: "",
@@ -29,9 +30,16 @@ let teamAddListFilters = {
 let helperThreatAnalysisOpen = false;
 let helperOpenGroup = null;
 let helperSelectedTypes = null;
+let pokemonSearchFilters = {
+  source: "all",
+  query: "",
+  typeOne: "",
+  typeTwo: ""
+};
 
 const mobileVersusMedia = window.matchMedia("(max-width: 920px)");
 const spriteUrls = new Map();
+const pokemonInfoCache = new Map();
 const SPRITE_NAME_ALIASES = {
   "nœunœuf": 102,
   carmarche: 444,
@@ -49,6 +57,7 @@ const el = {
   backToSlots: document.querySelector("#back-to-slots"),
   openTypeHelper: document.querySelector("#open-type-helper"),
   manageSavedPokemon: document.querySelector("#manage-saved-pokemon"),
+  openPokemonSearch: document.querySelector("#open-pokemon-search"),
   typeHelperPanel: document.querySelector("#type-helper-panel"),
   typeHelperCount: document.querySelector("#type-helper-count"),
   helperTypeOne: document.querySelector("#helper-type-one"),
@@ -75,6 +84,13 @@ const el = {
   savedManagerPanel: document.querySelector("#saved-manager-panel"),
   savedPokemonList: document.querySelector("#saved-pokemon-list"),
   savedPokemonEditPanel: document.querySelector("#saved-pokemon-edit-panel"),
+  pokemonSearchPanel: document.querySelector("#pokemon-search-panel"),
+  pokemonSearchSource: document.querySelector("#pokemon-search-source"),
+  pokemonSearchQuery: document.querySelector("#pokemon-search-query"),
+  pokemonSearchTypeOne: document.querySelector("#pokemon-search-type-one"),
+  pokemonSearchTypeTwo: document.querySelector("#pokemon-search-type-two"),
+  pokemonSearchCount: document.querySelector("#pokemon-search-count"),
+  pokemonSearchResults: document.querySelector("#pokemon-search-results"),
   compositionPanel: document.querySelector("#composition-panel"),
   compositionTitle: document.querySelector("#composition-title"),
   compositionCount: document.querySelector("#composition-count"),
@@ -155,6 +171,8 @@ function init() {
   fillTypeSelect(el.typeMatchupTwo, true);
   fillTypeSelect(el.helperTypeOne, false);
   fillTypeSelect(el.helperTypeTwo, true);
+  fillTypeSelect(el.pokemonSearchTypeOne, true);
+  fillTypeSelect(el.pokemonSearchTypeTwo, true);
   fillTypeSelect(el.helperTargetBase, true);
   enhanceTypeSelects(document);
   renderAttackChecks();
@@ -193,6 +211,22 @@ function bindEvents() {
 
   el.manageSavedPokemon.addEventListener("click", () => openView("savedManager"));
   el.openTypeHelper.addEventListener("click", () => openView("typeHelper"));
+  el.openPokemonSearch.addEventListener("click", () => openView("pokemonSearch"));
+  el.pokemonSearchSource.addEventListener("change", () => {
+    pokemonSearchFilters.source = el.pokemonSearchSource.value;
+    renderPokemonSearch();
+  });
+  el.pokemonSearchQuery.addEventListener("input", () => {
+    pokemonSearchFilters.query = el.pokemonSearchQuery.value;
+    renderPokemonSearch();
+  });
+  [el.pokemonSearchTypeOne, el.pokemonSearchTypeTwo].forEach((field) => {
+    field.addEventListener("change", () => {
+      pokemonSearchFilters.typeOne = el.pokemonSearchTypeOne.value;
+      pokemonSearchFilters.typeTwo = el.pokemonSearchTypeTwo.value;
+      renderPokemonSearch();
+    });
+  });
   [el.helperTypeOne, el.helperTypeTwo, el.helperSource, el.helperTargetBase].forEach((field) => {
     field.addEventListener("change", () => {
       resetHelperResultSelection();
@@ -559,6 +593,7 @@ function renderAll() {
   renderSlots();
   renderActiveView();
   renderSavedPokemonManager();
+  renderPokemonSearch();
   renderSavedCustomOptions();
   updateModeFields();
   renderDraftTeam();
@@ -632,12 +667,14 @@ function renderSlots() {
 
 function renderActiveView() {
   const hasTeam = Boolean(getActiveTeam());
-  const view = ["slots", "savedManager", "typeHelper"].includes(state.activeView) ? state.activeView : hasTeam ? state.activeView : "composition";
+  const view = ["slots", "savedManager", "typeHelper", "pokemonSearch"].includes(state.activeView) ? state.activeView : hasTeam ? state.activeView : "composition";
   el.slots.classList.toggle("hidden", view !== "slots");
   el.backToSlots.classList.toggle("hidden", view === "slots");
   el.manageSavedPokemon.classList.toggle("hidden", view !== "slots");
   el.openTypeHelper.classList.toggle("hidden", view !== "slots");
+  el.openPokemonSearch.classList.toggle("hidden", view !== "slots");
   el.savedManagerPanel.classList.toggle("hidden", view !== "savedManager");
+  el.pokemonSearchPanel.classList.toggle("hidden", view !== "pokemonSearch");
   el.typeHelperPanel.classList.toggle("hidden", view !== "typeHelper");
   el.compositionPanel.classList.toggle("hidden", view !== "composition");
   el.simulationPanel.classList.toggle("hidden", view !== "simulation" || Boolean(sharedTeam));
@@ -695,6 +732,31 @@ function renderPokemonSprite(pokemon) {
   const url = nationalId ? spriteUrls.get(nationalId) : null;
   if (!url) return "";
   return `<img class="pokemon-sprite" src="${escapeHtml(url)}" alt="${escapeHtml(pokemon.name)}" loading="lazy" onerror="this.remove()">`;
+}
+
+function renderPokemonInfoButton(pokemon, enabled) {
+  const nationalId = getPokemonNationalId(pokemon);
+  const hasReforgedGuide = isReforgedGuidePokemon(pokemon) && Boolean(getReforgedGuideInfo(pokemon.name));
+  if (!enabled || (!nationalId && !hasReforgedGuide)) return "";
+  return `
+    <button class="pokemon-info-toggle" type="button"
+      aria-label="Voir les infos de ${escapeHtml(pokemon.name)}"
+      aria-expanded="false"
+      data-pokemon-info-name="${escapeHtml(pokemon.name)}"
+      data-pokemon-info-id="${nationalId || ""}"
+      data-pokemon-info-reforged="${hasReforgedGuide ? "true" : "false"}">
+      ${searchIconSvg()}
+    </button>
+  `;
+}
+
+function searchIconSvg() {
+  return `
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M10.8 5.5a5.3 5.3 0 1 0 0 10.6 5.3 5.3 0 0 0 0-10.6Z"></path>
+      <path d="m15 15 4 4"></path>
+    </svg>
+  `;
 }
 
 function renderVersusSprite(pokemon, side) {
@@ -1192,6 +1254,7 @@ function renderManagedComposition(team) {
       teamAddPanelOpen = true;
       teamAddMode = null;
       teamAddSelectedPokemon = null;
+      teamAddAttackMode = null;
       teamAddSlotIndex = Number(button.dataset.slotIndex);
       renderAll();
       el.compositionAddPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -1359,16 +1422,25 @@ function renderTeamAddAttackChoice(pokemon) {
         </div>
         <button class="small-button" type="button" data-team-add-change-pokemon>Changer de Pokemon</button>
       </div>
-      <button class="small-button" type="button" data-team-add-use-defensive>Utiliser ses types defensifs</button>
-      <div class="team-add-attack-slots">
-        ${[0, 1, 2, 3].map((index) => `
-          <label class="field">
-            <span>Attaque ${index + 1}</span>
-            <select class="team-add-attack-select">${typeOptions("", true)}</select>
-          </label>
-        `).join("")}
+      <div class="team-add-attack-choice">
+        <button class="team-add-choice compact" type="button" data-team-add-use-defensive>
+          <strong>Types defensifs</strong>
+        </button>
+        <button class="team-add-choice compact ${teamAddAttackMode === "custom" ? "active" : ""}" type="button" data-team-add-custom-attacks>
+          <strong>Personnaliser</strong>
+        </button>
       </div>
-      <button class="primary-button" type="button" data-team-add-confirm-list>Ajouter avec ces attaques</button>
+      ${teamAddAttackMode === "custom" ? `
+        <div class="team-add-attack-slots">
+          ${[0, 1, 2, 3].map((index) => `
+            <label class="field">
+              <span>Attaque ${index + 1}</span>
+              <select class="team-add-attack-select">${typeOptions("", true)}</select>
+            </label>
+          `).join("")}
+        </div>
+        <button class="primary-button" type="button" data-team-add-confirm-list>Ajouter avec ces attaques</button>
+      ` : ""}
     </div>
   `;
 }
@@ -1413,6 +1485,7 @@ function bindTeamAddPanel() {
   el.compositionAddPanel.querySelector("[data-team-add-back]")?.addEventListener("click", () => {
     teamAddMode = null;
     teamAddSelectedPokemon = null;
+    teamAddAttackMode = null;
     teamAddListFilters = { query: "", typeOne: "", typeTwo: "" };
     renderAll();
   });
@@ -1420,6 +1493,7 @@ function bindTeamAddPanel() {
     button.addEventListener("click", () => {
       teamAddMode = button.dataset.teamAddMode;
       teamAddSelectedPokemon = null;
+      teamAddAttackMode = null;
       teamAddListFilters = { query: "", typeOne: "", typeTwo: "" };
       renderAll();
     });
@@ -1438,9 +1512,18 @@ function bindTeamAddPanel() {
   el.compositionAddPanel.querySelector("[data-team-add-use-defensive]")?.addEventListener("click", () => {
     if (teamAddSelectedPokemon) addPokemonToManagedTeam(teamAddSelectedPokemon, teamAddSelectedPokemon.types, getTeamPreferredSource(draftTeam));
   });
+  el.compositionAddPanel.querySelector("[data-team-add-custom-attacks]")?.addEventListener("click", () => {
+    teamAddAttackMode = "custom";
+    renderAll();
+  });
   el.compositionAddPanel.querySelector("[data-team-add-confirm-list]")?.addEventListener("click", () => {
     if (!teamAddSelectedPokemon) return;
-    addPokemonToManagedTeam(teamAddSelectedPokemon, getTypeValuesFromSelects(".team-add-attack-select"), getTeamPreferredSource(draftTeam));
+    const attacks = getTypeValuesFromSelects(".team-add-attack-select");
+    if (!attacks.length) {
+      alert("Choisis au moins un type d'attaque.");
+      return;
+    }
+    addPokemonToManagedTeam(teamAddSelectedPokemon, attacks, getTeamPreferredSource(draftTeam));
   });
   el.compositionAddPanel.querySelector("[data-team-add-confirm-custom]")?.addEventListener("click", addCustomPokemonFromManagedForm);
 }
@@ -1454,6 +1537,7 @@ function updateTeamAddListFilters() {
     typeTwo: el.compositionAddPanel.querySelector("#team-add-filter-two")?.value || ""
   };
   teamAddSelectedPokemon = null;
+  teamAddAttackMode = null;
   renderTeamAddPanel();
   if (activeId) {
     const nextActive = el.compositionAddPanel.querySelector(`#${activeId}`);
@@ -1470,6 +1554,7 @@ function handleTeamAddPokemonClick(button) {
     return;
   }
   teamAddSelectedPokemon = pokemon;
+  teamAddAttackMode = null;
   renderAll();
 }
 
@@ -1507,6 +1592,10 @@ function addCustomPokemonFromManagedForm() {
   }
   const types = [typeOne, typeTwo].filter(Boolean).filter((type, index, all) => all.indexOf(type) === index);
   const attacks = getTypeValuesFromSelects(".team-add-custom-attack");
+  if (!attacks.length) {
+    alert("Choisis au moins un type d'attaque.");
+    return;
+  }
   const spriteName = el.compositionAddPanel.querySelector("#team-add-custom-sprite").value.trim();
   const spriteSource = findSpriteSourcePokemon(spriteName);
   const pokemon = {
@@ -1941,40 +2030,11 @@ function renderHelperPokemonList(pokemonList, types) {
         originLabel: helperSourceLabel(pokemon.helperSource),
         toggleable: true
       })}
-      ${renderHelperGuideInfo(pokemon)}
       <div class="helper-card-actions">
         <button class="small-button" type="button" data-save-helper-pokemon="${escapeHtml(pokemonOptionLabel(pokemon))}" data-helper-source="${pokemon.helperSource}">Ajouter aux sauvegardes</button>
       </div>
     </article>
   `).join("");
-}
-
-function renderHelperGuideInfo(pokemon) {
-  if (!isReforgedGuidePokemon(pokemon)) return "";
-  const guide = getReforgedGuideInfo(pokemon.name);
-  if (!guide) return "";
-  const locations = guide.locations || [];
-  const evolution = guide.evolution || "";
-  if (!locations.length && !evolution) return "";
-
-  return `
-    <div class="helper-guide-info">
-      ${locations.length ? `
-        <div class="helper-guide-block">
-          <span class="slot-meta">Localisation</span>
-          <div class="helper-guide-list">
-            ${locations.map((item) => `<span>${escapeHtml(item.label)}</span>`).join("")}
-          </div>
-        </div>
-      ` : ""}
-      ${evolution ? `
-        <div class="helper-guide-block">
-          <span class="slot-meta">Evolution</span>
-          <p>${escapeHtml(evolution)}</p>
-        </div>
-      ` : ""}
-    </div>
-  `;
 }
 
 function isReforgedGuidePokemon(pokemon) {
@@ -2034,6 +2094,72 @@ function saveHelperPokemon(pokemon, source) {
   return true;
 }
 
+function renderPokemonSearch() {
+  const query = normalize(pokemonSearchFilters.query);
+  const typeOne = pokemonSearchFilters.typeOne;
+  const typeTwo = pokemonSearchFilters.typeTwo;
+  const canShowResults = query.length >= 3 || Boolean(typeOne);
+  el.pokemonSearchSource.value = pokemonSearchFilters.source;
+  el.pokemonSearchQuery.value = pokemonSearchFilters.query;
+  el.pokemonSearchTypeOne.value = typeOne;
+  el.pokemonSearchTypeTwo.value = typeTwo;
+
+  if (!canShowResults) {
+    el.pokemonSearchCount.textContent = "0 resultat";
+    el.pokemonSearchResults.innerHTML = `<div class="empty-state">Tape au moins 3 lettres ou choisis un premier type pour afficher les Pokemon.</div>`;
+    return;
+  }
+
+  const matches = getHelperPokemonSource(pokemonSearchFilters.source)
+    .filter((pokemon) => (
+      (!query || normalize(pokemon.name).includes(query))
+      && (!typeOne || pokemon.types.includes(typeOne))
+      && (!typeTwo || pokemon.types.includes(typeTwo))
+    ))
+    .slice(0, 36);
+  el.pokemonSearchCount.textContent = `${matches.length} resultat${matches.length > 1 ? "s" : ""}`;
+
+  if (matches.length && needsSpriteSync(matches)) {
+    void syncPokemonSprites(matches).then(() => {
+      if (state.activeView === "pokemonSearch") renderPokemonSearch();
+    });
+  }
+
+  if (!matches.length) {
+    el.pokemonSearchResults.innerHTML = `<div class="empty-state">Aucun Pokemon ne correspond a cette recherche.</div>`;
+    return;
+  }
+
+  el.pokemonSearchResults.innerHTML = matches.map((pokemon, index) => `
+    <article class="pokemon-card pokemon-search-card collapsible" style="${pokemonCardStyle(pokemon)}">
+      ${renderPokemonCard({
+        ...pokemon,
+        attacks: pokemon.attacks || pokemon.types
+      }, {
+        index,
+        showSprite: true,
+        includePokeball: false,
+        originLabel: helperSourceLabel(pokemon.helperSource),
+        toggleable: true
+      })}
+      <div class="helper-card-actions">
+        <button class="small-button" type="button" data-save-search-pokemon="${escapeHtml(pokemonOptionLabel(pokemon))}" data-search-source="${pokemon.helperSource}">Ajouter aux sauvegardes</button>
+      </div>
+    </article>
+  `).join("");
+
+  bindPokemonCardToggles(el.pokemonSearchResults);
+  el.pokemonSearchResults.querySelectorAll("[data-save-search-pokemon]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const pokemon = findHelperPokemon(button.dataset.searchSource, button.dataset.saveSearchPokemon);
+      if (!pokemon) return;
+      const added = saveHelperPokemon(pokemon, button.dataset.searchSource);
+      setTemporaryButtonText(button, added ? "Ajoute" : "Deja present");
+      renderSavedCustomOptions();
+    });
+  });
+}
+
 function renderSavedPokemonManager() {
   el.savedPokemonList.innerHTML = "";
   el.savedPokemonEditPanel.classList.add("hidden");
@@ -2061,7 +2187,7 @@ function renderSavedPokemonManager() {
   el.savedPokemonList.querySelectorAll("[data-edit-saved-pokemon]").forEach((button) => {
     button.addEventListener("click", () => {
       const pokemon = state.customPokemon.find((item) => String(item.id) === String(button.dataset.editSavedPokemon));
-      if (pokemon) renderPokemonEditPanel(pokemon, el.savedPokemonEditPanel, true);
+      if (pokemon) renderSavedPokemonModernEditPanel(pokemon);
     });
   });
 
@@ -2085,6 +2211,95 @@ function removePokemonFromCurrentTeam(instanceId) {
   renderAll();
 }
 
+function renderSavedPokemonModernEditPanel(pokemon) {
+  const panel = el.savedPokemonEditPanel;
+  const attacks = pokemon.attacks || [];
+  const allPokemon = [...KANTO_POKEMON, ...KANTO_REFORGED_POKEMON];
+  panel.classList.remove("hidden");
+  panel.innerHTML = `
+    <div class="panel-heading">
+      <div>
+        <p class="eyebrow">Edition bibliotheque</p>
+        <h2>${escapeHtml(pokemon.name)}</h2>
+      </div>
+      <button class="small-button" type="button" data-cancel-saved-edit>Fermer</button>
+    </div>
+    <div class="team-add-custom-grid">
+      <label class="field">
+        <span>Nom</span>
+        <input id="saved-edit-name" type="text" maxlength="32" value="${escapeHtml(pokemon.name)}">
+      </label>
+      <label class="field">
+        <span>Sprite optionnel</span>
+        <input id="saved-edit-sprite" list="saved-edit-sprites" type="search" placeholder="Nom du sprite">
+        <datalist id="saved-edit-sprites">
+          ${allPokemon.map((item) => `<option value="${escapeHtml(item.name)}"></option>`).join("")}
+        </datalist>
+      </label>
+      <label class="field">
+        <span>Type defensif 1</span>
+        <select id="saved-edit-type-one">${typeOptions(pokemon.types[0], false)}</select>
+      </label>
+      <label class="field">
+        <span>Type defensif 2</span>
+        <select id="saved-edit-type-two">${typeOptions(pokemon.types[1], true)}</select>
+      </label>
+    </div>
+    <div class="team-add-attack-slots">
+      ${[0, 1, 2, 3].map((index) => `
+        <label class="field">
+          <span>Attaque ${index + 1}</span>
+          <select class="saved-edit-attack">${typeOptions(attacks[index] || "", true)}</select>
+        </label>
+      `).join("")}
+    </div>
+    <div class="form-actions">
+      <button class="primary-button confirm" type="button" data-save-modern-saved-pokemon="${pokemon.id}">Mettre a jour partout</button>
+    </div>
+  `;
+  enhanceTypeSelects(panel);
+  panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  panel.querySelector("[data-cancel-saved-edit]").addEventListener("click", () => {
+    panel.classList.add("hidden");
+    panel.innerHTML = "";
+  });
+  panel.querySelector("[data-save-modern-saved-pokemon]").addEventListener("click", () => saveModernSavedPokemonEdit(pokemon.id));
+}
+
+function saveModernSavedPokemonEdit(id) {
+  const panel = el.savedPokemonEditPanel;
+  const name = panel.querySelector("#saved-edit-name").value.trim();
+  const typeOne = panel.querySelector("#saved-edit-type-one").value;
+  const typeTwo = panel.querySelector("#saved-edit-type-two").value;
+  const spriteName = panel.querySelector("#saved-edit-sprite").value.trim();
+  const attacks = Array.from(panel.querySelectorAll(".saved-edit-attack"))
+    .map((select) => select.value)
+    .filter(Boolean)
+    .filter((type, index, all) => all.indexOf(type) === index)
+    .slice(0, 4);
+  if (!name) {
+    alert("Donne un nom au Pokemon.");
+    return;
+  }
+  if (!attacks.length) {
+    alert("Choisis au moins un type d'attaque.");
+    return;
+  }
+  const types = [typeOne, typeTwo].filter(Boolean).filter((type, index, all) => all.indexOf(type) === index);
+  const spriteSource = findSpriteSourcePokemon(spriteName);
+  const nationalId = spriteName ? getPokemonNationalId(spriteSource) : undefined;
+  updatePokemonEverywhere(id, {
+    name,
+    types,
+    attacks,
+    nationalId
+  });
+  saveState();
+  renderAll();
+  const updated = state.customPokemon.find((pokemon) => String(pokemon.id) === String(id));
+  if (updated) void syncPokemonSprites(updated);
+}
+
 function renderPokemonSummary(pokemon, index, removable, editable = false) {
   return renderPokemonCard(pokemon, { index, removable, editable, showSprite: editable });
 }
@@ -2099,7 +2314,8 @@ function renderPokemonCard(pokemon, options = {}) {
     savedId = null,
     compact = false,
     includePokeball = true,
-    toggleable = true
+    toggleable = true,
+    infoLookup = showSprite
   } = options;
   const defensive = analyzePokemonDefense(pokemon.types);
   const weaknesses = defensive.filter((item) => item.multiplier > 1);
@@ -2108,6 +2324,8 @@ function renderPokemonCard(pokemon, options = {}) {
   const titlePrefix = index === null || index === undefined ? "" : `${index + 1}. `;
   const sourceId = pokemon.instanceId || pokemon.id || pokemon.sourceId || "";
   const attacks = pokemon.attacks || [];
+  const sprite = showSprite ? renderPokemonSprite(pokemon) : "";
+  const infoButton = renderPokemonInfoButton(pokemon, Boolean(sprite) && infoLookup);
   const actions = [
     savedId ? `<button class="small-button" type="button" data-edit-saved-pokemon="${savedId}">Editer</button>` : "",
     savedId ? `<button class="small-button danger" type="button" data-delete-saved-pokemon="${savedId}">Supprimer</button>` : "",
@@ -2118,7 +2336,7 @@ function renderPokemonCard(pokemon, options = {}) {
 
   const headingContent = `
     <span class="pokemon-heading-with-sprite">
-      ${showSprite ? renderPokemonSprite(pokemon) : ""}
+      ${sprite}
       <span class="pokemon-title">
         <span>${titlePrefix}${escapeHtml(pokemon.name)} ${originLabel ? `<span class="library-kind">${originLabel}</span>` : ""}<span class="name-type-logos">${pokemon.types.map(typeLogoOnly).join("")}</span></span>
       </span>
@@ -2132,7 +2350,10 @@ function renderPokemonCard(pokemon, options = {}) {
   return `
     ${includePokeball ? `<img class="team-pokeball-icon" src="assets/team-pokeball.svg" alt="" aria-hidden="true">` : ""}
     <div class="pokemon-card-header">
-      ${heading}
+      <div class="pokemon-card-main">
+        ${heading}
+        ${infoButton}
+      </div>
       ${actions ? `<div class="card-actions">${actions}</div>` : ""}
     </div>
     <div class="pokemon-card-body stacked ${compact ? "compact-body" : ""}">
@@ -2153,6 +2374,249 @@ function bindPokemonCardToggles(container) {
       button.setAttribute("aria-expanded", String(expanded));
     });
   });
+  container.querySelectorAll("[data-pokemon-info-name]").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.stopPropagation();
+      void togglePokemonInfoPanel(button);
+    });
+  });
+}
+
+async function togglePokemonInfoPanel(button) {
+  const card = button.closest(".pokemon-card");
+  if (!card) return;
+  const existing = card.querySelector(".pokemon-info-panel");
+  if (existing && !existing.hidden) {
+    existing.hidden = true;
+    button.setAttribute("aria-expanded", "false");
+    return;
+  }
+
+  const panel = existing || document.createElement("div");
+  if (!existing) {
+    panel.className = "pokemon-info-panel";
+    const header = card.querySelector(".pokemon-card-header");
+    header?.insertAdjacentElement("afterend", panel);
+  }
+
+  panel.hidden = false;
+  button.setAttribute("aria-expanded", "true");
+  panel.innerHTML = `<div class="pokemon-info-loading">Chargement...</div>`;
+
+  try {
+    const data = await getPokemonInfoData({
+      id: Number(button.dataset.pokemonInfoId) || null,
+      name: button.dataset.pokemonInfoName || "",
+      reforged: button.dataset.pokemonInfoReforged === "true"
+    });
+    panel.innerHTML = renderPokemonInfoPanel(data);
+  } catch {
+    panel.innerHTML = `<div class="pokemon-info-empty">Infos indisponibles pour ce Pokemon.</div>`;
+  }
+}
+
+async function getPokemonInfoData({ id, name, reforged }) {
+  const cacheKey = `${id || normalize(name)}:${reforged ? "reforged" : "standard"}`;
+  if (pokemonInfoCache.has(cacheKey)) return pokemonInfoCache.get(cacheKey);
+
+  const guide = reforged ? getReforgedGuideInfo(name) : null;
+  let evolution = null;
+  if (id && navigator.onLine) {
+    try {
+      evolution = await getPokemonEvolutionData(id, { reforged });
+    } catch {
+      evolution = null;
+    }
+  }
+  if (!evolution && guide) evolution = buildLocalReforgedInfo(name, guide);
+
+  const speciesToSync = evolution ? getEvolutionChainItems(evolution.tree)
+    .filter((item) => item.id)
+    .map((item) => ({ nationalId: item.id, name: item.name })) : [];
+  if (speciesToSync.length) await syncPokemonSprites(speciesToSync);
+
+  const data = {
+    name,
+    reforged,
+    evolution
+  };
+  pokemonInfoCache.set(cacheKey, data);
+  return data;
+}
+
+function buildLocalReforgedInfo(name, guide) {
+  return {
+    currentId: null,
+    sourceLabel: "Donnees Reforged locales",
+    tree: {
+      id: null,
+      name,
+      current: true,
+      requirement: "",
+      locations: dedupeGuideLabels(guide.locations || []),
+      reforgedEvolution: guide.evolution || "",
+      children: []
+    }
+  };
+}
+
+async function getPokemonEvolutionData(id, options = {}) {
+  const speciesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
+  if (!speciesResponse.ok) return null;
+  const species = await speciesResponse.json();
+  const chainUrl = species.evolution_chain?.url;
+  if (!chainUrl) return null;
+
+  const chainResponse = await fetch(chainUrl);
+  if (!chainResponse.ok) return null;
+  const chain = await chainResponse.json();
+
+  return {
+    currentId: id,
+    sourceLabel: options.reforged ? "Arborescence officielle, annotations Reforged" : "Arborescence officielle",
+    tree: buildEvolutionTree(chain.chain, {
+      currentId: id,
+      reforged: Boolean(options.reforged),
+      incomingDetails: []
+    })
+  };
+}
+
+function buildEvolutionTree(node, context) {
+  const id = extractSpeciesId(node.species?.url);
+  const fallbackName = formatApiName(node.species?.name || "");
+  const name = pokemonDisplayNameByNationalId(id, fallbackName);
+  const guide = context.reforged ? getReforgedGuideInfo(name) : null;
+  return {
+    id,
+    name,
+    current: id === context.currentId,
+    requirement: formatEvolutionRequirement(context.incomingDetails),
+    locations: guide ? dedupeGuideLabels(guide.locations || []) : [],
+    reforgedEvolution: guide?.evolution || "",
+    children: (node.evolves_to || []).map((child) => buildEvolutionTree(child, {
+      currentId: context.currentId,
+      reforged: context.reforged,
+      incomingDetails: child.evolution_details || []
+    }))
+  };
+}
+
+function getEvolutionChainItems(tree) {
+  if (!tree) return [];
+  return [tree, ...tree.children.flatMap(getEvolutionChainItems)];
+}
+
+function extractSpeciesId(url) {
+  const match = String(url || "").match(/\/pokemon-species\/(\d+)\/?$/);
+  return match ? Number(match[1]) : null;
+}
+
+function pokemonDisplayNameByNationalId(id, fallback) {
+  if (!id) return fallback;
+  const official = KANTO_POKEMON.find((pokemon) => getPokemonNationalId(pokemon) === id);
+  if (official) return official.name;
+  const reforged = KANTO_REFORGED_POKEMON.find((pokemon) => getPokemonNationalId(pokemon) === id);
+  return reforged?.name || fallback;
+}
+
+function formatApiName(value) {
+  return String(value || "")
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function formatEvolutionRequirement(details = []) {
+  const detail = details[0] || {};
+  const parts = [];
+  if (detail.min_level) parts.push(`Niv. ${detail.min_level}`);
+  if (detail.item?.name) parts.push(formatApiName(detail.item.name));
+  if (detail.held_item?.name) parts.push(`Tenu: ${formatApiName(detail.held_item.name)}`);
+  if (detail.known_move?.name) parts.push(`Cap.: ${formatApiName(detail.known_move.name)}`);
+  if (detail.min_happiness) parts.push(`Bonheur ${detail.min_happiness}`);
+  if (detail.time_of_day) parts.push(formatApiName(detail.time_of_day));
+  if (!parts.length && detail.trigger?.name === "trade") parts.push("Echange");
+  if (!parts.length && detail.trigger?.name) parts.push(formatApiName(detail.trigger.name));
+  return parts.join(" - ") || "Condition speciale";
+}
+
+function dedupeGuideLabels(locations) {
+  const seen = new Set();
+  return locations
+    .map((item) => item.label || item.area || "")
+    .filter(Boolean)
+    .filter((label) => {
+      const key = normalize(label);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+}
+
+function renderPokemonInfoPanel(data) {
+  const evolutionMarkup = renderEvolutionLookup(data.evolution, data.reforged);
+  if (!evolutionMarkup) {
+    return `<div class="pokemon-info-empty">Aucune evolution ou localisation connue.</div>`;
+  }
+  return `
+    ${evolutionMarkup}
+  `;
+}
+
+function renderEvolutionLookup(evolution, reforged) {
+  if (!evolution?.tree) return "";
+  return `
+    <div class="pokemon-info-section">
+      <div class="pokemon-info-section-heading">
+        <span class="slot-meta">Evolution</span>
+        <span>${escapeHtml(evolution.sourceLabel)}</span>
+      </div>
+      <div class="pokemon-evolution-tree">
+        ${renderEvolutionTreeNode(evolution.tree, { reforged, root: true })}
+      </div>
+    </div>
+  `;
+}
+
+function renderEvolutionTreeNode(node, options = {}) {
+  const childCount = node.children.length;
+  return `
+    <div class="pokemon-evolution-node-wrap ${options.root ? "root" : ""}">
+      ${options.root ? "" : `<span class="pokemon-evolution-link">${escapeHtml(node.requirement)}</span>`}
+      ${renderEvolutionMiniCard(node, options.reforged)}
+      ${childCount ? `
+        <div class="pokemon-evolution-children ${childCount > 1 ? "branched" : ""}">
+          ${node.children.map((child) => renderEvolutionTreeNode(child, { reforged: options.reforged })).join("")}
+        </div>
+      ` : ""}
+    </div>
+  `;
+}
+
+function renderEvolutionMiniCard(evolution, reforged) {
+  const sprite = evolution.id ? spriteUrls.get(evolution.id) : null;
+  return `
+    <div class="pokemon-evolution-card ${evolution.current ? "current" : ""}">
+      ${sprite ? `<img class="pokemon-info-sprite" src="${escapeHtml(sprite)}" alt="${escapeHtml(evolution.name)}" loading="lazy" onerror="this.remove()">` : ""}
+      <strong>${escapeHtml(evolution.name)}</strong>
+      ${reforged ? renderEvolutionCaptureInfo(evolution) : ""}
+    </div>
+  `;
+}
+
+function renderEvolutionCaptureInfo(evolution) {
+  return `
+    <div class="pokemon-capture-block ${evolution.locations.length ? "available" : "missing"}">
+      <span>${evolution.locations.length ? "Capture directe" : "Pas de capture directe connue"}</span>
+      ${evolution.locations.length ? `
+        <div class="pokemon-info-tags">
+          ${evolution.locations.map((label) => `<span>${escapeHtml(label)}</span>`).join("")}
+        </div>
+      ` : ""}
+      ${evolution.reforgedEvolution ? `<p class="pokemon-info-note">Reforged: ${escapeHtml(evolution.reforgedEvolution)}</p>` : ""}
+    </div>
+  `;
 }
 
 function renderSimulation(team) {
@@ -2696,7 +3160,8 @@ function renderVersusExplanation(matchup, enemy) {
         showSprite: true,
         compact: true,
         includePokeball: false,
-        toggleable: false
+        toggleable: false,
+        infoLookup: false
       })}
     </article>
   `;
@@ -2924,7 +3389,15 @@ function updatePokemonEverywhere(sourceId, updates) {
   const sameSource = (value) => String(value) === String(sourceId);
 
   state.customPokemon = state.customPokemon.map((pokemon) => (
-    sameSource(pokemon.id) ? { ...pokemon, name: updates.name, types: updates.types, attacks: updates.attacks ?? pokemon.attacks ?? [] } : pokemon
+    sameSource(pokemon.id)
+      ? {
+          ...pokemon,
+          name: updates.name,
+          types: updates.types,
+          attacks: updates.attacks ?? pokemon.attacks ?? [],
+          nationalId: updates.nationalId ?? pokemon.nationalId ?? null
+        }
+      : pokemon
   ));
 
   state.teams = state.teams.map((team) => {
@@ -2933,7 +3406,13 @@ function updatePokemonEverywhere(sourceId, updates) {
       ...team,
       pokemon: team.pokemon.map((pokemon) => (
         sameSource(pokemon.sourceId)
-          ? { ...pokemon, name: updates.name, types: updates.types, attacks: updates.attacks ?? pokemon.attacks }
+          ? {
+              ...pokemon,
+              name: updates.name,
+              types: updates.types,
+              attacks: updates.attacks ?? pokemon.attacks,
+              nationalId: updates.nationalId ?? pokemon.nationalId ?? null
+            }
           : pokemon
       ))
     };

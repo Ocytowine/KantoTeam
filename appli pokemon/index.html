@@ -49,6 +49,9 @@
           <button class="icon-nav-button" id="manage-saved-pokemon" type="button" aria-label="Pokemon sauvegardes">
             <img src="assets/Logo-sauvegarde.png" alt="" aria-hidden="true">
           </button>
+          <button class="icon-nav-button" id="open-pokemon-search" type="button" aria-label="Recherche Pokemon">
+            <img src="assets/recherche.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
+          </button>
         </div>
       </header>
 
@@ -67,6 +70,43 @@
           </div>
           <div class="team-list" id="saved-pokemon-list"></div>
           <div id="saved-pokemon-edit-panel" class="pokemon-edit-panel hidden"></div>
+        </section>
+
+        <section class="panel pokemon-search-panel hidden" id="pokemon-search-panel" aria-labelledby="pokemon-search-title">
+          <div class="panel-heading">
+            <div class="panel-title-with-icon">
+              <img class="panel-title-icon" src="assets/recherche.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
+              <div>
+                <p class="eyebrow">Recherche</p>
+                <h2 id="pokemon-search-title">Recherche Pokemon</h2>
+              </div>
+            </div>
+            <span class="pill" id="pokemon-search-count">0 resultat</span>
+          </div>
+          <div class="pokemon-search-controls">
+            <label class="field">
+              <span>Liste a consulter</span>
+              <select id="pokemon-search-source">
+                <option value="all">Toutes les sources</option>
+                <option value="official">Kanto</option>
+                <option value="reforged">Kanto Reforged</option>
+                <option value="saved">Bibliotheque</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Nom du Pokemon</span>
+              <input id="pokemon-search-query" type="search" placeholder="Tape au moins 3 lettres">
+            </label>
+            <label class="field">
+              <span>Filtre type 1</span>
+              <select id="pokemon-search-type-one"></select>
+            </label>
+            <label class="field">
+              <span>Filtre type 2</span>
+              <select id="pokemon-search-type-two"></select>
+            </label>
+          </div>
+          <div class="team-list" id="pokemon-search-results"></div>
         </section>
 
         <section class="panel type-helper-panel hidden" id="type-helper-panel" aria-labelledby="type-helper-title">
