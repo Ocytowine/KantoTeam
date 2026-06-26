@@ -4,7 +4,8 @@ const defaultState = {
   selectedSlot: 0,
   activeView: "slots",
   teams: [null, null, null],
-  customPokemon: []
+  customPokemon: [],
+  sharedTeams: []
 };
 
 let state = loadState();
@@ -16,6 +17,7 @@ let simulationDraft = {
   showResults: false,
   autoOpponent: false
 };
+let versusApplyModalOpen = false;
 let teamSettingsOpen = false;
 let teamAddPanelOpen = false;
 let teamAddMode = null;
@@ -58,6 +60,7 @@ const el = {
   openTypeHelper: document.querySelector("#open-type-helper"),
   manageSavedPokemon: document.querySelector("#manage-saved-pokemon"),
   openPokemonSearch: document.querySelector("#open-pokemon-search"),
+  openSharedTeams: document.querySelector("#open-shared-teams"),
   typeHelperPanel: document.querySelector("#type-helper-panel"),
   typeHelperCount: document.querySelector("#type-helper-count"),
   helperTypeOne: document.querySelector("#helper-type-one"),
@@ -91,6 +94,9 @@ const el = {
   pokemonSearchTypeTwo: document.querySelector("#pokemon-search-type-two"),
   pokemonSearchCount: document.querySelector("#pokemon-search-count"),
   pokemonSearchResults: document.querySelector("#pokemon-search-results"),
+  sharedTeamsPanel: document.querySelector("#shared-teams-panel"),
+  sharedTeamsList: document.querySelector("#shared-teams-list"),
+  sharedTeamsCount: document.querySelector("#shared-teams-count"),
   compositionPanel: document.querySelector("#composition-panel"),
   compositionTitle: document.querySelector("#composition-title"),
   compositionCount: document.querySelector("#composition-count"),
@@ -106,6 +112,9 @@ const el = {
   simulationTitle: document.querySelector("#simulation-title"),
   simulationCount: document.querySelector("#simulation-count"),
   versusAutoOpponent: document.querySelector("#versus-auto-opponent"),
+  versusApplyTeam: document.querySelector("#versus-apply-team"),
+  versusSharedLoader: document.querySelector("#versus-shared-loader"),
+  versusApplyModal: document.querySelector("#versus-apply-modal"),
   simulationEnemies: document.querySelector("#simulation-enemies"),
   simulationEnemyEditor: document.querySelector("#simulation-enemy-editor"),
   simulationConfirm: document.querySelector("#simulation-confirm"),
@@ -145,6 +154,8 @@ const el = {
   copyShareLink: document.querySelector("#copy-share-link"),
   shareWhatsapp: document.querySelector("#share-whatsapp"),
   shareSms: document.querySelector("#share-sms"),
+  sharedImportActions: document.querySelector("#shared-import-actions"),
+  saveSharedTeam: document.querySelector("#save-shared-team"),
   analysisEmpty: document.querySelector("#analysis-empty"),
   analysisContent: document.querySelector("#analysis-content"),
   threatTable: document.querySelector("#threat-table"),
@@ -212,6 +223,7 @@ function bindEvents() {
   el.manageSavedPokemon.addEventListener("click", () => openView("savedManager"));
   el.openTypeHelper.addEventListener("click", () => openView("typeHelper"));
   el.openPokemonSearch.addEventListener("click", () => openView("pokemonSearch"));
+  el.openSharedTeams.addEventListener("click", () => openView("sharedTeams"));
   el.pokemonSearchSource.addEventListener("change", () => {
     pokemonSearchFilters.source = el.pokemonSearchSource.value;
     renderPokemonSearch();
@@ -260,6 +272,7 @@ function bindEvents() {
   el.copyShareLink.addEventListener("click", copyActiveTeamLink);
   el.shareWhatsapp.addEventListener("click", () => openMessageShare("whatsapp"));
   el.shareSms.addEventListener("click", () => openMessageShare("sms"));
+  el.saveSharedTeam.addEventListener("click", saveCurrentSharedTeam);
   document.addEventListener("click", (event) => {
     if (el.shareActions.classList.contains("hidden")) return;
     if (el.shareActions.contains(event.target)) return;
@@ -283,6 +296,10 @@ function bindEvents() {
   el.compositionTeamSource.addEventListener("change", updateCurrentTeamSettings);
   el.analysisToComposition.addEventListener("click", () => openView("composition"));
   el.simulationConfirm.addEventListener("click", renderSimulationResults);
+  el.versusApplyTeam.addEventListener("click", () => {
+    versusApplyModalOpen = true;
+    renderVersusApplyModal();
+  });
   el.versusAutoOpponent.addEventListener("change", toggleAutomaticOpponent);
   mobileVersusMedia.addEventListener("change", () => {
     if (state.activeView === "simulation") renderSimulation(state.teams[state.selectedSlot]);
@@ -361,12 +378,35 @@ function loadState() {
     return {
       selectedSlot: stored.selectedSlot ?? 0,
       activeView: stored.activeView || "slots",
-      teams: Array.isArray(stored.teams) ? [stored.teams[0] || null, stored.teams[1] || null, stored.teams[2] || null] : [null, null, null],
-      customPokemon: Array.isArray(stored.customPokemon) ? stored.customPokemon : []
+      teams: Array.isArray(stored.teams)
+        ? [stored.teams[0] || null, stored.teams[1] || null, stored.teams[2] || null].map(normalizeStoredTeam)
+        : [null, null, null],
+      customPokemon: Array.isArray(stored.customPokemon) ? stored.customPokemon : [],
+      sharedTeams: Array.isArray(stored.sharedTeams) ? stored.sharedTeams.map(normalizeStoredSharedTeam).filter(Boolean).slice(0, 3) : []
     };
   } catch {
     return structuredClone(defaultState);
   }
+}
+
+function normalizeStoredTeam(team) {
+  if (!team) return null;
+  return {
+    ...team,
+    pokemon: Array.isArray(team.pokemon) ? team.pokemon : [],
+    reservePokemonIds: Array.isArray(team.reservePokemonIds) ? team.reservePokemonIds : []
+  };
+}
+
+function normalizeStoredSharedTeam(team) {
+  const normalized = normalizeSharedTeam(team);
+  if (!normalized) return null;
+  return {
+    ...normalized,
+    id: team.id || `shared-saved-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    savedName: String(team.savedName || normalized.name || "Equipe partagee").slice(0, 32),
+    savedAt: team.savedAt || new Date().toISOString()
+  };
 }
 
 function saveState() {
@@ -543,7 +583,8 @@ function createEmptyTeam(slot) {
     id: `team-${Date.now()}-${slot}`,
     name: "",
     preferredSource: "official",
-    pokemon: []
+    pokemon: [],
+    reservePokemonIds: []
   };
 }
 
@@ -576,6 +617,26 @@ function preferredSourceLabel(source) {
   return source === "reforged" ? "Kanto Reforged" : "Kanto classique";
 }
 
+function getTeamReservePokemon(team) {
+  if (!team) return [];
+  const ids = Array.isArray(team.reservePokemonIds) ? team.reservePokemonIds : [];
+  return ids
+    .map((id) => state.customPokemon.find((pokemon) => String(pokemon.id) === String(id)))
+    .filter(Boolean);
+}
+
+function pokemonIdentityKey(pokemon) {
+  return [
+    normalize(pokemon?.name),
+    (pokemon?.types || []).join("|"),
+    getPokemonNationalId(pokemon) || pokemon?.sourceId || pokemon?.id || ""
+  ].join("::");
+}
+
+function isSamePokemon(a, b) {
+  return pokemonIdentityKey(a) === pokemonIdentityKey(b);
+}
+
 function openView(view) {
   if (view === "slots") sharedTeam = null;
   if (view !== "composition") {
@@ -593,6 +654,7 @@ function renderAll() {
   renderSlots();
   renderActiveView();
   renderSavedPokemonManager();
+  renderSharedTeamsManager();
   renderPokemonSearch();
   renderSavedCustomOptions();
   updateModeFields();
@@ -614,7 +676,8 @@ function renderSlots() {
   state.teams.forEach((team, index) => {
     const card = document.createElement("article");
     card.className = `slot-card ${team ? "" : "empty"} ${index === state.selectedSlot ? "active" : ""}`;
-    const status = team ? `${team.pokemon.length}/6 Pokemon · ${preferredSourceLabel(getTeamPreferredSource(team))}` : "Slot vide";
+    const reserveCount = team ? getTeamReservePokemon(team).length : 0;
+    const status = team ? `${team.pokemon.length}/6 Pokemon · ${reserveCount} reserve · ${preferredSourceLabel(getTeamPreferredSource(team))}` : "Slot vide";
     card.innerHTML = team ? `
       <span class="eyebrow">Slot ${index + 1}</span>
       <strong>${escapeHtml(team.name || `Equipe ${index + 1}`)}</strong>
@@ -667,13 +730,15 @@ function renderSlots() {
 
 function renderActiveView() {
   const hasTeam = Boolean(getActiveTeam());
-  const view = ["slots", "savedManager", "typeHelper", "pokemonSearch"].includes(state.activeView) ? state.activeView : hasTeam ? state.activeView : "composition";
+  const view = ["slots", "savedManager", "typeHelper", "pokemonSearch", "sharedTeams"].includes(state.activeView) ? state.activeView : hasTeam ? state.activeView : "composition";
   el.slots.classList.toggle("hidden", view !== "slots");
   el.backToSlots.classList.toggle("hidden", view === "slots");
   el.manageSavedPokemon.classList.toggle("hidden", view !== "slots");
   el.openTypeHelper.classList.toggle("hidden", view !== "slots");
   el.openPokemonSearch.classList.toggle("hidden", view !== "slots");
+  el.openSharedTeams.classList.toggle("hidden", view !== "slots");
   el.savedManagerPanel.classList.toggle("hidden", view !== "savedManager");
+  el.sharedTeamsPanel.classList.toggle("hidden", view !== "sharedTeams");
   el.pokemonSearchPanel.classList.toggle("hidden", view !== "pokemonSearch");
   el.typeHelperPanel.classList.toggle("hidden", view !== "typeHelper");
   el.compositionPanel.classList.toggle("hidden", view !== "composition");
@@ -687,7 +752,9 @@ async function syncAppSprites(extraPokemon = []) {
   const extraList = Array.isArray(extraPokemon) ? extraPokemon : [extraPokemon];
   const pokemon = [
     ...state.teams.filter(Boolean).flatMap((team) => team.pokemon),
+    ...state.teams.filter(Boolean).flatMap((team) => getTeamReservePokemon(team)),
     ...state.customPokemon,
+    ...state.sharedTeams.flatMap((team) => team.pokemon),
     ...simulationDraft.enemies.filter(Boolean),
     ...extraList.filter(Boolean)
   ];
@@ -1196,6 +1263,7 @@ function renderManagedComposition(team) {
   el.teamSettingsPanel.classList.toggle("hidden", !displayTeam || !editable || !teamSettingsOpen);
   el.compositionAddPanel.classList.add("hidden");
   el.shareActions.classList.toggle("hidden", !team);
+  el.sharedImportActions.classList.toggle("hidden", !sharedTeam);
   if (!team) closeShareMenu();
   el.compositionList.innerHTML = "";
   el.pokemonEditPanel.classList.add("hidden");
@@ -1234,6 +1302,7 @@ function renderManagedComposition(team) {
         renderTeamAddPanel();
       }
     }
+    renderTeamReserveSection(displayTeam);
   }
 
   bindPokemonCardToggles(el.compositionList);
@@ -1260,6 +1329,76 @@ function renderManagedComposition(team) {
       el.compositionAddPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
   });
+
+  el.compositionList.querySelectorAll("[data-add-reserve-pokemon]").forEach((button) => {
+    button.addEventListener("click", () => addPokemonToTeamReserve(button.dataset.addReservePokemon));
+  });
+
+  el.compositionList.querySelectorAll("[data-remove-reserve-pokemon]").forEach((button) => {
+    button.addEventListener("click", () => removePokemonFromTeamReserve(button.dataset.removeReservePokemon));
+  });
+}
+
+function renderTeamReserveSection(team) {
+  const reserve = getTeamReservePokemon(team);
+  const reserveIds = new Set((team.reservePokemonIds || []).map(String));
+  const available = state.customPokemon.filter((pokemon) => !reserveIds.has(String(pokemon.id)));
+  const section = document.createElement("section");
+  section.className = "reserve-section";
+  section.innerHTML = `
+    <div class="reserve-heading">
+      <div>
+        <p class="eyebrow">Reserve</p>
+        <h3>Pokemon associes a cette equipe</h3>
+      </div>
+      <span class="pill">${reserve.length} reserve</span>
+    </div>
+    <div class="reserve-list">
+      ${reserve.length
+        ? reserve.map((pokemon) => `
+          <article class="reserve-card" style="${pokemonCardStyle(pokemon)}">
+            <strong>${escapeHtml(pokemon.name)}</strong>
+            <span class="name-type-logos">${pokemon.types.map(typeLogoOnly).join("")}</span>
+            <button class="small-button danger" type="button" data-remove-reserve-pokemon="${escapeHtml(pokemon.id)}">Retirer</button>
+          </article>
+        `).join("")
+        : `<div class="empty-state">Aucun Pokemon en reserve pour cette equipe.</div>`}
+    </div>
+    <div class="reserve-add-grid">
+      ${available.length
+        ? available.map((pokemon) => `
+          <button class="team-add-mini-card" type="button" data-add-reserve-pokemon="${escapeHtml(pokemon.id)}">
+            <span class="team-add-mini-sprite">${renderPokemonSprite(pokemon) || `<span>${escapeHtml(pokemon.name.slice(0, 1))}</span>`}</span>
+            <strong>${escapeHtml(pokemon.name)}</strong>
+            <span class="team-add-type-icons">${pokemon.types.map(typeLogoOnly).join("")}</span>
+          </button>
+        `).join("")
+        : `<div class="empty-state">Tous les Pokemon sauvegardes sont deja en reserve, ou la bibliotheque est vide.</div>`}
+    </div>
+  `;
+  el.compositionList.append(section);
+}
+
+function addPokemonToTeamReserve(savedId) {
+  const team = state.teams[state.selectedSlot];
+  if (!team) return;
+  team.reservePokemonIds = Array.isArray(team.reservePokemonIds) ? team.reservePokemonIds : [];
+  if (!state.customPokemon.some((pokemon) => String(pokemon.id) === String(savedId))) return;
+  if (!team.reservePokemonIds.some((id) => String(id) === String(savedId))) team.reservePokemonIds.push(savedId);
+  state.teams[state.selectedSlot] = team;
+  draftTeam = structuredClone(team);
+  saveState();
+  renderAll();
+}
+
+function removePokemonFromTeamReserve(savedId) {
+  const team = state.teams[state.selectedSlot];
+  if (!team) return;
+  team.reservePokemonIds = (team.reservePokemonIds || []).filter((id) => String(id) !== String(savedId));
+  state.teams[state.selectedSlot] = team;
+  draftTeam = structuredClone(team);
+  saveState();
+  renderAll();
 }
 
 function syncTeamSettingsInputs(team) {
@@ -2211,6 +2350,133 @@ function removePokemonFromCurrentTeam(instanceId) {
   renderAll();
 }
 
+function renderSharedTeamsManager() {
+  el.sharedTeamsCount.textContent = `${state.sharedTeams.length}/3`;
+  el.sharedTeamsList.innerHTML = "";
+
+  if (!state.sharedTeams.length) {
+    el.sharedTeamsList.innerHTML = `<div class="empty-state">Aucune equipe partagee sauvegardee.</div>`;
+    return;
+  }
+
+  state.sharedTeams.forEach((team, index) => {
+    const card = document.createElement("article");
+    card.className = "shared-team-card";
+    card.innerHTML = `
+      <div class="shared-team-header">
+        <div>
+          <p class="eyebrow">Liste ${index + 1}</p>
+          <h3>${escapeHtml(team.savedName || team.name)}</h3>
+          <span class="slot-meta">${team.pokemon.length}/6 Pokemon · ${preferredSourceLabel(getTeamPreferredSource(team))}</span>
+        </div>
+        <div class="card-actions">
+          <button class="small-button" type="button" data-load-shared-versus="${escapeHtml(team.id)}">Charger en versus</button>
+          <button class="small-button" type="button" data-rename-shared="${escapeHtml(team.id)}">Renommer</button>
+          ${sharedTeam ? `<button class="small-button" type="button" data-replace-shared="${escapeHtml(team.id)}">Remplacer</button>` : ""}
+          <button class="small-button danger" type="button" data-delete-shared="${escapeHtml(team.id)}">Supprimer</button>
+        </div>
+      </div>
+      <div class="shared-team-pokemon">
+        ${team.pokemon.map((pokemon) => `
+          <span class="shared-team-chip">${escapeHtml(pokemon.name)} <span class="name-type-logos">${pokemon.types.map(typeLogoOnly).join("")}</span></span>
+        `).join("")}
+      </div>
+    `;
+    el.sharedTeamsList.append(card);
+  });
+
+  el.sharedTeamsList.querySelectorAll("[data-load-shared-versus]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const team = state.sharedTeams.find((item) => String(item.id) === String(button.dataset.loadSharedVersus));
+      if (!team) return;
+      simulationDraft.enemies = team.pokemon.map((pokemon) => ({
+        name: pokemon.name,
+        types: [...pokemon.types],
+        attacks: [...(pokemon.attacks || [])],
+        nationalId: getPokemonNationalId(pokemon) || null
+      })).slice(0, 6);
+      simulationDraft.editingIndex = null;
+      simulationDraft.showResults = false;
+      sharedTeam = null;
+      state.activeView = "simulation";
+      saveState();
+      renderAll();
+    });
+  });
+
+  el.sharedTeamsList.querySelectorAll("[data-rename-shared]").forEach((button) => {
+    button.addEventListener("click", () => renameSharedTeam(button.dataset.renameShared));
+  });
+  el.sharedTeamsList.querySelectorAll("[data-replace-shared]").forEach((button) => {
+    button.addEventListener("click", () => replaceSharedTeam(button.dataset.replaceShared));
+  });
+  el.sharedTeamsList.querySelectorAll("[data-delete-shared]").forEach((button) => {
+    button.addEventListener("click", () => deleteSharedTeam(button.dataset.deleteShared));
+  });
+}
+
+function saveCurrentSharedTeam() {
+  if (!sharedTeam) return;
+  if (state.sharedTeams.length >= 3) {
+    const choice = prompt(`Tu peux sauvegarder 3 equipes partagees maximum. Indique 1, 2 ou 3 pour remplacer une liste :\n${state.sharedTeams.map((team, index) => `${index + 1}. ${team.savedName || team.name}`).join("\n")}`);
+    const index = Number(choice) - 1;
+    if (!Number.isInteger(index) || index < 0 || index >= state.sharedTeams.length) return;
+    state.sharedTeams[index] = {
+      ...createSavedSharedTeam(sharedTeam),
+      id: state.sharedTeams[index].id
+    };
+    saveState();
+    alert("Equipe partagee remplacee.");
+    renderAll();
+    return;
+  }
+  const saved = createSavedSharedTeam(sharedTeam);
+  state.sharedTeams.push(saved);
+  saveState();
+  alert("Equipe partagee sauvegardee.");
+  renderAll();
+}
+
+function createSavedSharedTeam(team) {
+  return {
+    ...structuredClone(team),
+    id: `shared-saved-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    savedName: team.name || "Equipe partagee",
+    savedAt: new Date().toISOString(),
+    shared: true
+  };
+}
+
+function renameSharedTeam(id) {
+  const team = state.sharedTeams.find((item) => String(item.id) === String(id));
+  if (!team) return;
+  const name = prompt("Nouveau nom de cette liste partagee :", team.savedName || team.name);
+  if (!name?.trim()) return;
+  team.savedName = name.trim().slice(0, 32);
+  saveState();
+  renderAll();
+}
+
+function replaceSharedTeam(id) {
+  if (!sharedTeam) return;
+  const index = state.sharedTeams.findIndex((item) => String(item.id) === String(id));
+  if (index < 0) return;
+  if (!confirm("Remplacer cette liste partagee par l'equipe partagee ouverte ?")) return;
+  state.sharedTeams[index] = {
+    ...createSavedSharedTeam(sharedTeam),
+    id
+  };
+  saveState();
+  renderAll();
+}
+
+function deleteSharedTeam(id) {
+  if (!confirm("Supprimer cette equipe partagee sauvegardee ?")) return;
+  state.sharedTeams = state.sharedTeams.filter((team) => String(team.id) !== String(id));
+  saveState();
+  renderAll();
+}
+
 function renderSavedPokemonModernEditPanel(pokemon) {
   const panel = el.savedPokemonEditPanel;
   const attacks = pokemon.attacks || [];
@@ -2624,8 +2890,11 @@ function renderSimulation(team) {
   const enemyCount = simulationDraft.enemies.filter(Boolean).length;
   const slotCount = 6;
   el.versusAutoOpponent.checked = simulationDraft.autoOpponent;
-  el.versusAutoOpponent.disabled = !state.customPokemon.length;
+  el.versusAutoOpponent.disabled = !getTeamReservePokemon(team).length;
+  el.versusApplyTeam.classList.toggle("hidden", !team || !simulationDraft.showResults);
   el.simulationCount.textContent = `${enemyCount}/6 adversaire${enemyCount > 1 ? "s" : ""}`;
+  renderVersusSharedLoader();
+  renderVersusApplyModal();
   el.simulationEnemies.innerHTML = "";
   el.simulationMobile.innerHTML = "";
   const isMobile = mobileVersusMedia.matches;
@@ -2795,7 +3064,7 @@ function renderDesktopDuel(team, enemy, index) {
       ${matchup ? `
         <section class="desktop-duel-recap desktop-duel-choice interactive-result" tabindex="0" role="button" aria-expanded="false" aria-label="Afficher la justification du choix ${index + 1}">
           <div class="desktop-duel-pane-heading">
-            <span class="choice-kicker">${simulationDraft.autoOpponent ? "Choix sauvegarde" : "Choix de l'equipe"}</span>
+            <span class="choice-kicker">${simulationDraft.autoOpponent ? "Choix reserve" : "Choix de l'equipe"}</span>
             <span class="detail-hint">Pourquoi ?</span>
           </div>
           ${renderMatchupChoice(matchup)}
@@ -2939,7 +3208,7 @@ function saveSimulationEnemy(editor) {
 
 function toggleAutomaticOpponent() {
   const team = state.teams[state.selectedSlot];
-  if (el.versusAutoOpponent.checked && !state.customPokemon.length) {
+  if (el.versusAutoOpponent.checked && !getTeamReservePokemon(team).length) {
     el.versusAutoOpponent.checked = false;
     return;
   }
@@ -2952,12 +3221,18 @@ function toggleAutomaticOpponent() {
 
 function getVersusCandidateTeam(team) {
   if (!simulationDraft.autoOpponent) return team;
+  const active = team?.pokemon || [];
+  const reserve = getTeamReservePokemon(team).map((pokemon) => ({
+    ...structuredClone(pokemon),
+    sourceId: pokemon.id,
+    attacks: pokemon.attacks || []
+  }));
+  const pokemon = [...active];
+  reserve.forEach((candidate) => {
+    if (!pokemon.some((member) => isSamePokemon(member, candidate))) pokemon.push(candidate);
+  });
   return {
-    pokemon: state.customPokemon.map((pokemon) => ({
-      ...structuredClone(pokemon),
-      sourceId: pokemon.id,
-      attacks: pokemon.attacks || []
-    }))
+    pokemon
   };
 }
 
@@ -2981,6 +3256,126 @@ async function renderSimulationResults() {
     .filter(Boolean);
   await syncPokemonSprites([...enemies, ...choices]);
   if (simulationDraft.showResults) renderSimulation(team);
+}
+
+function getVersusRecommendedPokemon() {
+  const team = state.teams[state.selectedSlot];
+  if (!team || !simulationDraft.showResults) return [];
+  const candidateTeam = getVersusCandidateTeam(team);
+  const unique = [];
+  simulationDraft.enemies.filter(Boolean).forEach((enemy) => {
+    const pokemon = bestTeamMatchups(candidateTeam, enemy)[0]?.pokemon;
+    if (pokemon && !unique.some((item) => isSamePokemon(item, pokemon))) unique.push(pokemon);
+  });
+  return unique;
+}
+
+function renderVersusApplyModal() {
+  if (!versusApplyModalOpen) {
+    el.versusApplyModal.classList.add("hidden");
+    el.versusApplyModal.innerHTML = "";
+    return;
+  }
+
+  const team = state.teams[state.selectedSlot];
+  const recommendations = getVersusRecommendedPokemon();
+  const freeSlots = Math.max(0, 6 - (team?.pokemon.length || 0));
+  el.versusApplyModal.classList.remove("hidden");
+  el.versusApplyModal.innerHTML = `
+    <div class="team-modal" role="dialog" aria-modal="true" aria-labelledby="versus-apply-title">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Versus</p>
+          <h2 id="versus-apply-title">Modifier l'equipe actuelle</h2>
+        </div>
+        <button class="small-button" type="button" data-close-versus-apply>Fermer</button>
+      </div>
+      <p class="field-help">Les choix ci-dessous viennent du dernier VS. Les doublons sont ignores et les places libres sont remplies en priorite.</p>
+      <div class="versus-apply-list">
+        ${recommendations.length ? recommendations.map((pokemon, index) => renderVersusApplyRow(pokemon, index, team, freeSlots)).join("") : `<div class="empty-state">Aucune recommandation disponible. Lance un VS avant de modifier l'equipe.</div>`}
+      </div>
+      <div class="form-actions">
+        <button class="primary-button confirm" type="button" data-confirm-versus-apply ${recommendations.length ? "" : "disabled"}>Appliquer les choix</button>
+      </div>
+    </div>
+  `;
+  el.versusApplyModal.querySelector("[data-close-versus-apply]").addEventListener("click", closeVersusApplyModal);
+  el.versusApplyModal.onclick = (event) => {
+    if (event.target === el.versusApplyModal) closeVersusApplyModal();
+  };
+  el.versusApplyModal.querySelector("[data-confirm-versus-apply]")?.addEventListener("click", applyVersusRecommendationsToTeam);
+}
+
+function renderVersusApplyRow(pokemon, index, team, freeSlots) {
+  const duplicate = team.pokemon.some((member) => isSamePokemon(member, pokemon));
+  const canUseFreeSlot = !duplicate && index < freeSlots;
+  const disabled = duplicate ? "disabled" : "";
+  const target = duplicate
+    ? `<span class="slot-meta">Deja dans l'equipe</span>`
+    : canUseFreeSlot
+      ? `<span class="slot-meta">Ajout sur une place libre</span>`
+      : `
+        <label class="field">
+          <span>Remplacer</span>
+          <select data-versus-replace-target="${index}">
+            ${team.pokemon.map((member, memberIndex) => `<option value="${escapeHtml(member.instanceId)}" ${memberIndex === index % team.pokemon.length ? "selected" : ""}>${escapeHtml(member.name)}</option>`).join("")}
+          </select>
+        </label>
+      `;
+  return `
+    <label class="versus-apply-row ${duplicate ? "disabled" : ""}">
+      <input type="checkbox" data-versus-apply-index="${index}" ${disabled} ${duplicate ? "" : "checked"}>
+      <span class="team-add-mini-sprite">${renderPokemonSprite(pokemon) || `<span>${escapeHtml(pokemon.name.slice(0, 1))}</span>`}</span>
+      <strong>${escapeHtml(pokemon.name)}</strong>
+      <span class="name-type-logos">${pokemon.types.map(typeLogoOnly).join("")}</span>
+      ${target}
+    </label>
+  `;
+}
+
+function closeVersusApplyModal() {
+  versusApplyModalOpen = false;
+  el.versusApplyModal.onclick = null;
+  renderVersusApplyModal();
+}
+
+function applyVersusRecommendationsToTeam() {
+  const team = state.teams[state.selectedSlot];
+  if (!team) return;
+  const recommendations = getVersusRecommendedPokemon();
+  const checked = Array.from(el.versusApplyModal.querySelectorAll("[data-versus-apply-index]:checked"));
+  checked.forEach((input) => {
+    const index = Number(input.dataset.versusApplyIndex);
+    const pokemon = recommendations[index];
+    if (!pokemon || team.pokemon.some((member) => isSamePokemon(member, pokemon))) return;
+    const member = clonePokemonAsTeamMember(pokemon);
+    if (team.pokemon.length < 6) {
+      team.pokemon.push(member);
+      return;
+    }
+    const targetId = el.versusApplyModal.querySelector(`[data-versus-replace-target="${index}"]`)?.value;
+    const targetIndex = team.pokemon.findIndex((item) => item.instanceId === targetId);
+    if (targetIndex >= 0) team.pokemon[targetIndex] = member;
+  });
+  team.updatedAt = new Date().toISOString();
+  state.teams[state.selectedSlot] = team;
+  draftTeam = structuredClone(team);
+  saveState();
+  closeVersusApplyModal();
+  renderAll();
+}
+
+function clonePokemonAsTeamMember(pokemon) {
+  const member = {
+    instanceId: `member-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    sourceId: pokemon.sourceId || pokemon.id || null,
+    name: pokemon.name,
+    types: [...pokemon.types],
+    attacks: [...(pokemon.attacks || pokemon.types || [])].slice(0, 4)
+  };
+  const nationalId = getPokemonNationalId(pokemon);
+  if (nationalId) member.nationalId = nationalId;
+  return member;
 }
 
 function renderMobileDuelResult(team, enemy, index) {
@@ -3013,7 +3408,7 @@ function renderSimulationResultCard(matchup, enemy, index, extraClass = "") {
   return `
     <article class="simulation-result-card interactive-result ${extraClass}" tabindex="0" role="button" aria-expanded="false" aria-label="Afficher la justification du choix ${index + 1}">
       <div class="pokemon-card-header">
-        <span class="choice-kicker">${simulationDraft.autoOpponent ? "Choix sauvegarde" : "Choix recommande"}</span>
+        <span class="choice-kicker">${simulationDraft.autoOpponent ? "Choix reserve" : "Choix recommande"}</span>
         <span class="detail-hint">Pourquoi ?</span>
       </div>
       ${renderVersusSpriteFaceoff(enemy, matchup?.pokemon)}
@@ -3141,6 +3536,40 @@ function renderMatchupChoice(matchup) {
       ${warnings.length ? `<div class="matchup-alert">${warnings.join(" ")}</div>` : `<div class="matchup-positive">Choix favorable pour ce duel.</div>`}
     </div>
   `;
+}
+
+function renderVersusSharedLoader() {
+  if (!state.sharedTeams.length) {
+    el.versusSharedLoader.innerHTML = "";
+    return;
+  }
+  el.versusSharedLoader.innerHTML = `
+    <div class="versus-shared-controls">
+      <label class="field">
+        <span>Equipe partagee adverse</span>
+        <select id="versus-shared-team-select">
+          ${state.sharedTeams.map((team) => `<option value="${escapeHtml(team.id)}">${escapeHtml(team.savedName || team.name)}</option>`).join("")}
+        </select>
+      </label>
+      <button class="small-button" type="button" data-load-versus-shared-team>Charger</button>
+    </div>
+  `;
+  el.versusSharedLoader.querySelector("[data-load-versus-shared-team]").addEventListener("click", () => {
+    const id = el.versusSharedLoader.querySelector("#versus-shared-team-select").value;
+    const team = state.sharedTeams.find((item) => String(item.id) === String(id));
+    if (!team) return;
+    simulationDraft.enemies = team.pokemon.map((pokemon) => ({
+      name: pokemon.name,
+      types: [...pokemon.types],
+      attacks: [...(pokemon.attacks || [])],
+      nationalId: getPokemonNationalId(pokemon) || null
+    })).slice(0, 6);
+    simulationDraft.editingIndex = null;
+    simulationDraft.showResults = false;
+    el.simulationResults.className = "simulation-results empty-state";
+    el.simulationResults.innerHTML = "Equipe partagee chargee. Lance le VS pour afficher les meilleurs choix.";
+    renderSimulation(state.teams[state.selectedSlot]);
+  });
 }
 
 function renderVersusExplanation(matchup, enemy) {

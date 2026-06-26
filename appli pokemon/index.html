@@ -52,6 +52,7 @@
           <button class="icon-nav-button" id="open-pokemon-search" type="button" aria-label="Recherche Pokemon">
             <img src="assets/recherche.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
           </button>
+          <button class="ghost-button hidden" id="open-shared-teams" type="button">Equipes partagees</button>
         </div>
       </header>
 
@@ -70,6 +71,17 @@
           </div>
           <div class="team-list" id="saved-pokemon-list"></div>
           <div id="saved-pokemon-edit-panel" class="pokemon-edit-panel hidden"></div>
+        </section>
+
+        <section class="panel shared-teams-panel hidden" id="shared-teams-panel" aria-labelledby="shared-teams-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Partage</p>
+              <h2 id="shared-teams-title">Equipes partagees</h2>
+            </div>
+            <span class="pill" id="shared-teams-count">0/3</span>
+          </div>
+          <div class="team-list" id="shared-teams-list"></div>
         </section>
 
         <section class="panel pokemon-search-panel hidden" id="pokemon-search-panel" aria-labelledby="pokemon-search-title">
@@ -262,6 +274,9 @@
               <button class="small-button" id="share-sms" type="button">SMS</button>
             </div>
           </div>
+          <div class="shared-import-actions hidden" id="shared-import-actions">
+            <button class="primary-button" id="save-shared-team" type="button">Sauvegarder cette equipe partagee</button>
+          </div>
           <div class="team-settings-panel hidden" id="team-settings-panel">
             <label class="field">
               <span>Nom de l'equipe</span>
@@ -287,11 +302,12 @@
               <h2 id="simulation-title">Aucune equipe</h2>
             </div>
             <div class="versus-heading-actions">
-              <label class="versus-auto-toggle" title="Choisir les recommandations dans l'equipe ou la bibliotheque">
+              <button class="small-button hidden" id="versus-apply-team" type="button">Modifier l'equipe</button>
+              <label class="versus-auto-toggle" title="Choisir les recommandations dans l'equipe seule ou avec sa reserve">
                 <span>Equipe</span>
                 <input id="versus-auto-opponent" type="checkbox">
                 <span class="toggle-track" aria-hidden="true"><span></span></span>
-                <span>Pokemon sauvegardes</span>
+                <span>Equipe + reserve</span>
               </label>
               <span class="pill" id="simulation-count">0 adversaire</span>
             </div>
@@ -305,6 +321,8 @@
             </button>
             <span class="versus-launcher-line" aria-hidden="true"></span>
           </div>
+
+          <div class="versus-shared-loader" id="versus-shared-loader"></div>
 
           <div class="simulation-layout">
             <section class="versus-column">
@@ -334,6 +352,7 @@
           </div>
 
           <div class="mobile-versus-list" id="mobile-versus-list"></div>
+          <div class="team-modal-overlay hidden" id="versus-apply-modal"></div>
         </section>
 
         <section class="panel editor-panel" id="editor-panel" aria-labelledby="editor-title">

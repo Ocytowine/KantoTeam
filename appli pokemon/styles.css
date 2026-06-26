@@ -547,6 +547,143 @@ h3 {
   background: rgba(244, 200, 74, 0.055);
 }
 
+.shared-import-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 14px;
+}
+
+.reserve-section {
+  display: grid;
+  gap: 12px;
+  grid-column: 1 / -1;
+  margin-top: 6px;
+  border: 1px solid rgba(244, 200, 74, 0.22);
+  border-radius: 8px;
+  padding: 14px;
+  background: rgba(15, 18, 24, 0.5);
+}
+
+.reserve-heading,
+.shared-team-header,
+.versus-shared-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.reserve-heading h3,
+.shared-team-header h3 {
+  margin: 3px 0 0;
+}
+
+.reserve-list,
+.reserve-add-grid,
+.shared-team-pokemon,
+.versus-apply-list {
+  display: grid;
+  gap: 10px;
+}
+
+.reserve-add-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.reserve-card,
+.shared-team-card,
+.versus-apply-row {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 11px;
+  background: linear-gradient(145deg, rgba(36, 43, 54, 0.72), rgba(21, 26, 35, 0.96));
+}
+
+.reserve-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 10px;
+  border-color: var(--card-border, var(--line));
+}
+
+.shared-team-card {
+  display: grid;
+  gap: 12px;
+}
+
+.shared-team-pokemon {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.shared-team-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 6px 8px;
+  background: rgba(15, 18, 24, 0.58);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.versus-shared-loader {
+  margin: 12px 0;
+}
+
+.versus-shared-controls {
+  border: 1px solid rgba(244, 200, 74, 0.22);
+  border-radius: 8px;
+  padding: 12px;
+  background: rgba(244, 200, 74, 0.055);
+}
+
+.versus-shared-controls .field {
+  flex: 1 1 260px;
+}
+
+.team-modal-overlay {
+  position: fixed;
+  z-index: 900;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(5, 7, 10, 0.72);
+}
+
+.team-modal {
+  width: min(760px, 100%);
+  max-height: min(780px, calc(100vh - 36px));
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 18px;
+  background: rgba(27, 32, 41, 0.98);
+  box-shadow: var(--shadow);
+}
+
+.versus-apply-row {
+  display: grid;
+  grid-template-columns: auto 56px minmax(120px, 1fr) auto minmax(150px, 220px);
+  align-items: center;
+  gap: 10px;
+}
+
+.versus-apply-row.disabled {
+  opacity: 0.62;
+}
+
+.versus-apply-row input {
+  width: 18px;
+  min-height: 18px;
+  accent-color: var(--ok);
+}
+
 .composition-add-panel {
   grid-column: 1 / -1;
   margin-top: 14px;
@@ -3312,6 +3449,16 @@ button:focus-visible {
 
   .versus-heading-actions {
     align-items: stretch;
+    flex-direction: column;
+  }
+
+  .reserve-heading,
+  .shared-team-header,
+  .versus-shared-controls,
+  .reserve-card,
+  .versus-apply-row {
+    align-items: stretch;
+    grid-template-columns: 1fr;
     flex-direction: column;
   }
 
