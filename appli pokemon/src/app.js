@@ -1334,6 +1334,11 @@ function renderManagedComposition(team) {
     button.addEventListener("click", () => addPokemonToTeamReserve(button.dataset.addReservePokemon));
   });
 
+  el.compositionList.querySelector("[data-add-selected-reserve]")?.addEventListener("click", () => {
+    const selectedId = el.compositionList.querySelector("#reserve-pokemon-select")?.value;
+    if (selectedId) addPokemonToTeamReserve(selectedId);
+  });
+
   el.compositionList.querySelectorAll("[data-remove-reserve-pokemon]").forEach((button) => {
     button.addEventListener("click", () => removePokemonFromTeamReserve(button.dataset.removeReservePokemon));
   });
@@ -1349,31 +1354,33 @@ function renderTeamReserveSection(team) {
     <div class="reserve-heading">
       <div>
         <p class="eyebrow">Reserve</p>
-        <h3>Pokemon associes a cette equipe</h3>
+        <h3>Options de banc</h3>
       </div>
       <span class="pill">${reserve.length} reserve</span>
     </div>
-    <div class="reserve-list">
+    <div class="reserve-list ${reserve.length ? "" : "empty"}">
       ${reserve.length
         ? reserve.map((pokemon) => `
-          <article class="reserve-card" style="${pokemonCardStyle(pokemon)}">
+          <span class="reserve-chip" style="${pokemonCardStyle(pokemon)}">
             <strong>${escapeHtml(pokemon.name)}</strong>
             <span class="name-type-logos">${pokemon.types.map(typeLogoOnly).join("")}</span>
-            <button class="small-button danger" type="button" data-remove-reserve-pokemon="${escapeHtml(pokemon.id)}">Retirer</button>
-          </article>
+            <button type="button" data-remove-reserve-pokemon="${escapeHtml(pokemon.id)}" aria-label="Retirer ${escapeHtml(pokemon.name)} de la reserve">&times;</button>
+          </span>
         `).join("")
-        : `<div class="empty-state">Aucun Pokemon en reserve pour cette equipe.</div>`}
+        : `<span class="slot-meta">Aucun Pokemon en reserve.</span>`}
     </div>
-    <div class="reserve-add-grid">
+    <div class="reserve-add-row">
       ${available.length
-        ? available.map((pokemon) => `
-          <button class="team-add-mini-card" type="button" data-add-reserve-pokemon="${escapeHtml(pokemon.id)}">
-            <span class="team-add-mini-sprite">${renderPokemonSprite(pokemon) || `<span>${escapeHtml(pokemon.name.slice(0, 1))}</span>`}</span>
-            <strong>${escapeHtml(pokemon.name)}</strong>
-            <span class="team-add-type-icons">${pokemon.types.map(typeLogoOnly).join("")}</span>
-          </button>
-        `).join("")
-        : `<div class="empty-state">Tous les Pokemon sauvegardes sont deja en reserve, ou la bibliotheque est vide.</div>`}
+        ? `
+          <label class="field">
+            <span>Ajouter depuis la bibliotheque</span>
+            <select id="reserve-pokemon-select">
+              ${available.map((pokemon) => `<option value="${escapeHtml(pokemon.id)}">${escapeHtml(pokemonOptionLabel(pokemon))}</option>`).join("")}
+            </select>
+          </label>
+          <button class="small-button" type="button" data-add-selected-reserve>Ajouter</button>
+        `
+        : `<span class="slot-meta">Bibliotheque vide ou deja entierement en reserve.</span>`}
     </div>
   `;
   el.compositionList.append(section);
@@ -2364,10 +2371,13 @@ function renderSharedTeamsManager() {
     card.className = "shared-team-card";
     card.innerHTML = `
       <div class="shared-team-header">
-        <div>
+        <div class="shared-team-title">
+          <img src="assets/partage.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
+          <div>
           <p class="eyebrow">Liste ${index + 1}</p>
           <h3>${escapeHtml(team.savedName || team.name)}</h3>
           <span class="slot-meta">${team.pokemon.length}/6 Pokemon · ${preferredSourceLabel(getTeamPreferredSource(team))}</span>
+          </div>
         </div>
         <div class="card-actions">
           <button class="small-button" type="button" data-load-shared-versus="${escapeHtml(team.id)}">Charger en versus</button>
@@ -3545,6 +3555,7 @@ function renderVersusSharedLoader() {
   }
   el.versusSharedLoader.innerHTML = `
     <div class="versus-shared-controls">
+      <span class="versus-shared-icon"><img src="assets/partage.png" alt="" aria-hidden="true" onerror="this.style.display='none'"></span>
       <label class="field">
         <span>Equipe partagee adverse</span>
         <select id="versus-shared-team-select">

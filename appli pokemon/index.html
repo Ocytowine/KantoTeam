@@ -52,7 +52,9 @@
           <button class="icon-nav-button" id="open-pokemon-search" type="button" aria-label="Recherche Pokemon">
             <img src="assets/recherche.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
           </button>
-          <button class="ghost-button hidden" id="open-shared-teams" type="button">Equipes partagees</button>
+          <button class="icon-nav-button hidden" id="open-shared-teams" type="button" aria-label="Equipes partagees">
+            <img src="assets/partage.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
+          </button>
         </div>
       </header>
 
@@ -75,9 +77,12 @@
 
         <section class="panel shared-teams-panel hidden" id="shared-teams-panel" aria-labelledby="shared-teams-title">
           <div class="panel-heading">
-            <div>
-              <p class="eyebrow">Partage</p>
-              <h2 id="shared-teams-title">Equipes partagees</h2>
+            <div class="panel-title-with-icon">
+              <img class="panel-title-icon" src="assets/partage.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
+              <div>
+                <p class="eyebrow">Partage</p>
+                <h2 id="shared-teams-title">Equipes partagees</h2>
+              </div>
             </div>
             <span class="pill" id="shared-teams-count">0/3</span>
           </div>
