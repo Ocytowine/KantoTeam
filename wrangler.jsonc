@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kantobuildteam",
+  "compatibility_date": "2026-07-01",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "appli pokemon"
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
+}
