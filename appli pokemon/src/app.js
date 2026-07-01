@@ -18,6 +18,9 @@ let simulationDraft = {
   autoOpponent: false
 };
 let versusApplyModalOpen = false;
+let versusSharedModalOpen = false;
+let pokemonEditContext = null;
+let pokemonEditEvolution = { status: "idle", items: [] };
 let teamSettingsOpen = false;
 let teamAddPanelOpen = false;
 let teamAddMode = null;
@@ -114,7 +117,9 @@ const el = {
   versusAutoOpponent: document.querySelector("#versus-auto-opponent"),
   versusApplyTeam: document.querySelector("#versus-apply-team"),
   versusSharedLoader: document.querySelector("#versus-shared-loader"),
+  versusSharedModal: document.querySelector("#versus-shared-modal"),
   versusApplyModal: document.querySelector("#versus-apply-modal"),
+  pokemonEditModal: document.querySelector("#pokemon-edit-modal"),
   simulationEnemies: document.querySelector("#simulation-enemies"),
   simulationEnemyEditor: document.querySelector("#simulation-enemy-editor"),
   simulationConfirm: document.querySelector("#simulation-confirm"),
@@ -281,6 +286,8 @@ function bindEvents() {
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
     document.querySelectorAll(".type-wheel.open").forEach(closeTypeWheel);
+    if (pokemonEditContext) closePokemonEditModal();
+    if (versusSharedModalOpen) closeVersusSharedModal();
   });
   window.addEventListener("online", () => {
     void syncAppSprites().then(renderAll);
@@ -1248,7 +1255,7 @@ function renderComposition(team) {
   el.compositionList.querySelectorAll("[data-edit-pokemon]").forEach((button) => {
     button.addEventListener("click", () => {
       const pokemon = team.pokemon.find((item) => item.instanceId === button.dataset.editPokemon);
-      if (pokemon) renderPokemonEditPanel(pokemon, el.pokemonEditPanel, true);
+      if (pokemon) openPokemonEditModal(pokemon, { mode: "linked", sourceId: pokemon.sourceId ?? pokemon.id });
     });
   });
 }
@@ -1314,7 +1321,7 @@ function renderManagedComposition(team) {
   el.compositionList.querySelectorAll("[data-edit-pokemon]").forEach((button) => {
     button.addEventListener("click", () => {
       const pokemon = displayTeam.pokemon.find((item) => item.instanceId === button.dataset.editPokemon);
-      if (pokemon) renderPokemonEditPanel(pokemon, el.pokemonEditPanel, true);
+      if (pokemon) openPokemonEditModal(pokemon, { mode: "linked", sourceId: pokemon.sourceId ?? pokemon.id });
     });
   });
 
@@ -2333,7 +2340,7 @@ function renderSavedPokemonManager() {
   el.savedPokemonList.querySelectorAll("[data-edit-saved-pokemon]").forEach((button) => {
     button.addEventListener("click", () => {
       const pokemon = state.customPokemon.find((item) => String(item.id) === String(button.dataset.editSavedPokemon));
-      if (pokemon) renderSavedPokemonModernEditPanel(pokemon);
+      if (pokemon) openPokemonEditModal(pokemon, { mode: "linked", sourceId: pokemon.id });
     });
   });
 
@@ -2914,13 +2921,8 @@ function renderSimulation(team) {
     const enemy = simulationDraft.enemies[index];
     const card = document.createElement("article");
     if (isMobile) {
-      card.className = `mobile-duel ${simulationDraft.editingIndex === index ? "editing" : ""}`;
-      if (simulationDraft.editingIndex === index) {
-        card.innerHTML = `
-          <div class="mobile-duel-label"><span>Duel ${index + 1}</span><span>Edition adversaire</span></div>
-          ${renderSimulationEnemyEditorMarkup(index, enemy || { types: ["Normal"], attacks: [] })}
-        `;
-      } else if (enemy) {
+      card.className = "mobile-duel";
+      if (enemy) {
         card.innerHTML = `
           <div class="mobile-duel-label"><span>Duel ${index + 1}</span><span>${simulationDraft.showResults ? "Analyse terminee" : "Pret"}</span></div>
           <div class="mobile-opponent">
@@ -2944,13 +2946,8 @@ function renderSimulation(team) {
         card.innerHTML = `<button class="mobile-duel-add" type="button" data-add-enemy="${index}"><img class="add-pokeball-icon" src="assets/add-pokeball.svg" alt="" aria-hidden="true"> Ajouter l'adversaire ${index + 1}</button>`;
       }
     } else {
-      card.className = `mobile-duel desktop-duel ${simulationDraft.editingIndex === index ? "editing" : ""}`;
-      if (simulationDraft.editingIndex === index) {
-        card.innerHTML = `
-          <div class="mobile-duel-label"><span>Duel ${index + 1}</span><span>Edition adversaire</span></div>
-          ${renderSimulationEnemyEditorMarkup(index, enemy || { types: ["Normal"], attacks: [] })}
-        `;
-      } else if (enemy) {
+      card.className = "mobile-duel desktop-duel";
+      if (enemy) {
         card.innerHTML = renderDesktopDuel(team, enemy, index);
       } else {
         card.classList.add("empty");
@@ -3093,8 +3090,8 @@ function renderDesktopDuel(team, enemy, index) {
 
 function renderSimulationEnemyEditor(index) {
   simulationDraft.editingIndex = index;
-  el.simulationEnemyEditor.classList.add("hidden");
-  renderSimulation(state.teams[state.selectedSlot]);
+  const enemy = simulationDraft.enemies[index] || { name: "", types: ["Normal"], attacks: [], nationalId: null };
+  openPokemonEditModal(enemy, { mode: "enemy", enemyIndex: index });
 }
 
 function renderSimulationEnemyEditorMarkup(index, enemy) {
@@ -3551,36 +3548,86 @@ function renderMatchupChoice(matchup) {
 function renderVersusSharedLoader() {
   if (!state.sharedTeams.length) {
     el.versusSharedLoader.innerHTML = "";
+    closeVersusSharedModal();
     return;
   }
   el.versusSharedLoader.innerHTML = `
-    <div class="versus-shared-controls">
+    <button class="versus-shared-trigger" type="button" data-open-versus-shared>
       <span class="versus-shared-icon"><img src="assets/partage.png" alt="" aria-hidden="true" onerror="this.style.display='none'"></span>
-      <label class="field">
-        <span>Equipe partagee adverse</span>
-        <select id="versus-shared-team-select">
-          ${state.sharedTeams.map((team) => `<option value="${escapeHtml(team.id)}">${escapeHtml(team.savedName || team.name)}</option>`).join("")}
-        </select>
-      </label>
-      <button class="small-button" type="button" data-load-versus-shared-team>Charger</button>
+      <span>Utiliser une equipe partagee</span>
+    </button>
+  `;
+  el.versusSharedLoader.querySelector("[data-open-versus-shared]").addEventListener("click", () => {
+    versusSharedModalOpen = true;
+    renderVersusSharedModal();
+  });
+  renderVersusSharedModal();
+}
+
+function renderVersusSharedModal() {
+  if (!versusSharedModalOpen || !state.sharedTeams.length) {
+    el.versusSharedModal.classList.add("hidden");
+    el.versusSharedModal.innerHTML = "";
+    return;
+  }
+  el.versusSharedModal.classList.remove("hidden");
+  document.body.classList.add("modal-open");
+  el.versusSharedModal.innerHTML = `
+    <div class="team-modal versus-shared-modal-card" role="dialog" aria-modal="true" aria-labelledby="versus-shared-title">
+      <div class="pokemon-editor-heading">
+        <div class="pokemon-editor-identity">
+          <span class="versus-shared-icon"><img src="assets/partage.png" alt="" aria-hidden="true" onerror="this.style.display='none'"></span>
+          <div>
+            <p class="eyebrow">Versus</p>
+            <h2 id="versus-shared-title">Equipe partagee</h2>
+          </div>
+        </div>
+        <button class="modal-close-button" type="button" data-close-versus-shared aria-label="Fermer">&times;</button>
+      </div>
+      <div class="versus-shared-team-list">
+        ${state.sharedTeams.map((team) => `
+          <button class="versus-shared-team-option" type="button" data-use-versus-shared="${escapeHtml(team.id)}">
+            <span>
+              <strong>${escapeHtml(team.savedName || team.name)}</strong>
+              <small>${team.pokemon.length}/6 Pokemon</small>
+            </span>
+            <span class="versus-shared-team-names">${team.pokemon.map((pokemon) => escapeHtml(pokemon.name)).join(" · ")}</span>
+          </button>
+        `).join("")}
+      </div>
     </div>
   `;
-  el.versusSharedLoader.querySelector("[data-load-versus-shared-team]").addEventListener("click", () => {
-    const id = el.versusSharedLoader.querySelector("#versus-shared-team-select").value;
-    const team = state.sharedTeams.find((item) => String(item.id) === String(id));
-    if (!team) return;
-    simulationDraft.enemies = team.pokemon.map((pokemon) => ({
-      name: pokemon.name,
-      types: [...pokemon.types],
-      attacks: [...(pokemon.attacks || [])],
-      nationalId: getPokemonNationalId(pokemon) || null
-    })).slice(0, 6);
-    simulationDraft.editingIndex = null;
-    simulationDraft.showResults = false;
-    el.simulationResults.className = "simulation-results empty-state";
-    el.simulationResults.innerHTML = "Equipe partagee chargee. Lance le VS pour afficher les meilleurs choix.";
-    renderSimulation(state.teams[state.selectedSlot]);
+  el.versusSharedModal.querySelector("[data-close-versus-shared]").addEventListener("click", closeVersusSharedModal);
+  el.versusSharedModal.onclick = (event) => {
+    if (event.target === el.versusSharedModal) closeVersusSharedModal();
+  };
+  el.versusSharedModal.querySelectorAll("[data-use-versus-shared]").forEach((button) => {
+    button.addEventListener("click", () => loadSharedTeamIntoVersus(button.dataset.useVersusShared));
   });
+}
+
+function closeVersusSharedModal() {
+  versusSharedModalOpen = false;
+  el.versusSharedModal.classList.add("hidden");
+  el.versusSharedModal.innerHTML = "";
+  if (!pokemonEditContext && !versusApplyModalOpen) document.body.classList.remove("modal-open");
+}
+
+function loadSharedTeamIntoVersus(id) {
+  const team = state.sharedTeams.find((item) => String(item.id) === String(id));
+  if (!team) return;
+  simulationDraft.enemies = team.pokemon.map((pokemon) => ({
+    name: pokemon.name,
+    types: [...pokemon.types],
+    attacks: [...(pokemon.attacks || [])],
+    nationalId: getPokemonNationalId(pokemon) || null
+  })).slice(0, 6);
+  simulationDraft.editingIndex = null;
+  simulationDraft.showResults = false;
+  closeVersusSharedModal();
+  el.simulationResults.className = "simulation-results empty-state";
+  el.simulationResults.innerHTML = "Equipe partagee chargee. Lance le VS pour afficher les meilleurs choix.";
+  renderSimulation(state.teams[state.selectedSlot]);
 }
 
 function renderVersusExplanation(matchup, enemy) {
@@ -3625,6 +3672,328 @@ function pokemonCardStyle(pokemon) {
     `--card-type-two:${hexToRgba(second, 0.42)}`,
     `--card-border:${hexToRgba(first, 0.86)}`
   ].join(";");
+}
+
+function openPokemonEditModal(pokemon, options = {}) {
+  const sourceId = options.sourceId ?? pokemon.sourceId ?? pokemon.id;
+  const savedPokemon = options.mode === "linked"
+    ? state.customPokemon.find((item) => String(item.id) === String(sourceId))
+    : null;
+  const source = savedPokemon || pokemon;
+  const nationalId = getPokemonNationalId(source);
+  pokemonEditContext = {
+    mode: options.mode || "linked",
+    sourceId,
+    enemyIndex: options.enemyIndex ?? null,
+    draft: {
+      name: source.name || "",
+      types: [...(source.types || ["Normal"])],
+      attacks: [...(source.attacks || [])],
+      nationalId: nationalId || null,
+      spriteName: nationalId ? pokemonDisplayNameByNationalId(nationalId, source.name || "") : ""
+    }
+  };
+  pokemonEditEvolution = { status: nationalId ? "loading" : "unavailable", items: [] };
+  renderPokemonEditModal();
+  if (nationalId) void loadPokemonEditEvolution(nationalId, source);
+}
+
+function closePokemonEditModal() {
+  pokemonEditContext = null;
+  pokemonEditEvolution = { status: "idle", items: [] };
+  el.pokemonEditModal.classList.add("hidden");
+  el.pokemonEditModal.innerHTML = "";
+  document.body.classList.remove("modal-open");
+}
+
+function renderPokemonEditModal() {
+  if (!pokemonEditContext) {
+    closePokemonEditModal();
+    return;
+  }
+  const { draft, mode } = pokemonEditContext;
+  const allPokemon = [...KANTO_POKEMON, ...KANTO_REFORGED_POKEMON];
+  const isEnemy = mode === "enemy";
+  el.pokemonEditModal.classList.remove("hidden");
+  document.body.classList.add("modal-open");
+  el.pokemonEditModal.innerHTML = `
+    <div class="team-modal pokemon-editor-modal" role="dialog" aria-modal="true" aria-labelledby="pokemon-edit-title">
+      <div class="pokemon-editor-heading">
+        <div class="pokemon-editor-identity">
+          ${renderPokemonEditorSprite(draft)}
+          <div>
+            <p class="eyebrow">${isEnemy ? "Adversaire" : "Edition Pokemon"}</p>
+            <h2 id="pokemon-edit-title">${escapeHtml(draft.name || "Nouveau Pokemon")}</h2>
+          </div>
+        </div>
+        <button class="modal-close-button" type="button" data-close-pokemon-edit aria-label="Fermer">&times;</button>
+      </div>
+      ${isEnemy ? renderPokemonEditorQuickPick() : ""}
+      <div class="pokemon-editor-fields">
+        <label class="field">
+          <span>Nom</span>
+          <input id="modal-edit-pokemon-name" type="text" maxlength="32" value="${escapeHtml(draft.name)}">
+        </label>
+        <label class="field">
+          <span>Apparence</span>
+          <input id="modal-edit-pokemon-sprite" list="modal-edit-sprites" type="search" value="${escapeHtml(draft.spriteName)}" placeholder="Nom du Pokemon">
+          <datalist id="modal-edit-sprites">
+            ${allPokemon.map((item) => `<option value="${escapeHtml(item.name)}"></option>`).join("")}
+          </datalist>
+        </label>
+        <label class="field">
+          <span>Type 1</span>
+          <select id="modal-edit-pokemon-type-one">${typeOptions(draft.types[0])}</select>
+        </label>
+        <label class="field">
+          <span>Type 2 optionnel</span>
+          <select id="modal-edit-pokemon-type-two">${typeOptions(draft.types[1], true)}</select>
+        </label>
+      </div>
+      <fieldset class="attack-picker pokemon-editor-attacks">
+        <legend>
+          <span>Types d'attaque</span>
+          <strong id="modal-edit-attack-count">${draft.attacks.length}/4</strong>
+        </legend>
+        <div class="type-checks">
+          ${KANTO_TYPES.map((type) => `
+            <label class="type-check">
+              <input class="modal-edit-attack-input" type="checkbox" value="${type}" ${draft.attacks.includes(type) ? "checked" : ""}>
+              ${typeLogoOnly(type)}
+            </label>
+          `).join("")}
+        </div>
+      </fieldset>
+      <section class="pokemon-editor-evolution" aria-labelledby="pokemon-editor-evolution-title">
+        <div class="pokemon-editor-section-heading">
+          <h3 id="pokemon-editor-evolution-title">Evolution</h3>
+          ${pokemonEditEvolution.status === "loading" ? `<span class="slot-meta">Chargement...</span>` : ""}
+        </div>
+        ${renderPokemonEditEvolutionChoices()}
+      </section>
+      <div class="form-actions pokemon-editor-actions">
+        <button class="small-button" type="button" data-close-pokemon-edit>Annuler</button>
+        <button class="primary-button confirm" type="button" data-confirm-pokemon-edit>${isEnemy ? "Confirmer l'adversaire" : "Mettre a jour partout"}</button>
+      </div>
+    </div>
+  `;
+  enhanceTypeSelects(el.pokemonEditModal);
+  bindPokemonEditModalEvents();
+}
+
+function renderPokemonEditorSprite(pokemon) {
+  const id = getPokemonNationalId(pokemon);
+  const url = id ? spriteUrls.get(id) : null;
+  return url
+    ? `<img class="pokemon-editor-sprite" src="${escapeHtml(url)}" alt="${escapeHtml(pokemon.name)}">`
+    : `<span class="pokemon-editor-sprite-placeholder" aria-hidden="true"></span>`;
+}
+
+function renderPokemonEditorQuickPick() {
+  const source = getTeamPreferredSource(state.teams[state.selectedSlot] || draftTeam);
+  const index = pokemonEditContext.enemyIndex ?? 0;
+  return `
+    <div class="pokemon-editor-quick-pick">
+      <label class="field">
+        <span>Source</span>
+        <select id="modal-edit-pick-source">
+          ${versusSourceOption()}
+          <option value="saved">Ma bibliotheque</option>
+        </select>
+      </label>
+      <label class="field">
+        <span>Pokemon</span>
+        <input id="modal-edit-pick-query" type="search" list="modal-edit-pick-options-${index}" placeholder="Pikachu, Dracaufeu...">
+        <datalist id="modal-edit-pick-options-${index}">${enemyPokemonOptions(source)}</datalist>
+      </label>
+      <button class="small-button" type="button" data-modal-apply-pokemon>Charger</button>
+    </div>
+  `;
+}
+
+function renderPokemonEditEvolutionChoices() {
+  if (pokemonEditEvolution.status === "loading") {
+    return `<div class="pokemon-evolution-choices loading" aria-hidden="true"></div>`;
+  }
+  if (!pokemonEditEvolution.items.length) {
+    return `<p class="slot-meta">Aucune evolution disponible pour ce Pokemon.</p>`;
+  }
+  const currentId = pokemonEditContext.draft.nationalId;
+  return `
+    <div class="pokemon-evolution-choices">
+      ${pokemonEditEvolution.items.map((pokemon, index) => {
+        const url = pokemon.id ? spriteUrls.get(pokemon.id) : null;
+        return `
+          <button class="pokemon-evolution-choice ${pokemon.id === currentId ? "selected" : ""}" type="button" data-select-evolution="${pokemon.id || ""}" aria-label="${index === 0 ? "Forme de base, " : ""}${escapeHtml(pokemon.name)}">
+            ${url ? `<img src="${escapeHtml(url)}" alt="" aria-hidden="true">` : `<span class="pokemon-evolution-choice-placeholder" aria-hidden="true"></span>`}
+            <strong>${escapeHtml(pokemon.name)}</strong>
+          </button>
+        `;
+      }).join("")}
+    </div>
+  `;
+}
+
+function bindPokemonEditModalEvents() {
+  el.pokemonEditModal.querySelectorAll("[data-close-pokemon-edit]").forEach((button) => {
+    button.addEventListener("click", closePokemonEditModal);
+  });
+  el.pokemonEditModal.onclick = (event) => {
+    if (event.target === el.pokemonEditModal) closePokemonEditModal();
+  };
+  el.pokemonEditModal.querySelectorAll(".modal-edit-attack-input").forEach((input) => {
+    input.addEventListener("change", () => {
+      const selected = getModalPokemonAttackTypes();
+      if (selected.length > 4) {
+        input.checked = false;
+        alert("Un Pokemon peut avoir au maximum 4 types d'attaque.");
+      }
+      const count = el.pokemonEditModal.querySelector("#modal-edit-attack-count");
+      if (count) count.textContent = `${getModalPokemonAttackTypes().length}/4`;
+    });
+  });
+  el.pokemonEditModal.querySelector("#modal-edit-pick-source")?.addEventListener("change", (event) => {
+    const options = el.pokemonEditModal.querySelector("#modal-edit-pick-options-" + (pokemonEditContext.enemyIndex ?? 0));
+    if (options) options.innerHTML = enemyPokemonOptions(event.currentTarget.value);
+    const query = el.pokemonEditModal.querySelector("#modal-edit-pick-query");
+    if (query) query.value = "";
+  });
+  el.pokemonEditModal.querySelector("[data-modal-apply-pokemon]")?.addEventListener("click", applyPokemonEditorQuickPick);
+  el.pokemonEditModal.querySelectorAll("[data-select-evolution]").forEach((button) => {
+    button.addEventListener("click", () => selectPokemonEditEvolution(Number(button.dataset.selectEvolution)));
+  });
+  el.pokemonEditModal.querySelector("[data-confirm-pokemon-edit]").addEventListener("click", savePokemonEditModal);
+}
+
+function capturePokemonEditForm() {
+  if (!pokemonEditContext) return;
+  const modal = el.pokemonEditModal;
+  pokemonEditContext.draft.name = modal.querySelector("#modal-edit-pokemon-name")?.value.trim() || "";
+  pokemonEditContext.draft.spriteName = modal.querySelector("#modal-edit-pokemon-sprite")?.value.trim() || "";
+  const typeOne = modal.querySelector("#modal-edit-pokemon-type-one")?.value || "Normal";
+  const typeTwo = modal.querySelector("#modal-edit-pokemon-type-two")?.value || "";
+  pokemonEditContext.draft.types = [typeOne, typeTwo].filter(Boolean).filter((type, index, all) => all.indexOf(type) === index);
+  pokemonEditContext.draft.attacks = getModalPokemonAttackTypes();
+}
+
+function getModalPokemonAttackTypes() {
+  return Array.from(el.pokemonEditModal.querySelectorAll(".modal-edit-attack-input:checked")).map((input) => input.value);
+}
+
+async function loadPokemonEditEvolution(nationalId, pokemon) {
+  let evolution = null;
+  try {
+    evolution = await getPokemonEvolutionData(nationalId, { reforged: isReforgedGuidePokemon(pokemon) });
+  } catch {
+    evolution = null;
+  }
+  if (!pokemonEditContext || pokemonEditContext.draft.nationalId !== nationalId) return;
+  const nodes = evolution?.tree ? getEvolutionChainItems(evolution.tree) : [];
+  const items = await Promise.all(nodes.map((node) => resolveEvolutionChoice(node, pokemon)));
+  if (!pokemonEditContext) return;
+  pokemonEditEvolution = { status: items.length ? "ready" : "unavailable", items };
+  await syncPokemonSprites(items.map((item) => ({ nationalId: item.id, name: item.name })));
+  if (pokemonEditContext) renderPokemonEditModal();
+}
+
+async function resolveEvolutionChoice(node, fallbackPokemon) {
+  const local = [...KANTO_POKEMON, ...KANTO_REFORGED_POKEMON]
+    .find((pokemon) => getPokemonNationalId(pokemon) === node.id);
+  if (local) return { id: node.id, name: node.name, types: [...local.types] };
+  if (node.id && navigator.onLine) {
+    try {
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${node.id}`);
+      if (response.ok) {
+        const data = await response.json();
+        const typeNames = data.types.map((item) => apiTypeToFrench(item.type.name)).filter(Boolean);
+        return { id: node.id, name: node.name, types: typeNames.length ? typeNames : [...fallbackPokemon.types] };
+      }
+    } catch {
+      // La chaine reste utilisable avec les types deja connus.
+    }
+  }
+  return { id: node.id, name: node.name, types: [...fallbackPokemon.types] };
+}
+
+function apiTypeToFrench(type) {
+  return {
+    normal: "Normal", fire: "Feu", water: "Eau", electric: "Electrik", grass: "Plante",
+    ice: "Glace", fighting: "Combat", poison: "Poison", ground: "Sol", flying: "Vol",
+    psychic: "Psy", bug: "Insecte", rock: "Roche", ghost: "Spectre", dragon: "Dragon",
+    dark: "Tenebres", steel: "Acier", fairy: "Fee"
+  }[type] || "";
+}
+
+function selectPokemonEditEvolution(nationalId) {
+  const selected = pokemonEditEvolution.items.find((pokemon) => pokemon.id === nationalId);
+  if (!selected) return;
+  capturePokemonEditForm();
+  pokemonEditContext.draft.name = selected.name;
+  pokemonEditContext.draft.types = [...selected.types];
+  pokemonEditContext.draft.nationalId = selected.id;
+  pokemonEditContext.draft.spriteName = selected.name;
+  renderPokemonEditModal();
+}
+
+function applyPokemonEditorQuickPick() {
+  const source = el.pokemonEditModal.querySelector("#modal-edit-pick-source").value;
+  const query = el.pokemonEditModal.querySelector("#modal-edit-pick-query").value;
+  const pokemon = findEnemyPick(source, query);
+  if (!pokemon) {
+    alert("Pokemon introuvable dans cette source.");
+    return;
+  }
+  capturePokemonEditForm();
+  const nationalId = getPokemonNationalId(pokemon);
+  pokemonEditContext.draft = {
+    name: pokemon.name,
+    types: [...pokemon.types],
+    attacks: [...(pokemon.attacks?.length ? pokemon.attacks : pokemon.types)],
+    nationalId: nationalId || null,
+    spriteName: nationalId ? pokemonDisplayNameByNationalId(nationalId, pokemon.name) : ""
+  };
+  pokemonEditEvolution = { status: nationalId ? "loading" : "unavailable", items: [] };
+  renderPokemonEditModal();
+  if (nationalId) void loadPokemonEditEvolution(nationalId, pokemon);
+}
+
+function savePokemonEditModal() {
+  capturePokemonEditForm();
+  const context = pokemonEditContext;
+  const pokemon = context?.draft;
+  if (!context || !pokemon) return;
+  if (!pokemon.name) {
+    alert("Donne un nom au Pokemon.");
+    return;
+  }
+  if (pokemon.attacks.length > 4) {
+    alert("Un Pokemon peut avoir au maximum 4 types d'attaque.");
+    return;
+  }
+  const spriteSource = findSpriteSourcePokemon(pokemon.spriteName);
+  const nationalId = getPokemonNationalId(spriteSource) || pokemon.nationalId || null;
+  if (context.mode === "enemy") {
+    const enemy = { name: pokemon.name, types: pokemon.types, attacks: pokemon.attacks, nationalId };
+    simulationDraft.enemies[context.enemyIndex] = enemy;
+    simulationDraft.editingIndex = null;
+    simulationDraft.showResults = false;
+    closePokemonEditModal();
+    el.simulationResults.className = "simulation-results empty-state";
+    el.simulationResults.innerHTML = "Versus modifie. Relance-le pour afficher les meilleurs choix.";
+    renderSimulation(state.teams[state.selectedSlot]);
+    void syncPokemonSprites(enemy).then(() => renderSimulation(state.teams[state.selectedSlot]));
+    return;
+  }
+  updatePokemonEverywhere(context.sourceId, {
+    name: pokemon.name,
+    types: pokemon.types,
+    attacks: pokemon.attacks,
+    nationalId
+  });
+  saveState();
+  closePokemonEditModal();
+  renderAll();
+  void syncPokemonSprites({ ...pokemon, nationalId }).then(renderAll);
 }
 
 function renderPokemonEditPanel(pokemon, panel = el.pokemonEditPanel, includeAttacks = true) {

@@ -702,16 +702,28 @@ h3 {
   margin: 10px 0 4px;
 }
 
-.versus-shared-controls {
-  justify-content: flex-start;
-  border: 1px solid rgba(169, 179, 195, 0.18);
-  border-radius: 8px;
-  padding: 10px;
-  background: rgba(15, 18, 24, 0.42);
+.versus-shared-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  padding: 4px 6px 4px 2px;
+  color: var(--muted);
+  background: transparent;
+  font-size: 0.78rem;
+  font-weight: 750;
 }
 
-.versus-shared-controls .field {
-  flex: 1 1 260px;
+.versus-shared-trigger:hover,
+.versus-shared-trigger:focus-visible {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.versus-shared-trigger .versus-shared-icon {
+  width: 28px;
+  height: 28px;
+  flex-basis: 28px;
 }
 
 .team-modal-overlay {
@@ -733,6 +745,222 @@ h3 {
   padding: 16px;
   background: rgba(27, 32, 41, 0.98);
   box-shadow: var(--shadow);
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.pokemon-editor-modal {
+  width: min(620px, 100%);
+}
+
+.pokemon-editor-heading,
+.pokemon-editor-identity,
+.pokemon-editor-section-heading {
+  display: flex;
+  align-items: center;
+}
+
+.pokemon-editor-heading,
+.pokemon-editor-section-heading {
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pokemon-editor-heading {
+  margin-bottom: 14px;
+}
+
+.pokemon-editor-identity {
+  min-width: 0;
+  gap: 10px;
+}
+
+.pokemon-editor-identity h2,
+.pokemon-editor-section-heading h3 {
+  margin: 2px 0 0;
+}
+
+.pokemon-editor-identity h2 {
+  overflow-wrap: anywhere;
+}
+
+.pokemon-editor-sprite,
+.pokemon-editor-sprite-placeholder {
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
+}
+
+.pokemon-editor-sprite {
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 7px 9px rgba(0, 0, 0, 0.34));
+}
+
+.pokemon-editor-sprite-placeholder {
+  border: 1px dashed rgba(169, 179, 195, 0.26);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.modal-close-button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  padding: 0;
+  color: var(--muted);
+  background: transparent;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.modal-close-button:hover,
+.modal-close-button:focus-visible {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.pokemon-editor-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.pokemon-editor-quick-pick {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.7fr) minmax(180px, 1.3fr) auto;
+  gap: 8px;
+  align-items: end;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  padding-bottom: 12px;
+}
+
+.pokemon-editor-attacks {
+  margin-top: 12px;
+  padding: 10px;
+}
+
+.pokemon-editor-evolution {
+  margin-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding-top: 12px;
+}
+
+.pokemon-evolution-choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.pokemon-evolution-choices.loading {
+  min-height: 68px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.pokemon-evolution-choice {
+  display: grid;
+  grid-template-rows: 54px auto;
+  place-items: center;
+  min-width: 0;
+  border: 1px solid rgba(169, 179, 195, 0.2);
+  border-radius: 7px;
+  padding: 7px 5px;
+  color: var(--text);
+  background: rgba(15, 18, 24, 0.46);
+  text-align: center;
+}
+
+.pokemon-evolution-choice:hover,
+.pokemon-evolution-choice:focus-visible,
+.pokemon-evolution-choice.selected {
+  border-color: rgba(244, 200, 74, 0.58);
+  background: rgba(244, 200, 74, 0.08);
+}
+
+.pokemon-evolution-choice.selected {
+  box-shadow: inset 0 0 0 1px rgba(244, 200, 74, 0.2);
+}
+
+.pokemon-evolution-choice img,
+.pokemon-evolution-choice-placeholder {
+  width: 54px;
+  height: 54px;
+}
+
+.pokemon-evolution-choice img {
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.pokemon-evolution-choice strong {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  font-size: 0.76rem;
+}
+
+.pokemon-editor-actions {
+  position: sticky;
+  bottom: -16px;
+  margin: 14px -16px -16px;
+  border-top: 1px solid var(--line);
+  padding: 12px 16px 16px;
+  background: rgba(27, 32, 41, 0.98);
+}
+
+.versus-shared-modal-card {
+  width: min(430px, 100%);
+}
+
+.versus-shared-team-list {
+  display: grid;
+  gap: 7px;
+}
+
+.versus-shared-team-option {
+  display: grid;
+  gap: 5px;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid rgba(169, 179, 195, 0.2);
+  border-radius: 7px;
+  padding: 10px;
+  color: var(--text);
+  background: rgba(15, 18, 24, 0.46);
+  text-align: left;
+}
+
+.versus-shared-team-option:hover,
+.versus-shared-team-option:focus-visible {
+  border-color: rgba(244, 200, 74, 0.5);
+  background: rgba(244, 200, 74, 0.07);
+}
+
+.versus-shared-team-option > span:first-child {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.versus-shared-team-option small,
+.versus-shared-team-names {
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+
+.versus-shared-team-names {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .versus-apply-row {
@@ -3591,6 +3819,75 @@ button:focus-visible {
 
   .mobile-opponent-identity > div {
     margin-top: 26px;
+  }
+
+  .team-modal-overlay {
+    align-items: end;
+    padding: 8px;
+  }
+
+  .pokemon-editor-modal,
+  .versus-shared-modal-card {
+    width: 100%;
+    max-height: calc(100dvh - 16px);
+    border-radius: 8px 8px 0 0;
+    padding: 13px;
+  }
+
+  .pokemon-editor-fields,
+  .pokemon-editor-quick-pick {
+    grid-template-columns: 1fr;
+  }
+
+  .pokemon-editor-quick-pick .small-button {
+    width: 100%;
+  }
+
+  .pokemon-editor-sprite,
+  .pokemon-editor-sprite-placeholder {
+    width: 50px;
+    height: 50px;
+    flex-basis: 50px;
+  }
+
+  .pokemon-editor-attacks .type-checks {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .pokemon-evolution-choices {
+    display: flex;
+    margin-right: -13px;
+    margin-left: -13px;
+    padding: 0 13px 4px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+  }
+
+  .pokemon-evolution-choice {
+    width: 96px;
+    flex: 0 0 96px;
+    scroll-snap-align: start;
+  }
+
+  .pokemon-editor-actions {
+    bottom: -13px;
+    margin: 14px -13px -13px;
+    padding: 10px 13px 13px;
+  }
+
+  .versus-shared-loader {
+    margin-top: 4px;
+  }
+
+  .versus-shared-trigger {
+    max-width: 100%;
+    font-size: 0.74rem;
+  }
+
+  .versus-shared-team-option > span:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2px;
   }
 
   .primary-button,
