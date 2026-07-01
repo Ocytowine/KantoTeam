@@ -19,6 +19,7 @@ let simulationDraft = {
 };
 let versusApplyModalOpen = false;
 let versusSharedModalOpen = false;
+let versusInsightModal = null;
 let pokemonEditContext = null;
 let pokemonEditEvolution = { status: "idle", items: [] };
 let teamSettingsOpen = false;
@@ -118,6 +119,7 @@ const el = {
   versusApplyTeam: document.querySelector("#versus-apply-team"),
   versusSharedLoader: document.querySelector("#versus-shared-loader"),
   versusSharedModal: document.querySelector("#versus-shared-modal"),
+  versusInsightModal: document.querySelector("#versus-insight-modal"),
   versusApplyModal: document.querySelector("#versus-apply-modal"),
   pokemonEditModal: document.querySelector("#pokemon-edit-modal"),
   simulationEnemies: document.querySelector("#simulation-enemies"),
@@ -288,6 +290,7 @@ function bindEvents() {
     document.querySelectorAll(".type-wheel.open").forEach(closeTypeWheel);
     if (pokemonEditContext) closePokemonEditModal();
     if (versusSharedModalOpen) closeVersusSharedModal();
+    if (versusInsightModal) closeVersusInsightModal();
   });
   window.addEventListener("online", () => {
     void syncAppSprites().then(renderAll);
@@ -842,6 +845,14 @@ function actionIconSvg(action) {
         <path d="M19 6l-1 14H6L5 6"></path>
         <path d="M10 11v5"></path>
         <path d="M14 11v5"></path>
+      </svg>
+    `;
+  }
+  if (action === "remove") {
+    return `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <circle cx="12" cy="12" r="9"></circle>
+        <path d="M8 12h8"></path>
       </svg>
     `;
   }
@@ -2633,8 +2644,8 @@ function renderPokemonCard(pokemon, options = {}) {
     savedId ? `<button class="icon-action-button" type="button" data-edit-saved-pokemon="${savedId}" aria-label="Editer ${escapeHtml(pokemon.name)}" title="Editer">${actionIconSvg("edit")}</button>` : "",
     savedId ? `<button class="icon-action-button danger" type="button" data-delete-saved-pokemon="${savedId}" aria-label="Supprimer ${escapeHtml(pokemon.name)}" title="Supprimer">${actionIconSvg("delete")}</button>` : "",
     editable ? `<button class="icon-action-button" type="button" data-edit-pokemon="${pokemon.instanceId}" aria-label="Editer ${escapeHtml(pokemon.name)}" title="Editer">${actionIconSvg("edit")}</button>` : "",
-    editable ? `<button class="small-button danger" type="button" data-remove-from-team="${pokemon.instanceId}">Enlever</button>` : "",
-    removable ? `<button class="small-button danger" type="button" data-remove="${pokemon.instanceId}">Retirer</button>` : ""
+    editable ? `<button class="icon-action-button remove-action" type="button" data-remove-from-team="${pokemon.instanceId}" aria-label="Enlever ${escapeHtml(pokemon.name)} de l'equipe" title="Enlever">${actionIconSvg("remove")}</button>` : "",
+    removable ? `<button class="icon-action-button remove-action" type="button" data-remove="${pokemon.instanceId}" aria-label="Retirer ${escapeHtml(pokemon.name)}" title="Retirer">${actionIconSvg("remove")}</button>` : ""
   ].filter(Boolean).join("");
 
   const headingContent = `
@@ -2932,47 +2943,20 @@ function renderSimulation(team) {
   el.simulationCount.textContent = `${enemyCount}/6 adversaire${enemyCount > 1 ? "s" : ""}`;
   renderVersusSharedLoader();
   renderVersusApplyModal();
+  renderVersusInsightModal();
   el.simulationEnemies.innerHTML = "";
   el.simulationMobile.innerHTML = "";
-  const isMobile = mobileVersusMedia.matches;
   const enemyContainer = el.simulationMobile;
 
   for (let index = 0; index < slotCount; index += 1) {
     const enemy = simulationDraft.enemies[index];
     const card = document.createElement("article");
-    if (isMobile) {
-      card.className = "mobile-duel";
-      if (enemy) {
-        card.innerHTML = `
-          <div class="mobile-duel-label"><span>Duel ${index + 1}</span><span>${simulationDraft.showResults ? "Analyse terminee" : "Pret"}</span></div>
-          <div class="mobile-opponent">
-            <div class="mobile-opponent-identity">
-              ${simulationDraft.showResults ? "" : renderVersusSprite(enemy, "enemy confirmed-enemy-sprite")}
-              <div>
-                <span class="choice-kicker">Adversaire</span>
-                <h3>${escapeHtml(enemy.name || `Adversaire ${index + 1}`)} <span class="name-type-logos">${enemy.types.map(typeLogoOnly).join("")}</span></h3>
-              </div>
-            </div>
-            <div class="card-actions">
-              <button class="icon-action-button" type="button" data-edit-enemy="${index}" aria-label="Editer l'adversaire ${index + 1}" title="Editer">${actionIconSvg("edit")}</button>
-              <button class="small-button danger" type="button" data-delete-enemy="${index}">Enlever</button>
-            </div>
-          </div>
-          <div class="mobile-duel-divider"><span>VS</span></div>
-          ${renderMobileDuelResult(team, enemy, index)}
-        `;
-      } else {
-        card.classList.add("empty");
-        card.innerHTML = `<button class="mobile-duel-add" type="button" data-add-enemy="${index}"><img class="add-pokeball-icon" src="assets/add-pokeball.svg" alt="" aria-hidden="true"> Ajouter l'adversaire ${index + 1}</button>`;
-      }
+    card.className = "mobile-duel duel-card";
+    if (enemy) {
+      card.innerHTML = renderDesktopDuel(team, enemy, index);
     } else {
-      card.className = "mobile-duel desktop-duel";
-      if (enemy) {
-        card.innerHTML = renderDesktopDuel(team, enemy, index);
-      } else {
-        card.classList.add("empty");
-        card.innerHTML = `<button class="mobile-duel-add" type="button" data-add-enemy="${index}"><img class="add-pokeball-icon" src="assets/add-pokeball.svg" alt="" aria-hidden="true"> Ajouter l'adversaire ${index + 1}</button>`;
-      }
+      card.classList.add("empty");
+      card.innerHTML = `<button class="mobile-duel-add" type="button" data-add-enemy="${index}"><img class="add-pokeball-icon" src="assets/add-pokeball.svg" alt="" aria-hidden="true"> Ajouter l'adversaire ${index + 1}</button>`;
     }
 
     enemyContainer.append(card);
@@ -3045,6 +3029,7 @@ function renderSimulation(team) {
 
   enemyContainer.querySelectorAll("[data-delete-enemy]").forEach((button) => {
     button.addEventListener("click", () => {
+      closeVersusInsightModal();
       simulationDraft.enemies.splice(Number(button.dataset.deleteEnemy), 1);
       simulationDraft.editingIndex = null;
       simulationDraft.showResults = false;
@@ -3054,56 +3039,196 @@ function renderSimulation(team) {
     });
   });
 
+  enemyContainer.querySelectorAll("[data-versus-details]").forEach((button) => {
+    button.addEventListener("click", () => openVersusInsightModal("details", Number(button.dataset.versusDetails)));
+  });
+
+  enemyContainer.querySelectorAll("[data-versus-alternatives]").forEach((button) => {
+    button.addEventListener("click", () => openVersusInsightModal("alternatives", Number(button.dataset.versusAlternatives)));
+  });
+
   bindInteractiveResults(el.simulationMobile);
 }
 
 function renderDesktopDuel(team, enemy, index) {
-  const matchup = simulationDraft.showResults
-    ? bestTeamMatchups(getVersusCandidateTeam(team), enemy)[0]
-    : null;
-  const enemySprite = renderVersusSprite(enemy, "enemy");
-  const choiceSprite = renderVersusSprite(matchup?.pokemon, "choice");
+  const rankings = simulationDraft.showResults
+    ? bestTeamMatchups(getVersusCandidateTeam(team), enemy)
+    : [];
+  const matchup = rankings[0] || null;
+  const attack = matchup?.bestAttack || null;
+  const alternativesCount = Math.max(0, rankings.length - 1);
 
   return `
-    <div class="mobile-duel-label"><span>Duel ${index + 1}</span><span>${simulationDraft.showResults ? "Analyse terminee" : "Pret a lancer"}</span></div>
-    <div class="desktop-duel-grid">
-      <section class="desktop-duel-recap opponent-recap">
-        <div class="desktop-duel-pane-heading">
-          <span class="choice-kicker">Adversaire</span>
-          <div class="card-actions">
-            <button class="icon-action-button" type="button" data-edit-enemy="${index}" aria-label="Editer l'adversaire ${index + 1}" title="Editer">${actionIconSvg("edit")}</button>
-            <button class="small-button danger" type="button" data-delete-enemy="${index}">Enlever</button>
-          </div>
-        </div>
-        <h3>${escapeHtml(enemy.name || `Adversaire ${index + 1}`)} <span class="name-type-logos">${enemy.types.map(typeLogoOnly).join("")}</span></h3>
-        <div class="desktop-duel-lines">
-          <div class="mini-line"><span class="slot-meta">Types</span>${enemy.types.map(typeBadge).join("")}</div>
-          <div class="mini-line"><span class="slot-meta">Attaques</span>${enemy.attacks.length ? enemy.attacks.map(typeBadge).join("") : `<span class="multiplier">Aucune</span>`}</div>
-        </div>
-      </section>
-
-      <div class="desktop-duel-stage" aria-hidden="true">
-        <div class="desktop-duel-sprite-slot">${enemySprite}</div>
-        <span>VS</span>
-        <div class="desktop-duel-sprite-slot">${choiceSprite}</div>
+    <div class="duel-card-heading">
+      <div>
+        <span class="choice-kicker">Duel ${index + 1}</span>
+        <strong>${simulationDraft.showResults ? "Recommandation prete" : "Pret a lancer"}</strong>
       </div>
+      <div class="card-actions">
+        <button class="icon-action-button" type="button" data-edit-enemy="${index}" aria-label="Editer l'adversaire ${index + 1}" title="Editer">${actionIconSvg("edit")}</button>
+        <button class="icon-action-button remove-action" type="button" data-delete-enemy="${index}" aria-label="Enlever l'adversaire ${index + 1}" title="Enlever">${actionIconSvg("remove")}</button>
+      </div>
+    </div>
+    <div class="duel-showdown ${matchup ? "has-result" : "pending"}">
+      ${renderDuelParticipant(enemy, "Adversaire", "enemy")}
+      <div class="duel-showdown-center">
+        <span class="duel-vs-mark">VS</span>
+        ${matchup ? "" : `<span class="duel-pending-copy">Lance le VS</span>`}
+      </div>
+      ${matchup
+        ? renderDuelParticipant(matchup.pokemon, simulationDraft.autoOpponent ? "Equipe + reserve" : "Choix recommande", "choice")
+        : renderDuelUnknownParticipant()}
+    </div>
+    ${matchup ? `
+      <div class="duel-priority-attack">
+        <span>Attaque a privilegier</span>
+        ${attack ? `
+          <strong>${typeLogo(attack.type)} ${escapeHtml(attack.type)}</strong>
+          <em>${formatMultiplierLabel(attack.multiplier)}</em>
+        ` : `<strong>Aucune attaque renseignee</strong>`}
+      </div>
+    ` : ""}
+    ${matchup ? `
+      <div class="duel-card-actions">
+        <button class="small-button" type="button" data-versus-details="${index}">Details</button>
+        <button class="small-button" type="button" data-versus-alternatives="${index}" ${alternativesCount ? "" : "disabled"}>Alternatives${alternativesCount ? ` (${alternativesCount})` : ""}</button>
+      </div>
+    ` : ""}
+  `;
+}
 
-      ${matchup ? `
-        <section class="desktop-duel-recap desktop-duel-choice interactive-result" tabindex="0" role="button" aria-expanded="false" aria-label="Afficher la justification du choix ${index + 1}">
-          <div class="desktop-duel-pane-heading">
-            <span class="choice-kicker">${simulationDraft.autoOpponent ? "Choix reserve" : "Choix de l'equipe"}</span>
-            <span class="detail-hint">Pourquoi ?</span>
-          </div>
-          ${renderMatchupChoice(matchup)}
-          ${renderVersusExplanation(matchup, enemy)}
-        </section>
-      ` : `
-        <section class="desktop-duel-recap desktop-duel-pending">
-          <span class="choice-kicker">Recommandation</span>
-          <strong>En attente du VS</strong>
-          <span class="slot-meta">Le meilleur choix apparaitra ici sans modifier l'adversaire.</span>
-        </section>
-      `}
+function renderDuelParticipant(pokemon, label, side) {
+  return `
+    <div class="duel-participant ${side}">
+      <div class="duel-sprite-stage">${renderVersusSprite(pokemon, side)}</div>
+      <span class="choice-kicker">${escapeHtml(label)}</span>
+      <strong>${escapeHtml(pokemon.name)}</strong>
+      <span class="name-type-logos">${pokemon.types.map(typeLogoOnly).join("")}</span>
+    </div>
+  `;
+}
+
+function renderDuelUnknownParticipant() {
+  return `
+    <div class="duel-participant choice unknown">
+      <div class="duel-sprite-stage"><span>?</span></div>
+      <span class="choice-kicker">Choix recommande</span>
+      <strong>En attente</strong>
+    </div>
+  `;
+}
+
+function openVersusInsightModal(type, index) {
+  versusInsightModal = { type, index };
+  renderVersusInsightModal();
+}
+
+function closeVersusInsightModal() {
+  versusInsightModal = null;
+  el.versusInsightModal.classList.add("hidden");
+  el.versusInsightModal.innerHTML = "";
+  el.versusInsightModal.onclick = null;
+  if (!pokemonEditContext && !versusSharedModalOpen && !versusApplyModalOpen) {
+    document.body.classList.remove("modal-open");
+  }
+}
+
+function renderVersusInsightModal() {
+  if (!versusInsightModal || !simulationDraft.showResults) {
+    if (!simulationDraft.showResults) versusInsightModal = null;
+    el.versusInsightModal.classList.add("hidden");
+    el.versusInsightModal.innerHTML = "";
+    if (!pokemonEditContext && !versusSharedModalOpen && !versusApplyModalOpen) {
+      document.body.classList.remove("modal-open");
+    }
+    return;
+  }
+  const { type, index } = versusInsightModal;
+  const enemy = simulationDraft.enemies[index];
+  const team = state.teams[state.selectedSlot];
+  if (!enemy || !team) {
+    closeVersusInsightModal();
+    return;
+  }
+  const rankings = bestTeamMatchups(getVersusCandidateTeam(team), enemy);
+  const matchup = rankings[0];
+  if (!matchup) {
+    closeVersusInsightModal();
+    return;
+  }
+  const isAlternatives = type === "alternatives";
+  el.versusInsightModal.classList.remove("hidden");
+  document.body.classList.add("modal-open");
+  el.versusInsightModal.innerHTML = `
+    <div class="team-modal versus-insight-modal-card" role="dialog" aria-modal="true" aria-labelledby="versus-insight-title">
+      <div class="pokemon-editor-heading">
+        <div>
+          <p class="eyebrow">Duel ${index + 1}</p>
+          <h2 id="versus-insight-title">${isAlternatives ? "Alternatives classees" : "Details du choix"}</h2>
+        </div>
+        <button class="modal-close-button" type="button" data-close-versus-insight aria-label="Fermer">&times;</button>
+      </div>
+      ${isAlternatives
+        ? renderVersusAlternatives(rankings.slice(1))
+        : renderVersusDetail(matchup, enemy)}
+    </div>
+  `;
+  el.versusInsightModal.querySelector("[data-close-versus-insight]").addEventListener("click", closeVersusInsightModal);
+  el.versusInsightModal.onclick = (event) => {
+    if (event.target === el.versusInsightModal) closeVersusInsightModal();
+  };
+}
+
+function renderVersusDetail(matchup, enemy) {
+  const attack = matchup.bestAttack;
+  const defenseText = !matchup.defenseKnown
+    ? "Defense non evaluee : les attaques adverses ne sont pas renseignees."
+    : `${escapeHtml(matchup.pokemon.name)} recoit au maximum ${formatMultiplierLabel(matchup.defensiveMultiplier)} face aux attaques connues.`;
+  return `
+    <div class="versus-detail-faceoff">
+      ${renderDuelParticipant(enemy, "Adversaire", "enemy")}
+      <span class="duel-vs-mark">VS</span>
+      ${renderDuelParticipant(matchup.pokemon, "Choix recommande", "choice")}
+    </div>
+    <section class="versus-detail-priority">
+      <span class="choice-kicker">Attaque a privilegier</span>
+      ${attack ? `
+        <strong>${typeLogo(attack.type)} ${escapeHtml(attack.type)}</strong>
+        <span class="multiplier">${formatMultiplierLabel(attack.multiplier)}</span>
+      ` : `<strong>Aucune attaque renseignee</strong>`}
+    </section>
+    <div class="versus-detail-grid">
+      <section>
+        <span class="choice-kicker">Defense</span>
+        <p>${defenseText}</p>
+      </section>
+      <section>
+        <span class="choice-kicker">Attaques adverses</span>
+        <div class="mini-line">${enemy.attacks.length ? enemy.attacks.map(typeBadge).join("") : `<span class="slot-meta">Non renseignees</span>`}</div>
+      </section>
+    </div>
+  `;
+}
+
+function renderVersusAlternatives(alternatives) {
+  if (!alternatives.length) {
+    return `<div class="empty-state">Aucune alternative disponible dans cette equipe.</div>`;
+  }
+  return `
+    <div class="versus-alternative-list">
+      ${alternatives.map((matchup, index) => {
+        const attack = matchup.bestAttack;
+        return `
+          <article class="versus-alternative-row">
+            <span class="versus-alternative-rank">${index + 2}</span>
+            <span class="versus-alternative-sprite">${renderPokemonSprite(matchup.pokemon) || `<span>${escapeHtml(matchup.pokemon.name.slice(0, 1))}</span>`}</span>
+            <strong>${escapeHtml(matchup.pokemon.name)}</strong>
+            <span class="versus-alternative-attack">
+              ${attack ? `${typeLogo(attack.type)} <span>${escapeHtml(attack.type)}</span> <em>${formatMultiplierLabel(attack.multiplier)}</em>` : `<span>Aucune attaque</span>`}
+            </span>
+          </article>
+        `;
+      }).join("")}
     </div>
   `;
 }
