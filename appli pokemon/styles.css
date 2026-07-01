@@ -16,6 +16,13 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -189,6 +196,7 @@ button {
 
 .app-shell {
   width: min(1180px, calc(100% - 28px));
+  min-width: 0;
   margin: 0 auto;
   padding: 28px 0 40px;
 }
@@ -209,6 +217,12 @@ button {
   margin-bottom: 22px;
 }
 
+.app-header > div,
+.header-actions {
+  min-width: 0;
+  max-width: 100%;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -223,6 +237,7 @@ button {
 
 .app-title {
   width: clamp(320px, 46vw, 560px);
+  max-width: 100%;
   margin: 0;
   line-height: 0;
 }
@@ -487,12 +502,15 @@ h3 {
 
 .workspace {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
   align-items: start;
+  min-width: 0;
 }
 
 .panel {
+  min-width: 0;
+  max-width: 100%;
   padding: 18px;
 }
 
@@ -1398,6 +1416,48 @@ button:focus-visible {
   font-size: 0.82rem;
 }
 
+.icon-action-button {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  flex: 0 0 34px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 0;
+  color: var(--text);
+  background: var(--surface-soft);
+}
+
+.icon-action-button:hover,
+.icon-action-button:focus-visible {
+  border-color: rgba(244, 200, 74, 0.58);
+  background: rgba(244, 200, 74, 0.1);
+}
+
+.icon-action-button.danger {
+  border-color: rgba(240, 127, 127, 0.3);
+  color: #ffd6d6;
+  background: rgba(240, 127, 127, 0.08);
+}
+
+.icon-action-button.danger:hover,
+.icon-action-button.danger:focus-visible {
+  border-color: rgba(240, 127, 127, 0.62);
+  background: rgba(240, 127, 127, 0.16);
+}
+
+.icon-action-button svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .preview-row {
   min-height: 40px;
 }
@@ -1422,6 +1482,8 @@ button:focus-visible {
 .team-list {
   display: grid;
   gap: 10px;
+  width: 100%;
+  min-width: 0;
   margin-top: 16px;
 }
 
@@ -2211,6 +2273,9 @@ button:focus-visible {
 
 .pokemon-card {
   position: relative;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   overflow: hidden;
   border-width: 2px;
   border-color: var(--card-border, var(--line));
@@ -2255,6 +2320,7 @@ button:focus-visible {
 
 .pokemon-title > span {
   min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .pokemon-card-toggle {
@@ -2538,7 +2604,9 @@ button:focus-visible {
 
 .name-type-logos {
   display: inline-flex;
+  flex-wrap: wrap;
   gap: 5px;
+  max-width: 100%;
   margin-left: 6px;
   vertical-align: middle;
 }
@@ -3469,7 +3537,7 @@ button:focus-visible {
   .summary-grid,
   .simulation-layout,
   .simulation-helper-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .team-slots {
@@ -3556,7 +3624,7 @@ button:focus-visible {
   }
 
   .app-title {
-    width: min(460px, 92vw);
+    width: min(460px, 100%);
     margin: 0 auto;
   }
 
@@ -3588,8 +3656,7 @@ button:focus-visible {
   }
 
   .icon-nav-button::after {
-    bottom: -24px;
-    font-size: 0.68rem;
+    display: none;
   }
 
   .picker-grid {
@@ -3683,7 +3750,27 @@ button:focus-visible {
   }
 
   .pokemon-card-header {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .pokemon-card-main,
+  .pokemon-heading-with-sprite,
+  .pokemon-card-header .card-actions {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .pokemon-card-header .card-actions {
     align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+  }
+
+  .pokemon-card-header .card-actions .small-button {
+    width: auto;
+    min-width: 0;
   }
 
   .pokemon-heading-with-sprite {

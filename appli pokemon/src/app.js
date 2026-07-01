@@ -693,7 +693,7 @@ function renderSlots() {
         <button class="small-button" type="button" data-action="analysis" data-slot="${index}">Analyser</button>
         <button class="small-button" type="button" data-action="composition" data-slot="${index}">Gestion d'equipe</button>
         <button class="small-button" type="button" data-action="simulation" data-slot="${index}">Versus</button>
-        <button class="small-button danger" type="button" data-action="delete" data-slot="${index}">Supprimer</button>
+        <button class="icon-action-button danger" type="button" data-action="delete" data-slot="${index}" aria-label="Supprimer l'equipe" title="Supprimer l'equipe">${actionIconSvg("delete")}</button>
       </div>
     ` : `
       <div class="empty-team-slot">
@@ -829,6 +829,26 @@ function searchIconSvg() {
     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <path d="M10.8 5.5a5.3 5.3 0 1 0 0 10.6 5.3 5.3 0 0 0 0-10.6Z"></path>
       <path d="m15 15 4 4"></path>
+    </svg>
+  `;
+}
+
+function actionIconSvg(action) {
+  if (action === "delete") {
+    return `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M3 6h18"></path>
+        <path d="M8 6V4h8v2"></path>
+        <path d="M19 6l-1 14H6L5 6"></path>
+        <path d="M10 11v5"></path>
+        <path d="M14 11v5"></path>
+      </svg>
+    `;
+  }
+  return `
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M12 20h9"></path>
+      <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"></path>
     </svg>
   `;
 }
@@ -2390,7 +2410,7 @@ function renderSharedTeamsManager() {
           <button class="small-button" type="button" data-load-shared-versus="${escapeHtml(team.id)}">Charger en versus</button>
           <button class="small-button" type="button" data-rename-shared="${escapeHtml(team.id)}">Renommer</button>
           ${sharedTeam ? `<button class="small-button" type="button" data-replace-shared="${escapeHtml(team.id)}">Remplacer</button>` : ""}
-          <button class="small-button danger" type="button" data-delete-shared="${escapeHtml(team.id)}">Supprimer</button>
+          <button class="icon-action-button danger" type="button" data-delete-shared="${escapeHtml(team.id)}" aria-label="Supprimer l'equipe partagee" title="Supprimer">${actionIconSvg("delete")}</button>
         </div>
       </div>
       <div class="shared-team-pokemon">
@@ -2610,9 +2630,9 @@ function renderPokemonCard(pokemon, options = {}) {
   const sprite = showSprite ? renderPokemonSprite(pokemon) : "";
   const infoButton = renderPokemonInfoButton(pokemon, Boolean(sprite) && infoLookup);
   const actions = [
-    savedId ? `<button class="small-button" type="button" data-edit-saved-pokemon="${savedId}">Editer</button>` : "",
-    savedId ? `<button class="small-button danger" type="button" data-delete-saved-pokemon="${savedId}">Supprimer</button>` : "",
-    editable ? `<button class="small-button" type="button" data-edit-pokemon="${pokemon.instanceId}">Editer</button>` : "",
+    savedId ? `<button class="icon-action-button" type="button" data-edit-saved-pokemon="${savedId}" aria-label="Editer ${escapeHtml(pokemon.name)}" title="Editer">${actionIconSvg("edit")}</button>` : "",
+    savedId ? `<button class="icon-action-button danger" type="button" data-delete-saved-pokemon="${savedId}" aria-label="Supprimer ${escapeHtml(pokemon.name)}" title="Supprimer">${actionIconSvg("delete")}</button>` : "",
+    editable ? `<button class="icon-action-button" type="button" data-edit-pokemon="${pokemon.instanceId}" aria-label="Editer ${escapeHtml(pokemon.name)}" title="Editer">${actionIconSvg("edit")}</button>` : "",
     editable ? `<button class="small-button danger" type="button" data-remove-from-team="${pokemon.instanceId}">Enlever</button>` : "",
     removable ? `<button class="small-button danger" type="button" data-remove="${pokemon.instanceId}">Retirer</button>` : ""
   ].filter(Boolean).join("");
@@ -2934,7 +2954,7 @@ function renderSimulation(team) {
               </div>
             </div>
             <div class="card-actions">
-              <button class="small-button" type="button" data-edit-enemy="${index}">Editer</button>
+              <button class="icon-action-button" type="button" data-edit-enemy="${index}" aria-label="Editer l'adversaire ${index + 1}" title="Editer">${actionIconSvg("edit")}</button>
               <button class="small-button danger" type="button" data-delete-enemy="${index}">Enlever</button>
             </div>
           </div>
@@ -3051,7 +3071,7 @@ function renderDesktopDuel(team, enemy, index) {
         <div class="desktop-duel-pane-heading">
           <span class="choice-kicker">Adversaire</span>
           <div class="card-actions">
-            <button class="small-button" type="button" data-edit-enemy="${index}">Editer</button>
+            <button class="icon-action-button" type="button" data-edit-enemy="${index}" aria-label="Editer l'adversaire ${index + 1}" title="Editer">${actionIconSvg("edit")}</button>
             <button class="small-button danger" type="button" data-delete-enemy="${index}">Enlever</button>
           </div>
         </div>
