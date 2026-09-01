@@ -1,10 +1,10 @@
 # KantoTeam
 
-KantoTeam est une petite application web locale pour creer jusqu'a 3 equipes Pokemon et analyser leurs faiblesses, resistances, immunites et couvertures offensives.
+KantoTeam est une application web locale pour creer et analyser des equipes Pokemon.
 
-Le selecteur propose la liste Kanto originale, une liste `Kanto Reforged` locale et la liste de `Pokemon Z v2.12 Patch 1` en francais. Les types alternatifs de chaque fan game sont conserves independamment.
+Le switch principal bascule toute l'application entre `Kanto Reforged` et `Pokemon Z v2.12 Patch 1`. Chaque version possede ses trois propres slots, sa bibliotheque et ses equipes partagees : aucune donnee de jeu n'est melangee.
 
-La source Pokemon Z contient les 1 018 entrees definies par le jeu : Pokemon officiels disponibles, formes Z et Fakemon. Elle est utilisable dans la composition, la recherche, l'assistant de types, le Versus, la bibliotheque et les liens de partage.
+La source Pokemon Z contient les 1 018 entrees definies par le jeu : Pokemon officiels disponibles, formes Z et Fakemon. Le guide d'obtention associe une methode documentee aux 1 018 entrees (capture, evolution, echange PNJ, reproduction, fossile, don ou condition speciale).
 
 Les sprites sont optionnels. Lorsqu'une connexion est disponible, le bouton `Afficher les sprites` charge uniquement les images des Pokemon presents dans les equipes via PokéAPI. Hors ligne, le bouton et les images restent masques sans avertissement.
 
@@ -31,7 +31,7 @@ http://localhost:5173
 
 Les equipes et la bibliotheque de Pokemon sont sauvegardees dans `localStorage`.
 
-La bibliotheque peut contenir des Pokemon de Kanto ou personnalises avec leurs types d'attaque, afin de reutiliser rapidement une configuration dans plusieurs equipes.
+Chaque bibliotheque contient les Pokemon de la version active ou des Pokemon personnalises avec leurs types d'attaque.
 
 Les equipes se suppriment individuellement depuis leurs slots. Les Pokemon sauvegardes se gerent depuis la bibliotheque.
 
@@ -42,3 +42,28 @@ Le fichier `src/pokemon-z-data.js` est genere depuis le fichier `PBS/pokemon.txt
 ```powershell
 node scripts/build-pokemon-z-data.js "C:\chemin\vers\Pokemon Z\PBS\pokemon.txt"
 ```
+
+Le guide d'obtention peut etre regenere depuis les pages publiques du guide Pokemon Z :
+
+```powershell
+node scripts/build-pokemon-z-guide.js
+```
+
+## Variantes graphiques Pokemon Z
+
+Les logos et icones marques comme assets de theme basculent automatiquement vers un fichier portant le suffixe `_z` lorsque Pokemon Z est actif. Le nom, l'extension et la casse doivent rester identiques :
+
+- `Logo-aide-type.png` devient `Logo-aide-type_z.png` ;
+- `partage.png` devient `partage_z.png` ;
+- `add-pokeball.svg` devient `add-pokeball_z.svg` ;
+- `share-pokeball.png` devient `share-pokeball_z.png` pour le fichier joint lors d'un partage.
+
+Si une variante n'existe pas encore, l'application conserve automatiquement l'image Reforged. Cette convention fonctionne pour les PNG et les SVG. Un SVG charge avec une balise `img` ne permet pas de recolorer uniquement ses zones noires en CSS : la variante `_z.svg` est donc la methode prevue pour ces changements.
+
+## Test navigateur
+
+```powershell
+node tests/serve.js
+```
+
+Puis ouvrir `http://127.0.0.1:8765/tests/browser-smoke.html`. Le test valide les deux banques, les six slots repartis en 3 + 3 et le catalogue Pokemon Z complet.

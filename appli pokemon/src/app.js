@@ -1,5 +1,7 @@
-const STORAGE_KEY = "kantoTeamState:v1";
-const TEAM_SOURCE_KEYS = ["official", "reforged", "pokemon-z"];
+const STORAGE_KEY = "kantoTeamState:v2";
+const LEGACY_STORAGE_KEY = "kantoTeamState:v1";
+const LEGACY_BACKUP_KEY = "kantoTeamState:legacy:v1";
+const GAME_KEYS = ["reforged", "pokemon-z"];
 
 const defaultState = {
   selectedSlot: 0,
@@ -9,9 +11,11 @@ const defaultState = {
   sharedTeams: []
 };
 
-let state = loadState();
-let draftTeam = createEmptyTeam(0);
 let sharedTeam = loadSharedTeamFromUrl();
+let appState = loadAppState();
+if (sharedTeam && GAME_KEYS.includes(sharedTeam.preferredSource)) appState.activeGame = sharedTeam.preferredSource;
+let state = appState.games[appState.activeGame];
+let draftTeam = createEmptyTeam(0);
 let simulationDraft = {
   editingIndex: null,
   enemies: [],
@@ -21,6 +25,7 @@ let simulationDraft = {
 let versusApplyModalOpen = false;
 let versusSharedModalOpen = false;
 let versusInsightModal = null;
+let gameSwitchTransitioning = false;
 let pokemonEditContext = null;
 let pokemonEditEvolution = { status: "idle", items: [] };
 let teamSettingsOpen = false;
@@ -38,7 +43,6 @@ let helperThreatAnalysisOpen = false;
 let helperOpenGroup = null;
 let helperSelectedTypes = null;
 let pokemonSearchFilters = {
-  source: "all",
   query: "",
   typeOne: "",
   typeTwo: ""
@@ -47,6 +51,7 @@ let pokemonSearchFilters = {
 const mobileVersusMedia = window.matchMedia("(max-width: 920px)");
 const spriteUrls = new Map();
 const pokemonInfoCache = new Map();
+const themedAssetAvailability = new Map();
 const SPRITE_NAME_ALIASES = {
   "nœunœuf": 102,
   carmarche: 444,
@@ -60,6 +65,10 @@ let spritesLoading = false;
 
 const el = {
   intro: document.querySelector("#app-intro"),
+  appTitleLogo: document.querySelector("#app-title-logo"),
+  appFavicon: document.querySelector("#app-favicon"),
+  gameVersionSwitch: document.querySelector("#game-version-switch"),
+  gameVersionToggle: document.querySelector("#game-version-toggle"),
   slots: document.querySelector("#team-slots"),
   backToSlots: document.querySelector("#back-to-slots"),
   openTypeHelper: document.querySelector("#open-type-helper"),
@@ -75,7 +84,6 @@ const el = {
   helperThreatSearchField: document.querySelector("#helper-threat-search-field"),
   helperThreatPokemon: document.querySelector("#helper-threat-pokemon"),
   helperThreatOptions: document.querySelector("#helper-threat-options"),
-  helperSource: document.querySelector("#helper-source"),
   helperTargetBase: document.querySelector("#helper-target-base"),
   helperDefense: document.querySelector("#helper-defense"),
   helperOffense: document.querySelector("#helper-offense"),
@@ -93,7 +101,6 @@ const el = {
   savedPokemonList: document.querySelector("#saved-pokemon-list"),
   savedPokemonEditPanel: document.querySelector("#saved-pokemon-edit-panel"),
   pokemonSearchPanel: document.querySelector("#pokemon-search-panel"),
-  pokemonSearchSource: document.querySelector("#pokemon-search-source"),
   pokemonSearchQuery: document.querySelector("#pokemon-search-query"),
   pokemonSearchTypeOne: document.querySelector("#pokemon-search-type-one"),
   pokemonSearchTypeTwo: document.querySelector("#pokemon-search-type-two"),
@@ -109,7 +116,6 @@ const el = {
   teamSettingsToggle: document.querySelector("#team-settings-toggle"),
   teamSettingsPanel: document.querySelector("#team-settings-panel"),
   compositionTeamName: document.querySelector("#composition-team-name"),
-  compositionTeamSource: document.querySelector("#composition-team-source"),
   compositionAddPanel: document.querySelector("#composition-add-panel"),
   compositionToAnalysis: document.querySelector("#composition-to-analysis"),
   pokemonEditPanel: document.querySelector("#pokemon-edit-panel"),
@@ -135,12 +141,8 @@ const el = {
   teamName: document.querySelector("#team-name"),
   addMode: document.querySelector("#add-mode"),
   modeFields: Array.from(document.querySelectorAll(".mode-field")),
-  officialSearch: document.querySelector("#official-search"),
-  officialSelect: document.querySelector("#official-select"),
-  reforgedSearch: document.querySelector("#reforged-search"),
-  reforgedSelect: document.querySelector("#reforged-select"),
-  pokemonZSearch: document.querySelector("#pokemon-z-search"),
-  pokemonZSelect: document.querySelector("#pokemon-z-select"),
+  catalogSearch: document.querySelector("#catalog-search"),
+  catalogSelect: document.querySelector("#catalog-select"),
   savedCustomSelect: document.querySelector("#saved-custom-select"),
   customName: document.querySelector("#custom-name"),
   customTypeOne: document.querySelector("#custom-type-one"),
@@ -197,17 +199,16 @@ function init() {
   fillTypeSelect(el.helperTargetBase, true);
   enhanceTypeSelects(document);
   renderAttackChecks();
-  renderOfficialOptions();
-  renderReforgedOptions();
-  renderPokemonZOptions();
+  renderCatalogOptions();
   renderSavedCustomOptions();
   syncAttackChecksFromCurrentSelection();
   bindEvents();
   draftTeam = state.teams[state.selectedSlot] ? structuredClone(state.teams[state.selectedSlot]) : createEmptyTeam(state.selectedSlot || 0);
   el.teamName.value = draftTeam.name || "";
-  el.addMode.value = getTeamPreferredSource(draftTeam);
+  el.addMode.value = "catalog";
   syncAttackChecksFromCurrentSelection();
   renderAll();
+  void preloadPokemonZThemeAssets();
   startIntro();
   void syncAppSprites(sharedTeam?.pokemon || []).then(renderAll);
 }
@@ -227,6 +228,9 @@ function startIntro() {
 }
 
 function bindEvents() {
+  el.gameVersionToggle.addEventListener("click", () => {
+    transitionToGame(getActiveGameKey() === "reforged" ? "pokemon-z" : "reforged");
+  });
   el.backToSlots.addEventListener("click", () => {
     openView("slots");
   });
@@ -235,10 +239,6 @@ function bindEvents() {
   el.openTypeHelper.addEventListener("click", () => openView("typeHelper"));
   el.openPokemonSearch.addEventListener("click", () => openView("pokemonSearch"));
   el.openSharedTeams.addEventListener("click", () => openView("sharedTeams"));
-  el.pokemonSearchSource.addEventListener("change", () => {
-    pokemonSearchFilters.source = el.pokemonSearchSource.value;
-    renderPokemonSearch();
-  });
   el.pokemonSearchQuery.addEventListener("input", () => {
     pokemonSearchFilters.query = el.pokemonSearchQuery.value;
     renderPokemonSearch();
@@ -250,7 +250,7 @@ function bindEvents() {
       renderPokemonSearch();
     });
   });
-  [el.helperTypeOne, el.helperTypeTwo, el.helperSource, el.helperTargetBase].forEach((field) => {
+  [el.helperTypeOne, el.helperTypeTwo, el.helperTargetBase].forEach((field) => {
     field.addEventListener("change", () => {
       resetHelperResultSelection();
       renderTypeHelper();
@@ -307,7 +307,6 @@ function bindEvents() {
   el.compositionToAnalysis.addEventListener("click", () => openView("analysis"));
   el.teamSettingsToggle.addEventListener("click", toggleTeamSettings);
   el.compositionTeamName.addEventListener("input", updateCurrentTeamSettings);
-  el.compositionTeamSource.addEventListener("change", updateCurrentTeamSettings);
   el.analysisToComposition.addEventListener("click", () => openView("composition"));
   el.simulationConfirm.addEventListener("click", renderSimulationResults);
   el.versusApplyTeam.addEventListener("click", () => {
@@ -322,33 +321,18 @@ function bindEvents() {
   el.usePokemonTypes.addEventListener("click", selectCurrentPokemonTypesAsAttacks);
 
   el.addMode.addEventListener("change", () => {
-    if (TEAM_SOURCE_KEYS.includes(el.addMode.value)) {
-      draftTeam.preferredSource = el.addMode.value;
-    }
     updateModeFields();
     syncAttackChecksFromCurrentSelection();
     renderPreview();
   });
 
-  el.officialSearch.addEventListener("input", () => {
-    renderOfficialOptions();
+  el.catalogSearch.addEventListener("input", () => {
+    renderCatalogOptions();
     syncAttackChecksFromCurrentSelection();
     renderPreview();
   });
 
-  el.reforgedSearch.addEventListener("input", () => {
-    renderReforgedOptions();
-    syncAttackChecksFromCurrentSelection();
-    renderPreview();
-  });
-
-  el.pokemonZSearch.addEventListener("input", () => {
-    renderPokemonZOptions();
-    syncAttackChecksFromCurrentSelection();
-    renderPreview();
-  });
-
-  [el.officialSelect, el.reforgedSelect, el.pokemonZSelect, el.savedCustomSelect, el.customName, el.customTypeOne, el.customTypeTwo].forEach((field) => {
+  [el.catalogSelect, el.savedCustomSelect, el.customName, el.customTypeOne, el.customTypeTwo].forEach((field) => {
     field.addEventListener("input", renderPreview);
     field.addEventListener("change", renderPreview);
   });
@@ -358,15 +342,8 @@ function bindEvents() {
     renderPreview();
   });
 
-  el.officialSelect.addEventListener("change", () => {
-    if (el.addMode.value === "official") {
-      syncAttackChecksFromCurrentSelection();
-      renderPreview();
-    }
-  });
-
-  el.reforgedSelect.addEventListener("change", () => {
-    if (el.addMode.value === "reforged") {
+  el.catalogSelect.addEventListener("change", () => {
+    if (el.addMode.value === "catalog") {
       syncAttackChecksFromCurrentSelection();
       renderPreview();
     }
@@ -390,30 +367,96 @@ function bindEvents() {
     confirmTeam();
   });
 
-  el.pokemonZSelect.addEventListener("change", () => {
-    if (el.addMode.value === "pokemon-z") {
-      syncAttackChecksFromCurrentSelection();
-      renderPreview();
-    }
-  });
 }
 
-function loadState() {
+function loadAppState() {
   try {
     const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (!stored) return structuredClone(defaultState);
-    return {
-      selectedSlot: stored.selectedSlot ?? 0,
-      activeView: stored.activeView || "slots",
-      teams: Array.isArray(stored.teams)
-        ? [stored.teams[0] || null, stored.teams[1] || null, stored.teams[2] || null].map(normalizeStoredTeam)
-        : [null, null, null],
-      customPokemon: Array.isArray(stored.customPokemon) ? stored.customPokemon : [],
-      sharedTeams: Array.isArray(stored.sharedTeams) ? stored.sharedTeams.map(normalizeStoredSharedTeam).filter(Boolean).slice(0, 3) : []
-    };
+    if (stored?.schemaVersion === 2 && stored.games) return normalizeAppState(stored);
+    return migrateLegacyState();
   } catch {
-    return structuredClone(defaultState);
+    return createDefaultAppState();
   }
+}
+
+function createDefaultAppState() {
+  return {
+    schemaVersion: 2,
+    activeGame: "reforged",
+    games: {
+      reforged: structuredClone(defaultState),
+      "pokemon-z": structuredClone(defaultState)
+    }
+  };
+}
+
+function normalizeGameState(stored = {}) {
+  return {
+    selectedSlot: Math.max(0, Math.min(2, Number(stored.selectedSlot) || 0)),
+    activeView: stored.activeView || "slots",
+    teams: Array.isArray(stored.teams)
+      ? [stored.teams[0] || null, stored.teams[1] || null, stored.teams[2] || null].map(normalizeStoredTeam)
+      : [null, null, null],
+    customPokemon: Array.isArray(stored.customPokemon) ? stored.customPokemon : [],
+    sharedTeams: Array.isArray(stored.sharedTeams) ? stored.sharedTeams.map(normalizeStoredSharedTeam).filter(Boolean).slice(0, 3) : []
+  };
+}
+
+function normalizeAppState(stored) {
+  return {
+    schemaVersion: 2,
+    activeGame: GAME_KEYS.includes(stored.activeGame) ? stored.activeGame : "reforged",
+    games: {
+      reforged: sanitizeGameState(normalizeGameState(stored.games.reforged), "reforged"),
+      "pokemon-z": sanitizeGameState(normalizeGameState(stored.games["pokemon-z"]), "pokemon-z")
+    }
+  };
+}
+
+function sanitizeGameState(gameState, game) {
+  return {
+    ...gameState,
+    teams: gameState.teams.map((team) => (!team || team.preferredSource === game ? team : null)),
+    customPokemon: gameState.customPokemon.filter((pokemon) => (
+      pokemon.custom === true
+      || pokemon.origin === game
+      || (game === "reforged" && Boolean(pokemon.reforgedId))
+      || (game === "pokemon-z" && Boolean(pokemon.pokemonZId))
+    )),
+    sharedTeams: gameState.sharedTeams.filter((team) => team.preferredSource === game)
+  };
+}
+
+function migrateLegacyState() {
+  const migrated = createDefaultAppState();
+  const raw = localStorage.getItem(LEGACY_STORAGE_KEY);
+  if (!raw) return migrated;
+  localStorage.setItem(LEGACY_BACKUP_KEY, raw);
+  try {
+    const legacy = JSON.parse(raw);
+    const gameFor = (item) => {
+      const source = item?.preferredSource || item?.origin;
+      return GAME_KEYS.includes(source) ? source : null;
+    };
+    (Array.isArray(legacy.teams) ? legacy.teams : []).forEach((team, index) => {
+      const game = gameFor(team);
+      if (team && GAME_KEYS.includes(game) && index < 3) migrated.games[game].teams[index] = normalizeStoredTeam(team);
+    });
+    (Array.isArray(legacy.customPokemon) ? legacy.customPokemon : []).forEach((pokemon) => {
+      const game = gameFor(pokemon);
+      if (GAME_KEYS.includes(game)) migrated.games[game].customPokemon.push(pokemon);
+      else GAME_KEYS.forEach((key) => migrated.games[key].customPokemon.push(structuredClone(pokemon)));
+    });
+    (Array.isArray(legacy.sharedTeams) ? legacy.sharedTeams : []).forEach((team) => {
+      const game = gameFor(team);
+      const normalized = normalizeStoredSharedTeam(team);
+      if (normalized && GAME_KEYS.includes(game) && migrated.games[game].sharedTeams.length < 3) migrated.games[game].sharedTeams.push(normalized);
+    });
+  } catch {
+    return migrated;
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+  return migrated;
 }
 
 function normalizeStoredTeam(team) {
@@ -437,7 +480,57 @@ function normalizeStoredSharedTeam(team) {
 }
 
 function saveState() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  appState.games[appState.activeGame] = state;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+}
+
+function getActiveGameKey() {
+  return appState.activeGame;
+}
+
+function getActiveCatalog() {
+  return getActiveGameKey() === "pokemon-z" ? POKEMON_Z_V212 : KANTO_REFORGED_POKEMON;
+}
+
+function transitionToGame(game) {
+  if (!GAME_KEYS.includes(game) || game === getActiveGameKey() || gameSwitchTransitioning) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    switchGame(game);
+    return;
+  }
+  gameSwitchTransitioning = true;
+  document.body.classList.add("game-switch-flash");
+  window.setTimeout(() => switchGame(game), 240);
+  window.setTimeout(() => {
+    document.body.classList.remove("game-switch-flash");
+    gameSwitchTransitioning = false;
+  }, 720);
+}
+
+function switchGame(game) {
+  if (!GAME_KEYS.includes(game) || game === getActiveGameKey()) return;
+  saveState();
+  appState.activeGame = game;
+  state = appState.games[game];
+  sharedTeam = null;
+  state.activeView = "slots";
+  draftTeam = state.teams[state.selectedSlot]
+    ? structuredClone(state.teams[state.selectedSlot])
+    : createEmptyTeam(state.selectedSlot);
+  simulationDraft = { editingIndex: null, enemies: [], showResults: false, autoOpponent: false };
+  pokemonEditContext = null;
+  pokemonInfoCache.clear();
+  teamSettingsOpen = false;
+  teamAddPanelOpen = false;
+  pokemonSearchFilters = { query: "", typeOne: "", typeTwo: "" };
+  el.teamName.value = draftTeam.name || "";
+  el.addMode.value = "catalog";
+  el.catalogSearch.value = "";
+  renderCatalogOptions();
+  syncAttackChecksFromCurrentSelection();
+  saveState();
+  renderAll();
+  void syncAppSprites().then(renderAll);
 }
 
 function loadSharedTeamFromUrl() {
@@ -448,7 +541,9 @@ function loadSharedTeamFromUrl() {
   try {
     const payload = JSON.parse(decodeSharePayload(encoded));
     if (payload?.v === 2 && payload?.t === "t") return normalizeSharedTeam(expandCompactSharePayload(payload));
-    if (payload?.v === 1 && payload?.type === "team") return normalizeSharedTeam(payload.team);
+    if (payload?.v === 1 && payload?.type === "team" && GAME_KEYS.includes(payload.team?.preferredSource)) {
+      return normalizeSharedTeam(payload.team);
+    }
     return null;
   } catch {
     return null;
@@ -500,7 +595,7 @@ function buildSharePayload(team) {
     v: 2,
     t: "t",
     n: team.name,
-    s: getTeamPreferredSource(team) === "reforged" ? "r" : getTeamPreferredSource(team) === "pokemon-z" ? "z" : "o",
+    s: getTeamPreferredSource(team) === "pokemon-z" ? "z" : "r",
     p: team.pokemon.map(compactSharePokemon)
   };
 }
@@ -508,16 +603,6 @@ function buildSharePayload(team) {
 function compactSharePokemon(pokemon) {
   const source = state.customPokemon.find((item) => String(item.id) === String(pokemon.sourceId)) || pokemon;
   const attacks = encodeShareTypes(pokemon.attacks || source.attacks || []);
-  let officialId = null;
-  if (Number.isInteger(source.officialId)) officialId = source.officialId;
-  else if (Number.isInteger(source.sourceId)) officialId = source.sourceId;
-  else if (Number.isInteger(source.id)) officialId = source.id;
-  else if (Number.isInteger(pokemon.sourceId)) officialId = pokemon.sourceId;
-
-  if (officialId && KANTO_POKEMON.some((item) => item.id === officialId && item.name === pokemon.name)) {
-    return { o: officialId, a: attacks };
-  }
-
   if (source.reforgedId || String(source.sourceId || source.id || pokemon.sourceId || "").startsWith("reforged-")) {
     return { r: source.reforgedId || source.sourceId || source.id || pokemon.sourceId, a: attacks };
   }
@@ -547,23 +632,14 @@ function decodeShareTypes(types) {
 function expandCompactSharePayload(payload) {
   return {
     name: payload.n,
-    preferredSource: payload.s === "r" ? "reforged" : payload.s === "z" ? "pokemon-z" : "official",
+    preferredSource: payload.s === "z" ? "pokemon-z" : "reforged",
     pokemon: Array.isArray(payload.p) ? payload.p.map(expandCompactSharePokemon).filter(Boolean) : []
   };
 }
 
 function expandCompactSharePokemon(item) {
   if (Number.isInteger(item.o)) {
-    const pokemon = KANTO_POKEMON.find((entry) => entry.id === item.o);
-    if (!pokemon) return null;
-    return {
-      name: pokemon.name,
-      types: pokemon.types,
-      attacks: decodeShareTypes(item.a),
-      officialId: pokemon.id,
-      nationalId: pokemon.id,
-      sourceId: pokemon.id
-    };
+    return null;
   }
 
   if (item.r) {
@@ -627,7 +703,7 @@ function createEmptyTeam(slot) {
   return {
     id: `team-${Date.now()}-${slot}`,
     name: "",
-    preferredSource: "official",
+    preferredSource: getActiveGameKey(),
     pokemon: [],
     reservePokemonIds: []
   };
@@ -649,7 +725,7 @@ function selectSlot(slot, view, preferredSource) {
   draftTeam = state.teams[slot] ? structuredClone(state.teams[slot]) : createEmptyTeam(slot);
   if (!state.teams[slot] && preferredSource) draftTeam.preferredSource = preferredSource;
   el.teamName.value = draftTeam.name || "";
-  el.addMode.value = getTeamPreferredSource(draftTeam);
+  el.addMode.value = "catalog";
   syncAttackChecksFromCurrentSelection();
   renderAll();
 }
@@ -659,13 +735,13 @@ function getTeamPreferredSource(team) {
 }
 
 function normalizeTeamSource(source) {
-  return TEAM_SOURCE_KEYS.includes(source) ? source : "official";
+  return GAME_KEYS.includes(source) ? source : "reforged";
 }
 
 function preferredSourceLabel(source) {
   if (source === "reforged") return "Kanto Reforged";
   if (source === "pokemon-z") return "Pokemon Z v2.12";
-  return "Kanto classique";
+  return "Kanto Reforged";
 }
 
 function getTeamReservePokemon(team) {
@@ -702,6 +778,7 @@ function openView(view) {
 
 function renderAll() {
   const activeTeam = getActiveTeam();
+  renderGameSwitch();
   renderSlots();
   renderActiveView();
   renderSavedPokemonManager();
@@ -716,6 +793,72 @@ function renderAll() {
   renderPreview();
   renderAnalysis(activeTeam);
   syncTypeWheels(document);
+  void syncThemedAssets(document);
+}
+
+function renderGameSwitch() {
+  const game = getActiveGameKey();
+  document.body.dataset.gameTheme = game;
+  el.appTitleLogo.src = game === "pokemon-z" ? "assets/Titre_Pokemon_Z.png" : "assets/Titre.png";
+  el.gameVersionSwitch.classList.toggle("hidden", state.activeView !== "slots" || Boolean(sharedTeam));
+  el.gameVersionToggle.setAttribute("aria-checked", String(game === "reforged"));
+  el.gameVersionToggle.setAttribute("aria-label", game === "reforged" ? "Basculer vers Pokemon Z" : "Basculer vers Kanto Reforged");
+  el.gameVersionToggle.dataset.position = game;
+}
+
+function pokemonZAssetPath(basePath) {
+  return String(basePath).replace(/(\.[a-z0-9]+)(\?.*)?$/i, "_z$1$2");
+}
+
+function themedAssetExists(path) {
+  if (!themedAssetAvailability.has(path)) {
+    themedAssetAvailability.set(path, new Promise((resolve) => {
+      const probe = new Image();
+      probe.onload = () => resolve(true);
+      probe.onerror = () => resolve(false);
+      probe.src = path;
+    }));
+  }
+  return themedAssetAvailability.get(path);
+}
+
+function setImageAsset(image, path) {
+  if (image.getAttribute("src") !== path) image.setAttribute("src", path);
+}
+
+async function preloadPokemonZThemeAssets() {
+  const bases = Array.from(document.querySelectorAll("img[data-theme-asset]"))
+    .map((image) => image.dataset.themeAsset)
+    .filter(Boolean);
+  bases.push("assets/favicon.svg", "assets/share-pokeball.png");
+  await Promise.allSettled([...new Set(bases)].map((base) => themedAssetExists(pokemonZAssetPath(base))));
+}
+
+async function syncThemedAssets(root = document) {
+  const game = getActiveGameKey();
+  const images = Array.from(root.querySelectorAll("img[data-theme-asset]"));
+  images.forEach((image) => {
+    const base = image.dataset.themeAsset;
+    image.dataset.themeRequest = game;
+    if (game === "reforged") {
+      setImageAsset(image, base);
+      return;
+    }
+    const candidate = pokemonZAssetPath(base);
+    void themedAssetExists(candidate).then((exists) => {
+      if (image.dataset.themeRequest !== "pokemon-z") return;
+      setImageAsset(image, exists ? candidate : base);
+    });
+  });
+
+  const faviconBase = "assets/favicon.svg";
+  if (game === "reforged") {
+    if (el.appFavicon.getAttribute("href") !== faviconBase) el.appFavicon.href = faviconBase;
+  } else {
+    const candidate = pokemonZAssetPath(faviconBase);
+    const exists = await themedAssetExists(candidate);
+    if (getActiveGameKey() === "pokemon-z") el.appFavicon.href = exists ? candidate : faviconBase;
+  }
 }
 
 function getActiveTeam() {
@@ -741,15 +884,13 @@ function renderSlots() {
       </div>
     ` : `
       <div class="empty-team-slot">
-        <img class="empty-team-logo" src="assets/add-pokeball.svg" alt="" aria-hidden="true">
+        <img class="empty-team-logo" src="assets/add-pokeball.svg" data-theme-asset="assets/add-pokeball.svg" alt="" aria-hidden="true">
         <span>
           <span class="eyebrow">Slot ${index + 1}</span>
           <strong>Creer une equipe</strong>
-          <small>Choisis la liste utilisee pour les recherches.</small>
+          <small>${preferredSourceLabel(getActiveGameKey())}</small>
           <span class="empty-team-versions">
-            <button class="small-button" type="button" data-action="composition" data-slot="${index}" data-version="official">Kanto</button>
-            <button class="small-button" type="button" data-action="composition" data-slot="${index}" data-version="reforged">Reforged</button>
-            <button class="small-button" type="button" data-action="composition" data-slot="${index}" data-version="pokemon-z">Pokemon Z</button>
+            <button class="small-button" type="button" data-action="composition" data-slot="${index}" data-version="${getActiveGameKey()}">Creer</button>
           </span>
         </span>
       </div>
@@ -856,14 +997,21 @@ function renderPokemonSprite(pokemon) {
 function renderPokemonInfoButton(pokemon, enabled) {
   const nationalId = getPokemonNationalId(pokemon);
   const hasReforgedGuide = isReforgedGuidePokemon(pokemon) && Boolean(getReforgedGuideInfo(pokemon.name));
-  if (!enabled || (!nationalId && !hasReforgedGuide)) return "";
+  const catalogPokemon = getActiveCatalog().find((item) => (
+    String(item.id) === String(pokemon.pokemonZId || pokemon.reforgedId || pokemon.sourceId || pokemon.id)
+    || normalize(item.name) === normalize(pokemon.name)
+  ));
+  const guideKey = catalogPokemon?.id || pokemon.pokemonZId || pokemon.reforgedId || "";
+  const hasPokemonZGuide = getActiveGameKey() === "pokemon-z" && Boolean(getPokemonZGuideInfo(guideKey));
+  if (!enabled || (!nationalId && !hasReforgedGuide && !hasPokemonZGuide)) return "";
   return `
     <button class="pokemon-info-toggle" type="button"
       aria-label="Voir les infos de ${escapeHtml(pokemon.name)}"
       aria-expanded="false"
       data-pokemon-info-name="${escapeHtml(pokemon.name)}"
       data-pokemon-info-id="${nationalId || ""}"
-      data-pokemon-info-reforged="${hasReforgedGuide ? "true" : "false"}">
+      data-pokemon-info-game="${getActiveGameKey()}"
+      data-pokemon-info-guide-key="${escapeHtml(guideKey)}">
       ${searchIconSvg()}
     </button>
   `;
@@ -921,22 +1069,14 @@ function renderVersusSpriteFaceoff(enemy, choice) {
   return `<div class="versus-sprite-faceoff">${enemySprite}<span>VS</span>${choiceSprite}</div>`;
 }
 
-function renderOfficialOptions() {
-  const query = normalize(el.officialSearch.value);
-  const matches = KANTO_POKEMON.filter((pokemon) => normalize(pokemon.name).includes(query));
-  el.officialSelect.innerHTML = matches
-    .map((pokemon) => `<option value="${pokemon.id}">#${pokemon.id} ${pokemon.name} - ${pokemon.types.join("/")}</option>`)
-    .join("");
-}
-
-function renderReforgedOptions() {
-  const selectedId = el.reforgedSelect.value;
-  const query = normalize(el.reforgedSearch.value);
-  const matches = KANTO_REFORGED_POKEMON.filter((pokemon) => normalize(pokemon.name).includes(query));
-  el.reforgedSelect.innerHTML = matches
+function renderCatalogOptions() {
+  const selectedId = el.catalogSelect.value;
+  const query = normalize(el.catalogSearch.value);
+  const matches = getActiveCatalog().filter((pokemon) => normalize(pokemon.name).includes(query));
+  el.catalogSelect.innerHTML = matches
     .map((pokemon) => `<option value="${pokemon.id}">${escapeHtml(pokemon.name)} - ${pokemon.types.join("/")}</option>`)
     .join("");
-  if (matches.some((pokemon) => pokemon.id === selectedId)) el.reforgedSelect.value = selectedId;
+  if (matches.some((pokemon) => String(pokemon.id) === String(selectedId))) el.catalogSelect.value = selectedId;
 }
 
 function renderSavedCustomOptions() {
@@ -962,16 +1102,6 @@ function fillTypeSelect(select, optional) {
     optional ? `<option value="">Aucun</option>` : "",
     ...KANTO_TYPES.map((type) => `<option value="${type}">${type}</option>`)
   ].join("");
-}
-
-function renderPokemonZOptions() {
-  const selectedId = el.pokemonZSelect.value;
-  const query = normalize(el.pokemonZSearch.value);
-  const matches = POKEMON_Z_V212.filter((pokemon) => normalize(pokemon.name).includes(query));
-  el.pokemonZSelect.innerHTML = matches
-    .map((pokemon) => `<option value="${pokemon.id}">${escapeHtml(pokemon.name)} - ${pokemon.types.join("/")}</option>`)
-    .join("");
-  if (matches.some((pokemon) => pokemon.id === selectedId)) el.pokemonZSelect.value = selectedId;
 }
 
 function enhanceTypeSelects(root = document) {
@@ -1102,15 +1232,6 @@ function renderAttackChecks() {
 }
 
 function updateModeFields() {
-  const preferredSource = getTeamPreferredSource(draftTeam);
-  Array.from(el.addMode.options).forEach((option) => {
-    if (!TEAM_SOURCE_KEYS.includes(option.value)) return;
-    option.hidden = option.value !== preferredSource;
-    option.disabled = option.value !== preferredSource;
-  });
-  if (TEAM_SOURCE_KEYS.includes(el.addMode.value) && el.addMode.value !== preferredSource) {
-    el.addMode.value = preferredSource;
-  }
   el.modeFields.forEach((field) => {
     field.classList.toggle("hidden", field.dataset.mode !== el.addMode.value);
   });
@@ -1145,19 +1266,8 @@ function renderPreview() {
 function getCurrentPokemon(validate) {
   const mode = el.addMode.value;
 
-  if (mode === "official") {
-    const id = Number(el.officialSelect.value);
-    const pokemon = KANTO_POKEMON.find((item) => item.id === id);
-    return pokemon ? structuredClone(pokemon) : null;
-  }
-
-  if (mode === "reforged") {
-    const pokemon = KANTO_REFORGED_POKEMON.find((item) => item.id === el.reforgedSelect.value);
-    return pokemon ? structuredClone(pokemon) : null;
-  }
-
-  if (mode === "pokemon-z") {
-    const pokemon = POKEMON_Z_V212.find((item) => item.id === el.pokemonZSelect.value);
+  if (mode === "catalog") {
+    const pokemon = getActiveCatalog().find((item) => String(item.id) === String(el.catalogSelect.value));
     return pokemon ? structuredClone(pokemon) : null;
   }
 
@@ -1233,13 +1343,9 @@ function addCurrentPokemon() {
   const shouldSave = el.addMode.value !== "saved" && el.saveToLibrary.checked;
   const matchingSavedPokemon = shouldSave
     ? state.customPokemon.find((item) => (
-        (el.addMode.value === "official"
-          ? Number(item.officialId) === Number(pokemon.id)
-          : el.addMode.value === "reforged"
-            ? item.reforgedId === pokemon.id
-            : el.addMode.value === "pokemon-z"
-              ? item.pokemonZId === pokemon.id
-              : normalize(item.name) === normalize(pokemon.name))
+        (el.addMode.value === "catalog"
+          ? (getActiveGameKey() === "reforged" ? item.reforgedId === pokemon.id : item.pokemonZId === pokemon.id)
+          : normalize(item.name) === normalize(pokemon.name))
         && item.types.join("|") === pokemon.types.join("|")
         && (item.attacks || []).join("|") === attacks.join("|")
       ))
@@ -1248,10 +1354,9 @@ function addCurrentPokemon() {
     ? matchingSavedPokemon || {
         ...structuredClone(pokemon),
         id: `saved-${Date.now()}-${Math.random().toString(16).slice(2)}`,
-        officialId: el.addMode.value === "official" ? pokemon.id : null,
-        reforgedId: el.addMode.value === "reforged" ? pokemon.id : null,
-        pokemonZId: el.addMode.value === "pokemon-z" ? pokemon.id : null,
-        origin: el.addMode.value,
+        reforgedId: el.addMode.value === "catalog" && getActiveGameKey() === "reforged" ? pokemon.id : null,
+        pokemonZId: el.addMode.value === "catalog" && getActiveGameKey() === "pokemon-z" ? pokemon.id : null,
+        origin: el.addMode.value === "catalog" ? getActiveGameKey() : el.addMode.value,
         custom: el.addMode.value === "custom",
         attacks
       }
@@ -1266,6 +1371,8 @@ function addCurrentPokemon() {
     types: pokemon.types,
     attacks
   };
+  if (getActiveGameKey() === "reforged") teamMember.reforgedId = pokemon.reforgedId || pokemon.id;
+  if (getActiveGameKey() === "pokemon-z") teamMember.pokemonZId = pokemon.pokemonZId || pokemon.id;
   if (Number.isInteger(getPokemonNationalId(savedPokemon || pokemon))) {
     teamMember.nationalId = getPokemonNationalId(savedPokemon || pokemon);
   }
@@ -1393,7 +1500,7 @@ function renderManagedComposition(team) {
       emptySlot.dataset.openTeamAdd = "true";
       emptySlot.dataset.slotIndex = String(index);
       emptySlot.innerHTML = `
-        <img class="add-pokeball-icon large" src="assets/add-pokeball.svg" alt="" aria-hidden="true">
+        <img class="add-pokeball-icon large" src="assets/add-pokeball.svg" data-theme-asset="assets/add-pokeball.svg" alt="" aria-hidden="true">
         <span>Ajouter un Pokemon</span>
       `;
       el.compositionList.append(emptySlot);
@@ -1513,9 +1620,6 @@ function syncTeamSettingsInputs(team) {
   if (document.activeElement !== el.compositionTeamName) {
     el.compositionTeamName.value = team.name || "";
   }
-  if (document.activeElement !== el.compositionTeamSource) {
-    el.compositionTeamSource.value = getTeamPreferredSource(team);
-  }
 }
 
 function toggleTeamSettings() {
@@ -1526,9 +1630,8 @@ function toggleTeamSettings() {
 function updateCurrentTeamSettings() {
   if (sharedTeam) return;
   draftTeam.name = el.compositionTeamName.value.trim();
-  draftTeam.preferredSource = el.compositionTeamSource.value;
+  draftTeam.preferredSource = getActiveGameKey();
   el.teamName.value = draftTeam.name;
-  el.addMode.value = draftTeam.preferredSource;
   persistDraftTeam();
   updateModeFields();
   syncAttackChecksFromCurrentSelection();
@@ -1904,7 +2007,6 @@ function saveManagedPokemonToLibrary(pokemon, attacks, source) {
   const savedPokemon = {
     ...structuredClone(pokemon),
     id: `saved-${Date.now()}-${Math.random().toString(16).slice(2)}`,
-    officialId: source === "official" ? pokemon.id : pokemon.officialId || null,
     reforgedId: source === "reforged" ? pokemon.id : pokemon.reforgedId || null,
     pokemonZId: source === "pokemon-z" ? pokemon.id : pokemon.pokemonZId || null,
     origin: source,
@@ -1918,16 +2020,15 @@ function saveManagedPokemonToLibrary(pokemon, attacks, source) {
 function savedPokemonOriginLabel(pokemon) {
   if (pokemon.origin === "reforged" || pokemon.reforgedId) return "Reforged";
   if (pokemon.origin === "pokemon-z" || pokemon.pokemonZId) return "Pokemon Z v2.12";
-  if (pokemon.origin === "official" || pokemon.officialId || pokemon.custom === false) return "Kanto";
+  if (pokemon.custom === false) return preferredSourceLabel(getActiveGameKey());
   return "Personnalise";
 }
 
 function renderTypeHelper(selectedTypes = null) {
   const threatTypes = getHelperProfileTypes();
   const mode = getHelperMode();
-  const source = el.helperSource.value;
   const requiredType = el.helperTargetBase.value;
-  const pokemonList = getHelperPokemonSource(source);
+  const pokemonList = getHelperPokemonSource();
   const responseRows = getHelperResponseRows(threatTypes, pokemonList, mode, requiredType);
   const exactTypes = selectedTypes || helperSelectedTypes || [];
   const filteredPokemon = exactTypes.length ? filterPokemonByTypes(pokemonList, exactTypes) : [];
@@ -2005,7 +2106,7 @@ function applyHelperThreatPokemon() {
   const value = normalize(el.helperThreatPokemon.value);
   if (!value) return;
   const threatTypes = getHelperProfileTypes();
-  const pokemonList = getHelperPokemonSource(el.helperSource.value);
+  const pokemonList = getHelperPokemonSource();
   const options = getHelperThreatPokemonOptions(pokemonList, threatTypes);
   const pokemon = options.find((item) => (
     normalize(pokemonOptionLabel(item)) === value || normalize(item.name) === value
@@ -2245,15 +2346,10 @@ function bindTypeHelperGrid(pokemonList) {
 }
 
 function getHelperPokemonSource(source) {
-  const official = KANTO_POKEMON.map((pokemon) => ({ ...pokemon, helperSource: "official" }));
-  const reforged = KANTO_REFORGED_POKEMON.map((pokemon) => ({ ...pokemon, helperSource: "reforged" }));
-  const pokemonZ = POKEMON_Z_V212.map((pokemon) => ({ ...pokemon, helperSource: "pokemon-z" }));
+  const catalog = getActiveCatalog().map((pokemon) => ({ ...pokemon, helperSource: getActiveGameKey() }));
   const saved = state.customPokemon.map((pokemon) => ({ ...pokemon, helperSource: "saved" }));
-  if (source === "official") return official;
-  if (source === "reforged") return reforged;
-  if (source === "pokemon-z") return pokemonZ;
   if (source === "saved") return saved;
-  return [...official, ...reforged, ...pokemonZ, ...saved];
+  return [...catalog, ...saved];
 }
 
 function filterPokemonByTypes(pokemonList, types) {
@@ -2301,11 +2397,16 @@ function getReforgedGuideInfo(name) {
   return KANTO_REFORGED_GUIDE[normalize(name)] || null;
 }
 
+function getPokemonZGuideInfo(id) {
+  if (typeof POKEMON_Z_GUIDE === "undefined") return null;
+  return POKEMON_Z_GUIDE[id] || null;
+}
+
 function helperSourceLabel(source) {
   if (source === "reforged") return "Reforged";
   if (source === "pokemon-z") return "Pokemon Z v2.12";
   if (source === "saved") return "Sauvegarde";
-  return "Kanto";
+  return preferredSourceLabel(getActiveGameKey());
 }
 
 function bindTypeHelperPokemonActions() {
@@ -2336,7 +2437,6 @@ function saveHelperPokemon(pokemon, source) {
   const savedPokemon = {
     ...structuredClone(pokemon),
     id: `saved-${Date.now()}-${Math.random().toString(16).slice(2)}`,
-    officialId: source === "official" ? pokemon.id : null,
     reforgedId: source === "reforged" ? pokemon.id : null,
     pokemonZId: source === "pokemon-z" ? pokemon.id : null,
     origin: source,
@@ -2356,7 +2456,6 @@ function renderPokemonSearch() {
   const typeOne = pokemonSearchFilters.typeOne;
   const typeTwo = pokemonSearchFilters.typeTwo;
   const canShowResults = query.length >= 3 || Boolean(typeOne);
-  el.pokemonSearchSource.value = pokemonSearchFilters.source;
   el.pokemonSearchQuery.value = pokemonSearchFilters.query;
   el.pokemonSearchTypeOne.value = typeOne;
   el.pokemonSearchTypeTwo.value = typeTwo;
@@ -2367,7 +2466,7 @@ function renderPokemonSearch() {
     return;
   }
 
-  const matches = getHelperPokemonSource(pokemonSearchFilters.source)
+  const matches = getHelperPokemonSource()
     .filter((pokemon) => (
       (!query || normalize(pokemon.name).includes(query))
       && (!typeOne || pokemon.types.includes(typeOne))
@@ -2483,7 +2582,7 @@ function renderSharedTeamsManager() {
     card.innerHTML = `
       <div class="shared-team-header">
         <div class="shared-team-title">
-          <img src="assets/partage.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
+          <img src="assets/partage.png" data-theme-asset="assets/partage.png" alt="" aria-hidden="true">
           <div>
           <p class="eyebrow">Liste ${index + 1}</p>
           <h3>${escapeHtml(team.savedName || team.name)}</h3>
@@ -2712,7 +2811,7 @@ function renderPokemonCard(pokemon, options = {}) {
   const sourceId = pokemon.instanceId || pokemon.id || pokemon.sourceId || "";
   const attacks = pokemon.attacks || [];
   const sprite = showSprite ? renderPokemonSprite(pokemon) : "";
-  const infoButton = renderPokemonInfoButton(pokemon, Boolean(sprite) && infoLookup);
+  const infoButton = renderPokemonInfoButton(pokemon, Boolean(infoLookup));
   const actions = [
     savedId ? `<button class="icon-action-button" type="button" data-edit-saved-pokemon="${savedId}" aria-label="Editer ${escapeHtml(pokemon.name)}" title="Editer">${actionIconSvg("edit")}</button>` : "",
     savedId ? `<button class="icon-action-button danger" type="button" data-delete-saved-pokemon="${savedId}" aria-label="Supprimer ${escapeHtml(pokemon.name)}" title="Supprimer">${actionIconSvg("delete")}</button>` : "",
@@ -2735,7 +2834,7 @@ function renderPokemonCard(pokemon, options = {}) {
     : `<div class="pokemon-card-toggle static">${headingContent}</div>`;
 
   return `
-    ${includePokeball ? `<img class="team-pokeball-icon" src="assets/team-pokeball.svg" alt="" aria-hidden="true">` : ""}
+    ${includePokeball ? `<img class="team-pokeball-icon" src="assets/team-pokeball.svg" data-theme-asset="assets/team-pokeball.svg" alt="" aria-hidden="true">` : ""}
     <div class="pokemon-card-header">
       <div class="pokemon-card-main">
         ${heading}
@@ -2794,7 +2893,8 @@ async function togglePokemonInfoPanel(button) {
     const data = await getPokemonInfoData({
       id: Number(button.dataset.pokemonInfoId) || null,
       name: button.dataset.pokemonInfoName || "",
-      reforged: button.dataset.pokemonInfoReforged === "true"
+      game: button.dataset.pokemonInfoGame || getActiveGameKey(),
+      guideKey: button.dataset.pokemonInfoGuideKey || ""
     });
     panel.innerHTML = renderPokemonInfoPanel(data);
   } catch {
@@ -2802,11 +2902,12 @@ async function togglePokemonInfoPanel(button) {
   }
 }
 
-async function getPokemonInfoData({ id, name, reforged }) {
-  const cacheKey = `${id || normalize(name)}:${reforged ? "reforged" : "standard"}`;
+async function getPokemonInfoData({ id, name, game, guideKey }) {
+  const reforged = game === "reforged";
+  const cacheKey = `${game}:${guideKey || id || normalize(name)}`;
   if (pokemonInfoCache.has(cacheKey)) return pokemonInfoCache.get(cacheKey);
 
-  const guide = reforged ? getReforgedGuideInfo(name) : null;
+  const guide = reforged ? getReforgedGuideInfo(name) : getPokemonZGuideInfo(guideKey);
   let evolution = null;
   if (id && navigator.onLine) {
     try {
@@ -2815,7 +2916,7 @@ async function getPokemonInfoData({ id, name, reforged }) {
       evolution = null;
     }
   }
-  if (!evolution && guide) evolution = buildLocalReforgedInfo(name, guide);
+  if (!evolution && guide && reforged) evolution = buildLocalReforgedInfo(name, guide);
 
   const speciesToSync = evolution ? getEvolutionChainItems(evolution.tree)
     .filter((item) => item.id)
@@ -2825,6 +2926,8 @@ async function getPokemonInfoData({ id, name, reforged }) {
   const data = {
     name,
     reforged,
+    game,
+    guide,
     evolution
   };
   pokemonInfoCache.set(cacheKey, data);
@@ -2901,12 +3004,8 @@ function extractSpeciesId(url) {
 
 function pokemonDisplayNameByNationalId(id, fallback) {
   if (!id) return fallback;
-  const official = KANTO_POKEMON.find((pokemon) => getPokemonNationalId(pokemon) === id);
-  if (official) return official.name;
-  const reforged = KANTO_REFORGED_POKEMON.find((pokemon) => getPokemonNationalId(pokemon) === id);
-  if (reforged) return reforged.name;
-  const pokemonZ = POKEMON_Z_V212.find((pokemon) => getPokemonNationalId(pokemon) === id);
-  return pokemonZ?.name || fallback;
+  const local = getActiveCatalog().find((pokemon) => getPokemonNationalId(pokemon) === id);
+  return local?.name || fallback;
 }
 
 function formatApiName(value) {
@@ -2944,12 +3043,77 @@ function dedupeGuideLabels(locations) {
 }
 
 function renderPokemonInfoPanel(data) {
+  const acquisitionMarkup = renderAcquisitionGuide(data);
   const evolutionMarkup = renderEvolutionLookup(data.evolution, data.reforged);
-  if (!evolutionMarkup) {
+  if (!acquisitionMarkup && !evolutionMarkup) {
     return `<div class="pokemon-info-empty">Aucune evolution ou localisation connue.</div>`;
   }
   return `
+    ${acquisitionMarkup}
     ${evolutionMarkup}
+  `;
+}
+
+function renderAcquisitionGuide(data) {
+  if (!data.guide) return "";
+  if (data.game === "reforged") {
+    const locations = dedupeGuideLabels(data.guide.locations || []);
+    const details = [
+      ...locations.map((text) => ({ kind: "capture", text })),
+      ...(data.guide.evolution ? [{ kind: "evolution", text: data.guide.evolution }] : [])
+    ];
+    return renderAcquisitionMethods(details, "Obtention dans Kanto Reforged");
+  }
+  const methods = data.guide.methods || [];
+  return `${renderAcquisitionMethods(methods, "Obtention dans Pokemon Z v2.12")}${renderPokemonZGuideNotes(methods)}`;
+}
+
+function renderAcquisitionMethods(methods, title) {
+  if (!methods.length) return "";
+  const labels = {
+    capture: "Capture",
+    trade: "Echange PNJ",
+    evolution: "Evolution",
+    breeding: "Reproduction",
+    fossil: "Fossile",
+    gift: "Don",
+    special: "Special"
+  };
+  return `
+    <div class="pokemon-info-section pokemon-acquisition-guide">
+      <div class="pokemon-info-section-heading"><span class="slot-meta">Obtention</span><span>${escapeHtml(title)}</span></div>
+      <div class="pokemon-acquisition-methods">
+        ${methods.map((method) => `
+          <div class="pokemon-acquisition-method ${escapeHtml(method.kind || "special")}">
+            <strong>${labels[method.kind] || "Obtention"}</strong>
+            <span>${escapeHtml(method.text || "")}${method.sourceUrl ? ` <a href="${escapeHtml(method.sourceUrl)}" target="_blank" rel="noopener noreferrer">Source</a>` : ""}</span>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderPokemonZGuideNotes(methods) {
+  if (typeof POKEMON_Z_GLOBAL_NOTES === "undefined") return "";
+  const kinds = new Set(methods.map((method) => method.kind));
+  const combined = normalize(methods.map((method) => method.text).join(" "));
+  const notes = POKEMON_Z_GLOBAL_NOTES.filter((note) => (
+    (note.kind === "trade" && kinds.has("trade"))
+    || (note.kind === "breeding" && kinds.has("breeding"))
+    || (note.kind === "time" && /jour|nuit|day|night/.test(combined))
+  ));
+  if (!notes.length) return "";
+  return `
+    <div class="pokemon-info-section pokemon-guide-notes">
+      <div class="pokemon-info-section-heading"><span class="slot-meta">A savoir</span><span>Regles propres a la v2.12</span></div>
+      ${notes.map((note) => `
+        <p class="pokemon-info-note"><strong>${escapeHtml(note.title)}</strong> — ${escapeHtml(note.text)}
+          ${note.locations?.length ? `<br><span class="slot-meta">${note.locations.map(escapeHtml).join(" · ")}</span>` : ""}
+          ${note.sourceUrl ? ` <a href="${escapeHtml(note.sourceUrl)}" target="_blank" rel="noopener noreferrer">Source</a>` : ""}
+        </p>
+      `).join("")}
+    </div>
   `;
 }
 
@@ -3031,7 +3195,7 @@ function renderSimulation(team) {
       card.innerHTML = renderDesktopDuel(team, enemy, index);
     } else {
       card.classList.add("empty");
-      card.innerHTML = `<button class="mobile-duel-add" type="button" data-add-enemy="${index}"><img class="add-pokeball-icon" src="assets/add-pokeball.svg" alt="" aria-hidden="true"> Ajouter l'adversaire ${index + 1}</button>`;
+      card.innerHTML = `<button class="mobile-duel-add" type="button" data-add-enemy="${index}"><img class="add-pokeball-icon" src="assets/add-pokeball.svg" data-theme-asset="assets/add-pokeball.svg" alt="" aria-hidden="true"> Ajouter l'adversaire ${index + 1}</button>`;
     }
 
     enemyContainer.append(card);
@@ -3387,13 +3551,11 @@ function findEnemyPick(source, query) {
 
 function pokemonListForSource(source) {
   if (source === "saved") return state.customPokemon;
-  if (source === "reforged") return KANTO_REFORGED_POKEMON;
-  if (source === "pokemon-z") return POKEMON_Z_V212;
-  return KANTO_POKEMON;
+  return getActiveCatalog();
 }
 
 function getAllLocalPokemon() {
-  return [...KANTO_POKEMON, ...KANTO_REFORGED_POKEMON, ...POKEMON_Z_V212];
+  return getActiveCatalog();
 }
 
 function versusSourceOption() {
@@ -3778,7 +3940,7 @@ function renderVersusSharedLoader() {
   }
   el.versusSharedLoader.innerHTML = `
     <button class="versus-shared-trigger" type="button" data-open-versus-shared>
-      <span class="versus-shared-icon"><img src="assets/partage.png" alt="" aria-hidden="true" onerror="this.style.display='none'"></span>
+      <span class="versus-shared-icon"><img src="assets/partage.png" data-theme-asset="assets/partage.png" alt="" aria-hidden="true"></span>
       <span>Utiliser une equipe partagee</span>
     </button>
   `;
@@ -3801,7 +3963,7 @@ function renderVersusSharedModal() {
     <div class="team-modal versus-shared-modal-card" role="dialog" aria-modal="true" aria-labelledby="versus-shared-title">
       <div class="pokemon-editor-heading">
         <div class="pokemon-editor-identity">
-          <span class="versus-shared-icon"><img src="assets/partage.png" alt="" aria-hidden="true" onerror="this.style.display='none'"></span>
+          <span class="versus-shared-icon"><img src="assets/partage.png" data-theme-asset="assets/partage.png" alt="" aria-hidden="true"></span>
           <div>
             <p class="eyebrow">Versus</p>
             <h2 id="versus-shared-title">Equipe partagee</h2>
@@ -4122,11 +4284,7 @@ async function loadPokemonEditEvolution(nationalId, pokemon) {
 }
 
 async function resolveEvolutionChoice(node, fallbackPokemon) {
-  const sourcePokemon = isPokemonZPokemon(fallbackPokemon)
-    ? POKEMON_Z_V212
-    : isReforgedGuidePokemon(fallbackPokemon)
-      ? KANTO_REFORGED_POKEMON
-      : KANTO_POKEMON;
+  const sourcePokemon = getActiveCatalog();
   const local = sourcePokemon
     .find((pokemon) => getPokemonNationalId(pokemon) === node.id);
   if (local) return { id: node.id, name: node.name, types: [...local.types] };
@@ -4323,7 +4481,12 @@ async function shareActiveTeam() {
 
 async function getShareLogoFile() {
   try {
-    const response = await fetch("assets/share-pokeball.png");
+    const basePath = "assets/share-pokeball.png";
+    const pokemonZPath = pokemonZAssetPath(basePath);
+    const assetPath = getActiveGameKey() === "pokemon-z" && await themedAssetExists(pokemonZPath)
+      ? pokemonZPath
+      : basePath;
+    const response = await fetch(assetPath);
     if (!response.ok) return null;
     const blob = await response.blob();
     return new File([blob], "kantoteam-partage.png", { type: "image/png" });
@@ -4462,26 +4625,8 @@ function updatePokemonEverywhere(sourceId, updates) {
 }
 
 function syncAttackChecksFromCurrentSelection() {
-  if (el.addMode.value === "official") {
-    const pokemon = KANTO_POKEMON.find((item) => item.id === Number(el.officialSelect.value));
-    el.attackTypes.querySelectorAll("input").forEach((input) => {
-      input.checked = pokemon?.types.includes(input.value) || false;
-    });
-    updateAttackCount();
-    return;
-  }
-
-  if (el.addMode.value === "reforged") {
-    const pokemon = KANTO_REFORGED_POKEMON.find((item) => item.id === el.reforgedSelect.value);
-    el.attackTypes.querySelectorAll("input").forEach((input) => {
-      input.checked = pokemon?.types.includes(input.value) || false;
-    });
-    updateAttackCount();
-    return;
-  }
-
-  if (el.addMode.value === "pokemon-z") {
-    const pokemon = POKEMON_Z_V212.find((item) => item.id === el.pokemonZSelect.value);
+  if (el.addMode.value === "catalog") {
+    const pokemon = getActiveCatalog().find((item) => String(item.id) === String(el.catalogSelect.value));
     el.attackTypes.querySelectorAll("input").forEach((input) => {
       input.checked = pokemon?.types.includes(input.value) || false;
     });
@@ -4515,9 +4660,7 @@ function confirmTeam() {
   }
 
   draftTeam.name = name;
-  draftTeam.preferredSource = TEAM_SOURCE_KEYS.includes(el.addMode.value)
-    ? el.addMode.value
-    : getTeamPreferredSource(draftTeam);
+  draftTeam.preferredSource = getActiveGameKey();
   draftTeam.updatedAt = new Date().toISOString();
   state.teams[state.selectedSlot] = structuredClone(draftTeam);
   state.activeView = "analysis";

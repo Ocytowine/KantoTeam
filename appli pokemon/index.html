@@ -17,14 +17,15 @@
     <meta name="twitter:title" content="KantoTeam">
     <meta name="twitter:description" content="Consulte une equipe Pokemon partagee.">
     <meta name="twitter:image" content="https://kantobuildteam.mimidu33-eb.workers.dev/assets/share-preview.png">
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link id="app-favicon" rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="preload" as="image" href="assets/Titre_Pokemon_Z.png">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body class="intro-active">
     <div class="app-intro" id="app-intro" role="status" aria-label="Ouverture de KantoTeam">
       <div class="intro-mark" aria-hidden="true">
         <span class="intro-ring"></span>
-        <img src="assets/favicon.svg" alt="">
+        <img src="assets/favicon.svg" data-theme-asset="assets/favicon.svg" alt="">
       </div>
       <div class="intro-title">
         <span>Kanto</span><strong>Team</strong>
@@ -34,29 +35,40 @@
 
     <main class="app-shell">
       <header class="app-header">
-        <div>
+        <div class="app-brand">
           <p class="eyebrow">Analyse d'equipes Pokemon - Multi-versions</p>
           <h1 class="app-title">
             <span class="sr-only">KantoTeam</span>
-            <img src="assets/Titre.png" alt="" aria-hidden="true">
+            <img id="app-title-logo" src="assets/Titre.png" alt="" aria-hidden="true">
           </h1>
         </div>
         <div class="header-actions">
           <button class="ghost-button hidden" id="back-to-slots" type="button">Retour aux equipes</button>
           <button class="icon-nav-button" id="open-type-helper" type="button" aria-label="Guide des types">
-            <img src="assets/Logo-aide-type.png" alt="" aria-hidden="true">
+            <img src="assets/Logo-aide-type.png" data-theme-asset="assets/Logo-aide-type.png" alt="" aria-hidden="true">
           </button>
           <button class="icon-nav-button" id="manage-saved-pokemon" type="button" aria-label="Pokemon sauvegardes">
-            <img src="assets/Logo-sauvegarde.png" alt="" aria-hidden="true">
+            <img src="assets/Logo-sauvegarde.png" data-theme-asset="assets/Logo-sauvegarde.png" alt="" aria-hidden="true">
           </button>
           <button class="icon-nav-button" id="open-pokemon-search" type="button" aria-label="Recherche Pokemon">
-            <img src="assets/recherche.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
+            <img src="assets/recherche.png" data-theme-asset="assets/recherche.png" alt="" aria-hidden="true">
           </button>
           <button class="icon-nav-button hidden" id="open-shared-teams" type="button" aria-label="Equipes partagees">
-            <img src="assets/partage.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
+            <img src="assets/partage.png" data-theme-asset="assets/partage.png" alt="" aria-hidden="true">
           </button>
         </div>
       </header>
+
+      <section class="game-version-switch" id="game-version-switch" aria-label="Version active">
+        <span class="game-version-label">Version :</span>
+        <div class="game-version-control">
+          <img class="game-version-logo pokemon-z" src="assets/Titre_Pokemon_Z.png" alt="Pokemon Z">
+          <button class="game-version-toggle" id="game-version-toggle" type="button" role="switch" aria-checked="true" aria-label="Basculer vers Pokemon Z">
+            <span class="game-version-track" aria-hidden="true"><span class="game-version-thumb"></span></span>
+          </button>
+          <img class="game-version-logo reforged" src="assets/Titre.png" alt="Kanto Reforged">
+        </div>
+      </section>
 
       <section class="team-slots" aria-label="Slots d'equipe" id="team-slots"></section>
 
@@ -64,7 +76,7 @@
         <section class="panel saved-manager-panel hidden" id="saved-manager-panel" aria-labelledby="saved-manager-title">
           <div class="panel-heading">
             <div class="panel-title-with-icon">
-              <img class="panel-title-icon" src="assets/Logo-sauvegarde.png" alt="" aria-hidden="true">
+              <img class="panel-title-icon" src="assets/Logo-sauvegarde.png" data-theme-asset="assets/Logo-sauvegarde.png" alt="" aria-hidden="true">
               <div>
               <p class="eyebrow">Bibliotheque</p>
               <h2 id="saved-manager-title">Pokemon sauvegardes</h2>
@@ -78,7 +90,7 @@
         <section class="panel shared-teams-panel hidden" id="shared-teams-panel" aria-labelledby="shared-teams-title">
           <div class="panel-heading">
             <div class="panel-title-with-icon">
-              <img class="panel-title-icon" src="assets/partage.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
+              <img class="panel-title-icon" src="assets/partage.png" data-theme-asset="assets/partage.png" alt="" aria-hidden="true">
               <div>
                 <p class="eyebrow">Partage</p>
                 <h2 id="shared-teams-title">Equipes partagees</h2>
@@ -92,7 +104,7 @@
         <section class="panel pokemon-search-panel hidden" id="pokemon-search-panel" aria-labelledby="pokemon-search-title">
           <div class="panel-heading">
             <div class="panel-title-with-icon">
-              <img class="panel-title-icon" src="assets/recherche.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
+              <img class="panel-title-icon" src="assets/recherche.png" data-theme-asset="assets/recherche.png" alt="" aria-hidden="true">
               <div>
                 <p class="eyebrow">Recherche</p>
                 <h2 id="pokemon-search-title">Recherche Pokemon</h2>
@@ -101,16 +113,6 @@
             <span class="pill" id="pokemon-search-count">0 resultat</span>
           </div>
           <div class="pokemon-search-controls">
-            <label class="field">
-              <span>Liste a consulter</span>
-              <select id="pokemon-search-source">
-                <option value="all">Toutes les sources</option>
-                <option value="official">Kanto</option>
-                <option value="reforged">Kanto Reforged</option>
-                <option value="pokemon-z">Pokemon Z v2.12</option>
-                <option value="saved">Bibliotheque</option>
-              </select>
-            </label>
             <label class="field">
               <span>Nom du Pokemon</span>
               <input id="pokemon-search-query" type="search" placeholder="Tape au moins 3 lettres">
@@ -130,7 +132,7 @@
         <section class="panel type-helper-panel hidden" id="type-helper-panel" aria-labelledby="type-helper-title">
           <div class="panel-heading">
             <div class="panel-title-with-icon">
-              <img class="panel-title-icon" src="assets/Logo-aide-type.png" alt="" aria-hidden="true">
+              <img class="panel-title-icon" src="assets/Logo-aide-type.png" data-theme-asset="assets/Logo-aide-type.png" alt="" aria-hidden="true">
               <div>
                 <p class="eyebrow">Guide des types</p>
                 <h2 id="type-helper-title">Assistant types</h2>
@@ -162,16 +164,6 @@
               </label>
             </div>
             <div class="type-helper-controls">
-              <label class="field">
-                <span>Liste a consulter</span>
-                <select id="helper-source">
-                  <option value="all">Toutes les sources</option>
-                  <option value="official">Kanto</option>
-                  <option value="reforged">Kanto Reforged</option>
-                  <option value="pokemon-z">Pokemon Z v2.12</option>
-                  <option value="saved">Bibliotheque</option>
-                </select>
-              </label>
               <label class="field">
                 <span>Type adverse connu</span>
                 <select id="helper-type-one"></select>
@@ -272,7 +264,7 @@
           </div>
           <div class="share-actions hidden" id="share-actions" aria-label="Partager l'equipe">
             <button class="share-icon-button" id="share-menu-toggle" type="button" aria-label="Options de partage" aria-expanded="false">
-              <img src="assets/share-pokeball.svg" alt="" aria-hidden="true">
+              <img src="assets/share-pokeball.svg" data-theme-asset="assets/share-pokeball.svg" alt="" aria-hidden="true">
             </button>
             <div class="share-menu hidden" id="share-menu">
               <button class="small-button" id="share-team" type="button">Partager</button>
@@ -288,14 +280,6 @@
             <label class="field">
               <span>Nom de l'equipe</span>
               <input id="composition-team-name" type="text" maxlength="32" placeholder="Ex: Ligue Kanto">
-            </label>
-            <label class="field">
-              <span>Liste Pokemon du slot</span>
-              <select id="composition-team-source">
-                <option value="official">Kanto</option>
-                <option value="reforged">Kanto Reforged</option>
-                <option value="pokemon-z">Pokemon Z v2.12</option>
-              </select>
             </label>
           </div>
           <div class="team-list" id="composition-list"></div>
@@ -382,42 +366,20 @@
               <label class="field">
                 <span>Mode d'ajout</span>
                 <select id="add-mode">
-                  <option value="official">Pokemon de Kanto</option>
-                  <option value="reforged">Kanto Reforged</option>
-                  <option value="pokemon-z">Pokemon Z v2.12</option>
+                  <option value="catalog">Catalogue de la version</option>
                   <option value="saved">Ma bibliotheque</option>
                   <option value="custom">Creer un Pokemon</option>
                 </select>
               </label>
 
-              <label class="field mode-field" data-mode="official">
+              <label class="field mode-field" data-mode="catalog">
                 <span>Rechercher</span>
-                <input id="official-search" type="search" placeholder="Pikachu, Dracaufeu...">
+                <input id="catalog-search" type="search" placeholder="Nom du Pokemon...">
               </label>
 
-              <label class="field mode-field" data-mode="official">
+              <label class="field mode-field" data-mode="catalog">
                 <span>Pokemon</span>
-                <select id="official-select"></select>
-              </label>
-
-              <label class="field mode-field hidden" data-mode="reforged">
-                <span>Rechercher dans Kanto Reforged</span>
-                <input id="reforged-search" type="search" placeholder="Nom du Pokemon...">
-              </label>
-
-              <label class="field mode-field hidden" data-mode="reforged">
-                <span>Pokemon Reforged</span>
-                <select id="reforged-select"></select>
-              </label>
-
-              <label class="field mode-field hidden" data-mode="pokemon-z">
-                <span>Rechercher dans Pokemon Z v2.12</span>
-                <input id="pokemon-z-search" type="search" placeholder="Nom du Pokemon...">
-              </label>
-
-              <label class="field mode-field hidden" data-mode="pokemon-z">
-                <span>Pokemon Z v2.12</span>
-                <select id="pokemon-z-select"></select>
+                <select id="catalog-select"></select>
               </label>
 
               <label class="field mode-field hidden" data-mode="saved">
@@ -465,7 +427,7 @@
 
             <div class="form-actions">
               <button class="primary-button add-with-icon" id="add-pokemon" type="button">
-                <img class="add-pokeball-icon" src="assets/add-pokeball.svg" alt="" aria-hidden="true">
+                <img class="add-pokeball-icon" src="assets/add-pokeball.svg" data-theme-asset="assets/add-pokeball.svg" alt="" aria-hidden="true">
                 Ajouter
               </button>
               <button class="primary-button confirm" type="submit">Confirmer l'equipe</button>
@@ -559,6 +521,7 @@
     <script src="src/reforged-data.js"></script>
     <script src="src/reforged-guide-data.js"></script>
     <script src="src/pokemon-z-data.js"></script>
+    <script src="src/pokemon-z-guide-data.js"></script>
     <script src="src/sprite-data.js"></script>
     <script src="src/app.js"></script>
   </body>
