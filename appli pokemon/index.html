@@ -35,7 +35,7 @@
     <main class="app-shell">
       <header class="app-header">
         <div>
-          <p class="eyebrow">Analyse d'equipes Pokemon - Gen 1</p>
+          <p class="eyebrow">Analyse d'equipes Pokemon - Multi-versions</p>
           <h1 class="app-title">
             <span class="sr-only">KantoTeam</span>
             <img src="assets/Titre.png" alt="" aria-hidden="true">
@@ -107,6 +107,7 @@
                 <option value="all">Toutes les sources</option>
                 <option value="official">Kanto</option>
                 <option value="reforged">Kanto Reforged</option>
+                <option value="pokemon-z">Pokemon Z v2.12</option>
                 <option value="saved">Bibliotheque</option>
               </select>
             </label>
@@ -167,6 +168,7 @@
                   <option value="all">Toutes les sources</option>
                   <option value="official">Kanto</option>
                   <option value="reforged">Kanto Reforged</option>
+                  <option value="pokemon-z">Pokemon Z v2.12</option>
                   <option value="saved">Bibliotheque</option>
                 </select>
               </label>
@@ -292,6 +294,7 @@
               <select id="composition-team-source">
                 <option value="official">Kanto</option>
                 <option value="reforged">Kanto Reforged</option>
+                <option value="pokemon-z">Pokemon Z v2.12</option>
               </select>
             </label>
           </div>
@@ -381,6 +384,7 @@
                 <select id="add-mode">
                   <option value="official">Pokemon de Kanto</option>
                   <option value="reforged">Kanto Reforged</option>
+                  <option value="pokemon-z">Pokemon Z v2.12</option>
                   <option value="saved">Ma bibliotheque</option>
                   <option value="custom">Creer un Pokemon</option>
                 </select>
@@ -404,6 +408,16 @@
               <label class="field mode-field hidden" data-mode="reforged">
                 <span>Pokemon Reforged</span>
                 <select id="reforged-select"></select>
+              </label>
+
+              <label class="field mode-field hidden" data-mode="pokemon-z">
+                <span>Rechercher dans Pokemon Z v2.12</span>
+                <input id="pokemon-z-search" type="search" placeholder="Nom du Pokemon...">
+              </label>
+
+              <label class="field mode-field hidden" data-mode="pokemon-z">
+                <span>Pokemon Z v2.12</span>
+                <select id="pokemon-z-select"></select>
               </label>
 
               <label class="field mode-field hidden" data-mode="saved">
@@ -544,6 +558,7 @@
     <script src="src/data.js"></script>
     <script src="src/reforged-data.js"></script>
     <script src="src/reforged-guide-data.js"></script>
+    <script src="src/pokemon-z-data.js"></script>
     <script src="src/sprite-data.js"></script>
     <script src="src/app.js"></script>
   </body>

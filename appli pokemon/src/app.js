@@ -1,4 +1,5 @@
 const STORAGE_KEY = "kantoTeamState:v1";
+const TEAM_SOURCE_KEYS = ["official", "reforged", "pokemon-z"];
 
 const defaultState = {
   selectedSlot: 0,
@@ -138,6 +139,8 @@ const el = {
   officialSelect: document.querySelector("#official-select"),
   reforgedSearch: document.querySelector("#reforged-search"),
   reforgedSelect: document.querySelector("#reforged-select"),
+  pokemonZSearch: document.querySelector("#pokemon-z-search"),
+  pokemonZSelect: document.querySelector("#pokemon-z-select"),
   savedCustomSelect: document.querySelector("#saved-custom-select"),
   customName: document.querySelector("#custom-name"),
   customTypeOne: document.querySelector("#custom-type-one"),
@@ -196,6 +199,7 @@ function init() {
   renderAttackChecks();
   renderOfficialOptions();
   renderReforgedOptions();
+  renderPokemonZOptions();
   renderSavedCustomOptions();
   syncAttackChecksFromCurrentSelection();
   bindEvents();
@@ -318,7 +322,7 @@ function bindEvents() {
   el.usePokemonTypes.addEventListener("click", selectCurrentPokemonTypesAsAttacks);
 
   el.addMode.addEventListener("change", () => {
-    if (el.addMode.value === "official" || el.addMode.value === "reforged") {
+    if (TEAM_SOURCE_KEYS.includes(el.addMode.value)) {
       draftTeam.preferredSource = el.addMode.value;
     }
     updateModeFields();
@@ -338,7 +342,13 @@ function bindEvents() {
     renderPreview();
   });
 
-  [el.officialSelect, el.reforgedSelect, el.savedCustomSelect, el.customName, el.customTypeOne, el.customTypeTwo].forEach((field) => {
+  el.pokemonZSearch.addEventListener("input", () => {
+    renderPokemonZOptions();
+    syncAttackChecksFromCurrentSelection();
+    renderPreview();
+  });
+
+  [el.officialSelect, el.reforgedSelect, el.pokemonZSelect, el.savedCustomSelect, el.customName, el.customTypeOne, el.customTypeTwo].forEach((field) => {
     field.addEventListener("input", renderPreview);
     field.addEventListener("change", renderPreview);
   });
@@ -378,6 +388,13 @@ function bindEvents() {
     event.preventDefault();
     if (state.activeView === "composition") return;
     confirmTeam();
+  });
+
+  el.pokemonZSelect.addEventListener("change", () => {
+    if (el.addMode.value === "pokemon-z") {
+      syncAttackChecksFromCurrentSelection();
+      renderPreview();
+    }
   });
 }
 
@@ -452,7 +469,7 @@ function normalizeSharedTeam(team) {
         : [];
       return {
         instanceId: `shared-${Date.now()}-${index}`,
-        sourceId: item.sourceId || item.officialId || item.reforgedId || `shared-${index}`,
+        sourceId: item.sourceId || item.officialId || item.reforgedId || item.pokemonZId || `shared-${index}`,
         name: String(item.name || `Pokemon ${index + 1}`).slice(0, 32),
         types,
         attacks,
@@ -462,7 +479,8 @@ function normalizeSharedTeam(team) {
             ? item.officialId
             : null,
         officialId: Number.isInteger(item.officialId) ? item.officialId : null,
-        reforgedId: item.reforgedId || null
+        reforgedId: item.reforgedId || null,
+        pokemonZId: item.pokemonZId || null
       };
     })
     .filter(Boolean);
@@ -471,7 +489,7 @@ function normalizeSharedTeam(team) {
   return {
     id: "shared-team",
     name: String(team.name || "Equipe partagee").slice(0, 32),
-    preferredSource: team.preferredSource === "reforged" ? "reforged" : "official",
+    preferredSource: normalizeTeamSource(team.preferredSource),
     shared: true,
     pokemon
   };
@@ -482,7 +500,7 @@ function buildSharePayload(team) {
     v: 2,
     t: "t",
     n: team.name,
-    s: getTeamPreferredSource(team) === "reforged" ? "r" : "o",
+    s: getTeamPreferredSource(team) === "reforged" ? "r" : getTeamPreferredSource(team) === "pokemon-z" ? "z" : "o",
     p: team.pokemon.map(compactSharePokemon)
   };
 }
@@ -502,6 +520,10 @@ function compactSharePokemon(pokemon) {
 
   if (source.reforgedId || String(source.sourceId || source.id || pokemon.sourceId || "").startsWith("reforged-")) {
     return { r: source.reforgedId || source.sourceId || source.id || pokemon.sourceId, a: attacks };
+  }
+
+  if (source.pokemonZId || String(source.sourceId || source.id || pokemon.sourceId || "").startsWith("pokemon-z-")) {
+    return { z: source.pokemonZId || source.sourceId || source.id || pokemon.sourceId, a: attacks };
   }
 
   return {
@@ -525,7 +547,7 @@ function decodeShareTypes(types) {
 function expandCompactSharePayload(payload) {
   return {
     name: payload.n,
-    preferredSource: payload.s === "r" ? "reforged" : "official",
+    preferredSource: payload.s === "r" ? "reforged" : payload.s === "z" ? "pokemon-z" : "official",
     pokemon: Array.isArray(payload.p) ? payload.p.map(expandCompactSharePokemon).filter(Boolean) : []
   };
 }
@@ -552,6 +574,19 @@ function expandCompactSharePokemon(item) {
       types: pokemon.types,
       attacks: decodeShareTypes(item.a),
       reforgedId: pokemon.id,
+      sourceId: pokemon.id
+    };
+  }
+
+  if (item.z) {
+    const pokemon = POKEMON_Z_V212.find((entry) => entry.id === item.z);
+    if (!pokemon) return null;
+    return {
+      name: pokemon.name,
+      types: pokemon.types,
+      attacks: decodeShareTypes(item.a),
+      pokemonZId: pokemon.id,
+      nationalId: pokemon.nationalId || null,
       sourceId: pokemon.id
     };
   }
@@ -620,11 +655,17 @@ function selectSlot(slot, view, preferredSource) {
 }
 
 function getTeamPreferredSource(team) {
-  return team?.preferredSource === "reforged" ? "reforged" : "official";
+  return normalizeTeamSource(team?.preferredSource);
+}
+
+function normalizeTeamSource(source) {
+  return TEAM_SOURCE_KEYS.includes(source) ? source : "official";
 }
 
 function preferredSourceLabel(source) {
-  return source === "reforged" ? "Kanto Reforged" : "Kanto classique";
+  if (source === "reforged") return "Kanto Reforged";
+  if (source === "pokemon-z") return "Pokemon Z v2.12";
+  return "Kanto classique";
 }
 
 function getTeamReservePokemon(team) {
@@ -708,6 +749,7 @@ function renderSlots() {
           <span class="empty-team-versions">
             <button class="small-button" type="button" data-action="composition" data-slot="${index}" data-version="official">Kanto</button>
             <button class="small-button" type="button" data-action="composition" data-slot="${index}" data-version="reforged">Reforged</button>
+            <button class="small-button" type="button" data-action="composition" data-slot="${index}" data-version="pokemon-z">Pokemon Z</button>
           </span>
         </span>
       </div>
@@ -922,6 +964,16 @@ function fillTypeSelect(select, optional) {
   ].join("");
 }
 
+function renderPokemonZOptions() {
+  const selectedId = el.pokemonZSelect.value;
+  const query = normalize(el.pokemonZSearch.value);
+  const matches = POKEMON_Z_V212.filter((pokemon) => normalize(pokemon.name).includes(query));
+  el.pokemonZSelect.innerHTML = matches
+    .map((pokemon) => `<option value="${pokemon.id}">${escapeHtml(pokemon.name)} - ${pokemon.types.join("/")}</option>`)
+    .join("");
+  if (matches.some((pokemon) => pokemon.id === selectedId)) el.pokemonZSelect.value = selectedId;
+}
+
 function enhanceTypeSelects(root = document) {
   root.querySelectorAll("select").forEach((select) => {
     if (select.dataset.typeWheelReady || !isTypeSelect(select)) return;
@@ -1052,11 +1104,11 @@ function renderAttackChecks() {
 function updateModeFields() {
   const preferredSource = getTeamPreferredSource(draftTeam);
   Array.from(el.addMode.options).forEach((option) => {
-    if (!["official", "reforged"].includes(option.value)) return;
+    if (!TEAM_SOURCE_KEYS.includes(option.value)) return;
     option.hidden = option.value !== preferredSource;
     option.disabled = option.value !== preferredSource;
   });
-  if (["official", "reforged"].includes(el.addMode.value) && el.addMode.value !== preferredSource) {
+  if (TEAM_SOURCE_KEYS.includes(el.addMode.value) && el.addMode.value !== preferredSource) {
     el.addMode.value = preferredSource;
   }
   el.modeFields.forEach((field) => {
@@ -1101,6 +1153,11 @@ function getCurrentPokemon(validate) {
 
   if (mode === "reforged") {
     const pokemon = KANTO_REFORGED_POKEMON.find((item) => item.id === el.reforgedSelect.value);
+    return pokemon ? structuredClone(pokemon) : null;
+  }
+
+  if (mode === "pokemon-z") {
+    const pokemon = POKEMON_Z_V212.find((item) => item.id === el.pokemonZSelect.value);
     return pokemon ? structuredClone(pokemon) : null;
   }
 
@@ -1180,7 +1237,9 @@ function addCurrentPokemon() {
           ? Number(item.officialId) === Number(pokemon.id)
           : el.addMode.value === "reforged"
             ? item.reforgedId === pokemon.id
-            : normalize(item.name) === normalize(pokemon.name))
+            : el.addMode.value === "pokemon-z"
+              ? item.pokemonZId === pokemon.id
+              : normalize(item.name) === normalize(pokemon.name))
         && item.types.join("|") === pokemon.types.join("|")
         && (item.attacks || []).join("|") === attacks.join("|")
       ))
@@ -1191,6 +1250,7 @@ function addCurrentPokemon() {
         id: `saved-${Date.now()}-${Math.random().toString(16).slice(2)}`,
         officialId: el.addMode.value === "official" ? pokemon.id : null,
         reforgedId: el.addMode.value === "reforged" ? pokemon.id : null,
+        pokemonZId: el.addMode.value === "pokemon-z" ? pokemon.id : null,
         origin: el.addMode.value,
         custom: el.addMode.value === "custom",
         attacks
@@ -1206,6 +1266,9 @@ function addCurrentPokemon() {
     types: pokemon.types,
     attacks
   };
+  if (Number.isInteger(getPokemonNationalId(savedPokemon || pokemon))) {
+    teamMember.nationalId = getPokemonNationalId(savedPokemon || pokemon);
+  }
   draftTeam.pokemon.push(teamMember);
 
   if (state.activeView === "composition") {
@@ -1630,7 +1693,7 @@ function renderTeamAddAttackChoice(pokemon) {
 }
 
 function renderTeamAddCustom() {
-  const allPokemon = [...KANTO_POKEMON, ...KANTO_REFORGED_POKEMON];
+  const allPokemon = getAllLocalPokemon();
   return `
     <div class="team-add-custom-grid">
       <label class="field">
@@ -1748,7 +1811,7 @@ function findTeamAddPokemon(source, label) {
 }
 
 function getTeamAddSourcePokemon(source) {
-  return source === "reforged" ? KANTO_REFORGED_POKEMON : KANTO_POKEMON;
+  return pokemonListForSource(source);
 }
 
 function needsSpriteSync(pokemonList) {
@@ -1797,7 +1860,7 @@ function addCustomPokemonFromManagedForm() {
 function findSpriteSourcePokemon(name) {
   if (!name) return null;
   const normalized = normalize(name);
-  return [...KANTO_POKEMON, ...KANTO_REFORGED_POKEMON].find((pokemon) => normalize(pokemon.name) === normalized) || null;
+  return getAllLocalPokemon().find((pokemon) => normalize(pokemon.name) === normalized) || null;
 }
 
 function addPokemonToManagedTeam(pokemon, attacks, source, forceSave = false) {
@@ -1843,6 +1906,7 @@ function saveManagedPokemonToLibrary(pokemon, attacks, source) {
     id: `saved-${Date.now()}-${Math.random().toString(16).slice(2)}`,
     officialId: source === "official" ? pokemon.id : pokemon.officialId || null,
     reforgedId: source === "reforged" ? pokemon.id : pokemon.reforgedId || null,
+    pokemonZId: source === "pokemon-z" ? pokemon.id : pokemon.pokemonZId || null,
     origin: source,
     custom: source === "custom" || pokemon.custom === true,
     attacks
@@ -1853,6 +1917,7 @@ function saveManagedPokemonToLibrary(pokemon, attacks, source) {
 
 function savedPokemonOriginLabel(pokemon) {
   if (pokemon.origin === "reforged" || pokemon.reforgedId) return "Reforged";
+  if (pokemon.origin === "pokemon-z" || pokemon.pokemonZId) return "Pokemon Z v2.12";
   if (pokemon.origin === "official" || pokemon.officialId || pokemon.custom === false) return "Kanto";
   return "Personnalise";
 }
@@ -2182,11 +2247,13 @@ function bindTypeHelperGrid(pokemonList) {
 function getHelperPokemonSource(source) {
   const official = KANTO_POKEMON.map((pokemon) => ({ ...pokemon, helperSource: "official" }));
   const reforged = KANTO_REFORGED_POKEMON.map((pokemon) => ({ ...pokemon, helperSource: "reforged" }));
+  const pokemonZ = POKEMON_Z_V212.map((pokemon) => ({ ...pokemon, helperSource: "pokemon-z" }));
   const saved = state.customPokemon.map((pokemon) => ({ ...pokemon, helperSource: "saved" }));
   if (source === "official") return official;
   if (source === "reforged") return reforged;
+  if (source === "pokemon-z") return pokemonZ;
   if (source === "saved") return saved;
-  return [...official, ...reforged, ...saved];
+  return [...official, ...reforged, ...pokemonZ, ...saved];
 }
 
 function filterPokemonByTypes(pokemonList, types) {
@@ -2225,6 +2292,10 @@ function isReforgedGuidePokemon(pokemon) {
   return pokemon.helperSource === "reforged" || pokemon.origin === "reforged" || Boolean(pokemon.reforgedId);
 }
 
+function isPokemonZPokemon(pokemon) {
+  return pokemon.helperSource === "pokemon-z" || pokemon.origin === "pokemon-z" || Boolean(pokemon.pokemonZId);
+}
+
 function getReforgedGuideInfo(name) {
   if (typeof KANTO_REFORGED_GUIDE === "undefined") return null;
   return KANTO_REFORGED_GUIDE[normalize(name)] || null;
@@ -2232,6 +2303,7 @@ function getReforgedGuideInfo(name) {
 
 function helperSourceLabel(source) {
   if (source === "reforged") return "Reforged";
+  if (source === "pokemon-z") return "Pokemon Z v2.12";
   if (source === "saved") return "Sauvegarde";
   return "Kanto";
 }
@@ -2266,6 +2338,7 @@ function saveHelperPokemon(pokemon, source) {
     id: `saved-${Date.now()}-${Math.random().toString(16).slice(2)}`,
     officialId: source === "official" ? pokemon.id : null,
     reforgedId: source === "reforged" ? pokemon.id : null,
+    pokemonZId: source === "pokemon-z" ? pokemon.id : null,
     origin: source,
     custom: source === "saved" ? pokemon.custom : false,
     attacks
@@ -2528,7 +2601,7 @@ function deleteSharedTeam(id) {
 function renderSavedPokemonModernEditPanel(pokemon) {
   const panel = el.savedPokemonEditPanel;
   const attacks = pokemon.attacks || [];
-  const allPokemon = [...KANTO_POKEMON, ...KANTO_REFORGED_POKEMON];
+  const allPokemon = getAllLocalPokemon();
   panel.classList.remove("hidden");
   panel.innerHTML = `
     <div class="panel-heading">
@@ -2831,7 +2904,9 @@ function pokemonDisplayNameByNationalId(id, fallback) {
   const official = KANTO_POKEMON.find((pokemon) => getPokemonNationalId(pokemon) === id);
   if (official) return official.name;
   const reforged = KANTO_REFORGED_POKEMON.find((pokemon) => getPokemonNationalId(pokemon) === id);
-  return reforged?.name || fallback;
+  if (reforged) return reforged.name;
+  const pokemonZ = POKEMON_Z_V212.find((pokemon) => getPokemonNationalId(pokemon) === id);
+  return pokemonZ?.name || fallback;
 }
 
 function formatApiName(value) {
@@ -3313,7 +3388,12 @@ function findEnemyPick(source, query) {
 function pokemonListForSource(source) {
   if (source === "saved") return state.customPokemon;
   if (source === "reforged") return KANTO_REFORGED_POKEMON;
+  if (source === "pokemon-z") return POKEMON_Z_V212;
   return KANTO_POKEMON;
+}
+
+function getAllLocalPokemon() {
+  return [...KANTO_POKEMON, ...KANTO_REFORGED_POKEMON, ...POKEMON_Z_V212];
 }
 
 function versusSourceOption() {
@@ -3857,7 +3937,7 @@ function renderPokemonEditModal() {
     return;
   }
   const { draft, mode } = pokemonEditContext;
-  const allPokemon = [...KANTO_POKEMON, ...KANTO_REFORGED_POKEMON];
+  const allPokemon = getAllLocalPokemon();
   const isEnemy = mode === "enemy";
   el.pokemonEditModal.classList.remove("hidden");
   document.body.classList.add("modal-open");
@@ -4042,7 +4122,12 @@ async function loadPokemonEditEvolution(nationalId, pokemon) {
 }
 
 async function resolveEvolutionChoice(node, fallbackPokemon) {
-  const local = [...KANTO_POKEMON, ...KANTO_REFORGED_POKEMON]
+  const sourcePokemon = isPokemonZPokemon(fallbackPokemon)
+    ? POKEMON_Z_V212
+    : isReforgedGuidePokemon(fallbackPokemon)
+      ? KANTO_REFORGED_POKEMON
+      : KANTO_POKEMON;
+  const local = sourcePokemon
     .find((pokemon) => getPokemonNationalId(pokemon) === node.id);
   if (local) return { id: node.id, name: node.name, types: [...local.types] };
   if (node.id && navigator.onLine) {
@@ -4395,6 +4480,15 @@ function syncAttackChecksFromCurrentSelection() {
     return;
   }
 
+  if (el.addMode.value === "pokemon-z") {
+    const pokemon = POKEMON_Z_V212.find((item) => item.id === el.pokemonZSelect.value);
+    el.attackTypes.querySelectorAll("input").forEach((input) => {
+      input.checked = pokemon?.types.includes(input.value) || false;
+    });
+    updateAttackCount();
+    return;
+  }
+
   if (el.addMode.value !== "saved") {
     clearAttackTypes();
     return;
@@ -4421,7 +4515,7 @@ function confirmTeam() {
   }
 
   draftTeam.name = name;
-  draftTeam.preferredSource = (el.addMode.value === "official" || el.addMode.value === "reforged")
+  draftTeam.preferredSource = TEAM_SOURCE_KEYS.includes(el.addMode.value)
     ? el.addMode.value
     : getTeamPreferredSource(draftTeam);
   draftTeam.updatedAt = new Date().toISOString();
