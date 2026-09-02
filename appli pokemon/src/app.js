@@ -833,11 +833,14 @@ function setImageAsset(image, path) {
 }
 
 async function preloadPokemonZThemeAssets() {
-  const bases = Array.from(document.querySelectorAll("img[data-theme-asset]"))
-    .map((image) => image.dataset.themeAsset)
-    .filter(Boolean);
+  const themedImages = Array.from(document.querySelectorAll("img[data-theme-asset]"));
+  const bases = themedImages.map((image) => image.dataset.themeAsset).filter(Boolean);
+  const fallbacks = themedImages.map((image) => image.dataset.themeFallback).filter(Boolean);
   bases.push("assets/favicon.svg", "assets/share-pokeball.png");
-  await Promise.allSettled([...new Set(bases)].map((base) => themedAssetExists(pokemonZAssetPath(base))));
+  await Promise.allSettled([
+    ...[...new Set(bases)].flatMap((base) => [themedAssetExists(base), themedAssetExists(pokemonZAssetPath(base))]),
+    ...[...new Set(fallbacks)].flatMap((fallback) => [themedAssetExists(fallback), themedAssetExists(pokemonZAssetPath(fallback))])
+  ]);
 }
 
 async function syncThemedAssets(root = document) {
@@ -845,15 +848,14 @@ async function syncThemedAssets(root = document) {
   const images = Array.from(root.querySelectorAll("img[data-theme-asset]"));
   images.forEach((image) => {
     const base = image.dataset.themeAsset;
+    const fallback = image.dataset.themeFallback;
     image.dataset.themeRequest = game;
-    if (game === "reforged") {
-      setImageAsset(image, base);
-      return;
-    }
-    const candidate = pokemonZAssetPath(base);
-    void themedAssetExists(candidate).then((exists) => {
-      if (image.dataset.themeRequest !== "pokemon-z") return;
-      setImageAsset(image, exists ? candidate : base);
+    const candidates = game === "pokemon-z"
+      ? [pokemonZAssetPath(base), base, fallback ? pokemonZAssetPath(fallback) : "", fallback]
+      : [base, fallback];
+    void resolveFirstAvailableAsset(candidates).then((assetPath) => {
+      if (image.dataset.themeRequest !== game || !assetPath) return;
+      setImageAsset(image, assetPath);
     });
   });
 
@@ -865,6 +867,13 @@ async function syncThemedAssets(root = document) {
     const exists = await themedAssetExists(candidate);
     if (getActiveGameKey() === "pokemon-z") el.appFavicon.href = exists ? candidate : faviconBase;
   }
+}
+
+async function resolveFirstAvailableAsset(paths) {
+  for (const path of paths.filter(Boolean)) {
+    if (await themedAssetExists(path)) return path;
+  }
+  return paths.find(Boolean) || "";
 }
 
 function getActiveTeam() {
@@ -879,9 +888,14 @@ function renderSlots() {
     const reserveCount = team ? getTeamReservePokemon(team).length : 0;
     const status = team ? `${team.pokemon.length}/6 Pokemon · ${reserveCount} reserve · ${preferredSourceLabel(getTeamPreferredSource(team))}` : "Slot vide";
     card.innerHTML = team ? `
-      <span class="eyebrow">Slot ${index + 1}</span>
-      <strong>${escapeHtml(team.name || `Equipe ${index + 1}`)}</strong>
-      <span class="slot-meta">${status}</span>
+      <div class="team-slot-heading">
+        <img class="team-slot-logo" src="assets/team-pokeball.png" data-theme-asset="assets/team-pokeball.png" data-theme-fallback="assets/pokeball.png" alt="" aria-hidden="true">
+        <span>
+          <span class="eyebrow">Slot ${index + 1}</span>
+          <strong>${escapeHtml(team.name || `Equipe ${index + 1}`)}</strong>
+          <span class="slot-meta">${status}</span>
+        </span>
+      </div>
       <div class="slot-actions">
         <button class="small-button" type="button" data-action="analysis" data-slot="${index}">Analyser</button>
         <button class="small-button" type="button" data-action="composition" data-slot="${index}">Gestion d'equipe</button>
@@ -890,7 +904,7 @@ function renderSlots() {
       </div>
     ` : `
       <div class="empty-team-slot">
-        <img class="empty-team-logo" src="assets/add-pokeball.svg" data-theme-asset="assets/add-pokeball.svg" alt="" aria-hidden="true">
+        <img class="empty-team-logo" src="assets/add-team-pokeball.png" data-theme-asset="assets/add-team-pokeball.png" alt="" aria-hidden="true">
         <span>
           <span class="eyebrow">Slot ${index + 1}</span>
           <strong>Creer une equipe</strong>
@@ -1506,7 +1520,7 @@ function renderManagedComposition(team) {
       emptySlot.dataset.openTeamAdd = "true";
       emptySlot.dataset.slotIndex = String(index);
       emptySlot.innerHTML = `
-        <img class="add-pokeball-icon large" src="assets/add-pokeball.svg" data-theme-asset="assets/add-pokeball.svg" alt="" aria-hidden="true">
+        <img class="add-pokeball-icon large" src="assets/add-pokeball.png" data-theme-asset="assets/add-pokeball.png" alt="" aria-hidden="true">
         <span>Ajouter un Pokemon</span>
       `;
       el.compositionList.append(emptySlot);
@@ -2840,7 +2854,7 @@ function renderPokemonCard(pokemon, options = {}) {
     : `<div class="pokemon-card-toggle static">${headingContent}</div>`;
 
   return `
-    ${includePokeball ? `<img class="team-pokeball-icon" src="assets/team-pokeball.svg" data-theme-asset="assets/team-pokeball.svg" alt="" aria-hidden="true">` : ""}
+    ${includePokeball ? `<img class="pokemon-member-pokeball-icon" src="assets/pokeball.png" data-theme-asset="assets/pokeball.png" alt="" aria-hidden="true">` : ""}
     <div class="pokemon-card-header">
       <div class="pokemon-card-main">
         ${heading}
@@ -3331,7 +3345,7 @@ function renderSimulation(team) {
       card.innerHTML = renderDesktopDuel(team, enemy, index);
     } else {
       card.classList.add("empty");
-      card.innerHTML = `<button class="mobile-duel-add" type="button" data-add-enemy="${index}"><img class="add-pokeball-icon" src="assets/add-pokeball.svg" data-theme-asset="assets/add-pokeball.svg" alt="" aria-hidden="true"> Ajouter l'adversaire ${index + 1}</button>`;
+      card.innerHTML = `<button class="mobile-duel-add" type="button" data-add-enemy="${index}"><img class="add-pokeball-icon" src="assets/add-pokeball.png" data-theme-asset="assets/add-pokeball.png" alt="" aria-hidden="true"> Ajouter l'adversaire ${index + 1}</button>`;
     }
 
     enemyContainer.append(card);

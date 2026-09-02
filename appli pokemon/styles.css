@@ -575,6 +575,25 @@ h3 {
   color: var(--text);
 }
 
+.team-slot-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.team-slot-heading > span {
+  min-width: 0;
+}
+
+.team-slot-logo {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.28));
+}
+
 .slot-card.empty {
   padding: 0;
   overflow: hidden;
@@ -3205,7 +3224,7 @@ button:focus-visible {
   }
 }
 
-.team-pokeball-icon {
+.pokemon-member-pokeball-icon {
   position: absolute;
   z-index: 4;
   top: -17px;
@@ -3215,7 +3234,7 @@ button:focus-visible {
   filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.38));
 }
 
-.pokemon-card:has(.team-pokeball-icon) {
+.pokemon-card:has(.pokemon-member-pokeball-icon) {
   margin-top: 8px;
   margin-left: 8px;
   overflow: visible;

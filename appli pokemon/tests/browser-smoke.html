@@ -38,6 +38,11 @@
 
     const doc = frame.contentDocument;
     assert(doc.querySelectorAll("#team-slots .slot-card").length === 3, "Reforged doit afficher 3 slots");
+    const emptyTeamPokeball = doc.querySelector("#team-slots img[data-theme-asset='assets/add-team-pokeball.png']");
+    assert(emptyTeamPokeball, "L'icone add-team-pokeball n'est pas affectee au slot libre");
+    const filledTeamPokeball = doc.querySelector("#team-slots img[data-theme-asset='assets/team-pokeball.png']");
+    assert(filledTeamPokeball, "L'icone team-pokeball n'est pas affectee a l'equipe existante");
+    assert(filledTeamPokeball.dataset.themeFallback === "assets/pokeball.png", "Le repli de team-pokeball est absent");
     assert(doc.querySelector("#team-slots").textContent.includes("Equipe Reforged"), "Equipe Reforged absente");
     const reforgedSlotButton = doc.querySelector('#team-slots [data-action="analysis"]');
     const reforgedButtonColor = win.getComputedStyle(reforgedSlotButton).color.match(/[\d.]+/g)?.slice(0, 3).map(Number) || [];
@@ -48,6 +53,10 @@
     assert(doc.querySelector("#team-slots").textContent.includes("Equipe Z"), "Equipe Z absente");
     assert(!doc.querySelector("#team-slots").textContent.includes("Equipe Reforged"), "Melange entre les banques");
     assert(doc.body.dataset.gameTheme === "pokemon-z", "Palette Pokemon Z non activee");
+    const zEmptyTeamPokeball = doc.querySelector("#team-slots img[data-theme-asset='assets/add-team-pokeball.png']");
+    assert(zEmptyTeamPokeball?.getAttribute("src") === "assets/add-team-pokeball_z.png", "La variante Z de add-team-pokeball n'est pas chargee");
+    const zFilledTeamPokeball = doc.querySelector("#team-slots img[data-theme-asset='assets/team-pokeball.png']");
+    assert(zFilledTeamPokeball?.getAttribute("src").endsWith("_z.png"), "La variante Z de l'icone d'equipe n'est pas chargee");
     assert(doc.querySelector("#app-title-logo").getAttribute("src") === "assets/Titre_Pokemon_Z.png", "Logo Pokemon Z non charge");
     assert(doc.querySelector("#catalog-select").options.length === 1018, "Catalogue Pokemon Z incomplet");
     const stored = JSON.parse(win.localStorage.getItem("kantoTeamState:v2"));

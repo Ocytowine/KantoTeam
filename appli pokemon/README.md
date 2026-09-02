@@ -55,10 +55,15 @@ Les logos et icones marques comme assets de theme basculent automatiquement vers
 
 - `Logo-aide-type.png` devient `Logo-aide-type_z.png` ;
 - `partage.png` devient `partage_z.png` ;
-- `add-pokeball.svg` devient `add-pokeball_z.svg` ;
+- `add-pokeball.png` devient `add-pokeball_z.png` ;
+- `team-pokeball.png` devient `team-pokeball_z.png` ;
+- `add-team-pokeball.png` devient `add-team-pokeball_z.png` ;
+- `pokeball.png` devient `pokeball_z.png` ;
 - `share-pokeball.png` devient `share-pokeball_z.png` pour le fichier joint lors d'un partage.
 
-Si une variante n'existe pas encore, l'application conserve automatiquement l'image Reforged. Cette convention fonctionne pour les PNG et les SVG. Un SVG charge avec une balise `img` ne permet pas de recolorer uniquement ses zones noires en CSS : la variante `_z.svg` est donc la methode prevue pour ces changements.
+Si une variante n'existe pas encore, l'application conserve automatiquement l'image Reforged. Les roles sont separes : `pokeball` identifie un Pokemon de l'equipe, `add-pokeball` l'ajout d'un Pokemon, `team-pokeball` une equipe existante et `add-team-pokeball` un slot d'equipe libre. Si `team-pokeball` n'est pas fourni, `pokeball` sert temporairement de repli.
+
+Pour ces icones affichees entre 24 et 52 pixels, un export PNG carre de 256 x 256 pixels est recommande. Les sources 1254 x 1254 sont inutilement lourdes pour l'interface web.
 
 ## Test navigateur
 
