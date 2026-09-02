@@ -53,6 +53,7 @@
     assert(doc.querySelector("#team-slots").textContent.includes("Equipe Z"), "Equipe Z absente");
     assert(!doc.querySelector("#team-slots").textContent.includes("Equipe Reforged"), "Melange entre les banques");
     assert(doc.body.dataset.gameTheme === "pokemon-z", "Palette Pokemon Z non activee");
+    assert(doc.querySelector("#open-shared-teams img")?.getAttribute("src") === "assets/share-pokeball_z.png", "Logo share-pokeball Z absent du partage");
     const zEmptyTeamPokeball = doc.querySelector("#team-slots img[data-theme-asset='assets/add-team-pokeball.png']");
     assert(zEmptyTeamPokeball?.getAttribute("src") === "assets/add-team-pokeball_z.png", "La variante Z de add-team-pokeball n'est pas chargee");
     const zFilledTeamPokeball = doc.querySelector("#team-slots img[data-theme-asset='assets/team-pokeball.png']");

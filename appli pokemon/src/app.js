@@ -2602,7 +2602,7 @@ function renderSharedTeamsManager() {
     card.innerHTML = `
       <div class="shared-team-header">
         <div class="shared-team-title">
-          <img src="assets/partage.png" data-theme-asset="assets/partage.png" alt="" aria-hidden="true">
+          <img src="assets/share-pokeball.png" data-theme-asset="assets/share-pokeball.png" alt="" aria-hidden="true">
           <div>
           <p class="eyebrow">Liste ${index + 1}</p>
           <h3>${escapeHtml(team.savedName || team.name)}</h3>
@@ -4090,7 +4090,7 @@ function renderVersusSharedLoader() {
   }
   el.versusSharedLoader.innerHTML = `
     <button class="versus-shared-trigger" type="button" data-open-versus-shared>
-      <span class="versus-shared-icon"><img src="assets/partage.png" data-theme-asset="assets/partage.png" alt="" aria-hidden="true"></span>
+      <span class="versus-shared-icon"><img src="assets/share-pokeball.png" data-theme-asset="assets/share-pokeball.png" alt="" aria-hidden="true"></span>
       <span>Utiliser une equipe partagee</span>
     </button>
   `;
@@ -4113,7 +4113,7 @@ function renderVersusSharedModal() {
     <div class="team-modal versus-shared-modal-card" role="dialog" aria-modal="true" aria-labelledby="versus-shared-title">
       <div class="pokemon-editor-heading">
         <div class="pokemon-editor-identity">
-          <span class="versus-shared-icon"><img src="assets/partage.png" data-theme-asset="assets/partage.png" alt="" aria-hidden="true"></span>
+          <span class="versus-shared-icon"><img src="assets/share-pokeball.png" data-theme-asset="assets/share-pokeball.png" alt="" aria-hidden="true"></span>
           <div>
             <p class="eyebrow">Versus</p>
             <h2 id="versus-shared-title">Equipe partagee</h2>

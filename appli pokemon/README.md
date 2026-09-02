@@ -54,12 +54,11 @@ node scripts/build-pokemon-z-guide.js
 Les logos et icones marques comme assets de theme basculent automatiquement vers un fichier portant le suffixe `_z` lorsque Pokemon Z est actif. Le nom, l'extension et la casse doivent rester identiques :
 
 - `Logo-aide-type.png` devient `Logo-aide-type_z.png` ;
-- `partage.png` devient `partage_z.png` ;
 - `add-pokeball.png` devient `add-pokeball_z.png` ;
 - `team-pokeball.png` devient `team-pokeball_z.png` ;
 - `add-team-pokeball.png` devient `add-team-pokeball_z.png` ;
 - `pokeball.png` devient `pokeball_z.png` ;
-- `share-pokeball.png` devient `share-pokeball_z.png` pour le fichier joint lors d'un partage.
+- `share-pokeball.png` devient `share-pokeball_z.png` dans toute l'interface de partage et pour le fichier joint.
 
 Si une variante n'existe pas encore, l'application conserve automatiquement l'image Reforged. Les roles sont separes : `pokeball` identifie un Pokemon de l'equipe, `add-pokeball` l'ajout d'un Pokemon, `team-pokeball` une equipe existante et `add-team-pokeball` un slot d'equipe libre. Si `team-pokeball` n'est pas fourni, `pokeball` sert temporairement de repli.
 
