@@ -836,7 +836,7 @@ async function preloadPokemonZThemeAssets() {
   const themedImages = Array.from(document.querySelectorAll("img[data-theme-asset]"));
   const bases = themedImages.map((image) => image.dataset.themeAsset).filter(Boolean);
   const fallbacks = themedImages.map((image) => image.dataset.themeFallback).filter(Boolean);
-  bases.push("assets/favicon.svg", "assets/share-pokeball.png");
+  bases.push("assets/favicon.png", "assets/share-pokeball.png");
   await Promise.allSettled([
     ...[...new Set(bases)].flatMap((base) => [themedAssetExists(base), themedAssetExists(pokemonZAssetPath(base))]),
     ...[...new Set(fallbacks)].flatMap((fallback) => [themedAssetExists(fallback), themedAssetExists(pokemonZAssetPath(fallback))])
@@ -859,7 +859,7 @@ async function syncThemedAssets(root = document) {
     });
   });
 
-  const faviconBase = "assets/favicon.svg";
+  const faviconBase = "assets/favicon.png";
   if (game === "reforged") {
     if (el.appFavicon.getAttribute("href") !== faviconBase) el.appFavicon.href = faviconBase;
   } else {
