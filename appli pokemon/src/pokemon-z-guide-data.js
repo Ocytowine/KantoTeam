@@ -4,7 +4,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Échanger Gogoat a Café Bohemie (Óleo City)",
+        "text": "Échanger Gogoat à Café Bohemie (Óleo City)",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -37,7 +37,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Échanger Rapidash a Café Bohemie (Óleo City)",
+        "text": "Échanger Rapidash à Café Bohemie (Óleo City)",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -70,7 +70,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Échanger Clawitzer a Café Bohemie (Óleo City)",
+        "text": "Échanger Clawitzer à Café Bohemie (Óleo City)",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -279,7 +279,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Pikachu Z avec Thunder Stone",
+        "text": "Évolue depuis Pikachu Z avec Pierre Foudre",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -334,7 +334,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Nidorina avec Moon Stone",
+        "text": "Évolue depuis Nidorina avec Pierre Lune",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -367,7 +367,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Nidorino avec Moon Stone",
+        "text": "Évolue depuis Nidorino avec Pierre Lune",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -389,7 +389,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Clefairy avec Moon Stone",
+        "text": "Évolue depuis Clefairy avec Pierre Lune",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -411,7 +411,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Vulpix avec Fire Stone",
+        "text": "Évolue depuis Vulpix avec Pierre Feu",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -433,7 +433,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Capturable : Pokémon Villa ou Évolue depuis Jigglypuff avec Moon Stone",
+        "text": "Capturable : Pokémon Villa ou Évolue depuis Jigglypuff avec Pierre Lune",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -488,7 +488,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Gloom avec Leaf Stone",
+        "text": "Évolue depuis Gloom avec Pierre Plante",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -642,7 +642,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Growlithe avec Fire Stone",
+        "text": "Évolue depuis Growlithe avec Pierre Feu",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -675,7 +675,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Poliwhirl avec Water Stone",
+        "text": "Évolue depuis Poliwhirl avec Pierre Eau",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -774,7 +774,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Weepinbell avec Leaf Stone",
+        "text": "Évolue depuis Weepinbell avec Pierre Plante",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -895,7 +895,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Magnemite avec Thunder Stone",
+        "text": "Évolue depuis Magnemite avec Pierre Foudre",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -994,7 +994,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Shellder avec Water Stone",
+        "text": "Évolue depuis Shellder avec Pierre Eau",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -1126,7 +1126,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Capturable : Montesanto Island ou Évolue depuis Exeggcute avec Leaf Stone",
+        "text": "Capturable : Montesanto Island ou Évolue depuis Exeggcute avec Pierre Plante",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -1456,7 +1456,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "special",
-        "text": "Pokémon Villa ou obtained après returning the scarf to Isidora",
+        "text": "Pokémon Villa ou Obtenu après avoir rendu the scarf to Isidora",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -1467,7 +1467,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Eevee avec Water Stone",
+        "text": "Évolue depuis Eevee avec Pierre Eau",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -1478,7 +1478,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Eevee avec Thunder Stone",
+        "text": "Évolue depuis Eevee avec Pierre Foudre",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -1489,7 +1489,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Eevee avec Fire Stone",
+        "text": "Évolue depuis Eevee avec Pierre Feu",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -1566,7 +1566,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Route 25 ou Évolue depuis Munchlax by friendship",
+        "text": "Route 25 ou Évolue depuis Munchlax avec un bonheur élevé",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -1679,7 +1679,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Échanger Bellossom a Lechonk Restaurant (Bodegón Town)",
+        "text": "Échanger Bellossom à Lechonk Restaurant (Bodegón Town)",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -1712,7 +1712,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Échanger Rapidash a Lechonk Restaurant (Bodegón Town)",
+        "text": "Échanger Rapidash à Lechonk Restaurant (Bodegón Town)",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -1745,7 +1745,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Échanger Ludicolo a Lechonk Restaurant (Bodegón Town)",
+        "text": "Échanger Ludicolo à Lechonk Restaurant (Bodegón Town)",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -1789,7 +1789,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 21",
+        "text": "Capturable sur Route 21",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -1800,7 +1800,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 3",
+        "text": "Capturable sur Route 3",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -1822,7 +1822,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Grisalla City",
+        "text": "Capturable dans Grisalla City",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -1844,7 +1844,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Southern Catacombs",
+        "text": "Capturable dans Southern Catacombs",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -1855,7 +1855,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Catchable dans Northern Catacombs ou Évolue depuis Spinarak au niveau 21",
+        "text": "Capturable dans Northern Catacombs ou Évolue depuis Spinarak au niveau 21",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -1866,7 +1866,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Catchable dans Bastion Vanitas ou Évolue depuis Golbat by friendship",
+        "text": "Capturable dans Bastion Vanitas ou Évolue depuis Golbat avec un bonheur élevé",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -1877,7 +1877,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Glittering Cave ou Acrylic Town",
+        "text": "Capturable dans Glittering Cave ou Acrylic Town",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -1932,7 +1932,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable behind the mercury-key sealed door dans Lechonk Restaurant",
+        "text": "Capturable behind the mercury-key sealed door dans Lechonk Restaurant",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -1943,7 +1943,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Togepi by happiness",
+        "text": "Évolue depuis Togepi avec un bonheur élevé",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -1954,7 +1954,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable a Sanctuary of Kings",
+        "text": "Capturable à Sanctuary of Kings",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -1976,7 +1976,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 1",
+        "text": "Capturable sur Route 1",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2009,7 +2009,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Gloom with Sun Stone",
+        "text": "Évolue depuis Gloom avec Pierre Soleil",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2020,7 +2020,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Vinyl Town",
+        "text": "Capturable dans Vinyl Town",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2031,7 +2031,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Catchable dans Earthbound Grotto ou Évolue depuis Marill au niveau 18",
+        "text": "Capturable dans Earthbound Grotto ou Évolue depuis Marill au niveau 18",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2042,7 +2042,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Wandering Forest",
+        "text": "Capturable dans Wandering Forest",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2053,7 +2053,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Catchable dans Romantis City ou evolve Poliwhirl by leveling up once with King’s Rock pendant the day",
+        "text": "Capturable dans Romantis City ou Faire évoluer Poliwhirl en gagnant un niveau avec Roche Royale pendant la journée",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2064,7 +2064,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Vinyl Town ou Novarte City",
+        "text": "Capturable dans Vinyl Town ou Novarte City",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2097,7 +2097,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Profane Town",
+        "text": "Capturable dans Profane Town",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2108,7 +2108,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 5",
+        "text": "Capturable sur Route 5",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2119,7 +2119,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Catchable sur Route 5 ou Évolue depuis Sunkern with Sun Stone",
+        "text": "Capturable sur Route 5 ou Évolue depuis Sunkern avec Pierre Soleil",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2130,7 +2130,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 9",
+        "text": "Capturable sur Route 9",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2141,7 +2141,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 3, Murky Cave, ou Grisalla Cave",
+        "text": "Capturable sur Route 3, Murky Cave, ou Grisalla Cave",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2152,7 +2152,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Catchable dans Murky Cave ou Évolue depuis Wooper au niveau 20",
+        "text": "Capturable dans Murky Cave ou Évolue depuis Wooper au niveau 20",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2163,7 +2163,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Eevee by happiness pendant the day",
+        "text": "Évolue depuis Eevee avec un bonheur élevé pendant la journée",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2174,7 +2174,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Eevee by happiness a night",
+        "text": "Évolue depuis Eevee avec un bonheur élevé de nuit",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2185,7 +2185,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Hillside Forest, Old Vanitas, ou Route 6",
+        "text": "Capturable dans Hillside Forest, Old Vanitas, ou Route 6",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2196,7 +2196,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Catchable dans Azure Bay ou Évolue depuis Slowpoke with Water Stone",
+        "text": "Capturable dans Azure Bay ou Évolue depuis Slowpoke avec Pierre Eau",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2207,7 +2207,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Northern Catacombs",
+        "text": "Capturable dans Northern Catacombs",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2218,7 +2218,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Western Catacombs",
+        "text": "Capturable dans Western Catacombs",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2229,7 +2229,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Earthbound Grotto",
+        "text": "Capturable dans Earthbound Grotto",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2240,7 +2240,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 6",
+        "text": "Capturable sur Route 6",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2251,7 +2251,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 4",
+        "text": "Capturable sur Route 4",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2273,7 +2273,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Grisalla City ou Fractal City",
+        "text": "Capturable dans Grisalla City ou Fractal City",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2284,7 +2284,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 7 Part 1, Route 10, ou Route 20",
+        "text": "Capturable sur Route 7 Part 1, Route 10, ou Route 20",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2295,7 +2295,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Catchable dans Fiery Chasm ou Évolue depuis Onix au niveau 42",
+        "text": "Capturable dans Fiery Chasm ou Évolue depuis Onix au niveau 42",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2306,7 +2306,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Grisalla City",
+        "text": "Capturable dans Grisalla City",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2328,7 +2328,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 13 et Route 14",
+        "text": "Capturable sur Route 13 et Route 14",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2350,7 +2350,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Resolution Cave",
+        "text": "Capturable dans Resolution Cave",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2361,7 +2361,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Catchable sur Route 15 ou Échanger Scyther dans South Luminalia",
+        "text": "Capturable sur Route 15 ou Échanger Scyther dans South Luminalia",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2372,7 +2372,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 6",
+        "text": "Capturable sur Route 6",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2383,7 +2383,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 6",
+        "text": "Capturable sur Route 6",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2394,7 +2394,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Catchable sur Route 16 ou Évolue depuis Teddiursa au niveau 30",
+        "text": "Capturable sur Route 16 ou Évolue depuis Teddiursa au niveau 30",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2416,7 +2416,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Fiery Chasm",
+        "text": "Capturable dans Fiery Chasm",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2427,7 +2427,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Kalos Pyrenees",
+        "text": "Capturable dans Kalos Pyrenees",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2438,7 +2438,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Catchable dans Kalos Pyrenees ou Évolue depuis Swinub au niveau 33",
+        "text": "Capturable dans Kalos Pyrenees ou Évolue depuis Swinub au niveau 33",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2449,7 +2449,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Montesanto Island (Cave)",
+        "text": "Capturable dans Montesanto Island (Cave)",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2460,7 +2460,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Certijo Island",
+        "text": "Capturable dans Certijo Island",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2471,7 +2471,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Catchable dans Earthbound Grotto ou Évolue depuis Remoraid au niveau 25",
+        "text": "Capturable dans Earthbound Grotto ou Évolue depuis Remoraid au niveau 25",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2482,7 +2482,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Kalos Pyrenees ou Frozen Grotto",
+        "text": "Capturable dans Kalos Pyrenees ou Frozen Grotto",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2493,7 +2493,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 11",
+        "text": "Capturable sur Route 11",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2504,7 +2504,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Fractal City",
+        "text": "Capturable dans Fractal City",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2515,7 +2515,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 3",
+        "text": "Capturable sur Route 3",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2548,7 +2548,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Storm Hill",
+        "text": "Capturable sur Storm Hill",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2581,7 +2581,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable a Sanctuary of Kings",
+        "text": "Capturable à Sanctuary of Kings",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2636,7 +2636,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Novarte City",
+        "text": "Capturable dans Novarte City",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2647,7 +2647,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Burned Workshop",
+        "text": "Capturable dans Burned Workshop",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2658,7 +2658,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Prosperity Sanctuary",
+        "text": "Capturable dans Prosperity Sanctuary",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2669,7 +2669,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Chansey by friendship",
+        "text": "Évolue depuis Chansey avec un bonheur élevé",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2680,7 +2680,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Glittering Cave (Surf required)",
+        "text": "Capturable dans Glittering Cave (Surf required)",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2698,7 +2698,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Grisalla Cave (Surf required)",
+        "text": "Capturable dans Grisalla Cave (Surf required)",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2716,7 +2716,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Murky Cave (Surf required)",
+        "text": "Capturable dans Murky Cave (Surf required)",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2734,7 +2734,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Resolution Cave (Lower floor)",
+        "text": "Capturable dans Resolution Cave (Lower floor)",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2745,7 +2745,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Catchable dans Resolution Cave ou Évolue depuis Larvitar au niveau 30",
+        "text": "Capturable dans Resolution Cave ou Évolue depuis Larvitar au niveau 30",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2821,7 +2821,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Échanger Whimsicott a Lechonk Restaurant (Bodegón Town)",
+        "text": "Échanger Whimsicott à Lechonk Restaurant (Bodegón Town)",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -2832,7 +2832,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Treecko au niveau 18",
+        "text": "Faire évoluer Treecko au niveau 18",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -2843,7 +2843,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Grovyle au niveau 45",
+        "text": "Faire évoluer Grovyle au niveau 45",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -2854,7 +2854,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Échanger Arcanine a Lechonk Restaurant (Bodegón Town)",
+        "text": "Échanger Arcanine à Lechonk Restaurant (Bodegón Town)",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -2865,7 +2865,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Torchic au niveau 18",
+        "text": "Faire évoluer Torchic au niveau 18",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -2876,7 +2876,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Combusken au niveau 45",
+        "text": "Faire évoluer Combusken au niveau 45",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -2887,7 +2887,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Échanger Gastrodon a Lechonk Restaurant (Bodegón Town)",
+        "text": "Échanger Gastrodon à Lechonk Restaurant (Bodegón Town)",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -2898,7 +2898,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Mudkip au niveau 18",
+        "text": "Faire évoluer Mudkip au niveau 18",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -2909,7 +2909,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Marshtomp au niveau 45",
+        "text": "Faire évoluer Marshtomp au niveau 45",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -2931,7 +2931,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Route 15 ou evolve Poochyena au niveau 18",
+        "text": "Route 15 ou Faire évoluer Poochyena au niveau 18",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -2953,7 +2953,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Old Vanitas ou evolve Zigzagoon au niveau 20",
+        "text": "Old Vanitas ou Faire évoluer Zigzagoon au niveau 20",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -2975,7 +2975,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Wurmple au niveau 7",
+        "text": "Faire évoluer Wurmple au niveau 7",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -2997,7 +2997,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Wurmple au niveau 7",
+        "text": "Faire évoluer Wurmple au niveau 7",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3030,7 +3030,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Route 5 ou evolve Lotad au niveau 14",
+        "text": "Route 5 ou Faire évoluer Lotad au niveau 14",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3041,7 +3041,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Route 21 ou evolve Lombre with Water Stone",
+        "text": "Route 21 ou Faire évoluer Lombre avec Pierre Eau",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3074,7 +3074,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Nuzleaf with Leaf Stone",
+        "text": "Faire évoluer Nuzleaf avec Pierre Plante",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3096,7 +3096,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Taillow au niveau 22",
+        "text": "Faire évoluer Taillow au niveau 22",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3118,7 +3118,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Wingull au niveau 25",
+        "text": "Faire évoluer Wingull au niveau 25",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3140,7 +3140,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Route 8 ou evolve Ralts au niveau 20",
+        "text": "Route 8 ou Faire évoluer Ralts au niveau 20",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3151,7 +3151,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Kirlia au niveau 30",
+        "text": "Faire évoluer Kirlia au niveau 30",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3173,7 +3173,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Old Vanitas ou evolve Surskit au niveau 25",
+        "text": "Old Vanitas ou Faire évoluer Surskit au niveau 25",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3195,7 +3195,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Shroomish au niveau 23",
+        "text": "Faire évoluer Shroomish au niveau 23",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3228,7 +3228,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Vigoroth au niveau 36",
+        "text": "Faire évoluer Vigoroth au niveau 36",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3250,7 +3250,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Nincada au niveau 20",
+        "text": "Faire évoluer Nincada au niveau 20",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3261,7 +3261,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Empty party slot + Poké Ball when Nincada evolves",
+        "text": "Une place libre dans l'équipe + Poké Ball lorsque Nincada évolue",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3283,7 +3283,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Whismur au niveau 18",
+        "text": "Faire évoluer Whismur au niveau 18",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3294,7 +3294,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Route 25 ou evolve Loudred au niveau 40",
+        "text": "Route 25 ou Faire évoluer Loudred au niveau 40",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3360,7 +3360,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Skitty with Moon Stone",
+        "text": "Faire évoluer Skitty avec Pierre Lune",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3415,7 +3415,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "East Kalos Battle ou evolve Lairon au niveau 42",
+        "text": "East Kalos Battle ou Faire évoluer Lairon au niveau 42",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3437,7 +3437,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Batik City ou evolve Meditite au niveau 37",
+        "text": "Batik City ou Faire évoluer Meditite au niveau 37",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3459,7 +3459,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Electrike au niveau 26",
+        "text": "Faire évoluer Electrike au niveau 26",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3514,7 +3514,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Route 8 ou evolve Budew au niveau 20",
+        "text": "Route 8 ou Faire évoluer Budew au niveau 20",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3536,7 +3536,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Route 13 ou evolve Gulpin au niveau 28",
+        "text": "Route 13 ou Faire évoluer Gulpin au niveau 28",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3580,7 +3580,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Wailmer (Z) au niveau 40",
+        "text": "Faire évoluer Wailmer (Z) au niveau 40",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3602,7 +3602,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Route 10 ou evolve Numel au niveau 33",
+        "text": "Route 10 ou Faire évoluer Numel au niveau 33",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3635,7 +3635,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Route 18 ou evolve Spoink au niveau 32",
+        "text": "Route 18 ou Faire évoluer Spoink au niveau 32",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3679,7 +3679,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Vibrava (Z) au niveau 45",
+        "text": "Faire évoluer Vibrava (Z) au niveau 45",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3723,7 +3723,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Swablu au niveau 35",
+        "text": "Faire évoluer Swablu au niveau 35",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3789,7 +3789,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Route 12 ou evolve Barboach au niveau 30",
+        "text": "Route 12 ou Faire évoluer Barboach au niveau 30",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3811,7 +3811,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Bloodshore Coast ou evolve Corphish au niveau 30",
+        "text": "Bloodshore Coast ou Faire évoluer Corphish au niveau 30",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3855,7 +3855,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Lileep au niveau 40",
+        "text": "Faire évoluer Lileep au niveau 40",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3877,7 +3877,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Anorith au niveau 40",
+        "text": "Faire évoluer Anorith au niveau 40",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3899,7 +3899,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Yantra City ou evolve Feebas au niveau 37",
+        "text": "Yantra City ou Faire évoluer Feebas au niveau 37",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3943,7 +3943,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Pokémon Village ou evolve Shuppet au niveau 32",
+        "text": "Pokémon Village ou Faire évoluer Shuppet au niveau 32",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -4031,7 +4031,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Kalos Pyrenees ou evolve Snorunt au niveau 42",
+        "text": "Kalos Pyrenees ou Faire évoluer Snorunt au niveau 42",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -4064,7 +4064,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Route 18 ou evolve Sealeo au niveau 44",
+        "text": "Route 18 ou Faire évoluer Sealeo au niveau 44",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -4086,7 +4086,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Seafloor ou evolve Clamperl with Dusk Stone",
+        "text": "Seafloor ou Faire évoluer Clamperl avec Pierre Nuit",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -4097,7 +4097,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Seafloor ou evolve Clamperl with Water Stone",
+        "text": "Seafloor ou Faire évoluer Clamperl avec Pierre Eau",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -4141,7 +4141,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Bagon au niveau 30",
+        "text": "Faire évoluer Bagon au niveau 30",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -4152,7 +4152,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Shelgon au niveau 50",
+        "text": "Faire évoluer Shelgon au niveau 50",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -4174,7 +4174,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Reflection Cave ou evolve Beldum au niveau 20",
+        "text": "Reflection Cave ou Faire évoluer Beldum au niveau 20",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -4185,7 +4185,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Reflection Cave ou evolve Metang au niveau 45",
+        "text": "Reflection Cave ou Faire évoluer Metang au niveau 45",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -4376,7 +4376,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Échanger Makuhita a South Luminalia Café",
+        "text": "Échanger Makuhita à South Luminalia Café",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4387,7 +4387,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Turtwig au niveau 18",
+        "text": "Faire évoluer Turtwig au niveau 18",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4398,7 +4398,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Grotle au niveau 45",
+        "text": "Faire évoluer Grotle au niveau 45",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4409,7 +4409,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Échanger Misdreavus a South Luminalia Café",
+        "text": "Échanger Misdreavus à South Luminalia Café",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4420,7 +4420,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Chimchar au niveau 18",
+        "text": "Faire évoluer Chimchar au niveau 18",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4431,7 +4431,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Monferno au niveau 45",
+        "text": "Faire évoluer Monferno au niveau 45",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4442,7 +4442,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Échanger Clamperl a South Luminalia Café",
+        "text": "Échanger Clamperl à South Luminalia Café",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4453,7 +4453,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Piplup au niveau 18",
+        "text": "Faire évoluer Piplup au niveau 18",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4464,7 +4464,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Prinplup au niveau 45",
+        "text": "Faire évoluer Prinplup au niveau 45",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4497,7 +4497,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Staravia au niveau 34",
+        "text": "Faire évoluer Staravia au niveau 34",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4519,7 +4519,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Kalos Pyrenees ou evolve Bidoof (Z) au niveau 16",
+        "text": "Kalos Pyrenees ou Faire évoluer Bidoof (Z) au niveau 16",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4541,7 +4541,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Kricketot (Z) au niveau 17",
+        "text": "Faire évoluer Kricketot (Z) au niveau 17",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4563,7 +4563,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Relief City ou evolve Shinx au niveau 16",
+        "text": "Relief City ou Faire évoluer Shinx au niveau 16",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4574,7 +4574,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Luxio au niveau 30",
+        "text": "Faire évoluer Luxio au niveau 30",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4596,7 +4596,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Roselia with Shiny Stone",
+        "text": "Faire évoluer Roselia avec Pierre Éclat",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4618,7 +4618,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Cranidos au niveau 30",
+        "text": "Faire évoluer Cranidos au niveau 30",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4640,7 +4640,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Shieldon au niveau 30",
+        "text": "Faire évoluer Shieldon au niveau 30",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4673,7 +4673,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve male Burmy au niveau 20",
+        "text": "Faire évoluer mâle Burmy au niveau 20",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4695,7 +4695,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Combee au niveau 21",
+        "text": "Faire évoluer Combee au niveau 21",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4728,7 +4728,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Mosaic Town ou evolve Buizel au niveau 26",
+        "text": "Mosaic Town ou Faire évoluer Buizel au niveau 26",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4750,7 +4750,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Cherubi au niveau 18",
+        "text": "Faire évoluer Cherubi au niveau 18",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4772,7 +4772,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Route 11 ou evolve Shellos au niveau 30",
+        "text": "Route 11 ou Faire évoluer Shellos au niveau 30",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4783,7 +4783,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Aipom knowing Double Hit",
+        "text": "Faire évoluer Aipom en connaissant Double Hit",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4805,7 +4805,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Route 22 ou evolve Drifloon au niveau 28",
+        "text": "Route 22 ou Faire évoluer Drifloon au niveau 28",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4838,7 +4838,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Misdreavus with Dusk Stone",
+        "text": "Faire évoluer Misdreavus avec Pierre Nuit",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4849,7 +4849,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Murkrow with Dusk Stone",
+        "text": "Faire évoluer Murkrow avec Pierre Nuit",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4871,7 +4871,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Luminalia City ou evolve Glameow au niveau 28",
+        "text": "Luminalia City ou Faire évoluer Glameow au niveau 28",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4904,7 +4904,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Stunky au niveau 34",
+        "text": "Faire évoluer Stunky au niveau 34",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4926,7 +4926,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Bronzor au niveau 33",
+        "text": "Faire évoluer Bronzor au niveau 33",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5014,7 +5014,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Gabite au niveau 48",
+        "text": "Faire évoluer Gabite au niveau 48",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5047,7 +5047,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "special",
-        "text": "Friendship + Daytime level",
+        "text": "Bonheur élevé + gain de niveau de jour",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5091,7 +5091,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Bastion Vanitas ou evolve Skorupi au niveau 32",
+        "text": "Bastion Vanitas ou Faire évoluer Skorupi au niveau 32",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5113,7 +5113,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Croagunk au niveau 33",
+        "text": "Faire évoluer Croagunk au niveau 33",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5179,7 +5179,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Kalos Pyrenees ou evolve Snover au niveau 40",
+        "text": "Kalos Pyrenees ou Faire évoluer Snover au niveau 40",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5190,7 +5190,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Route 18 ou evolve Sneasel au niveau 38",
+        "text": "Route 18 ou Faire évoluer Sneasel au niveau 38",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5201,7 +5201,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Magneton au niveau 45",
+        "text": "Faire évoluer Magneton au niveau 45",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5212,7 +5212,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Lickitung knowing Rollout",
+        "text": "Faire évoluer Lickitung en connaissant Rollout",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5223,7 +5223,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Rhydon au niveau 45",
+        "text": "Faire évoluer Rhydon au niveau 45",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5234,7 +5234,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Tangela knowing Ancient Power",
+        "text": "Faire évoluer Tangela en connaissant Ancient Power",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5245,7 +5245,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Electabuzz au niveau 50",
+        "text": "Faire évoluer Electabuzz au niveau 50",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5256,7 +5256,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Magmar au niveau 50",
+        "text": "Faire évoluer Magmar au niveau 50",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5267,7 +5267,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Togetic with Shiny Stone",
+        "text": "Faire évoluer Togetic avec Pierre Éclat",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5278,7 +5278,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Yanma knowing Ancient Power",
+        "text": "Faire évoluer Yanma en connaissant Ancient Power",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5289,7 +5289,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Eevee with Leaf Stone",
+        "text": "Faire évoluer Eevee avec Pierre Plante",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5300,7 +5300,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Eevee with Dawn Stone",
+        "text": "Faire évoluer Eevee avec Pierre Aube",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5311,7 +5311,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Route 20 ou evolve Gligar au niveau 42",
+        "text": "Route 20 ou Faire évoluer Gligar au niveau 42",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5322,7 +5322,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Kalos Pyrenees ou evolve Piloswine knowing Ancient Power",
+        "text": "Kalos Pyrenees ou Faire évoluer Piloswine en connaissant Ancient Power",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5333,7 +5333,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Porygon2 (Z) au niveau 50",
+        "text": "Faire évoluer Porygon2 (Z) au niveau 50",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5344,7 +5344,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Kirlia with Dawn Stone",
+        "text": "Faire évoluer Kirlia avec Pierre Aube",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5355,7 +5355,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Nosepass au niveau 40",
+        "text": "Faire évoluer Nosepass au niveau 40",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5366,7 +5366,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Dusclops au niveau 45",
+        "text": "Faire évoluer Dusclops au niveau 45",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5377,7 +5377,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Kalos Pyrenees ou evolve female Snorunt with Dawn Stone",
+        "text": "Kalos Pyrenees ou Faire évoluer femelle Snorunt avec Pierre Aube",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5547,7 +5547,7 @@ const POKEMON_Z_GUIDE = {
       },
       {
         "kind": "breeding",
-        "text": "Breed Manaphy with Ditto (Route 5 Daycare)",
+        "text": "Breed Manaphy avec Ditto (Route 5 Daycare)",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
         "confidence": "cross-checked"
@@ -5648,7 +5648,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Échanger Wormadam a West Luminalia Café",
+        "text": "Échanger Wormadam à West Luminalia Café",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -5659,7 +5659,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Snivy au niveau 18",
+        "text": "Faire évoluer Snivy au niveau 18",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -5670,7 +5670,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Servine au niveau 45",
+        "text": "Faire évoluer Servine au niveau 45",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -5681,7 +5681,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Échanger Rapidash a West Luminalia Café",
+        "text": "Échanger Rapidash à West Luminalia Café",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -5692,7 +5692,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Tepig au niveau 18",
+        "text": "Faire évoluer Tepig au niveau 18",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -5703,7 +5703,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Pignite au niveau 45",
+        "text": "Faire évoluer Pignite au niveau 45",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -5714,7 +5714,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Échanger Masquerain a West Luminalia Café",
+        "text": "Échanger Masquerain à West Luminalia Café",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -5725,7 +5725,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Oshawott au niveau 18",
+        "text": "Faire évoluer Oshawott au niveau 18",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -5736,7 +5736,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Dewott au niveau 45",
+        "text": "Faire évoluer Dewott au niveau 45",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -5780,7 +5780,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Lillipup au niveau 16",
+        "text": "Faire évoluer Lillipup au niveau 16",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -5791,7 +5791,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Herdier au niveau 32",
+        "text": "Faire évoluer Herdier au niveau 32",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -5835,7 +5835,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "special",
-        "text": "Use Leaf Stone",
+        "text": "Utiliser Pierre Plante",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -5857,7 +5857,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "special",
-        "text": "Use Fire Stone",
+        "text": "Utiliser Pierre Feu",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -5879,7 +5879,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "special",
-        "text": "Use Water Stone",
+        "text": "Utiliser Pierre Eau",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -5901,7 +5901,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "special",
-        "text": "Use Moon Stone",
+        "text": "Utiliser Pierre Lune",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -5934,7 +5934,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Tranquill au niveau 32",
+        "text": "Faire évoluer Tranquill au niveau 32",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -5956,7 +5956,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Blitzle au niveau 27",
+        "text": "Faire évoluer Blitzle au niveau 27",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6011,7 +6011,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Dark Cave ou friendship",
+        "text": "Dark Cave ou bonheur élevé",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6077,7 +6077,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Evolve Gurdurr a 45",
+        "text": "Faire évoluer Gurdurr à 45",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6165,7 +6165,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Friendship evolution",
+        "text": "Évolution par bonheur",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6220,7 +6220,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "special",
-        "text": "Sun Stone",
+        "text": "Pierre Soleil",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6231,7 +6231,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "special",
-        "text": "400 coins a Sanguine Casino",
+        "text": "400 coins à Sanguine Casino",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6242,7 +6242,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "special",
-        "text": "Sun Stone",
+        "text": "Pierre Soleil",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6847,7 +6847,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "special",
-        "text": "Thunder Stone",
+        "text": "Pierre Foudre",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6902,7 +6902,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "special",
-        "text": "Dusk Stone",
+        "text": "Pierre Nuit",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -7406,7 +7406,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Chespin a Lv. 18",
+        "text": "Évolue depuis Chespin à Lv. 18",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7417,7 +7417,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Quilladin a Lv. 45",
+        "text": "Évolue depuis Quilladin à Lv. 45",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7439,7 +7439,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Fennekin a Lv. 18",
+        "text": "Évolue depuis Fennekin à Lv. 18",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7450,7 +7450,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Braixen a Lv. 45",
+        "text": "Évolue depuis Braixen à Lv. 45",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7472,7 +7472,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Froakie a Lv. 18",
+        "text": "Évolue depuis Froakie à Lv. 18",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7483,7 +7483,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Frogadier a Lv. 45",
+        "text": "Évolue depuis Frogadier à Lv. 45",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7505,7 +7505,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Bunnelby a Lv. 20",
+        "text": "Évolue depuis Bunnelby à Lv. 20",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7626,7 +7626,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "special",
-        "text": "Use Day Stone",
+        "text": "Utiliser Pierre Jour",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7736,7 +7736,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "special",
-        "text": "East Kalos Battle ou Night Stone",
+        "text": "East Kalos Battle ou Pierre Nuit",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7780,7 +7780,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Trade for Aromatisse dans West Luminalia",
+        "text": "Échange contre Aromatisse dans West Luminalia",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7901,7 +7901,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Trade for Anorith dans Mosaic Town",
+        "text": "Échange contre Anorith dans Mosaic Town",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7923,7 +7923,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Trade for Lileep dans Mosaic Town",
+        "text": "Échange contre Lileep dans Mosaic Town",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7945,7 +7945,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "special",
-        "text": "Use Day Stone",
+        "text": "Utiliser Pierre Jour",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -8193,7 +8193,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "special",
-        "text": "1400 coins a Sanguine Casino",
+        "text": "1400 coins à Sanguine Casino",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -8229,7 +8229,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Trade for Tropius — Luminalia East Café",
+        "text": "Échange contre Tropius — Luminalia East Café",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -8262,7 +8262,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Trade for Chandelure — Luminalia West Café",
+        "text": "Échange contre Chandelure — Luminalia West Café",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -8295,7 +8295,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Trade for Sharpedo — Luminalia West Café",
+        "text": "Échange contre Sharpedo — Luminalia West Café",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -8449,7 +8449,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Trade dans Novarte City for Flabébé",
+        "text": "Échange dans Novarte City contre Flabébé",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -8680,7 +8680,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Steenee knowing Stomp",
+        "text": "Évolue depuis Steenee en connaissant Stomp",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -8790,7 +8790,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Friendship Evolution",
+        "text": "Évolution par bonheur",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -8995,7 +8995,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Cosmoem (Day Stone)",
+        "text": "Évolue depuis Cosmoem (Pierre Jour)",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -9013,7 +9013,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Cosmoem (Night Stone)",
+        "text": "Évolue depuis Cosmoem (Pierre Nuit)",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -9224,7 +9224,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Exchange for 700 coins — Sanguino Casino",
+        "text": "Échange contre 700 coins — Sanguino Casino",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -9235,7 +9235,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Friendship Evolution",
+        "text": "Évolution par bonheur",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -9257,7 +9257,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Grookey a 18.",
+        "text": "Évolue depuis Grookey à 18.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9268,7 +9268,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Thwackey a 45.",
+        "text": "Évolue depuis Thwackey à 45.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9290,7 +9290,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Scorbunny a 18.",
+        "text": "Évolue depuis Scorbunny à 18.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9301,7 +9301,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Raboot a 45.",
+        "text": "Évolue depuis Raboot à 45.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9323,7 +9323,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Sobble a 18.",
+        "text": "Évolue depuis Sobble à 18.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9334,7 +9334,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Drizzile a 45.",
+        "text": "Évolue depuis Drizzile à 45.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9389,7 +9389,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Corvisquire a 38.",
+        "text": "Évolue depuis Corvisquire à 38.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9411,7 +9411,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Blipbug a 10.",
+        "text": "Évolue depuis Blipbug à 10.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9422,7 +9422,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Dottler a 30.",
+        "text": "Évolue depuis Dottler à 30.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9444,7 +9444,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Capturable : Profane Town ou Évolue depuis Nickit a 18.",
+        "text": "Capturable : Profane Town ou Évolue depuis Nickit à 18.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9488,7 +9488,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Capturable : Route 9 ou Évolue depuis Wooloo a 24.",
+        "text": "Capturable : Route 9 ou Évolue depuis Wooloo à 24.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9510,7 +9510,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Capturable : Fresh Town ou Évolue depuis Chewtle a 24.",
+        "text": "Capturable : Fresh Town ou Évolue depuis Chewtle à 24.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9532,7 +9532,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Yamper a 25.",
+        "text": "Évolue depuis Yamper à 25.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9554,7 +9554,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Capturable : Dark Cave ou Évolue depuis Rolycoly a 18.",
+        "text": "Capturable : Dark Cave ou Évolue depuis Rolycoly à 18.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9565,7 +9565,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Carkol a 40.",
+        "text": "Évolue depuis Carkol à 40.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9587,7 +9587,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Applin with Leaf Stone.",
+        "text": "Évolue depuis Applin avec Pierre Plante.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9598,7 +9598,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Applin with Sun Stone.",
+        "text": "Évolue depuis Applin avec Pierre Soleil.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9675,7 +9675,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Toxel a 30.",
+        "text": "Évolue depuis Toxel à 30.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9719,7 +9719,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Clobbopus a 40.",
+        "text": "Évolue depuis Clobbopus à 40.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9741,7 +9741,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Sinistea with Night Stone.",
+        "text": "Évolue depuis Sinistea avec Pierre Nuit.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9774,7 +9774,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Hattrem a 42.",
+        "text": "Évolue depuis Hattrem à 42.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9796,7 +9796,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Capturable : Old Vanitas ou Évolue depuis Impidimp a 32.",
+        "text": "Capturable : Old Vanitas ou Évolue depuis Impidimp à 32.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9807,7 +9807,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Morgrem a 42.",
+        "text": "Évolue depuis Morgrem à 42.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9818,7 +9818,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Linoone a 35.",
+        "text": "Évolue depuis Linoone à 35.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9829,7 +9829,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Capturable : Route 25 ou Évolue depuis Meowth with Night Stone.",
+        "text": "Capturable : Route 25 ou Évolue depuis Meowth avec Pierre Nuit.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9840,7 +9840,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Corsola with Night Stone.",
+        "text": "Évolue depuis Corsola avec Pierre Nuit.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9851,7 +9851,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Farfetch’d with Hard Bread.",
+        "text": "Évolue depuis Farfetch’d avec Hard Bread.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9862,7 +9862,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Capturable : Batik City ou Évolue depuis Mr. Mime with Dawn Stone.",
+        "text": "Capturable : Batik City ou Évolue depuis Mr. Mime avec Pierre Aube.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9873,7 +9873,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Capturable : Route 25 ou Évolue depuis Yamask with Night Stone.",
+        "text": "Capturable : Route 25 ou Évolue depuis Yamask avec Pierre Nuit.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9895,7 +9895,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Capturable : Route 8 ou Évolue depuis Milcery with Moon Stone.",
+        "text": "Capturable : Route 8 ou Évolue depuis Milcery avec Pierre Lune.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9961,7 +9961,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Trade for Morpeko dans Sanguino Town.",
+        "text": "Échange contre Morpeko dans Sanguino Town.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -10005,7 +10005,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Capturable : the Service Station ou Évolue depuis Cufant a 34.",
+        "text": "Capturable : the Service Station ou Évolue depuis Cufant à 34.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -10016,7 +10016,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Tradeable dans Mosaic City for Helix Fossil.",
+        "text": "Échangeable dans Mosaic City contre Fossile Nautile.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -10027,7 +10027,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Tradeable dans Mosaic City for Dome Fossil.",
+        "text": "Échangeable dans Mosaic City contre Fossile Dôme.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -10038,7 +10038,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Tradeable dans Mosaic City for Root Fossil.",
+        "text": "Échangeable dans Mosaic City contre Fossile Racine.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -10049,7 +10049,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "Tradeable dans Mosaic City for Claw Fossil.",
+        "text": "Échangeable dans Mosaic City contre Fossile Griffe.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -10082,7 +10082,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Dreepy a 50.",
+        "text": "Évolue depuis Dreepy à 50.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -10093,7 +10093,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Drakloak a 60.",
+        "text": "Évolue depuis Drakloak à 60.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -10162,7 +10162,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Kubfu by friendship.",
+        "text": "Évolue depuis Kubfu avec un bonheur élevé.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -10271,7 +10271,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Stantler a 40.",
+        "text": "Évolue depuis Stantler à 40.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -10282,7 +10282,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Basculin a 40.",
+        "text": "Évolue depuis Basculin à 40.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -10315,7 +10315,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Ursaring a 45.",
+        "text": "Évolue depuis Ursaring à 45.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -10337,7 +10337,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "a Galanes Café for a Kecleon",
+        "text": "à Galanes Café contre Kecleon",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10348,7 +10348,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Sprigatito a 18",
+        "text": "Évolue depuis Sprigatito à 18",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10359,7 +10359,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Floragato a 45",
+        "text": "Évolue depuis Floragato à 45",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10370,7 +10370,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "a Galanes Café for a Scrafty",
+        "text": "à Galanes Café contre Scrafty",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10381,7 +10381,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Fuecoco a 18",
+        "text": "Évolue depuis Fuecoco à 18",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10392,7 +10392,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Crocalor a 45",
+        "text": "Évolue depuis Crocalor à 45",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10403,7 +10403,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "trade",
-        "text": "a Galanes Café for a Heliolisk",
+        "text": "à Galanes Café contre Heliolisk",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10414,7 +10414,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Quaxly a 18",
+        "text": "Évolue depuis Quaxly à 18",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10425,7 +10425,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Quaxwell a 45",
+        "text": "Évolue depuis Quaxwell à 45",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10436,7 +10436,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 9.",
+        "text": "Capturable sur Route 9.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10447,7 +10447,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Catchable sur Route 9 ou Évolue depuis Lechonk a 18.",
+        "text": "Capturable sur Route 9 ou Évolue depuis Lechonk à 18.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10458,7 +10458,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Catchable sur Route 24 ou Évolue depuis Dunsparce a 37.",
+        "text": "Capturable sur Route 24 ou Évolue depuis Dunsparce à 37.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10469,7 +10469,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Obtainable through breeding depuis Spidops.",
+        "text": "Disponible through breeding depuis Spidops.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10480,7 +10480,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Hillside Forest.",
+        "text": "Capturable dans Hillside Forest.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10491,7 +10491,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Hillside Forest.",
+        "text": "Capturable dans Hillside Forest.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10502,7 +10502,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Nymble a 24.",
+        "text": "Évolue depuis Nymble à 24.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10513,7 +10513,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 6.",
+        "text": "Capturable sur Route 6.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10524,7 +10524,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Rellor a 30.",
+        "text": "Évolue depuis Rellor à 30.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10535,7 +10535,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 6.",
+        "text": "Capturable sur Route 6.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10546,7 +10546,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Greavard a 30.",
+        "text": "Évolue depuis Greavard à 30.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10557,7 +10557,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 3.",
+        "text": "Capturable sur Route 3.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10568,7 +10568,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Flittle a 35.",
+        "text": "Évolue depuis Flittle à 35.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10579,7 +10579,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Girafarig a 40.",
+        "text": "Évolue depuis Girafarig à 40.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10590,7 +10590,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable a the bottom of the lake sur Route 16.",
+        "text": "Capturable à the bottom of the lake sur Route 16.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10601,7 +10601,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans the seabed of Petroglifo Town.",
+        "text": "Capturable dans the seabed of Petroglifo Town.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10612,7 +10612,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans the seabed of Acrílico Town.",
+        "text": "Capturable dans the seabed of Acrílico Town.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10623,7 +10623,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Catchable dans the seabed of Acrílico Town ou Évolue depuis Finizen a 38.",
+        "text": "Capturable dans the seabed of Acrílico Town ou Évolue depuis Finizen à 38.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10634,7 +10634,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Obtainable through breeding depuis Dolliv/Arboliva.",
+        "text": "Disponible through breeding depuis Dolliv/Arboliva.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10645,7 +10645,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 8.",
+        "text": "Capturable sur Route 8.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10656,7 +10656,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Dolliv a 35.",
+        "text": "Évolue depuis Dolliv à 35.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10667,7 +10667,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Kings’ Sanctuary.",
+        "text": "Capturable dans Kings’ Sanctuary.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10678,7 +10678,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Capsakid with Fire Stone.",
+        "text": "Évolue depuis Capsakid avec Pierre Feu.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10689,7 +10689,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Shimmering Cave.",
+        "text": "Capturable dans Shimmering Cave.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10700,7 +10700,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Tadbulb with Thunder Stone.",
+        "text": "Évolue depuis Tadbulb avec Pierre Foudre.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10711,7 +10711,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Obtainable through breeding depuis Revaroom.",
+        "text": "Disponible through breeding depuis Revaroom.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10722,7 +10722,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Poké Ball Factory.",
+        "text": "Capturable dans Poké Ball Factory.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10733,7 +10733,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable a the Service Station.",
+        "text": "Capturable à the Service Station.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10755,7 +10755,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Tandemaus a 25.",
+        "text": "Évolue depuis Tandemaus à 25.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10766,7 +10766,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Obtainable through breeding depuis Cetitan.",
+        "text": "Disponible through breeding depuis Cetitan.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10777,7 +10777,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Frozen Grotto.",
+        "text": "Capturable dans Frozen Grotto.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10788,7 +10788,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Frozen Grotto.",
+        "text": "Capturable dans Frozen Grotto.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10799,7 +10799,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Frigibax a 35.",
+        "text": "Évolue depuis Frigibax à 35.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10810,7 +10810,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Arctibax a 54.",
+        "text": "Évolue depuis Arctibax à 54.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10821,7 +10821,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable a the bottom of the lake sur Route 16.",
+        "text": "Capturable à the bottom of the lake sur Route 16.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10832,7 +10832,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable a the Service Station.",
+        "text": "Capturable à the Service Station.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10843,7 +10843,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 2.",
+        "text": "Capturable sur Route 2.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10854,7 +10854,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Pawmi a 18.",
+        "text": "Évolue depuis Pawmi à 18.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10865,7 +10865,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Pawmo by friendship.",
+        "text": "Évolue depuis Pawmo avec un bonheur élevé.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10876,7 +10876,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Novarte City ou Route 11.",
+        "text": "Capturable dans Novarte City ou Route 11.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10887,7 +10887,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Catchable sur Route 11 ou Évolue depuis Wattrel a 25.",
+        "text": "Capturable sur Route 11 ou Évolue depuis Wattrel à 25.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10898,7 +10898,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 14.",
+        "text": "Capturable sur Route 14.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10920,7 +10920,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Certijo Island.",
+        "text": "Capturable sur Certijo Island.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10931,7 +10931,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 10.",
+        "text": "Capturable sur Route 10.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10953,7 +10953,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable a the Service Station.",
+        "text": "Capturable à the Service Station.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10964,7 +10964,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Catchable dans East Kalos Battle ou Évolue depuis Naclstack a 38.",
+        "text": "Capturable dans East Kalos Battle ou Évolue depuis Naclstack à 38.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10975,7 +10975,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable dans Northern Catacombs.",
+        "text": "Capturable dans Northern Catacombs.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10986,7 +10986,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Catchable dans Northern Catacombs ou Évolue depuis Glimmet a 35.",
+        "text": "Capturable dans Northern Catacombs ou Évolue depuis Glimmet à 35.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10997,7 +10997,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Obtainable through breeding depuis Grafaiai.",
+        "text": "Disponible through breeding depuis Grafaiai.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11008,7 +11008,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 14.",
+        "text": "Capturable sur Route 14.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11019,7 +11019,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 2.",
+        "text": "Capturable sur Route 2.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11030,7 +11030,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Fidough a 26.",
+        "text": "Évolue depuis Fidough à 26.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11041,7 +11041,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Storm Hill.",
+        "text": "Capturable sur Storm Hill.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11052,7 +11052,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Maschiff a 30.",
+        "text": "Évolue depuis Maschiff à 30.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11063,7 +11063,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Obtainable through breeding depuis Brambleghast",
+        "text": "Disponible through breeding depuis Brambleghast",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11074,7 +11074,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 24",
+        "text": "Capturable sur Route 24",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11085,7 +11085,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 8.",
+        "text": "Capturable sur Route 8.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11096,7 +11096,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Gimmighoul a 50.",
+        "text": "Évolue depuis Gimmighoul à 50.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11107,7 +11107,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur Route 5.",
+        "text": "Capturable sur Route 5.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11118,7 +11118,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Tinkatink a 24.",
+        "text": "Évolue depuis Tinkatink à 24.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11129,7 +11129,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Tinkatuff a 38.",
+        "text": "Évolue depuis Tinkatuff à 38.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11140,7 +11140,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable sur North Route 7.",
+        "text": "Capturable sur North Route 7.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11151,7 +11151,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Charcadet with Fire Stone.",
+        "text": "Évolue depuis Charcadet avec Pierre Feu.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11162,7 +11162,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Charcadet with Dusk Stone.",
+        "text": "Évolue depuis Charcadet avec Pierre Nuit.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11173,7 +11173,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Bisharp a 42.",
+        "text": "Évolue depuis Bisharp à 42.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11184,7 +11184,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Catchable dans Profane Swamp ou Évolue depuis Wooper if it knows Poison Jab.",
+        "text": "Capturable dans Profane Swamp ou Évolue depuis Wooper if it knows Poison Jab.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11195,7 +11195,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Primeape a 45.",
+        "text": "Évolue depuis Primeape à 45.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11286,7 +11286,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Applin a 28.",
+        "text": "Évolue depuis Applin à 28.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11348,7 +11348,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Sinistea with Leaf Stone.",
+        "text": "Évolue depuis Sinistea avec Pierre Plante.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11359,7 +11359,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Catchable dans Luminalia Expansions ou Évolue depuis Duraludon a 55.",
+        "text": "Capturable dans Luminalia Expansions ou Évolue depuis Duraludon à 55.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11370,7 +11370,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Dipplin a 50.",
+        "text": "Évolue depuis Dipplin à 50.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11410,7 +11410,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Eevee with Wind Feather. (Complete Montesanto Island)",
+        "text": "Évolue depuis Eevee avec Wind Feather. (Complete Montesanto Island)",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11421,7 +11421,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Mawile a 45.",
+        "text": "Évolue depuis Mawile à 45.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11432,7 +11432,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Banette a 40.",
+        "text": "Évolue depuis Banette à 40.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11443,7 +11443,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Audino a 40.",
+        "text": "Évolue depuis Audino à 40.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11454,7 +11454,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable inside the Ultimate Weapon.",
+        "text": "Capturable inside the Ultimate Weapon.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11465,7 +11465,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Cherrim a 32.",
+        "text": "Évolue depuis Cherrim à 32.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11476,7 +11476,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Eevee with Royal Wig. (Certijo Island)",
+        "text": "Évolue depuis Eevee avec Royal Wig. (Certijo Island)",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11487,7 +11487,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Maushold a 38.",
+        "text": "Évolue depuis Maushold à 38.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11498,7 +11498,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Hawlucha a 55.",
+        "text": "Évolue depuis Hawlucha à 55.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11509,7 +11509,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Seviper a 52.",
+        "text": "Évolue depuis Seviper à 52.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11520,7 +11520,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Zangoose a 52.",
+        "text": "Évolue depuis Zangoose à 52.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11531,7 +11531,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Jynx a 65.",
+        "text": "Évolue depuis Jynx à 65.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11542,7 +11542,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Hypno a 65.",
+        "text": "Évolue depuis Hypno à 65.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11564,7 +11564,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Luvdisc a 60",
+        "text": "Évolue depuis Luvdisc à 60",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11575,7 +11575,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Marowak a 65",
+        "text": "Évolue depuis Marowak à 65",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11586,7 +11586,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Sudowoodo a 70",
+        "text": "Évolue depuis Sudowoodo à 70",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11597,7 +11597,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Catchable a the end of the story.",
+        "text": "Capturable à the end of the story.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11605,6 +11605,4010 @@ const POKEMON_Z_GUIDE = {
     ]
   }
 };
+
+// Noms anglais susceptibles d'etre cites par le guide, relies au catalogue FR.
+const POKEMON_Z_GUIDE_POKEMON_NAMES = [
+  {
+    "source": "Bulbasaur",
+    "nationalId": 1
+  },
+  {
+    "source": "Ivysaur",
+    "nationalId": 2
+  },
+  {
+    "source": "Venusaur",
+    "nationalId": 3
+  },
+  {
+    "source": "Charmander",
+    "nationalId": 4
+  },
+  {
+    "source": "Charmeleon",
+    "nationalId": 5
+  },
+  {
+    "source": "Charizard",
+    "nationalId": 6
+  },
+  {
+    "source": "Squirtle",
+    "nationalId": 7
+  },
+  {
+    "source": "Wartortle",
+    "nationalId": 8
+  },
+  {
+    "source": "Blastoise",
+    "nationalId": 9
+  },
+  {
+    "source": "Caterpie",
+    "nationalId": 10
+  },
+  {
+    "source": "Metapod",
+    "nationalId": 11
+  },
+  {
+    "source": "Butterfree",
+    "nationalId": 12
+  },
+  {
+    "source": "Weedle",
+    "nationalId": 13
+  },
+  {
+    "source": "Kakuna",
+    "nationalId": 14
+  },
+  {
+    "source": "Beedrill",
+    "nationalId": 15
+  },
+  {
+    "source": "Pidgey",
+    "nationalId": 16
+  },
+  {
+    "source": "Pidgeotto",
+    "nationalId": 17
+  },
+  {
+    "source": "Pidgeot",
+    "nationalId": 18
+  },
+  {
+    "source": "Rattata",
+    "nationalId": 19
+  },
+  {
+    "source": "Raticate",
+    "nationalId": 20
+  },
+  {
+    "source": "Spearow",
+    "nationalId": 21
+  },
+  {
+    "source": "Fearow",
+    "nationalId": 22
+  },
+  {
+    "source": "Ekans",
+    "nationalId": 23
+  },
+  {
+    "source": "Arbok",
+    "nationalId": 24
+  },
+  {
+    "source": "Pikachu",
+    "nationalId": 25
+  },
+  {
+    "source": "Raichu",
+    "nationalId": 26
+  },
+  {
+    "source": "Sandshrew",
+    "nationalId": 27
+  },
+  {
+    "source": "Sandslash",
+    "nationalId": 28
+  },
+  {
+    "source": "Nidoran♀",
+    "nationalId": 29
+  },
+  {
+    "source": "Nidorina",
+    "nationalId": 30
+  },
+  {
+    "source": "Nidoqueen",
+    "nationalId": 31
+  },
+  {
+    "source": "Nidoran♂",
+    "nationalId": 32
+  },
+  {
+    "source": "Nidorino",
+    "nationalId": 33
+  },
+  {
+    "source": "Nidoking",
+    "nationalId": 34
+  },
+  {
+    "source": "Clefairy",
+    "nationalId": 35
+  },
+  {
+    "source": "Clefable",
+    "nationalId": 36
+  },
+  {
+    "source": "Vulpix",
+    "nationalId": 37
+  },
+  {
+    "source": "Ninetales",
+    "nationalId": 38
+  },
+  {
+    "source": "Jigglypuff",
+    "nationalId": 39
+  },
+  {
+    "source": "Wigglytuff",
+    "nationalId": 40
+  },
+  {
+    "source": "Zubat",
+    "nationalId": 41
+  },
+  {
+    "source": "Golbat",
+    "nationalId": 42
+  },
+  {
+    "source": "Oddish",
+    "nationalId": 43
+  },
+  {
+    "source": "Gloom",
+    "nationalId": 44
+  },
+  {
+    "source": "Vileplume",
+    "nationalId": 45
+  },
+  {
+    "source": "Paras",
+    "nationalId": 46
+  },
+  {
+    "source": "Parasect",
+    "nationalId": 47
+  },
+  {
+    "source": "Venonat",
+    "nationalId": 48
+  },
+  {
+    "source": "Venomoth",
+    "nationalId": 49
+  },
+  {
+    "source": "Diglett",
+    "nationalId": 50
+  },
+  {
+    "source": "Dugtrio",
+    "nationalId": 51
+  },
+  {
+    "source": "Meowth",
+    "nationalId": 52
+  },
+  {
+    "source": "Persian",
+    "nationalId": 53
+  },
+  {
+    "source": "Psyduck",
+    "nationalId": 54
+  },
+  {
+    "source": "Golduck",
+    "nationalId": 55
+  },
+  {
+    "source": "Mankey",
+    "nationalId": 56
+  },
+  {
+    "source": "Primeape",
+    "nationalId": 57
+  },
+  {
+    "source": "Growlithe",
+    "nationalId": 58
+  },
+  {
+    "source": "Arcanine",
+    "nationalId": 59
+  },
+  {
+    "source": "Poliwag",
+    "nationalId": 60
+  },
+  {
+    "source": "Poliwhirl",
+    "nationalId": 61
+  },
+  {
+    "source": "Poliwrath",
+    "nationalId": 62
+  },
+  {
+    "source": "Abra",
+    "nationalId": 63
+  },
+  {
+    "source": "Kadabra",
+    "nationalId": 64
+  },
+  {
+    "source": "Alakazam",
+    "nationalId": 65
+  },
+  {
+    "source": "Machop",
+    "nationalId": 66
+  },
+  {
+    "source": "Machoke",
+    "nationalId": 67
+  },
+  {
+    "source": "Machamp",
+    "nationalId": 68
+  },
+  {
+    "source": "Bellsprout",
+    "nationalId": 69
+  },
+  {
+    "source": "Weepinbell",
+    "nationalId": 70
+  },
+  {
+    "source": "Victreebel",
+    "nationalId": 71
+  },
+  {
+    "source": "Tentacool",
+    "nationalId": 72
+  },
+  {
+    "source": "Tentacruel",
+    "nationalId": 73
+  },
+  {
+    "source": "Geodude",
+    "nationalId": 74
+  },
+  {
+    "source": "Graveler",
+    "nationalId": 75
+  },
+  {
+    "source": "Golem",
+    "nationalId": 76
+  },
+  {
+    "source": "Ponyta",
+    "nationalId": 77
+  },
+  {
+    "source": "Rapidash",
+    "nationalId": 78
+  },
+  {
+    "source": "Slowpoke",
+    "nationalId": 79
+  },
+  {
+    "source": "Slowbro",
+    "nationalId": 80
+  },
+  {
+    "source": "Magnemite",
+    "nationalId": 81
+  },
+  {
+    "source": "Magneton",
+    "nationalId": 82
+  },
+  {
+    "source": "Farfetch’d",
+    "nationalId": 83
+  },
+  {
+    "source": "Doduo",
+    "nationalId": 84
+  },
+  {
+    "source": "Dodrio",
+    "nationalId": 85
+  },
+  {
+    "source": "Seel",
+    "nationalId": 86
+  },
+  {
+    "source": "Dewgong",
+    "nationalId": 87
+  },
+  {
+    "source": "Grimer",
+    "nationalId": 88
+  },
+  {
+    "source": "Muk",
+    "nationalId": 89
+  },
+  {
+    "source": "Shellder",
+    "nationalId": 90
+  },
+  {
+    "source": "Cloyster",
+    "nationalId": 91
+  },
+  {
+    "source": "Gastly",
+    "nationalId": 92
+  },
+  {
+    "source": "Haunter",
+    "nationalId": 93
+  },
+  {
+    "source": "Gengar",
+    "nationalId": 94
+  },
+  {
+    "source": "Onix",
+    "nationalId": 95
+  },
+  {
+    "source": "Drowzee",
+    "nationalId": 96
+  },
+  {
+    "source": "Hypno",
+    "nationalId": 97
+  },
+  {
+    "source": "Krabby",
+    "nationalId": 98
+  },
+  {
+    "source": "Kingler",
+    "nationalId": 99
+  },
+  {
+    "source": "Voltorb",
+    "nationalId": 100
+  },
+  {
+    "source": "Electrode",
+    "nationalId": 101
+  },
+  {
+    "source": "Exeggcute",
+    "nationalId": 102
+  },
+  {
+    "source": "Exeggutor",
+    "nationalId": 103
+  },
+  {
+    "source": "Cubone",
+    "nationalId": 104
+  },
+  {
+    "source": "Marowak",
+    "nationalId": 105
+  },
+  {
+    "source": "Hitmonlee",
+    "nationalId": 106
+  },
+  {
+    "source": "Hitmonchan",
+    "nationalId": 107
+  },
+  {
+    "source": "Lickitung",
+    "nationalId": 108
+  },
+  {
+    "source": "Koffing",
+    "nationalId": 109
+  },
+  {
+    "source": "Weezing",
+    "nationalId": 110
+  },
+  {
+    "source": "Rhyhorn",
+    "nationalId": 111
+  },
+  {
+    "source": "Rhydon",
+    "nationalId": 112
+  },
+  {
+    "source": "Chansey",
+    "nationalId": 113
+  },
+  {
+    "source": "Tangela",
+    "nationalId": 114
+  },
+  {
+    "source": "Kangaskhan",
+    "nationalId": 115
+  },
+  {
+    "source": "Horsea",
+    "nationalId": 116
+  },
+  {
+    "source": "Seadra",
+    "nationalId": 117
+  },
+  {
+    "source": "Goldeen",
+    "nationalId": 118
+  },
+  {
+    "source": "Seaking",
+    "nationalId": 119
+  },
+  {
+    "source": "Staryu",
+    "nationalId": 120
+  },
+  {
+    "source": "Starmie",
+    "nationalId": 121
+  },
+  {
+    "source": "Mr. Mime",
+    "nationalId": 122
+  },
+  {
+    "source": "Scyther",
+    "nationalId": 123
+  },
+  {
+    "source": "Jynx",
+    "nationalId": 124
+  },
+  {
+    "source": "Electabuzz",
+    "nationalId": 125
+  },
+  {
+    "source": "Magmar",
+    "nationalId": 126
+  },
+  {
+    "source": "Pinsir",
+    "nationalId": 127
+  },
+  {
+    "source": "Tauros",
+    "nationalId": 128
+  },
+  {
+    "source": "Magikarp",
+    "nationalId": 129
+  },
+  {
+    "source": "Gyarados",
+    "nationalId": 130
+  },
+  {
+    "source": "Lapras",
+    "nationalId": 131
+  },
+  {
+    "source": "Ditto",
+    "nationalId": 132
+  },
+  {
+    "source": "Eevee",
+    "nationalId": 133
+  },
+  {
+    "source": "Vaporeon",
+    "nationalId": 134
+  },
+  {
+    "source": "Jolteon",
+    "nationalId": 135
+  },
+  {
+    "source": "Flareon",
+    "nationalId": 136
+  },
+  {
+    "source": "Porygon",
+    "nationalId": 137
+  },
+  {
+    "source": "Omanyte",
+    "nationalId": 138
+  },
+  {
+    "source": "Omastar",
+    "nationalId": 139
+  },
+  {
+    "source": "Kabuto",
+    "nationalId": 140
+  },
+  {
+    "source": "Kabutops",
+    "nationalId": 141
+  },
+  {
+    "source": "Aerodactyl",
+    "nationalId": 142
+  },
+  {
+    "source": "Snorlax",
+    "nationalId": 143
+  },
+  {
+    "source": "Articuno",
+    "nationalId": 144
+  },
+  {
+    "source": "Zapdos",
+    "nationalId": 145
+  },
+  {
+    "source": "Moltres",
+    "nationalId": 146
+  },
+  {
+    "source": "Dratini",
+    "nationalId": 147
+  },
+  {
+    "source": "Dragonair",
+    "nationalId": 148
+  },
+  {
+    "source": "Dragonite",
+    "nationalId": 149
+  },
+  {
+    "source": "Mewtwo",
+    "nationalId": 150
+  },
+  {
+    "source": "Mew",
+    "nationalId": 151
+  },
+  {
+    "source": "Chikorita",
+    "nationalId": 152
+  },
+  {
+    "source": "Bayleef",
+    "nationalId": 153
+  },
+  {
+    "source": "Meganium",
+    "nationalId": 154
+  },
+  {
+    "source": "Cyndaquil",
+    "nationalId": 155
+  },
+  {
+    "source": "Quilava",
+    "nationalId": 156
+  },
+  {
+    "source": "Typhlosion",
+    "nationalId": 157
+  },
+  {
+    "source": "Totodile",
+    "nationalId": 158
+  },
+  {
+    "source": "Croconaw",
+    "nationalId": 159
+  },
+  {
+    "source": "Feraligatr",
+    "nationalId": 160
+  },
+  {
+    "source": "Sentret",
+    "nationalId": 161
+  },
+  {
+    "source": "Furret",
+    "nationalId": 162
+  },
+  {
+    "source": "Hoothoot",
+    "nationalId": 163
+  },
+  {
+    "source": "Noctowl",
+    "nationalId": 164
+  },
+  {
+    "source": "Ledyba",
+    "nationalId": 165
+  },
+  {
+    "source": "Ledian",
+    "nationalId": 166
+  },
+  {
+    "source": "Spinarak",
+    "nationalId": 167
+  },
+  {
+    "source": "Ariados",
+    "nationalId": 168
+  },
+  {
+    "source": "Crobat",
+    "nationalId": 169
+  },
+  {
+    "source": "Chinchou",
+    "nationalId": 170
+  },
+  {
+    "source": "Lanturn",
+    "nationalId": 171
+  },
+  {
+    "source": "Pichu",
+    "nationalId": 172
+  },
+  {
+    "source": "Cleffa",
+    "nationalId": 173
+  },
+  {
+    "source": "Igglybuff",
+    "nationalId": 174
+  },
+  {
+    "source": "Togepi",
+    "nationalId": 175
+  },
+  {
+    "source": "Togetic",
+    "nationalId": 176
+  },
+  {
+    "source": "Natu",
+    "nationalId": 177
+  },
+  {
+    "source": "Xatu",
+    "nationalId": 178
+  },
+  {
+    "source": "Mareep",
+    "nationalId": 179
+  },
+  {
+    "source": "Flaaffy",
+    "nationalId": 180
+  },
+  {
+    "source": "Ampharos",
+    "nationalId": 181
+  },
+  {
+    "source": "Bellossom",
+    "nationalId": 182
+  },
+  {
+    "source": "Marill",
+    "nationalId": 183
+  },
+  {
+    "source": "Azumarill",
+    "nationalId": 184
+  },
+  {
+    "source": "Sudowoodo",
+    "nationalId": 185
+  },
+  {
+    "source": "Politoed",
+    "nationalId": 186
+  },
+  {
+    "source": "Hoppip",
+    "nationalId": 187
+  },
+  {
+    "source": "Skiploom",
+    "nationalId": 188
+  },
+  {
+    "source": "Jumpluff",
+    "nationalId": 189
+  },
+  {
+    "source": "Aipom",
+    "nationalId": 190
+  },
+  {
+    "source": "Sunkern",
+    "nationalId": 191
+  },
+  {
+    "source": "Sunflora",
+    "nationalId": 192
+  },
+  {
+    "source": "Yanma",
+    "nationalId": 193
+  },
+  {
+    "source": "Wooper",
+    "nationalId": 194
+  },
+  {
+    "source": "Quagsire",
+    "nationalId": 195
+  },
+  {
+    "source": "Espeon",
+    "nationalId": 196
+  },
+  {
+    "source": "Umbreon",
+    "nationalId": 197
+  },
+  {
+    "source": "Murkrow",
+    "nationalId": 198
+  },
+  {
+    "source": "Slowking",
+    "nationalId": 199
+  },
+  {
+    "source": "Misdreavus",
+    "nationalId": 200
+  },
+  {
+    "source": "Unown",
+    "nationalId": 201
+  },
+  {
+    "source": "Wobbuffet",
+    "nationalId": 202
+  },
+  {
+    "source": "Girafarig",
+    "nationalId": 203
+  },
+  {
+    "source": "Pineco",
+    "nationalId": 204
+  },
+  {
+    "source": "Forretress",
+    "nationalId": 205
+  },
+  {
+    "source": "Dunsparce",
+    "nationalId": 206
+  },
+  {
+    "source": "Gligar",
+    "nationalId": 207
+  },
+  {
+    "source": "Steelix",
+    "nationalId": 208
+  },
+  {
+    "source": "Snubbull",
+    "nationalId": 209
+  },
+  {
+    "source": "Granbull",
+    "nationalId": 210
+  },
+  {
+    "source": "Qwilfish",
+    "nationalId": 211
+  },
+  {
+    "source": "Scizor",
+    "nationalId": 212
+  },
+  {
+    "source": "Shuckle",
+    "nationalId": 213
+  },
+  {
+    "source": "Heracross",
+    "nationalId": 214
+  },
+  {
+    "source": "Sneasel",
+    "nationalId": 215
+  },
+  {
+    "source": "Teddiursa",
+    "nationalId": 216
+  },
+  {
+    "source": "Ursaring",
+    "nationalId": 217
+  },
+  {
+    "source": "Slugma",
+    "nationalId": 218
+  },
+  {
+    "source": "Magcargo",
+    "nationalId": 219
+  },
+  {
+    "source": "Swinub",
+    "nationalId": 220
+  },
+  {
+    "source": "Piloswine",
+    "nationalId": 221
+  },
+  {
+    "source": "Corsola",
+    "nationalId": 222
+  },
+  {
+    "source": "Remoraid",
+    "nationalId": 223
+  },
+  {
+    "source": "Octillery",
+    "nationalId": 224
+  },
+  {
+    "source": "Delibird",
+    "nationalId": 225
+  },
+  {
+    "source": "Mantine",
+    "nationalId": 226
+  },
+  {
+    "source": "Skarmory",
+    "nationalId": 227
+  },
+  {
+    "source": "Houndour",
+    "nationalId": 228
+  },
+  {
+    "source": "Houndoom",
+    "nationalId": 229
+  },
+  {
+    "source": "Kingdra",
+    "nationalId": 230
+  },
+  {
+    "source": "Phanpy",
+    "nationalId": 231
+  },
+  {
+    "source": "Donphan",
+    "nationalId": 232
+  },
+  {
+    "source": "Porygon2",
+    "nationalId": 233
+  },
+  {
+    "source": "Stantler",
+    "nationalId": 234
+  },
+  {
+    "source": "Smeargle",
+    "nationalId": 235
+  },
+  {
+    "source": "Tyrogue",
+    "nationalId": 236
+  },
+  {
+    "source": "Hitmontop",
+    "nationalId": 237
+  },
+  {
+    "source": "Smoochum",
+    "nationalId": 238
+  },
+  {
+    "source": "Elekid",
+    "nationalId": 239
+  },
+  {
+    "source": "Magby",
+    "nationalId": 240
+  },
+  {
+    "source": "Miltank",
+    "nationalId": 241
+  },
+  {
+    "source": "Blissey",
+    "nationalId": 242
+  },
+  {
+    "source": "Raikou",
+    "nationalId": 243
+  },
+  {
+    "source": "Entei",
+    "nationalId": 244
+  },
+  {
+    "source": "Suicune",
+    "nationalId": 245
+  },
+  {
+    "source": "Larvitar",
+    "nationalId": 246
+  },
+  {
+    "source": "Pupitar",
+    "nationalId": 247
+  },
+  {
+    "source": "Tyranitar",
+    "nationalId": 248
+  },
+  {
+    "source": "Lugia",
+    "nationalId": 249
+  },
+  {
+    "source": "Ho-Oh",
+    "nationalId": 250
+  },
+  {
+    "source": "Celebi",
+    "nationalId": 251
+  },
+  {
+    "source": "Treecko",
+    "nationalId": 252
+  },
+  {
+    "source": "Grovyle",
+    "nationalId": 253
+  },
+  {
+    "source": "Sceptile",
+    "nationalId": 254
+  },
+  {
+    "source": "Torchic",
+    "nationalId": 255
+  },
+  {
+    "source": "Combusken",
+    "nationalId": 256
+  },
+  {
+    "source": "Blaziken",
+    "nationalId": 257
+  },
+  {
+    "source": "Mudkip",
+    "nationalId": 258
+  },
+  {
+    "source": "Marshtomp",
+    "nationalId": 259
+  },
+  {
+    "source": "Swampert",
+    "nationalId": 260
+  },
+  {
+    "source": "Poochyena",
+    "nationalId": 261
+  },
+  {
+    "source": "Mightyena",
+    "nationalId": 262
+  },
+  {
+    "source": "Zigzagoon",
+    "nationalId": 263
+  },
+  {
+    "source": "Linoone",
+    "nationalId": 264
+  },
+  {
+    "source": "Wurmple",
+    "nationalId": 265
+  },
+  {
+    "source": "Silcoon",
+    "nationalId": 266
+  },
+  {
+    "source": "Beautifly",
+    "nationalId": 267
+  },
+  {
+    "source": "Cascoon",
+    "nationalId": 268
+  },
+  {
+    "source": "Dustox",
+    "nationalId": 269
+  },
+  {
+    "source": "Lotad",
+    "nationalId": 270
+  },
+  {
+    "source": "Lombre",
+    "nationalId": 271
+  },
+  {
+    "source": "Ludicolo",
+    "nationalId": 272
+  },
+  {
+    "source": "Seedot",
+    "nationalId": 273
+  },
+  {
+    "source": "Nuzleaf",
+    "nationalId": 274
+  },
+  {
+    "source": "Shiftry",
+    "nationalId": 275
+  },
+  {
+    "source": "Taillow",
+    "nationalId": 276
+  },
+  {
+    "source": "Swellow",
+    "nationalId": 277
+  },
+  {
+    "source": "Wingull",
+    "nationalId": 278
+  },
+  {
+    "source": "Pelipper",
+    "nationalId": 279
+  },
+  {
+    "source": "Ralts",
+    "nationalId": 280
+  },
+  {
+    "source": "Kirlia",
+    "nationalId": 281
+  },
+  {
+    "source": "Gardevoir",
+    "nationalId": 282
+  },
+  {
+    "source": "Surskit",
+    "nationalId": 283
+  },
+  {
+    "source": "Masquerain",
+    "nationalId": 284
+  },
+  {
+    "source": "Shroomish",
+    "nationalId": 285
+  },
+  {
+    "source": "Breloom",
+    "nationalId": 286
+  },
+  {
+    "source": "Slakoth",
+    "nationalId": 287
+  },
+  {
+    "source": "Vigoroth",
+    "nationalId": 288
+  },
+  {
+    "source": "Slaking",
+    "nationalId": 289
+  },
+  {
+    "source": "Nincada",
+    "nationalId": 290
+  },
+  {
+    "source": "Ninjask",
+    "nationalId": 291
+  },
+  {
+    "source": "Shedinja",
+    "nationalId": 292
+  },
+  {
+    "source": "Whismur",
+    "nationalId": 293
+  },
+  {
+    "source": "Loudred",
+    "nationalId": 294
+  },
+  {
+    "source": "Exploud",
+    "nationalId": 295
+  },
+  {
+    "source": "Makuhita",
+    "nationalId": 296
+  },
+  {
+    "source": "Hariyama",
+    "nationalId": 297
+  },
+  {
+    "source": "Azurill",
+    "nationalId": 298
+  },
+  {
+    "source": "Nosepass",
+    "nationalId": 299
+  },
+  {
+    "source": "Skitty",
+    "nationalId": 300
+  },
+  {
+    "source": "Delcatty",
+    "nationalId": 301
+  },
+  {
+    "source": "Sableye",
+    "nationalId": 302
+  },
+  {
+    "source": "Mawile",
+    "nationalId": 303
+  },
+  {
+    "source": "Aron",
+    "nationalId": 304
+  },
+  {
+    "source": "Lairon",
+    "nationalId": 305
+  },
+  {
+    "source": "Aggron",
+    "nationalId": 306
+  },
+  {
+    "source": "Meditite",
+    "nationalId": 307
+  },
+  {
+    "source": "Medicham",
+    "nationalId": 308
+  },
+  {
+    "source": "Electrike",
+    "nationalId": 309
+  },
+  {
+    "source": "Manectric",
+    "nationalId": 310
+  },
+  {
+    "source": "Plusle",
+    "nationalId": 311
+  },
+  {
+    "source": "Minun",
+    "nationalId": 312
+  },
+  {
+    "source": "Volbeat",
+    "nationalId": 313
+  },
+  {
+    "source": "Illumise",
+    "nationalId": 314
+  },
+  {
+    "source": "Roselia",
+    "nationalId": 315
+  },
+  {
+    "source": "Gulpin",
+    "nationalId": 316
+  },
+  {
+    "source": "Swalot",
+    "nationalId": 317
+  },
+  {
+    "source": "Carvanha",
+    "nationalId": 318
+  },
+  {
+    "source": "Sharpedo",
+    "nationalId": 319
+  },
+  {
+    "source": "Wailmer",
+    "nationalId": 320
+  },
+  {
+    "source": "Wailord",
+    "nationalId": 321
+  },
+  {
+    "source": "Numel",
+    "nationalId": 322
+  },
+  {
+    "source": "Camerupt",
+    "nationalId": 323
+  },
+  {
+    "source": "Torkoal",
+    "nationalId": 324
+  },
+  {
+    "source": "Spoink",
+    "nationalId": 325
+  },
+  {
+    "source": "Grumpig",
+    "nationalId": 326
+  },
+  {
+    "source": "Spinda",
+    "nationalId": 327
+  },
+  {
+    "source": "Trapinch",
+    "nationalId": 328
+  },
+  {
+    "source": "Vibrava",
+    "nationalId": 329
+  },
+  {
+    "source": "Flygon",
+    "nationalId": 330
+  },
+  {
+    "source": "Cacnea",
+    "nationalId": 331
+  },
+  {
+    "source": "Cacturne",
+    "nationalId": 332
+  },
+  {
+    "source": "Swablu",
+    "nationalId": 333
+  },
+  {
+    "source": "Altaria",
+    "nationalId": 334
+  },
+  {
+    "source": "Zangoose",
+    "nationalId": 335
+  },
+  {
+    "source": "Seviper",
+    "nationalId": 336
+  },
+  {
+    "source": "Lunatone",
+    "nationalId": 337
+  },
+  {
+    "source": "Solrock",
+    "nationalId": 338
+  },
+  {
+    "source": "Barboach",
+    "nationalId": 339
+  },
+  {
+    "source": "Whiscash",
+    "nationalId": 340
+  },
+  {
+    "source": "Corphish",
+    "nationalId": 341
+  },
+  {
+    "source": "Crawdaunt",
+    "nationalId": 342
+  },
+  {
+    "source": "Baltoy",
+    "nationalId": 343
+  },
+  {
+    "source": "Claydol",
+    "nationalId": 344
+  },
+  {
+    "source": "Lileep",
+    "nationalId": 345
+  },
+  {
+    "source": "Cradily",
+    "nationalId": 346
+  },
+  {
+    "source": "Anorith",
+    "nationalId": 347
+  },
+  {
+    "source": "Armaldo",
+    "nationalId": 348
+  },
+  {
+    "source": "Feebas",
+    "nationalId": 349
+  },
+  {
+    "source": "Milotic",
+    "nationalId": 350
+  },
+  {
+    "source": "Castform",
+    "nationalId": 351
+  },
+  {
+    "source": "Kecleon",
+    "nationalId": 352
+  },
+  {
+    "source": "Shuppet",
+    "nationalId": 353
+  },
+  {
+    "source": "Banette",
+    "nationalId": 354
+  },
+  {
+    "source": "Duskull",
+    "nationalId": 355
+  },
+  {
+    "source": "Dusclops",
+    "nationalId": 356
+  },
+  {
+    "source": "Tropius",
+    "nationalId": 357
+  },
+  {
+    "source": "Chimecho",
+    "nationalId": 358
+  },
+  {
+    "source": "Absol",
+    "nationalId": 359
+  },
+  {
+    "source": "Wynaut",
+    "nationalId": 360
+  },
+  {
+    "source": "Snorunt",
+    "nationalId": 361
+  },
+  {
+    "source": "Glalie",
+    "nationalId": 362
+  },
+  {
+    "source": "Spheal",
+    "nationalId": 363
+  },
+  {
+    "source": "Sealeo",
+    "nationalId": 364
+  },
+  {
+    "source": "Walrein",
+    "nationalId": 365
+  },
+  {
+    "source": "Clamperl",
+    "nationalId": 366
+  },
+  {
+    "source": "Huntail",
+    "nationalId": 367
+  },
+  {
+    "source": "Gorebyss",
+    "nationalId": 368
+  },
+  {
+    "source": "Relicanth",
+    "nationalId": 369
+  },
+  {
+    "source": "Luvdisc",
+    "nationalId": 370
+  },
+  {
+    "source": "Bagon",
+    "nationalId": 371
+  },
+  {
+    "source": "Shelgon",
+    "nationalId": 372
+  },
+  {
+    "source": "Salamence",
+    "nationalId": 373
+  },
+  {
+    "source": "Beldum",
+    "nationalId": 374
+  },
+  {
+    "source": "Metang",
+    "nationalId": 375
+  },
+  {
+    "source": "Metagross",
+    "nationalId": 376
+  },
+  {
+    "source": "Regirock",
+    "nationalId": 377
+  },
+  {
+    "source": "Regice",
+    "nationalId": 378
+  },
+  {
+    "source": "Registeel",
+    "nationalId": 379
+  },
+  {
+    "source": "Latias",
+    "nationalId": 380
+  },
+  {
+    "source": "Latios",
+    "nationalId": 381
+  },
+  {
+    "source": "Kyogre",
+    "nationalId": 382
+  },
+  {
+    "source": "Groudon",
+    "nationalId": 383
+  },
+  {
+    "source": "Rayquaza",
+    "nationalId": 384
+  },
+  {
+    "source": "Jirachi",
+    "nationalId": 385
+  },
+  {
+    "source": "Deoxys",
+    "nationalId": 386
+  },
+  {
+    "source": "Turtwig",
+    "nationalId": 387
+  },
+  {
+    "source": "Grotle",
+    "nationalId": 388
+  },
+  {
+    "source": "Torterra",
+    "nationalId": 389
+  },
+  {
+    "source": "Chimchar",
+    "nationalId": 390
+  },
+  {
+    "source": "Monferno",
+    "nationalId": 391
+  },
+  {
+    "source": "Infernape",
+    "nationalId": 392
+  },
+  {
+    "source": "Piplup",
+    "nationalId": 393
+  },
+  {
+    "source": "Prinplup",
+    "nationalId": 394
+  },
+  {
+    "source": "Empoleon",
+    "nationalId": 395
+  },
+  {
+    "source": "Starly",
+    "nationalId": 396
+  },
+  {
+    "source": "Staravia",
+    "nationalId": 397
+  },
+  {
+    "source": "Staraptor",
+    "nationalId": 398
+  },
+  {
+    "source": "Bidoof",
+    "nationalId": 399
+  },
+  {
+    "source": "Bibarel",
+    "nationalId": 400
+  },
+  {
+    "source": "Kricketot",
+    "nationalId": 401
+  },
+  {
+    "source": "Kricketune",
+    "nationalId": 402
+  },
+  {
+    "source": "Shinx",
+    "nationalId": 403
+  },
+  {
+    "source": "Luxio",
+    "nationalId": 404
+  },
+  {
+    "source": "Luxray",
+    "nationalId": 405
+  },
+  {
+    "source": "Budew",
+    "nationalId": 406
+  },
+  {
+    "source": "Roserade",
+    "nationalId": 407
+  },
+  {
+    "source": "Cranidos",
+    "nationalId": 408
+  },
+  {
+    "source": "Rampardos",
+    "nationalId": 409
+  },
+  {
+    "source": "Shieldon",
+    "nationalId": 410
+  },
+  {
+    "source": "Bastiodon",
+    "nationalId": 411
+  },
+  {
+    "source": "Burmy",
+    "nationalId": 412
+  },
+  {
+    "source": "Wormadam",
+    "nationalId": 413
+  },
+  {
+    "source": "Mothim",
+    "nationalId": 414
+  },
+  {
+    "source": "Combee",
+    "nationalId": 415
+  },
+  {
+    "source": "Vespiquen",
+    "nationalId": 416
+  },
+  {
+    "source": "Pachirisu",
+    "nationalId": 417
+  },
+  {
+    "source": "Buizel",
+    "nationalId": 418
+  },
+  {
+    "source": "Floatzel",
+    "nationalId": 419
+  },
+  {
+    "source": "Cherubi",
+    "nationalId": 420
+  },
+  {
+    "source": "Cherrim",
+    "nationalId": 421
+  },
+  {
+    "source": "Shellos",
+    "nationalId": 422
+  },
+  {
+    "source": "Gastrodon",
+    "nationalId": 423
+  },
+  {
+    "source": "Ambipom",
+    "nationalId": 424
+  },
+  {
+    "source": "Drifloon",
+    "nationalId": 425
+  },
+  {
+    "source": "Drifblim",
+    "nationalId": 426
+  },
+  {
+    "source": "Buneary",
+    "nationalId": 427
+  },
+  {
+    "source": "Lopunny",
+    "nationalId": 428
+  },
+  {
+    "source": "Mismagius",
+    "nationalId": 429
+  },
+  {
+    "source": "Honchkrow",
+    "nationalId": 430
+  },
+  {
+    "source": "Glameow",
+    "nationalId": 431
+  },
+  {
+    "source": "Purugly",
+    "nationalId": 432
+  },
+  {
+    "source": "Chingling",
+    "nationalId": 433
+  },
+  {
+    "source": "Stunky",
+    "nationalId": 434
+  },
+  {
+    "source": "Skuntank",
+    "nationalId": 435
+  },
+  {
+    "source": "Bronzor",
+    "nationalId": 436
+  },
+  {
+    "source": "Bronzong",
+    "nationalId": 437
+  },
+  {
+    "source": "Bonsly",
+    "nationalId": 438
+  },
+  {
+    "source": "Mime Jr.",
+    "nationalId": 439
+  },
+  {
+    "source": "Happiny",
+    "nationalId": 440
+  },
+  {
+    "source": "Chatot",
+    "nationalId": 441
+  },
+  {
+    "source": "Spiritomb",
+    "nationalId": 442
+  },
+  {
+    "source": "Gible",
+    "nationalId": 443
+  },
+  {
+    "source": "Gabite",
+    "nationalId": 444
+  },
+  {
+    "source": "Garchomp",
+    "nationalId": 445
+  },
+  {
+    "source": "Munchlax",
+    "nationalId": 446
+  },
+  {
+    "source": "Riolu",
+    "nationalId": 447
+  },
+  {
+    "source": "Lucario",
+    "nationalId": 448
+  },
+  {
+    "source": "Hippopotas",
+    "nationalId": 449
+  },
+  {
+    "source": "Hippowdon",
+    "nationalId": 450
+  },
+  {
+    "source": "Skorupi",
+    "nationalId": 451
+  },
+  {
+    "source": "Drapion",
+    "nationalId": 452
+  },
+  {
+    "source": "Croagunk",
+    "nationalId": 453
+  },
+  {
+    "source": "Toxicroak",
+    "nationalId": 454
+  },
+  {
+    "source": "Carnivine",
+    "nationalId": 455
+  },
+  {
+    "source": "Finneon",
+    "nationalId": 456
+  },
+  {
+    "source": "Lumineon",
+    "nationalId": 457
+  },
+  {
+    "source": "Mantyke",
+    "nationalId": 458
+  },
+  {
+    "source": "Snover",
+    "nationalId": 459
+  },
+  {
+    "source": "Abomasnow",
+    "nationalId": 460
+  },
+  {
+    "source": "Weavile",
+    "nationalId": 461
+  },
+  {
+    "source": "Magnezone",
+    "nationalId": 462
+  },
+  {
+    "source": "Lickilicky",
+    "nationalId": 463
+  },
+  {
+    "source": "Rhyperior",
+    "nationalId": 464
+  },
+  {
+    "source": "Tangrowth",
+    "nationalId": 465
+  },
+  {
+    "source": "Electivire",
+    "nationalId": 466
+  },
+  {
+    "source": "Magmortar",
+    "nationalId": 467
+  },
+  {
+    "source": "Togekiss",
+    "nationalId": 468
+  },
+  {
+    "source": "Yanmega",
+    "nationalId": 469
+  },
+  {
+    "source": "Leafeon",
+    "nationalId": 470
+  },
+  {
+    "source": "Glaceon",
+    "nationalId": 471
+  },
+  {
+    "source": "Gliscor",
+    "nationalId": 472
+  },
+  {
+    "source": "Mamoswine",
+    "nationalId": 473
+  },
+  {
+    "source": "Porygon-Z",
+    "nationalId": 474
+  },
+  {
+    "source": "Gallade",
+    "nationalId": 475
+  },
+  {
+    "source": "Probopass",
+    "nationalId": 476
+  },
+  {
+    "source": "Dusknoir",
+    "nationalId": 477
+  },
+  {
+    "source": "Froslass",
+    "nationalId": 478
+  },
+  {
+    "source": "Rotom",
+    "nationalId": 479
+  },
+  {
+    "source": "Uxie",
+    "nationalId": 480
+  },
+  {
+    "source": "Mesprit",
+    "nationalId": 481
+  },
+  {
+    "source": "Azelf",
+    "nationalId": 482
+  },
+  {
+    "source": "Dialga",
+    "nationalId": 483
+  },
+  {
+    "source": "Palkia",
+    "nationalId": 484
+  },
+  {
+    "source": "Heatran",
+    "nationalId": 485
+  },
+  {
+    "source": "Regigigas",
+    "nationalId": 486
+  },
+  {
+    "source": "Giratina",
+    "nationalId": 487
+  },
+  {
+    "source": "Cresselia",
+    "nationalId": 488
+  },
+  {
+    "source": "Phione",
+    "nationalId": 489
+  },
+  {
+    "source": "Manaphy",
+    "nationalId": 490
+  },
+  {
+    "source": "Darkrai",
+    "nationalId": 491
+  },
+  {
+    "source": "Shaymin",
+    "nationalId": 492
+  },
+  {
+    "source": "Arceus",
+    "nationalId": 493
+  },
+  {
+    "source": "Victini",
+    "nationalId": 494
+  },
+  {
+    "source": "Snivy",
+    "nationalId": 495
+  },
+  {
+    "source": "Servine",
+    "nationalId": 496
+  },
+  {
+    "source": "Serperior",
+    "nationalId": 497
+  },
+  {
+    "source": "Tepig",
+    "nationalId": 498
+  },
+  {
+    "source": "Pignite",
+    "nationalId": 499
+  },
+  {
+    "source": "Emboar",
+    "nationalId": 500
+  },
+  {
+    "source": "Oshawott",
+    "nationalId": 501
+  },
+  {
+    "source": "Dewott",
+    "nationalId": 502
+  },
+  {
+    "source": "Samurott",
+    "nationalId": 503
+  },
+  {
+    "source": "Patrat",
+    "nationalId": 504
+  },
+  {
+    "source": "Watchog",
+    "nationalId": 505
+  },
+  {
+    "source": "Lillipup",
+    "nationalId": 506
+  },
+  {
+    "source": "Herdier",
+    "nationalId": 507
+  },
+  {
+    "source": "Stoutland",
+    "nationalId": 508
+  },
+  {
+    "source": "Purrloin",
+    "nationalId": 509
+  },
+  {
+    "source": "Liepard",
+    "nationalId": 510
+  },
+  {
+    "source": "Pansage",
+    "nationalId": 511
+  },
+  {
+    "source": "Simisage",
+    "nationalId": 512
+  },
+  {
+    "source": "Pansear",
+    "nationalId": 513
+  },
+  {
+    "source": "Simisear",
+    "nationalId": 514
+  },
+  {
+    "source": "Panpour",
+    "nationalId": 515
+  },
+  {
+    "source": "Simipour",
+    "nationalId": 516
+  },
+  {
+    "source": "Munna",
+    "nationalId": 517
+  },
+  {
+    "source": "Musharna",
+    "nationalId": 518
+  },
+  {
+    "source": "Pidove",
+    "nationalId": 519
+  },
+  {
+    "source": "Tranquill",
+    "nationalId": 520
+  },
+  {
+    "source": "Unfezant",
+    "nationalId": 521
+  },
+  {
+    "source": "Blitzle",
+    "nationalId": 522
+  },
+  {
+    "source": "Zebstrika",
+    "nationalId": 523
+  },
+  {
+    "source": "Roggenrola",
+    "nationalId": 524
+  },
+  {
+    "source": "Boldore",
+    "nationalId": 525
+  },
+  {
+    "source": "Gigalith",
+    "nationalId": 526
+  },
+  {
+    "source": "Woobat",
+    "nationalId": 527
+  },
+  {
+    "source": "Swoobat",
+    "nationalId": 528
+  },
+  {
+    "source": "Drilbur",
+    "nationalId": 529
+  },
+  {
+    "source": "Excadrill",
+    "nationalId": 530
+  },
+  {
+    "source": "Audino",
+    "nationalId": 531
+  },
+  {
+    "source": "Timburr",
+    "nationalId": 532
+  },
+  {
+    "source": "Gurdurr",
+    "nationalId": 533
+  },
+  {
+    "source": "Conkeldurr",
+    "nationalId": 534
+  },
+  {
+    "source": "Tympole",
+    "nationalId": 535
+  },
+  {
+    "source": "Palpitoad",
+    "nationalId": 536
+  },
+  {
+    "source": "Seismitoad",
+    "nationalId": 537
+  },
+  {
+    "source": "Throh",
+    "nationalId": 538
+  },
+  {
+    "source": "Sawk",
+    "nationalId": 539
+  },
+  {
+    "source": "Sewaddle",
+    "nationalId": 540
+  },
+  {
+    "source": "Swadloon",
+    "nationalId": 541
+  },
+  {
+    "source": "Leavanny",
+    "nationalId": 542
+  },
+  {
+    "source": "Venipede",
+    "nationalId": 543
+  },
+  {
+    "source": "Whirlipede",
+    "nationalId": 544
+  },
+  {
+    "source": "Scolipede",
+    "nationalId": 545
+  },
+  {
+    "source": "Cottonee",
+    "nationalId": 546
+  },
+  {
+    "source": "Whimsicott",
+    "nationalId": 547
+  },
+  {
+    "source": "Petilil",
+    "nationalId": 548
+  },
+  {
+    "source": "Lilligant",
+    "nationalId": 549
+  },
+  {
+    "source": "Basculin",
+    "nationalId": 550
+  },
+  {
+    "source": "Sandile",
+    "nationalId": 551
+  },
+  {
+    "source": "Krokorok",
+    "nationalId": 552
+  },
+  {
+    "source": "Krookodile",
+    "nationalId": 553
+  },
+  {
+    "source": "Darumaka",
+    "nationalId": 554
+  },
+  {
+    "source": "Darmanitan",
+    "nationalId": 555
+  },
+  {
+    "source": "Maractus",
+    "nationalId": 556
+  },
+  {
+    "source": "Dwebble",
+    "nationalId": 557
+  },
+  {
+    "source": "Crustle",
+    "nationalId": 558
+  },
+  {
+    "source": "Scraggy",
+    "nationalId": 559
+  },
+  {
+    "source": "Scrafty",
+    "nationalId": 560
+  },
+  {
+    "source": "Sigilyph",
+    "nationalId": 561
+  },
+  {
+    "source": "Yamask",
+    "nationalId": 562
+  },
+  {
+    "source": "Cofagrigus",
+    "nationalId": 563
+  },
+  {
+    "source": "Tirtouga",
+    "nationalId": 564
+  },
+  {
+    "source": "Carracosta",
+    "nationalId": 565
+  },
+  {
+    "source": "Archen",
+    "nationalId": 566
+  },
+  {
+    "source": "Archeops",
+    "nationalId": 567
+  },
+  {
+    "source": "Trubbish",
+    "nationalId": 568
+  },
+  {
+    "source": "Garbodor",
+    "nationalId": 569
+  },
+  {
+    "source": "Zorua",
+    "nationalId": 570
+  },
+  {
+    "source": "Zoroark",
+    "nationalId": 571
+  },
+  {
+    "source": "Minccino",
+    "nationalId": 572
+  },
+  {
+    "source": "Cinccino",
+    "nationalId": 573
+  },
+  {
+    "source": "Gothita",
+    "nationalId": 574
+  },
+  {
+    "source": "Gothorita",
+    "nationalId": 575
+  },
+  {
+    "source": "Gothitelle",
+    "nationalId": 576
+  },
+  {
+    "source": "Solosis",
+    "nationalId": 577
+  },
+  {
+    "source": "Duosion",
+    "nationalId": 578
+  },
+  {
+    "source": "Reuniclus",
+    "nationalId": 579
+  },
+  {
+    "source": "Ducklett",
+    "nationalId": 580
+  },
+  {
+    "source": "Swanna",
+    "nationalId": 581
+  },
+  {
+    "source": "Vanillite",
+    "nationalId": 582
+  },
+  {
+    "source": "Vanillish",
+    "nationalId": 583
+  },
+  {
+    "source": "Vanilluxe",
+    "nationalId": 584
+  },
+  {
+    "source": "Deerling",
+    "nationalId": 585
+  },
+  {
+    "source": "Sawsbuck",
+    "nationalId": 586
+  },
+  {
+    "source": "Emolga",
+    "nationalId": 587
+  },
+  {
+    "source": "Karrablast",
+    "nationalId": 588
+  },
+  {
+    "source": "Escavalier",
+    "nationalId": 589
+  },
+  {
+    "source": "Foongus",
+    "nationalId": 590
+  },
+  {
+    "source": "Amoonguss",
+    "nationalId": 591
+  },
+  {
+    "source": "Frillish",
+    "nationalId": 592
+  },
+  {
+    "source": "Jellicent",
+    "nationalId": 593
+  },
+  {
+    "source": "Alomomola",
+    "nationalId": 594
+  },
+  {
+    "source": "Joltik",
+    "nationalId": 595
+  },
+  {
+    "source": "Galvantula",
+    "nationalId": 596
+  },
+  {
+    "source": "Ferroseed",
+    "nationalId": 597
+  },
+  {
+    "source": "Ferrothorn",
+    "nationalId": 598
+  },
+  {
+    "source": "Klink",
+    "nationalId": 599
+  },
+  {
+    "source": "Klang",
+    "nationalId": 600
+  },
+  {
+    "source": "Klinklang",
+    "nationalId": 601
+  },
+  {
+    "source": "Tynamo",
+    "nationalId": 602
+  },
+  {
+    "source": "Eelektrik",
+    "nationalId": 603
+  },
+  {
+    "source": "Eelektross",
+    "nationalId": 604
+  },
+  {
+    "source": "Elgyem",
+    "nationalId": 605
+  },
+  {
+    "source": "Beheeyem",
+    "nationalId": 606
+  },
+  {
+    "source": "Litwick",
+    "nationalId": 607
+  },
+  {
+    "source": "Lampent",
+    "nationalId": 608
+  },
+  {
+    "source": "Chandelure",
+    "nationalId": 609
+  },
+  {
+    "source": "Axew",
+    "nationalId": 610
+  },
+  {
+    "source": "Fraxure",
+    "nationalId": 611
+  },
+  {
+    "source": "Haxorus",
+    "nationalId": 612
+  },
+  {
+    "source": "Cubchoo",
+    "nationalId": 613
+  },
+  {
+    "source": "Beartic",
+    "nationalId": 614
+  },
+  {
+    "source": "Cryogonal",
+    "nationalId": 615
+  },
+  {
+    "source": "Shelmet",
+    "nationalId": 616
+  },
+  {
+    "source": "Accelgor",
+    "nationalId": 617
+  },
+  {
+    "source": "Stunfisk",
+    "nationalId": 618
+  },
+  {
+    "source": "Mienfoo",
+    "nationalId": 619
+  },
+  {
+    "source": "Mienshao",
+    "nationalId": 620
+  },
+  {
+    "source": "Druddigon",
+    "nationalId": 621
+  },
+  {
+    "source": "Golett",
+    "nationalId": 622
+  },
+  {
+    "source": "Golurk",
+    "nationalId": 623
+  },
+  {
+    "source": "Pawniard",
+    "nationalId": 624
+  },
+  {
+    "source": "Bisharp",
+    "nationalId": 625
+  },
+  {
+    "source": "Bouffalant",
+    "nationalId": 626
+  },
+  {
+    "source": "Rufflet",
+    "nationalId": 627
+  },
+  {
+    "source": "Braviary",
+    "nationalId": 628
+  },
+  {
+    "source": "Vullaby",
+    "nationalId": 629
+  },
+  {
+    "source": "Mandibuzz",
+    "nationalId": 630
+  },
+  {
+    "source": "Heatmor",
+    "nationalId": 631
+  },
+  {
+    "source": "Durant",
+    "nationalId": 632
+  },
+  {
+    "source": "Deino",
+    "nationalId": 633
+  },
+  {
+    "source": "Zweilous",
+    "nationalId": 634
+  },
+  {
+    "source": "Hydreigon",
+    "nationalId": 635
+  },
+  {
+    "source": "Larvesta",
+    "nationalId": 636
+  },
+  {
+    "source": "Volcarona",
+    "nationalId": 637
+  },
+  {
+    "source": "Cobalion",
+    "nationalId": 638
+  },
+  {
+    "source": "Terrakion",
+    "nationalId": 639
+  },
+  {
+    "source": "Virizion",
+    "nationalId": 640
+  },
+  {
+    "source": "Tornadus",
+    "nationalId": 641
+  },
+  {
+    "source": "Thundurus",
+    "nationalId": 642
+  },
+  {
+    "source": "Reshiram",
+    "nationalId": 643
+  },
+  {
+    "source": "Zekrom",
+    "nationalId": 644
+  },
+  {
+    "source": "Landorus",
+    "nationalId": 645
+  },
+  {
+    "source": "Kyurem",
+    "nationalId": 646
+  },
+  {
+    "source": "Keldeo",
+    "nationalId": 647
+  },
+  {
+    "source": "Meloetta",
+    "nationalId": 648
+  },
+  {
+    "source": "Genesect",
+    "nationalId": 649
+  },
+  {
+    "source": "Chespin",
+    "nationalId": 650
+  },
+  {
+    "source": "Quilladin",
+    "nationalId": 651
+  },
+  {
+    "source": "Chesnaught",
+    "nationalId": 652
+  },
+  {
+    "source": "Fennekin",
+    "nationalId": 653
+  },
+  {
+    "source": "Braixen",
+    "nationalId": 654
+  },
+  {
+    "source": "Delphox",
+    "nationalId": 655
+  },
+  {
+    "source": "Froakie",
+    "nationalId": 656
+  },
+  {
+    "source": "Frogadier",
+    "nationalId": 657
+  },
+  {
+    "source": "Greninja",
+    "nationalId": 658
+  },
+  {
+    "source": "Bunnelby",
+    "nationalId": 659
+  },
+  {
+    "source": "Diggersby",
+    "nationalId": 660
+  },
+  {
+    "source": "Fletchling",
+    "nationalId": 661
+  },
+  {
+    "source": "Fletchinder",
+    "nationalId": 662
+  },
+  {
+    "source": "Talonflame",
+    "nationalId": 663
+  },
+  {
+    "source": "Scatterbug",
+    "nationalId": 664
+  },
+  {
+    "source": "Spewpa",
+    "nationalId": 665
+  },
+  {
+    "source": "Vivillon",
+    "nationalId": 666
+  },
+  {
+    "source": "Litleo",
+    "nationalId": 667
+  },
+  {
+    "source": "Pyroar",
+    "nationalId": 668
+  },
+  {
+    "source": "Flabébé",
+    "nationalId": 669
+  },
+  {
+    "source": "Floette",
+    "nationalId": 670
+  },
+  {
+    "source": "Florges",
+    "nationalId": 671
+  },
+  {
+    "source": "Skiddo",
+    "nationalId": 672
+  },
+  {
+    "source": "Gogoat",
+    "nationalId": 673
+  },
+  {
+    "source": "Pancham",
+    "nationalId": 674
+  },
+  {
+    "source": "Pangoro",
+    "nationalId": 675
+  },
+  {
+    "source": "Furfrou",
+    "nationalId": 676
+  },
+  {
+    "source": "Espurr",
+    "nationalId": 677
+  },
+  {
+    "source": "Meowstic",
+    "nationalId": 678
+  },
+  {
+    "source": "Honedge",
+    "nationalId": 679
+  },
+  {
+    "source": "Doublade",
+    "nationalId": 680
+  },
+  {
+    "source": "Aegislash",
+    "nationalId": 681
+  },
+  {
+    "source": "Spritzee",
+    "nationalId": 682
+  },
+  {
+    "source": "Aromatisse",
+    "nationalId": 683
+  },
+  {
+    "source": "Swirlix",
+    "nationalId": 684
+  },
+  {
+    "source": "Slurpuff",
+    "nationalId": 685
+  },
+  {
+    "source": "Inkay",
+    "nationalId": 686
+  },
+  {
+    "source": "Malamar",
+    "nationalId": 687
+  },
+  {
+    "source": "Binacle",
+    "nationalId": 688
+  },
+  {
+    "source": "Barbaracle",
+    "nationalId": 689
+  },
+  {
+    "source": "Skrelp",
+    "nationalId": 690
+  },
+  {
+    "source": "Dragalge",
+    "nationalId": 691
+  },
+  {
+    "source": "Clauncher",
+    "nationalId": 692
+  },
+  {
+    "source": "Clawitzer",
+    "nationalId": 693
+  },
+  {
+    "source": "Helioptile",
+    "nationalId": 694
+  },
+  {
+    "source": "Heliolisk",
+    "nationalId": 695
+  },
+  {
+    "source": "Tyrunt",
+    "nationalId": 696
+  },
+  {
+    "source": "Tyrantrum",
+    "nationalId": 697
+  },
+  {
+    "source": "Amaura",
+    "nationalId": 698
+  },
+  {
+    "source": "Aurorus",
+    "nationalId": 699
+  },
+  {
+    "source": "Sylveon",
+    "nationalId": 700
+  },
+  {
+    "source": "Hawlucha",
+    "nationalId": 701
+  },
+  {
+    "source": "Dedenne",
+    "nationalId": 702
+  },
+  {
+    "source": "Carbink",
+    "nationalId": 703
+  },
+  {
+    "source": "Goomy",
+    "nationalId": 704
+  },
+  {
+    "source": "Sliggoo",
+    "nationalId": 705
+  },
+  {
+    "source": "Goodra",
+    "nationalId": 706
+  },
+  {
+    "source": "Klefki",
+    "nationalId": 707
+  },
+  {
+    "source": "Phantump",
+    "nationalId": 708
+  },
+  {
+    "source": "Trevenant",
+    "nationalId": 709
+  },
+  {
+    "source": "Pumpkaboo",
+    "nationalId": 710
+  },
+  {
+    "source": "Gourgeist",
+    "nationalId": 711
+  },
+  {
+    "source": "Bergmite",
+    "nationalId": 712
+  },
+  {
+    "source": "Avalugg",
+    "nationalId": 713
+  },
+  {
+    "source": "Noibat",
+    "nationalId": 714
+  },
+  {
+    "source": "Noivern",
+    "nationalId": 715
+  },
+  {
+    "source": "Xerneas",
+    "nationalId": 716
+  },
+  {
+    "source": "Yveltal",
+    "nationalId": 717
+  },
+  {
+    "source": "Zygarde",
+    "nationalId": 718
+  },
+  {
+    "source": "Diancie",
+    "nationalId": 719
+  },
+  {
+    "source": "Hoopa",
+    "nationalId": 720
+  },
+  {
+    "source": "Volcanion",
+    "nationalId": 721
+  },
+  {
+    "source": "Rowlet",
+    "nationalId": 722
+  },
+  {
+    "source": "Dartrix",
+    "nationalId": 723
+  },
+  {
+    "source": "Decidueye",
+    "nationalId": 724
+  },
+  {
+    "source": "Litten",
+    "nationalId": 725
+  },
+  {
+    "source": "Torracat",
+    "nationalId": 726
+  },
+  {
+    "source": "Incineroar",
+    "nationalId": 727
+  },
+  {
+    "source": "Popplio",
+    "nationalId": 728
+  },
+  {
+    "source": "Brionne",
+    "nationalId": 729
+  },
+  {
+    "source": "Primarina",
+    "nationalId": 730
+  },
+  {
+    "source": "Pikipek",
+    "nationalId": 731
+  },
+  {
+    "source": "Trumbeak",
+    "nationalId": 732
+  },
+  {
+    "source": "Toucannon",
+    "nationalId": 733
+  },
+  {
+    "source": "Yungoos",
+    "nationalId": 734
+  },
+  {
+    "source": "Gumshoos",
+    "nationalId": 735
+  },
+  {
+    "source": "Grubbin",
+    "nationalId": 736
+  },
+  {
+    "source": "Charjabug",
+    "nationalId": 737
+  },
+  {
+    "source": "Vikavolt",
+    "nationalId": 738
+  },
+  {
+    "source": "Crabrawler",
+    "nationalId": 739
+  },
+  {
+    "source": "Crabominable",
+    "nationalId": 740
+  },
+  {
+    "source": "Oricorio",
+    "nationalId": 741
+  },
+  {
+    "source": "Cutiefly",
+    "nationalId": 742
+  },
+  {
+    "source": "Ribombee",
+    "nationalId": 743
+  },
+  {
+    "source": "Rockruff",
+    "nationalId": 744
+  },
+  {
+    "source": "Lycanroc",
+    "nationalId": 745
+  },
+  {
+    "source": "Wishiwashi",
+    "nationalId": 746
+  },
+  {
+    "source": "Mareanie",
+    "nationalId": 747
+  },
+  {
+    "source": "Toxapex",
+    "nationalId": 748
+  },
+  {
+    "source": "Mudbray",
+    "nationalId": 749
+  },
+  {
+    "source": "Mudsdale",
+    "nationalId": 750
+  },
+  {
+    "source": "Dewpider",
+    "nationalId": 751
+  },
+  {
+    "source": "Araquanid",
+    "nationalId": 752
+  },
+  {
+    "source": "Fomantis",
+    "nationalId": 753
+  },
+  {
+    "source": "Lurantis",
+    "nationalId": 754
+  },
+  {
+    "source": "Morelull",
+    "nationalId": 755
+  },
+  {
+    "source": "Shiinotic",
+    "nationalId": 756
+  },
+  {
+    "source": "Salandit",
+    "nationalId": 757
+  },
+  {
+    "source": "Salazzle",
+    "nationalId": 758
+  },
+  {
+    "source": "Stufful",
+    "nationalId": 759
+  },
+  {
+    "source": "Bewear",
+    "nationalId": 760
+  },
+  {
+    "source": "Bounsweet",
+    "nationalId": 761
+  },
+  {
+    "source": "Steenee",
+    "nationalId": 762
+  },
+  {
+    "source": "Tsareena",
+    "nationalId": 763
+  },
+  {
+    "source": "Comfey",
+    "nationalId": 764
+  },
+  {
+    "source": "Oranguru",
+    "nationalId": 765
+  },
+  {
+    "source": "Passimian",
+    "nationalId": 766
+  },
+  {
+    "source": "Wimpod",
+    "nationalId": 767
+  },
+  {
+    "source": "Golisopod",
+    "nationalId": 768
+  },
+  {
+    "source": "Sandygast",
+    "nationalId": 769
+  },
+  {
+    "source": "Palossand",
+    "nationalId": 770
+  },
+  {
+    "source": "Pyukumuku",
+    "nationalId": 771
+  },
+  {
+    "source": "Type: Null",
+    "nationalId": 772
+  },
+  {
+    "source": "Silvally",
+    "nationalId": 773
+  },
+  {
+    "source": "Minior",
+    "nationalId": 774
+  },
+  {
+    "source": "Komala",
+    "nationalId": 775
+  },
+  {
+    "source": "Turtonator",
+    "nationalId": 776
+  },
+  {
+    "source": "Togedemaru",
+    "nationalId": 777
+  },
+  {
+    "source": "Mimikyu",
+    "nationalId": 778
+  },
+  {
+    "source": "Bruxish",
+    "nationalId": 779
+  },
+  {
+    "source": "Drampa",
+    "nationalId": 780
+  },
+  {
+    "source": "Dhelmise",
+    "nationalId": 781
+  },
+  {
+    "source": "Jangmo-o",
+    "nationalId": 782
+  },
+  {
+    "source": "Hakamo-o",
+    "nationalId": 783
+  },
+  {
+    "source": "Kommo-o",
+    "nationalId": 784
+  },
+  {
+    "source": "Tapu Koko",
+    "nationalId": 785
+  },
+  {
+    "source": "Tapu Lele",
+    "nationalId": 786
+  },
+  {
+    "source": "Tapu Bulu",
+    "nationalId": 787
+  },
+  {
+    "source": "Tapu Fini",
+    "nationalId": 788
+  },
+  {
+    "source": "Cosmog",
+    "nationalId": 789
+  },
+  {
+    "source": "Cosmoem",
+    "nationalId": 790
+  },
+  {
+    "source": "Solgaleo",
+    "nationalId": 791
+  },
+  {
+    "source": "Lunala",
+    "nationalId": 792
+  },
+  {
+    "source": "Nihilego",
+    "nationalId": 793
+  },
+  {
+    "source": "Buzzwole",
+    "nationalId": 794
+  },
+  {
+    "source": "Pheromosa",
+    "nationalId": 795
+  },
+  {
+    "source": "Xurkitree",
+    "nationalId": 796
+  },
+  {
+    "source": "Celesteela",
+    "nationalId": 797
+  },
+  {
+    "source": "Kartana",
+    "nationalId": 798
+  },
+  {
+    "source": "Guzzlord",
+    "nationalId": 799
+  },
+  {
+    "source": "Necrozma",
+    "nationalId": 800
+  },
+  {
+    "source": "Magearna",
+    "nationalId": 801
+  },
+  {
+    "source": "Marshadow",
+    "nationalId": 802
+  },
+  {
+    "source": "Poipole",
+    "nationalId": 803
+  },
+  {
+    "source": "Naganadel",
+    "nationalId": 804
+  },
+  {
+    "source": "Stakataka",
+    "nationalId": 805
+  },
+  {
+    "source": "Blacephalon",
+    "nationalId": 806
+  },
+  {
+    "source": "Zeraora",
+    "nationalId": 807
+  },
+  {
+    "source": "Meltan",
+    "nationalId": 808
+  },
+  {
+    "source": "Melmetal",
+    "nationalId": 809
+  },
+  {
+    "source": "Grookey",
+    "nationalId": 810
+  },
+  {
+    "source": "Thwackey",
+    "nationalId": 811
+  },
+  {
+    "source": "Rillaboom",
+    "nationalId": 812
+  },
+  {
+    "source": "Scorbunny",
+    "nationalId": 813
+  },
+  {
+    "source": "Raboot",
+    "nationalId": 814
+  },
+  {
+    "source": "Cinderace",
+    "nationalId": 815
+  },
+  {
+    "source": "Sobble",
+    "nationalId": 816
+  },
+  {
+    "source": "Drizzile",
+    "nationalId": 817
+  },
+  {
+    "source": "Inteleon",
+    "nationalId": 818
+  },
+  {
+    "source": "Skwovet",
+    "nationalId": 819
+  },
+  {
+    "source": "Greedent",
+    "nationalId": 820
+  },
+  {
+    "source": "Rookidee",
+    "nationalId": 821
+  },
+  {
+    "source": "Corvisquire",
+    "nationalId": 822
+  },
+  {
+    "source": "Corviknight",
+    "nationalId": 823
+  },
+  {
+    "source": "Blipbug",
+    "nationalId": 824
+  },
+  {
+    "source": "Dottler",
+    "nationalId": 825
+  },
+  {
+    "source": "Orbeetle",
+    "nationalId": 826
+  },
+  {
+    "source": "Nickit",
+    "nationalId": 827
+  },
+  {
+    "source": "Thievul",
+    "nationalId": 828
+  },
+  {
+    "source": "Gossifleur",
+    "nationalId": 829
+  },
+  {
+    "source": "Eldegoss",
+    "nationalId": 830
+  },
+  {
+    "source": "Wooloo",
+    "nationalId": 831
+  },
+  {
+    "source": "Dubwool",
+    "nationalId": 832
+  },
+  {
+    "source": "Chewtle",
+    "nationalId": 833
+  },
+  {
+    "source": "Drednaw",
+    "nationalId": 834
+  },
+  {
+    "source": "Yamper",
+    "nationalId": 835
+  },
+  {
+    "source": "Boltund",
+    "nationalId": 836
+  },
+  {
+    "source": "Rolycoly",
+    "nationalId": 837
+  },
+  {
+    "source": "Carkol",
+    "nationalId": 838
+  },
+  {
+    "source": "Coalossal",
+    "nationalId": 839
+  },
+  {
+    "source": "Applin",
+    "nationalId": 840
+  },
+  {
+    "source": "Flapple",
+    "nationalId": 841
+  },
+  {
+    "source": "Appletun",
+    "nationalId": 842
+  },
+  {
+    "source": "Silicobra",
+    "nationalId": 843
+  },
+  {
+    "source": "Sandaconda",
+    "nationalId": 844
+  },
+  {
+    "source": "Cramorant",
+    "nationalId": 845
+  },
+  {
+    "source": "Arrokuda",
+    "nationalId": 846
+  },
+  {
+    "source": "Barraskewda",
+    "nationalId": 847
+  },
+  {
+    "source": "Toxel",
+    "nationalId": 848
+  },
+  {
+    "source": "Toxtricity",
+    "nationalId": 849
+  },
+  {
+    "source": "Sizzlipede",
+    "nationalId": 850
+  },
+  {
+    "source": "Centiskorch",
+    "nationalId": 851
+  },
+  {
+    "source": "Clobbopus",
+    "nationalId": 852
+  },
+  {
+    "source": "Grapploct",
+    "nationalId": 853
+  },
+  {
+    "source": "Sinistea",
+    "nationalId": 854
+  },
+  {
+    "source": "Polteageist",
+    "nationalId": 855
+  },
+  {
+    "source": "Hatenna",
+    "nationalId": 856
+  },
+  {
+    "source": "Hattrem",
+    "nationalId": 857
+  },
+  {
+    "source": "Hatterene",
+    "nationalId": 858
+  },
+  {
+    "source": "Impidimp",
+    "nationalId": 859
+  },
+  {
+    "source": "Morgrem",
+    "nationalId": 860
+  },
+  {
+    "source": "Grimmsnarl",
+    "nationalId": 861
+  },
+  {
+    "source": "Obstagoon",
+    "nationalId": 862
+  },
+  {
+    "source": "Perrserker",
+    "nationalId": 863
+  },
+  {
+    "source": "Cursola",
+    "nationalId": 864
+  },
+  {
+    "source": "Sirfetch’d",
+    "nationalId": 865
+  },
+  {
+    "source": "Mr. Rime",
+    "nationalId": 866
+  },
+  {
+    "source": "Runerigus",
+    "nationalId": 867
+  },
+  {
+    "source": "Milcery",
+    "nationalId": 868
+  },
+  {
+    "source": "Alcremie",
+    "nationalId": 869
+  },
+  {
+    "source": "Falinks",
+    "nationalId": 870
+  },
+  {
+    "source": "Pincurchin",
+    "nationalId": 871
+  },
+  {
+    "source": "Snom",
+    "nationalId": 872
+  },
+  {
+    "source": "Frosmoth",
+    "nationalId": 873
+  },
+  {
+    "source": "Stonjourner",
+    "nationalId": 874
+  },
+  {
+    "source": "Eiscue",
+    "nationalId": 875
+  },
+  {
+    "source": "Indeedee",
+    "nationalId": 876
+  },
+  {
+    "source": "Morpeko",
+    "nationalId": 877
+  },
+  {
+    "source": "Cufant",
+    "nationalId": 878
+  },
+  {
+    "source": "Copperajah",
+    "nationalId": 879
+  },
+  {
+    "source": "Dracozolt",
+    "nationalId": 880
+  },
+  {
+    "source": "Arctozolt",
+    "nationalId": 881
+  },
+  {
+    "source": "Dracovish",
+    "nationalId": 882
+  },
+  {
+    "source": "Arctovish",
+    "nationalId": 883
+  },
+  {
+    "source": "Duraludon",
+    "nationalId": 884
+  },
+  {
+    "source": "Dreepy",
+    "nationalId": 885
+  },
+  {
+    "source": "Drakloak",
+    "nationalId": 886
+  },
+  {
+    "source": "Dragapult",
+    "nationalId": 887
+  },
+  {
+    "source": "Zacian",
+    "nationalId": 888
+  },
+  {
+    "source": "Zamazenta",
+    "nationalId": 889
+  },
+  {
+    "source": "Eternatus",
+    "nationalId": 890
+  },
+  {
+    "source": "Kubfu",
+    "nationalId": 891
+  },
+  {
+    "source": "Urshifu",
+    "nationalId": 892
+  },
+  {
+    "source": "Zarude",
+    "nationalId": 893
+  },
+  {
+    "source": "Regieleki",
+    "nationalId": 894
+  },
+  {
+    "source": "Regidrago",
+    "nationalId": 895
+  },
+  {
+    "source": "Glastrier",
+    "nationalId": 896
+  },
+  {
+    "source": "Spectrier",
+    "nationalId": 897
+  },
+  {
+    "source": "Calyrex",
+    "nationalId": 898
+  },
+  {
+    "source": "Kleavor",
+    "nationalId": 900
+  },
+  {
+    "source": "Wyrdeer",
+    "nationalId": 899
+  },
+  {
+    "source": "Basculegion",
+    "nationalId": 902
+  },
+  {
+    "source": "Overqwil",
+    "nationalId": 904
+  },
+  {
+    "source": "Sneasler",
+    "nationalId": 903
+  },
+  {
+    "source": "Sprigatito",
+    "nationalId": 906
+  },
+  {
+    "source": "Floragato",
+    "nationalId": 907
+  },
+  {
+    "source": "Meowscarada",
+    "nationalId": 908
+  },
+  {
+    "source": "Fuecoco",
+    "nationalId": 909
+  },
+  {
+    "source": "Crocalor",
+    "nationalId": 910
+  },
+  {
+    "source": "Skeledirge",
+    "nationalId": 911
+  },
+  {
+    "source": "Quaxly",
+    "nationalId": 912
+  },
+  {
+    "source": "Quaxwell",
+    "nationalId": 913
+  },
+  {
+    "source": "Quaquaval",
+    "nationalId": 914
+  },
+  {
+    "source": "Lechonk",
+    "nationalId": 915
+  },
+  {
+    "source": "Oinkologne",
+    "nationalId": 916
+  },
+  {
+    "source": "Dudunsparce",
+    "nationalId": 982
+  },
+  {
+    "source": "Tarountula",
+    "nationalId": 917
+  },
+  {
+    "source": "Spidops",
+    "nationalId": 918
+  },
+  {
+    "source": "Nymble",
+    "nationalId": 919
+  },
+  {
+    "source": "Lokix",
+    "nationalId": 920
+  },
+  {
+    "source": "Rellor",
+    "nationalId": 953
+  },
+  {
+    "source": "Rabsca",
+    "nationalId": 954
+  },
+  {
+    "source": "Greavard",
+    "nationalId": 971
+  },
+  {
+    "source": "Houndstone",
+    "nationalId": 972
+  },
+  {
+    "source": "Flittle",
+    "nationalId": 955
+  },
+  {
+    "source": "Espathra",
+    "nationalId": 956
+  },
+  {
+    "source": "Farigiraf",
+    "nationalId": 981
+  },
+  {
+    "source": "Dondozo",
+    "nationalId": 977
+  },
+  {
+    "source": "Veluza",
+    "nationalId": 976
+  },
+  {
+    "source": "Finizen",
+    "nationalId": 963
+  },
+  {
+    "source": "Palafin",
+    "nationalId": 964
+  },
+  {
+    "source": "Smoliv",
+    "nationalId": 928
+  },
+  {
+    "source": "Dolliv",
+    "nationalId": 929
+  },
+  {
+    "source": "Arboliva",
+    "nationalId": 930
+  },
+  {
+    "source": "Capsakid",
+    "nationalId": 951
+  },
+  {
+    "source": "Scovillain",
+    "nationalId": 952
+  },
+  {
+    "source": "Tadbulb",
+    "nationalId": 938
+  },
+  {
+    "source": "Bellibolt",
+    "nationalId": 939
+  },
+  {
+    "source": "Varoom",
+    "nationalId": 965
+  },
+  {
+    "source": "Revavroom",
+    "nationalId": 966
+  },
+  {
+    "source": "Orthworm",
+    "nationalId": 968
+  },
+  {
+    "source": "Tandemaus",
+    "nationalId": 924
+  },
+  {
+    "source": "Maushold",
+    "nationalId": 925
+  },
+  {
+    "source": "Cetoddle",
+    "nationalId": 974
+  },
+  {
+    "source": "Cetitan",
+    "nationalId": 975
+  },
+  {
+    "source": "Frigibax",
+    "nationalId": 996
+  },
+  {
+    "source": "Arctibax",
+    "nationalId": 997
+  },
+  {
+    "source": "Baxcalibur",
+    "nationalId": 998
+  },
+  {
+    "source": "Tatsugiri",
+    "nationalId": 978
+  },
+  {
+    "source": "Cyclizar",
+    "nationalId": 967
+  },
+  {
+    "source": "Pawmi",
+    "nationalId": 921
+  },
+  {
+    "source": "Pawmo",
+    "nationalId": 922
+  },
+  {
+    "source": "Pawmot",
+    "nationalId": 923
+  },
+  {
+    "source": "Wattrel",
+    "nationalId": 940
+  },
+  {
+    "source": "Kilowattrel",
+    "nationalId": 941
+  },
+  {
+    "source": "Bombirdier",
+    "nationalId": 962
+  },
+  {
+    "source": "Squawkabilly",
+    "nationalId": 931
+  },
+  {
+    "source": "Flamigo",
+    "nationalId": 973
+  },
+  {
+    "source": "Klawf",
+    "nationalId": 950
+  },
+  {
+    "source": "Nacli",
+    "nationalId": 932
+  },
+  {
+    "source": "Naclstack",
+    "nationalId": 933
+  },
+  {
+    "source": "Garganacl",
+    "nationalId": 934
+  },
+  {
+    "source": "Glimmet",
+    "nationalId": 969
+  },
+  {
+    "source": "Glimmora",
+    "nationalId": 970
+  },
+  {
+    "source": "Shroodle",
+    "nationalId": 944
+  },
+  {
+    "source": "Grafaiai",
+    "nationalId": 945
+  },
+  {
+    "source": "Fidough",
+    "nationalId": 926
+  },
+  {
+    "source": "Dachsbun",
+    "nationalId": 927
+  },
+  {
+    "source": "Maschiff",
+    "nationalId": 942
+  },
+  {
+    "source": "Mabosstiff",
+    "nationalId": 943
+  },
+  {
+    "source": "Bramblin",
+    "nationalId": 946
+  },
+  {
+    "source": "Brambleghast",
+    "nationalId": 947
+  },
+  {
+    "source": "Gimmighoul",
+    "nationalId": 999
+  },
+  {
+    "source": "Gholdengo",
+    "nationalId": 1000
+  },
+  {
+    "source": "Tinkatink",
+    "nationalId": 957
+  },
+  {
+    "source": "Tinkatuff",
+    "nationalId": 958
+  },
+  {
+    "source": "Tinkaton",
+    "nationalId": 959
+  },
+  {
+    "source": "Charcadet",
+    "nationalId": 935
+  },
+  {
+    "source": "Armarouge",
+    "nationalId": 936
+  },
+  {
+    "source": "Ceruledge",
+    "nationalId": 937
+  },
+  {
+    "source": "Kingambit",
+    "nationalId": 983
+  },
+  {
+    "source": "Clodsire",
+    "nationalId": 980
+  },
+  {
+    "source": "Annihilape",
+    "nationalId": 979
+  },
+  {
+    "source": "Wo-Chien",
+    "nationalId": 1001
+  },
+  {
+    "source": "Chien-Pao",
+    "nationalId": 1002
+  },
+  {
+    "source": "Ting-Lu",
+    "nationalId": 1003
+  },
+  {
+    "source": "Chi-Yu",
+    "nationalId": 1004
+  },
+  {
+    "source": "Koraidon",
+    "nationalId": 1007
+  },
+  {
+    "source": "Miraidon",
+    "nationalId": 1008
+  },
+  {
+    "source": "Ursaluna",
+    "nationalId": 901
+  },
+  {
+    "source": "Enamorus",
+    "nationalId": 905
+  },
+  {
+    "source": "Dipplin",
+    "nationalId": 1011
+  },
+  {
+    "source": "Okidogi",
+    "nationalId": 1014
+  },
+  {
+    "source": "Munkidori",
+    "nationalId": 1015
+  },
+  {
+    "source": "Fezandipiti",
+    "nationalId": 1016
+  },
+  {
+    "source": "Ogerpon",
+    "nationalId": 1017
+  },
+  {
+    "source": "Sinistcha",
+    "nationalId": 1013
+  },
+  {
+    "source": "Archaludon",
+    "nationalId": 1018
+  },
+  {
+    "source": "Hydrapple",
+    "nationalId": 1019
+  },
+  {
+    "source": "Terapagos",
+    "nationalId": 1024
+  },
+  {
+    "source": "Pecharunt",
+    "nationalId": 1025
+  }
+];
 
 const POKEMON_Z_GLOBAL_NOTES = [
   {

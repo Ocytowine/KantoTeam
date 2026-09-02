@@ -60,6 +60,21 @@ function loadCatalog() {
   return context.catalog;
 }
 
+async function loadOfficialPokemonNames() {
+  const response = await fetch("https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv/pokemon_species_names.csv");
+  if (!response.ok) throw new Error(`PokeAPI names: ${response.status}`);
+  const names = {};
+  for (const line of (await response.text()).split(/\r?\n/)) {
+    const match = line.match(/^(\d+),(5|9),("(?:[^"]|"")*"|[^,]*),/);
+    if (!match) continue;
+    const id = Number(match[1]);
+    const language = match[2] === "5" ? "fr" : "en";
+    names[id] ||= {};
+    names[id][language] = match[3].replace(/^"|"$/g, "").replace(/""/g, '"');
+  }
+  return names;
+}
+
 function getKind(text) {
   const value = normalize(text);
   if (/trade|exchange| for a | for an /.test(value)) return "trade";
@@ -74,29 +89,77 @@ function getKind(text) {
 function translateMethod(text) {
   return String(text || "")
     .replace(/How to obtain:\s*/gi, "")
-    .replace(/Evolves? from/gi, "Évolue depuis")
-    .replace(/Evolves? at/gi, "Évolue au")
-    .replace(/at [Ll]evel/gi, "au niveau")
-    .replace(/with a[n]? /gi, "avec ")
-    .replace(/Trade for a[n]? /gi, "Échanger ")
-    .replace(/Trade a[n]? /gi, "Échanger ")
     .replace(/Obtainable by breeding/gi, "Obtenu par reproduction de")
     .replace(/Obtained by breeding/gi, "Obtenu par reproduction de")
     .replace(/Obtainable (?:on|in|at) /gi, "Capturable : ")
     .replace(/Capturable (?:on|in|at) /gi, "Capturable : ")
+    .replace(/\bCatchable\b/gi, "Capturable")
+    .replace(/\bObtained\b/gi, "Obtenu")
+    .replace(/\bObtainable\b/gi, "Disponible")
+    .replace(/Evolves? from/gi, "Évolue depuis")
+    .replace(/Evolves? at/gi, "Évolue au")
+    .replace(/\bEvolve\b/gi, "Faire évoluer")
+    .replace(/\bevolves\b/gi, "évolue")
+    .replace(/at [Ll]evel/gi, "au niveau")
+    .replace(/with a[n]? /gi, "avec ")
+    .replace(/Trade for a[n]? /gi, "Échanger ")
+    .replace(/Trade a[n]? /gi, "Échanger ")
+    .replace(/\bTradeable\b/gi, "Échangeable")
+    .replace(/\bTrade for\b/gi, "Échange contre")
+    .replace(/\bTrade\b/gi, "Échange")
+    .replace(/\bExchange for\b/gi, "Échange contre")
     .replace(/Location:\s*/gi, "Lieu : ")
     .replace(/Requirement:\s*/gi, "Condition : ")
+    .replace(/\bEmpty party slot\b/gi, "Une place libre dans l'équipe")
+    .replace(/\bWater Stone\b/gi, "Pierre Eau")
+    .replace(/\bLeaf Stone\b/gi, "Pierre Plante")
+    .replace(/\bMoon Stone\b/gi, "Pierre Lune")
+    .replace(/\bSun Stone\b/gi, "Pierre Soleil")
+    .replace(/\bShiny Stone\b/gi, "Pierre Éclat")
+    .replace(/\bDusk Stone\b/gi, "Pierre Nuit")
+    .replace(/\bDawn Stone\b/gi, "Pierre Aube")
+    .replace(/\bIce Stone\b/gi, "Pierre Glace")
+    .replace(/\bFire Stone\b/gi, "Pierre Feu")
+    .replace(/\bThunder Stone\b/gi, "Pierre Foudre")
+    .replace(/\bOval Stone\b/gi, "Pierre Ovale")
+    .replace(/\bDay Stone\b/gi, "Pierre Jour")
+    .replace(/\bNight Stone\b/gi, "Pierre Nuit")
+    .replace(/\bKing[’']s Rock\b/gi, "Roche Royale")
+    .replace(/\bHelix Fossil\b/gi, "Fossile Nautile")
+    .replace(/\bDome Fossil\b/gi, "Fossile Dôme")
+    .replace(/\bRoot Fossil\b/gi, "Fossile Racine")
+    .replace(/\bClaw Fossil\b/gi, "Fossile Griffe")
+    .replace(/\bby friendship\b/gi, "avec un bonheur élevé")
+    .replace(/\bby happiness\b/gi, "avec un bonheur élevé")
+    .replace(/\bby leveling up once\b/gi, "en gagnant un niveau")
+    .replace(/\bFriendship Evolution\b/gi, "Évolution par bonheur")
+    .replace(/\bFriendship \+ Daytime level\b/gi, "Bonheur élevé + gain de niveau de jour")
+    .replace(/\bfriendship\b/gi, "bonheur élevé")
+    .replace(/\bhappiness\b/gi, "bonheur élevé")
+    .replace(/\bduring the day\b/gi, "pendant la journée")
+    .replace(/\bat night\b/gi, "de nuit")
+    .replace(/\bwhen\b/gi, "lorsque")
+    .replace(/\bUse\b/gi, "Utiliser")
+    .replace(/\bafter defeating\b/gi, "après avoir vaincu")
+    .replace(/\bafter completing\b/gi, "après avoir terminé")
+    .replace(/\bafter returning\b/gi, "après avoir rendu")
     .replace(/after /gi, "après ")
     .replace(/during /gi, "pendant ")
     .replace(/ or /gi, " ou ")
     .replace(/ and /gi, " et ")
-    .replace(/\bat\b/gi, "a")
+    .replace(/\bat\b/gi, "à")
     .replace(/\bin\b/gi, "dans")
     .replace(/\bon\b/gi, "sur")
-    .replace(/\bafter defeating\b/gi, "apres avoir vaincu")
-    .replace(/\bafter completing\b/gi, "apres avoir termine")
+    .replace(/\bwith\b/gi, "avec")
     .replace(/\busing\b/gi, "avec")
     .replace(/\bfrom\b/gi, "depuis")
+    .replace(/\bfor an?\b/gi, "contre")
+    .replace(/\bfor\b/gi, "contre")
+    .replace(/\bby\b/gi, "avec")
+    .replace(/\bknowing\b/gi, "en connaissant")
+    .replace(/\breturning\b/gi, "avoir rendu")
+    .replace(/\bmale\b/gi, "mâle")
+    .replace(/\bfemale\b/gi, "femelle")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -119,6 +182,7 @@ function addMethod(guide, pokemon, text, source, confidence = "documented") {
 
 async function main() {
   const catalog = loadCatalog();
+  const officialNames = await loadOfficialPokemonNames();
   const byName = new Map();
   for (const pokemon of catalog) {
     byName.set(normalize(pokemon.name), pokemon);
@@ -175,7 +239,13 @@ async function main() {
     }
   ];
 
-  const output = `// Donnees d'obtention compilees pour Pokemon Z v2.12.\nconst POKEMON_Z_GUIDE = ${JSON.stringify(guide, null, 2)};\n\nconst POKEMON_Z_GLOBAL_NOTES = ${JSON.stringify(globalNotes, null, 2)};\n`;
+  const pokemonNames = catalog
+    .filter((pokemon) => pokemon.nationalId && officialNames[pokemon.nationalId]?.en)
+    .map((pokemon) => ({
+      source: officialNames[pokemon.nationalId].en,
+      nationalId: pokemon.nationalId
+    }));
+  const output = `// Donnees d'obtention compilees pour Pokemon Z v2.12.\nconst POKEMON_Z_GUIDE = ${JSON.stringify(guide, null, 2)};\n\n// Noms anglais susceptibles d'etre cites par le guide, relies au catalogue FR.\nconst POKEMON_Z_GUIDE_POKEMON_NAMES = ${JSON.stringify(pokemonNames, null, 2)};\n\nconst POKEMON_Z_GLOBAL_NOTES = ${JSON.stringify(globalNotes, null, 2)};\n`;
   const outputPath = path.resolve(__dirname, "../src/pokemon-z-guide-data.js");
   fs.writeFileSync(outputPath, output, "utf8");
   console.log(`Generated ${Object.keys(guide).length}/${catalog.length} guide entries (${unresolved.length} unresolved rows).`);

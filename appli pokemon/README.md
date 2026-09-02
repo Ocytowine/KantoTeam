@@ -4,7 +4,7 @@ KantoTeam est une application web locale pour creer et analyser des equipes Poke
 
 Le switch principal bascule toute l'application entre `Kanto Reforged` et `Pokemon Z v2.12 Patch 1`. Chaque version possede ses trois propres slots, sa bibliotheque et ses equipes partagees : aucune donnee de jeu n'est melangee.
 
-La source Pokemon Z contient les 1 018 entrees definies par le jeu : Pokemon officiels disponibles, formes Z et Fakemon. Le guide d'obtention associe une methode documentee aux 1 018 entrees (capture, evolution, echange PNJ, reproduction, fossile, don ou condition speciale).
+La source Pokemon Z contient les 1 018 entrees definies par le jeu : Pokemon officiels disponibles, formes Z et Fakemon. Le guide d'obtention associe une methode documentee aux 1 018 entrees (capture, evolution, echange PNJ, reproduction, fossile, don ou condition speciale). Les rencontres sauvages sont completees avec les tables internes et les noms de cartes francais de la v2.12 Patch 1.
 
 Les sprites sont optionnels. Lorsqu'une connexion est disponible, le bouton `Afficher les sprites` charge uniquement les images des Pokemon presents dans les equipes via PokéAPI. Hors ligne, le bouton et les images restent masques sans avertissement.
 
@@ -47,6 +47,12 @@ Le guide d'obtention peut etre regenere depuis les pages publiques du guide Poke
 
 ```powershell
 node scripts/build-pokemon-z-guide.js
+```
+
+Les rencontres sauvages sont generees separement afin qu'une mise a jour du guide web ne les efface pas. Le troisieme argument est un objet JSON `{ "idCarte": "Nom francais" }` extrait de `Data/MapInfos.rxdata` de la meme version :
+
+```powershell
+node scripts/build-pokemon-z-encounters.js "C:\chemin\vers\PBS\encounters.txt" "C:\chemin\vers\PBS\pokemon.txt" "C:\chemin\vers\map-names.json"
 ```
 
 ## Variantes graphiques Pokemon Z

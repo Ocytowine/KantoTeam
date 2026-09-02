@@ -2414,8 +2414,20 @@ function getReforgedGuideInfo(name) {
 }
 
 function getPokemonZGuideInfo(id) {
-  if (typeof POKEMON_Z_GUIDE === "undefined") return null;
-  return POKEMON_Z_GUIDE[id] || null;
+  const documented = typeof POKEMON_Z_GUIDE === "undefined" ? null : POKEMON_Z_GUIDE[id];
+  const encounters = typeof POKEMON_Z_V212_ENCOUNTERS === "undefined" ? null : POKEMON_Z_V212_ENCOUNTERS[id];
+  if (!documented && !encounters) return null;
+  const methods = [...(encounters?.methods || []), ...(documented?.methods || [])];
+  const seen = new Set();
+  return {
+    ...(documented || encounters),
+    methods: methods.filter((method) => {
+      const key = `${method.kind || "special"}|${normalize(method.text || "")}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+  };
 }
 
 function helperSourceLabel(source) {
@@ -3107,8 +3119,8 @@ function renderAcquisitionMethods(methods, versionLabel, translateLocations) {
           const location = translateLocations
             ? translatePokemonZLocationText(method.text || "")
             : { text: method.text || "", pending: false };
-          const methodText = translateLocations && method.kind === "trade"
-            ? renderPokemonZTradeText(location.text)
+          const methodText = translateLocations
+            ? renderPokemonZPokemonLinks(location.text)
             : escapeHtml(location.text);
           return `
             <div class="pokemon-acquisition-method ${escapeHtml(method.kind || "special")}">
@@ -3122,18 +3134,22 @@ function renderAcquisitionMethods(methods, versionLabel, translateLocations) {
   `;
 }
 
-function renderPokemonZTradeText(text) {
-  if (typeof POKEMON_Z_TRADE_POKEMON === "undefined") return escapeHtml(text);
-  let markup = escapeHtml(text);
-  const entries = [...POKEMON_Z_TRADE_POKEMON]
+function renderPokemonZPokemonLinks(text) {
+  const sourceEntries = typeof POKEMON_Z_GUIDE_POKEMON_NAMES !== "undefined"
+    ? POKEMON_Z_GUIDE_POKEMON_NAMES
+    : (typeof POKEMON_Z_TRADE_POKEMON !== "undefined" ? POKEMON_Z_TRADE_POKEMON : []);
+  if (!sourceEntries.length) return escapeHtml(text);
+  let tokenized = String(text || "");
+  const entries = [...sourceEntries]
     .sort((left, right) => right.source.length - left.source.length);
   for (const entry of entries) {
     const pokemon = POKEMON_Z_V212.find((item) => item.nationalId === entry.nationalId);
     if (!pokemon) continue;
-    const pattern = new RegExp(entry.source.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "giu");
-    markup = markup.replace(pattern, `§§POKEMON_${entry.nationalId}§§`);
+    const escapedName = entry.source.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const pattern = new RegExp(`(?<![\\p{L}\\p{N}])${escapedName}(?![\\p{L}\\p{N}])`, "giu");
+    tokenized = tokenized.replace(pattern, `__POKEMON_${entry.nationalId}__`);
   }
-  return markup.replace(/§§POKEMON_(\d+)§§/g, (_, rawId) => {
+  return escapeHtml(tokenized).replace(/__POKEMON_(\d+)__/g, (_, rawId) => {
     const nationalId = Number(rawId);
     const pokemon = POKEMON_Z_V212.find((item) => item.nationalId === nationalId);
     if (!pokemon) return "";
