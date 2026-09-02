@@ -28,7 +28,7 @@
       activeGame: "reforged",
       games: {
         reforged: { ...base, teams: [{ name: "Equipe Reforged", preferredSource: "reforged", pokemon: [], reservePokemonIds: [] }, null, null] },
-        "pokemon-z": { ...base, teams: [{ name: "Equipe Z", preferredSource: "pokemon-z", pokemon: [], reservePokemonIds: [] }, null, null] }
+        "pokemon-z": { ...base, teams: [{ name: "Equipe Z", preferredSource: "pokemon-z", pokemon: [{ instanceId: "z-bulbizarre", sourceId: "pokemon-z-1", pokemonZId: "pokemon-z-1", nationalId: 1, name: "Bulbizarre", types: ["Plante", "Poison"], attacks: ["Plante", "Poison"] }], reservePokemonIds: [] }, null, null] }
       }
     }));
     const reloaded = loaded();
@@ -39,6 +39,9 @@
     const doc = frame.contentDocument;
     assert(doc.querySelectorAll("#team-slots .slot-card").length === 3, "Reforged doit afficher 3 slots");
     assert(doc.querySelector("#team-slots").textContent.includes("Equipe Reforged"), "Equipe Reforged absente");
+    const reforgedSlotButton = doc.querySelector('#team-slots [data-action="analysis"]');
+    const reforgedButtonColor = win.getComputedStyle(reforgedSlotButton).color.match(/[\d.]+/g)?.slice(0, 3).map(Number) || [];
+    assert(reforgedButtonColor.length === 3 && reforgedButtonColor.reduce((sum, value) => sum + value, 0) / 3 > 180, "Texte sombre sur les boutons de slot Reforged");
     doc.querySelector("#game-version-toggle").click();
     await wait(800);
     assert(doc.querySelectorAll("#team-slots .slot-card").length === 3, "Pokemon Z doit afficher 3 slots");
@@ -53,7 +56,7 @@
     doc.querySelector("#open-pokemon-search").click();
     assert(doc.querySelector("#game-version-switch").classList.contains("hidden"), "Le switch reste visible hors de la selection d'equipe");
     const query = doc.querySelector("#pokemon-search-query");
-    query.value = "Bulb";
+    query.value = "Carapuce";
     query.dispatchEvent(new win.Event("input", { bubbles: true }));
     await wait();
     const infoButton = doc.querySelector("#pokemon-search-results [data-pokemon-info-name]");
@@ -61,6 +64,41 @@
     infoButton.click();
     await wait(1800);
     assert(doc.querySelector("#pokemon-search-results .pokemon-acquisition-method"), "Guide d'obtention Pokemon Z non affiche");
+    assert(doc.querySelector("#pokemon-search-results .pokemon-guide-version")?.textContent === "v2.12", "Vignette de version Pokemon Z absente");
+    assert(!doc.querySelector("#pokemon-search-results .pokemon-guide-notes"), "La note Le Prodige est affichee a tort pour Carapuce");
+    assert(doc.querySelector("#pokemon-search-results .pokemon-acquisition-method").textContent.includes("Savinion"), "Le lieu francais de Carapuce n'est pas applique");
+    const tradePokemonLink = doc.querySelector("#pokemon-search-results [data-trade-pokemon-id='693']");
+    assert(tradePokemonLink?.textContent === "Gamblast", "Clawitzer n'est pas traduit en Gamblast");
+    tradePokemonLink.click();
+    await wait(1800);
+    assert(!doc.querySelector("#pokemon-trade-modal").classList.contains("hidden"), "La mini-fiche d'echange ne s'ouvre pas");
+    assert(doc.querySelector("#pokemon-trade-modal-title")?.textContent === "Gamblast", "La mini-fiche n'affiche pas le bon Pokemon");
+    assert(doc.querySelector("#pokemon-trade-modal .pokemon-trade-modal-sprite"), "Le sprite manque dans la mini-fiche");
+    assert(doc.querySelector("#pokemon-trade-modal .pokemon-acquisition-method"), "Le lieu d'obtention manque dans la mini-fiche");
+    doc.querySelector("#pokemon-trade-modal [data-close-trade-pokemon]").click();
+    const mobileMethodColumns = win.getComputedStyle(doc.querySelector("#pokemon-search-results .pokemon-acquisition-method")).gridTemplateColumns.trim().split(/\s+/);
+    assert(mobileMethodColumns.length === 1, "La methode d'obtention reste etroite sur mobile");
+    doc.querySelector("#pokemon-search-results [data-pokemon-card-toggle]").click();
+    const visibleMultiplier = doc.querySelector("#pokemon-search-results .multiplier.weak, #pokemon-search-results .multiplier.resist, #pokemon-search-results .multiplier.immune");
+    const multiplierStyle = win.getComputedStyle(visibleMultiplier);
+    const multiplierText = multiplierStyle.color.match(/[\d.]+/g)?.slice(0, 3).map(Number) || [];
+    assert(multiplierText.length === 3 && multiplierText.reduce((sum, value) => sum + value, 0) / 3 < 115, "Multiplicateur trop clair sur le fond Pokemon Z");
+    assert(multiplierStyle.backgroundColor.startsWith("rgb("), "Fond du multiplicateur Pokemon Z encore transparent");
+    const lightBackground = (element) => {
+      const values = frame.contentWindow.getComputedStyle(element).backgroundColor.match(/[\d.]+/g)?.slice(0, 3).map(Number) || [];
+      return values.length === 3 && values.reduce((sum, value) => sum + value, 0) / 3 > 190;
+    };
+    assert(lightBackground(doc.querySelector("#pokemon-search-results .pokemon-info-panel")), "Fond sombre dans le detail d'obtention Pokemon Z");
+    assert(lightBackground(doc.querySelector("#pokemon-search-results .pokemon-acquisition-method")), "Fond sombre dans une methode d'obtention Pokemon Z");
+    doc.querySelector("#back-to-slots").click();
+    await wait();
+    doc.querySelector('#team-slots [data-action="simulation"]').click();
+    await wait();
+    const versusPanel = doc.querySelector("#simulation-panel");
+    assert(lightBackground(versusPanel), "Fond sombre dans le panneau Versus Pokemon Z");
+    const enemyCard = doc.querySelector("#mobile-versus-list .mobile-duel");
+    const enemyBackground = enemyCard ? frame.contentWindow.getComputedStyle(enemyCard).backgroundImage : "absente";
+    assert(enemyCard && !enemyBackground.includes("21, 26, 35"), `Carte adverse sombre dans le Versus Pokemon Z : ${enemyBackground}`);
 
     win.localStorage.clear();
     const legacy = {

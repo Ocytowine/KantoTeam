@@ -28,6 +28,7 @@ let versusInsightModal = null;
 let gameSwitchTransitioning = false;
 let pokemonEditContext = null;
 let pokemonEditEvolution = { status: "idle", items: [] };
+let tradePokemonModal = null;
 let teamSettingsOpen = false;
 let teamAddPanelOpen = false;
 let teamAddMode = null;
@@ -129,6 +130,7 @@ const el = {
   versusInsightModal: document.querySelector("#versus-insight-modal"),
   versusApplyModal: document.querySelector("#versus-apply-modal"),
   pokemonEditModal: document.querySelector("#pokemon-edit-modal"),
+  pokemonTradeModal: document.querySelector("#pokemon-trade-modal"),
   simulationEnemies: document.querySelector("#simulation-enemies"),
   simulationEnemyEditor: document.querySelector("#simulation-enemy-editor"),
   simulationConfirm: document.querySelector("#simulation-confirm"),
@@ -292,6 +294,10 @@ function bindEvents() {
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
     document.querySelectorAll(".type-wheel.open").forEach(closeTypeWheel);
+    if (tradePokemonModal) {
+      closeTradePokemonModal();
+      return;
+    }
     if (pokemonEditContext) closePokemonEditModal();
     if (versusSharedModalOpen) closeVersusSharedModal();
     if (versusInsightModal) closeVersusInsightModal();
@@ -2897,6 +2903,7 @@ async function togglePokemonInfoPanel(button) {
       guideKey: button.dataset.pokemonInfoGuideKey || ""
     });
     panel.innerHTML = renderPokemonInfoPanel(data);
+    bindPokemonTradeLinks(panel);
   } catch {
     panel.innerHTML = `<div class="pokemon-info-empty">Infos indisponibles pour ce Pokemon.</div>`;
   }
@@ -3062,13 +3069,13 @@ function renderAcquisitionGuide(data) {
       ...locations.map((text) => ({ kind: "capture", text })),
       ...(data.guide.evolution ? [{ kind: "evolution", text: data.guide.evolution }] : [])
     ];
-    return renderAcquisitionMethods(details, "Obtention dans Kanto Reforged");
+    return renderAcquisitionMethods(details, "Reforged", false);
   }
   const methods = data.guide.methods || [];
-  return `${renderAcquisitionMethods(methods, "Obtention dans Pokemon Z v2.12")}${renderPokemonZGuideNotes(methods)}`;
+  return `${renderAcquisitionMethods(methods, "v2.12", true)}${renderPokemonZGuideNotes(methods)}`;
 }
 
-function renderAcquisitionMethods(methods, title) {
+function renderAcquisitionMethods(methods, versionLabel, translateLocations) {
   if (!methods.length) return "";
   const labels = {
     capture: "Capture",
@@ -3081,35 +3088,164 @@ function renderAcquisitionMethods(methods, title) {
   };
   return `
     <div class="pokemon-info-section pokemon-acquisition-guide">
-      <div class="pokemon-info-section-heading"><span class="slot-meta">Obtention</span><span>${escapeHtml(title)}</span></div>
+      <div class="pokemon-info-section-heading">
+        <span class="slot-meta">Obtention</span>
+        <span class="pokemon-guide-version">${escapeHtml(versionLabel)}</span>
+      </div>
       <div class="pokemon-acquisition-methods">
-        ${methods.map((method) => `
-          <div class="pokemon-acquisition-method ${escapeHtml(method.kind || "special")}">
-            <strong>${labels[method.kind] || "Obtention"}</strong>
-            <span>${escapeHtml(method.text || "")}${method.sourceUrl ? ` <a href="${escapeHtml(method.sourceUrl)}" target="_blank" rel="noopener noreferrer">Source</a>` : ""}</span>
-          </div>
-        `).join("")}
+        ${methods.map((method) => {
+          const location = translateLocations
+            ? translatePokemonZLocationText(method.text || "")
+            : { text: method.text || "", pending: false };
+          const methodText = translateLocations && method.kind === "trade"
+            ? renderPokemonZTradeText(location.text)
+            : escapeHtml(location.text);
+          return `
+            <div class="pokemon-acquisition-method ${escapeHtml(method.kind || "special")}">
+              <strong>${labels[method.kind] || "Obtention"}</strong>
+              <span>${methodText}${location.pending ? ` <small class="pokemon-location-pending">Nom FR à confirmer</small>` : ""}${method.sourceUrl ? ` <a href="${escapeHtml(method.sourceUrl)}" target="_blank" rel="noopener noreferrer">Source</a>` : ""}</span>
+            </div>
+          `;
+        }).join("")}
       </div>
     </div>
   `;
 }
 
+function renderPokemonZTradeText(text) {
+  if (typeof POKEMON_Z_TRADE_POKEMON === "undefined") return escapeHtml(text);
+  let markup = escapeHtml(text);
+  const entries = [...POKEMON_Z_TRADE_POKEMON]
+    .sort((left, right) => right.source.length - left.source.length);
+  for (const entry of entries) {
+    const pokemon = POKEMON_Z_V212.find((item) => item.nationalId === entry.nationalId);
+    if (!pokemon) continue;
+    const pattern = new RegExp(entry.source.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "giu");
+    markup = markup.replace(pattern, `§§POKEMON_${entry.nationalId}§§`);
+  }
+  return markup.replace(/§§POKEMON_(\d+)§§/g, (_, rawId) => {
+    const nationalId = Number(rawId);
+    const pokemon = POKEMON_Z_V212.find((item) => item.nationalId === nationalId);
+    if (!pokemon) return "";
+    return `<button class="pokemon-trade-link" type="button" data-trade-pokemon-id="${nationalId}" aria-label="Voir la fiche de ${escapeHtml(pokemon.name)}">${escapeHtml(pokemon.name)}</button>`;
+  });
+}
+
+function bindPokemonTradeLinks(container) {
+  container.querySelectorAll("[data-trade-pokemon-id]").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      void openTradePokemonModal(Number(button.dataset.tradePokemonId));
+    });
+  });
+}
+
+async function openTradePokemonModal(nationalId) {
+  const pokemon = POKEMON_Z_V212.find((item) => item.nationalId === nationalId);
+  if (!pokemon) return;
+  tradePokemonModal = { nationalId, pokemon, data: null, loading: true };
+  renderTradePokemonModal();
+  await syncPokemonSprites([pokemon]);
+  try {
+    const data = await getPokemonInfoData({
+      id: nationalId,
+      name: pokemon.name,
+      game: "pokemon-z",
+      guideKey: pokemon.id
+    });
+    if (tradePokemonModal?.nationalId !== nationalId) return;
+    tradePokemonModal = { nationalId, pokemon, data, loading: false };
+  } catch {
+    if (tradePokemonModal?.nationalId !== nationalId) return;
+    tradePokemonModal = { nationalId, pokemon, data: null, loading: false };
+  }
+  renderTradePokemonModal();
+}
+
+function closeTradePokemonModal() {
+  tradePokemonModal = null;
+  el.pokemonTradeModal.classList.add("hidden");
+  el.pokemonTradeModal.innerHTML = "";
+  el.pokemonTradeModal.onclick = null;
+  if (!pokemonEditContext && !versusSharedModalOpen && !versusApplyModalOpen && !versusInsightModal) {
+    document.body.classList.remove("modal-open");
+  }
+}
+
+function renderTradePokemonModal() {
+  if (!tradePokemonModal) {
+    closeTradePokemonModal();
+    return;
+  }
+  const { pokemon, data, loading } = tradePokemonModal;
+  const sprite = spriteUrls.get(pokemon.nationalId);
+  el.pokemonTradeModal.classList.remove("hidden");
+  document.body.classList.add("modal-open");
+  el.pokemonTradeModal.innerHTML = `
+    <article class="team-modal pokemon-trade-modal" role="dialog" aria-modal="true" aria-labelledby="pokemon-trade-modal-title">
+      <header class="pokemon-trade-modal-heading">
+        ${sprite
+          ? `<img class="pokemon-trade-modal-sprite" src="${escapeHtml(sprite)}" alt="${escapeHtml(pokemon.name)}" onerror="this.remove()">`
+          : `<span class="pokemon-editor-sprite-placeholder" aria-hidden="true"></span>`}
+        <div>
+          <p class="eyebrow">Pokémon proposé à l'échange</p>
+          <h2 id="pokemon-trade-modal-title">${escapeHtml(pokemon.name)}</h2>
+          <div class="name-type-logos">${pokemon.types.map(typeLogoOnly).join("")}</div>
+        </div>
+        <button class="modal-close-button" type="button" data-close-trade-pokemon aria-label="Fermer">&times;</button>
+      </header>
+      <div class="pokemon-trade-modal-content">
+        ${loading
+          ? `<div class="pokemon-info-loading">Chargement de la fiche...</div>`
+          : data
+            ? renderPokemonInfoPanel(data)
+            : `<div class="pokemon-info-empty">Les informations de ce Pokémon sont indisponibles.</div>`}
+      </div>
+    </article>
+  `;
+  el.pokemonTradeModal.querySelector("[data-close-trade-pokemon]").addEventListener("click", closeTradePokemonModal);
+  el.pokemonTradeModal.onclick = (event) => {
+    if (event.target === el.pokemonTradeModal) closeTradePokemonModal();
+  };
+  bindPokemonTradeLinks(el.pokemonTradeModal);
+}
+
+function translatePokemonZLocationText(text) {
+  if (typeof POKEMON_Z_LOCATION_TRANSLATIONS === "undefined") {
+    return { text, pending: false };
+  }
+  let translated = String(text || "");
+  let pending = false;
+  const entries = [...POKEMON_Z_LOCATION_TRANSLATIONS]
+    .sort((left, right) => right.source.length - left.source.length);
+  for (const entry of entries) {
+    const pattern = new RegExp(entry.source.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "giu");
+    if (!pattern.test(translated)) continue;
+    if (entry.status === "confirmed" && entry.fr) {
+      translated = translated.replace(pattern, entry.fr);
+    } else {
+      pending = true;
+    }
+  }
+  return { text: translated, pending };
+}
+
 function renderPokemonZGuideNotes(methods) {
   if (typeof POKEMON_Z_GLOBAL_NOTES === "undefined") return "";
-  const kinds = new Set(methods.map((method) => method.kind));
   const combined = normalize(methods.map((method) => method.text).join(" "));
   const notes = POKEMON_Z_GLOBAL_NOTES.filter((note) => (
-    (note.kind === "trade" && kinds.has("trade"))
-    || (note.kind === "breeding" && kinds.has("breeding"))
+    (note.kind === "trade" && /prodige/.test(combined))
+    || (note.kind === "breeding" && methods.some((method) => method.kind === "breeding"))
     || (note.kind === "time" && /jour|nuit|day|night/.test(combined))
   ));
   if (!notes.length) return "";
   return `
     <div class="pokemon-info-section pokemon-guide-notes">
-      <div class="pokemon-info-section-heading"><span class="slot-meta">A savoir</span><span>Regles propres a la v2.12</span></div>
+      <div class="pokemon-guide-note-icon" role="img" title="Information utile" aria-label="Information utile">i</div>
       ${notes.map((note) => `
         <p class="pokemon-info-note"><strong>${escapeHtml(note.title)}</strong> — ${escapeHtml(note.text)}
-          ${note.locations?.length ? `<br><span class="slot-meta">${note.locations.map(escapeHtml).join(" · ")}</span>` : ""}
+          ${note.locations?.length ? `<br><span class="slot-meta">${note.locations.map((location) => escapeHtml(translatePokemonZLocationText(location).text)).join(" · ")}</span>` : ""}
           ${note.sourceUrl ? ` <a href="${escapeHtml(note.sourceUrl)}" target="_blank" rel="noopener noreferrer">Source</a>` : ""}
         </p>
       `).join("")}
