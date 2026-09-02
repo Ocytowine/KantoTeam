@@ -40,6 +40,8 @@
     assert(doc.querySelectorAll("#team-slots .slot-card").length === 3, "Reforged doit afficher 3 slots");
     const emptyTeamPokeball = doc.querySelector("#team-slots img[data-theme-asset='assets/add-team-pokeball.png']");
     assert(emptyTeamPokeball, "L'icone add-team-pokeball n'est pas affectee au slot libre");
+    assert(!emptyTeamPokeball.closest(".empty-team-slot").textContent.trim(), "Le slot d'equipe libre contient encore du texte");
+    assert(win.getComputedStyle(emptyTeamPokeball).width === "82px", "Le logo du slot d'equipe libre n'est pas agrandi");
     const filledTeamPokeball = doc.querySelector("#team-slots img[data-theme-asset='assets/team-pokeball.png']");
     assert(filledTeamPokeball, "L'icone team-pokeball n'est pas affectee a l'equipe existante");
     assert(filledTeamPokeball.dataset.themeFallback === "assets/pokeball.png", "Le repli de team-pokeball est absent");
@@ -54,6 +56,8 @@
     assert(!doc.querySelector("#team-slots").textContent.includes("Equipe Reforged"), "Melange entre les banques");
     assert(doc.body.dataset.gameTheme === "pokemon-z", "Palette Pokemon Z non activee");
     assert(doc.querySelector("#open-shared-teams img")?.getAttribute("src") === "assets/share-pokeball_z.png", "Logo share-pokeball Z absent du partage");
+    assert(win.getComputedStyle(doc.querySelector("#open-type-helper")).getPropertyValue("--feature-rgb").trim() === "126, 142, 255", "Couleur du Guide des types absente");
+    assert(win.getComputedStyle(doc.querySelector("#manage-saved-pokemon")).getPropertyValue("--feature-rgb").trim() === "74, 197, 132", "Couleur des Pokemon sauvegardes absente");
     const zEmptyTeamPokeball = doc.querySelector("#team-slots img[data-theme-asset='assets/add-team-pokeball.png']");
     assert(zEmptyTeamPokeball?.getAttribute("src") === "assets/add-team-pokeball_z.png", "La variante Z de add-team-pokeball n'est pas chargee");
     const zFilledTeamPokeball = doc.querySelector("#team-slots img[data-theme-asset='assets/team-pokeball.png']");
@@ -63,6 +67,15 @@
     const stored = JSON.parse(win.localStorage.getItem("kantoTeamState:v2"));
     assert(stored.activeGame === "pokemon-z", "Version active non persistee");
     assert(stored.games.reforged.teams.length === 3 && stored.games["pokemon-z"].teams.length === 3, "Les 6 slots ne sont pas repartis en 3 + 3");
+    doc.querySelector('#team-slots [data-action="composition"]').click();
+    await wait();
+    assert(doc.querySelector("#share-menu-toggle")?.getAttribute("aria-label") === "Partager", "Libelle de survol du partage absent");
+    assert(win.getComputedStyle(doc.querySelector("#share-menu-toggle"), "::before").backgroundColor.includes("66, 216, 142"), "Luminescence verte du partage absente");
+    assert(doc.querySelectorAll("#composition-list .composition-add-slot").length === 5, "Les slots Pokemon libres ne sont pas affiches");
+    assert(Array.from(doc.querySelectorAll("#composition-list .composition-add-slot")).every((slot) => !slot.textContent.trim()), "Un slot Pokemon libre contient encore du texte");
+    assert(win.getComputedStyle(doc.querySelector("#composition-list .composition-add-slot img")).width === "72px", "Le logo d'ajout Pokemon n'est pas agrandi");
+    doc.querySelector("#back-to-slots").click();
+    await wait();
     doc.querySelector("#open-pokemon-search").click();
     assert(doc.querySelector("#game-version-switch").classList.contains("hidden"), "Le switch reste visible hors de la selection d'equipe");
     const query = doc.querySelector("#pokemon-search-query");

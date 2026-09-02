@@ -903,17 +903,9 @@ function renderSlots() {
         <button class="icon-action-button danger" type="button" data-action="delete" data-slot="${index}" aria-label="Supprimer l'equipe" title="Supprimer l'equipe">${actionIconSvg("delete")}</button>
       </div>
     ` : `
-      <div class="empty-team-slot">
+      <button class="empty-team-slot" type="button" data-action="composition" data-slot="${index}" data-version="${getActiveGameKey()}" data-tooltip="Ajouter une équipe" aria-label="Ajouter une équipe">
         <img class="empty-team-logo" src="assets/add-team-pokeball.png" data-theme-asset="assets/add-team-pokeball.png" alt="" aria-hidden="true">
-        <span>
-          <span class="eyebrow">Slot ${index + 1}</span>
-          <strong>Creer une equipe</strong>
-          <small>${preferredSourceLabel(getActiveGameKey())}</small>
-          <span class="empty-team-versions">
-            <button class="small-button" type="button" data-action="composition" data-slot="${index}" data-version="${getActiveGameKey()}">Creer</button>
-          </span>
-        </span>
-      </div>
+      </button>
     `;
     el.slots.append(card);
   });
@@ -1513,22 +1505,26 @@ function renderManagedComposition(team) {
   });
 
   if (editable) {
+    const emptySlots = document.createElement("div");
+    emptySlots.className = "composition-empty-slots";
     for (let index = displayTeam.pokemon.length; index < 6; index += 1) {
       const emptySlot = document.createElement("button");
       emptySlot.className = "composition-add-slot";
       emptySlot.type = "button";
       emptySlot.dataset.openTeamAdd = "true";
       emptySlot.dataset.slotIndex = String(index);
+      emptySlot.dataset.tooltip = "Ajouter un Pokémon";
+      emptySlot.setAttribute("aria-label", "Ajouter un Pokémon");
       emptySlot.innerHTML = `
         <img class="add-pokeball-icon large" src="assets/add-pokeball.png" data-theme-asset="assets/add-pokeball.png" alt="" aria-hidden="true">
-        <span>Ajouter un Pokemon</span>
       `;
-      el.compositionList.append(emptySlot);
-      if (teamAddPanelOpen && teamAddSlotIndex === index) {
-        el.compositionAddPanel.classList.remove("hidden");
-        el.compositionList.append(el.compositionAddPanel);
-        renderTeamAddPanel();
-      }
+      emptySlots.append(emptySlot);
+    }
+    if (emptySlots.children.length) el.compositionList.append(emptySlots);
+    if (teamAddPanelOpen && Number.isInteger(teamAddSlotIndex)) {
+      el.compositionAddPanel.classList.remove("hidden");
+      el.compositionList.append(el.compositionAddPanel);
+      renderTeamAddPanel();
     }
     renderTeamReserveSection(displayTeam);
   }
