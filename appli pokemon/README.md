@@ -55,6 +55,12 @@ Les rencontres sauvages sont generees separement afin qu'une mise a jour du guid
 node scripts/build-pokemon-z-encounters.js "C:\chemin\vers\PBS\encounters.txt" "C:\chemin\vers\PBS\pokemon.txt" "C:\chemin\vers\map-names.json"
 ```
 
+Les statistiques de base officielles sont embarquees localement et peuvent etre regenerees depuis les donnees PokeAPI :
+
+```powershell
+node scripts/build-official-pokemon-stats.js
+```
+
 ## Variantes graphiques Pokemon Z
 
 Les logos et icones marques comme assets de theme basculent automatiquement vers un fichier portant le suffixe `_z` lorsque Pokemon Z est actif. Le nom, l'extension et la casse doivent rester identiques :

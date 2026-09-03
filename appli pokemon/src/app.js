@@ -2,6 +2,14 @@ const STORAGE_KEY = "kantoTeamState:v2";
 const LEGACY_STORAGE_KEY = "kantoTeamState:v1";
 const LEGACY_BACKUP_KEY = "kantoTeamState:legacy:v1";
 const GAME_KEYS = ["reforged", "pokemon-z"];
+const POKEMON_STAT_DEFINITIONS = [
+  { key: "hp", short: "PV", label: "Points de vie" },
+  { key: "attack", short: "ATQ", label: "Attaque" },
+  { key: "defense", short: "DEF", label: "Défense" },
+  { key: "specialAttack", short: "ASP", label: "Attaque Spéciale" },
+  { key: "specialDefense", short: "DSP", label: "Défense Spéciale" },
+  { key: "speed", short: "VIT", label: "Vitesse" }
+];
 
 const defaultState = {
   selectedSlot: 0,
@@ -48,6 +56,12 @@ let pokemonSearchFilters = {
   typeOne: "",
   typeTwo: ""
 };
+let pokemonComparison = {
+  active: false,
+  picks: [],
+  confirmed: false,
+  replacing: null
+};
 
 const mobileVersusMedia = window.matchMedia("(max-width: 920px)");
 const spriteUrls = new Map();
@@ -60,6 +74,12 @@ const SPRITE_NAME_ALIASES = {
   boguerise: 651,
   feunec: 653,
   bagguiguane: 559
+};
+const SPRITE_EXACT_NAME_IDS = {
+  "Nidoran♀": 29,
+  "Nidoran♂": 32,
+  "M. Mime": 122,
+  "Ho-Oh": 250
 };
 let spritesEnabled = false;
 let spritesLoading = false;
@@ -107,6 +127,7 @@ const el = {
   pokemonSearchTypeTwo: document.querySelector("#pokemon-search-type-two"),
   pokemonSearchCount: document.querySelector("#pokemon-search-count"),
   pokemonSearchResults: document.querySelector("#pokemon-search-results"),
+  pokemonCompareToggle: document.querySelector("#pokemon-compare-toggle"),
   sharedTeamsPanel: document.querySelector("#shared-teams-panel"),
   sharedTeamsList: document.querySelector("#shared-teams-list"),
   sharedTeamsCount: document.querySelector("#shared-teams-count"),
@@ -252,6 +273,7 @@ function bindEvents() {
       renderPokemonSearch();
     });
   });
+  el.pokemonCompareToggle.addEventListener("click", togglePokemonComparison);
   [el.helperTypeOne, el.helperTypeTwo, el.helperTargetBase].forEach((field) => {
     field.addEventListener("change", () => {
       resetHelperResultSelection();
@@ -287,6 +309,15 @@ function bindEvents() {
   el.shareSms.addEventListener("click", () => openMessageShare("sms"));
   el.saveSharedTeam.addEventListener("click", saveCurrentSharedTeam);
   document.addEventListener("click", (event) => {
+    const statsButton = event.target.closest("[data-pokemon-stats-toggle]");
+    if (statsButton) {
+      const panel = statsButton.parentElement?.querySelector("[data-pokemon-stats-panel]");
+      if (panel) {
+        const expanded = panel.classList.toggle("hidden") === false;
+        statsButton.setAttribute("aria-expanded", String(expanded));
+      }
+      return;
+    }
     if (el.shareActions.classList.contains("hidden")) return;
     if (el.shareActions.contains(event.target)) return;
     closeShareMenu();
@@ -529,6 +560,7 @@ function switchGame(game) {
   teamSettingsOpen = false;
   teamAddPanelOpen = false;
   pokemonSearchFilters = { query: "", typeOne: "", typeTwo: "" };
+  pokemonComparison = { active: false, picks: [], confirmed: false, replacing: null };
   el.teamName.value = draftTeam.name || "";
   el.addMode.value = "catalog";
   el.catalogSearch.value = "";
@@ -994,7 +1026,9 @@ function getPokemonNationalId(pokemon) {
   if (Number.isInteger(pokemon.sourceId)) return pokemon.sourceId;
   const saved = state.customPokemon.find((item) => String(item.id) === String(pokemon.sourceId));
   if (Number.isInteger(saved?.officialId)) return saved.officialId;
-  const name = normalize(saved?.name || pokemon.name);
+  const displayName = saved?.name || pokemon.name;
+  if (SPRITE_EXACT_NAME_IDS[displayName]) return SPRITE_EXACT_NAME_IDS[displayName];
+  const name = normalize(displayName);
   return SPRITE_NAME_ALIASES[name] || POKEMON_SPRITE_IDS[name] || null;
 }
 
@@ -2417,7 +2451,12 @@ function getPokemonZGuideInfo(id) {
   const documented = typeof POKEMON_Z_GUIDE === "undefined" ? null : POKEMON_Z_GUIDE[id];
   const encounters = typeof POKEMON_Z_V212_ENCOUNTERS === "undefined" ? null : POKEMON_Z_V212_ENCOUNTERS[id];
   if (!documented && !encounters) return null;
-  const methods = [...(encounters?.methods || []), ...(documented?.methods || [])];
+  const encounterMethods = encounters?.methods || [];
+  const hasEncounterCapture = encounterMethods.some((method) => method.kind === "capture");
+  const documentedMethods = (documented?.methods || []).filter((method) => (
+    method.kind !== "capture" || !hasEncounterCapture
+  ));
+  const methods = [...encounterMethods, ...documentedMethods];
   const seen = new Set();
   return {
     ...(documented || encounters),
@@ -2483,25 +2522,37 @@ function renderPokemonSearch() {
   const query = normalize(pokemonSearchFilters.query);
   const typeOne = pokemonSearchFilters.typeOne;
   const typeTwo = pokemonSearchFilters.typeTwo;
-  const canShowResults = query.length >= 3 || Boolean(typeOne);
+  const selectedPokemon = pokemonComparison.picks.filter(Boolean);
+  const comparisonReady = pokemonComparison.active && selectedPokemon.length === 2;
+  const canShowResults = comparisonReady || query.length >= 3 || Boolean(typeOne);
   el.pokemonSearchQuery.value = pokemonSearchFilters.query;
   el.pokemonSearchTypeOne.value = typeOne;
   el.pokemonSearchTypeTwo.value = typeTwo;
+  el.pokemonSearchPanel.classList.toggle("comparison-active", pokemonComparison.active);
+  el.pokemonSearchPanel.classList.toggle("comparison-ready", comparisonReady);
+  el.pokemonSearchPanel.classList.toggle("comparison-confirmed", pokemonComparison.confirmed);
+  el.pokemonCompareToggle.textContent = pokemonComparison.active ? "Quitter le comparatif" : "Comparatif";
+  el.pokemonCompareToggle.classList.toggle("active", pokemonComparison.active);
 
   if (!canShowResults) {
     el.pokemonSearchCount.textContent = "0 resultat";
-    el.pokemonSearchResults.innerHTML = `<div class="empty-state">Tape au moins 3 lettres ou choisis un premier type pour afficher les Pokemon.</div>`;
+    el.pokemonSearchResults.innerHTML = `${renderPokemonComparisonToolbar()}<div class="empty-state">Tape au moins 3 lettres ou choisis un premier type pour afficher les Pokemon.</div>`;
+    bindPokemonComparisonActions();
     return;
   }
 
-  const matches = getHelperPokemonSource()
-    .filter((pokemon) => (
-      (!query || normalize(pokemon.name).includes(query))
-      && (!typeOne || pokemon.types.includes(typeOne))
-      && (!typeTwo || pokemon.types.includes(typeTwo))
-    ))
-    .slice(0, 36);
-  el.pokemonSearchCount.textContent = `${matches.length} resultat${matches.length > 1 ? "s" : ""}`;
+  const matches = comparisonReady
+    ? selectedPokemon
+    : getHelperPokemonSource()
+      .filter((pokemon) => (
+        (!query || normalize(pokemon.name).includes(query))
+        && (!typeOne || pokemon.types.includes(typeOne))
+        && (!typeTwo || pokemon.types.includes(typeTwo))
+      ))
+      .slice(0, 36);
+  el.pokemonSearchCount.textContent = comparisonReady
+    ? `${selectedPokemon.length}/2`
+    : `${matches.length} resultat${matches.length > 1 ? "s" : ""}`;
 
   if (matches.length && needsSpriteSync(matches)) {
     void syncPokemonSprites(matches).then(() => {
@@ -2510,29 +2561,20 @@ function renderPokemonSearch() {
   }
 
   if (!matches.length) {
-    el.pokemonSearchResults.innerHTML = `<div class="empty-state">Aucun Pokemon ne correspond a cette recherche.</div>`;
+    el.pokemonSearchResults.innerHTML = `${renderPokemonComparisonToolbar()}<div class="empty-state">Aucun Pokemon ne correspond a cette recherche.</div>`;
+    bindPokemonComparisonActions();
     return;
   }
 
-  el.pokemonSearchResults.innerHTML = matches.map((pokemon, index) => `
-    <article class="pokemon-card pokemon-search-card collapsible" style="${pokemonCardStyle(pokemon)}">
-      ${renderPokemonCard({
-        ...pokemon,
-        attacks: pokemon.attacks || pokemon.types
-      }, {
-        index,
-        showSprite: true,
-        includePokeball: false,
-        originLabel: helperSourceLabel(pokemon.helperSource),
-        toggleable: true
-      })}
-      <div class="helper-card-actions">
-        <button class="small-button" type="button" data-save-search-pokemon="${escapeHtml(pokemonOptionLabel(pokemon))}" data-search-source="${pokemon.helperSource}">Ajouter aux sauvegardes</button>
-      </div>
-    </article>
-  `).join("");
+  el.pokemonSearchResults.innerHTML = `
+    ${renderPokemonComparisonToolbar()}
+    <div class="pokemon-search-card-list ${comparisonReady ? "pokemon-comparison-grid" : ""}">
+      ${matches.map((pokemon, index) => renderPokemonSearchCard(pokemon, index, comparisonReady)).join("")}
+    </div>
+  `;
 
   bindPokemonCardToggles(el.pokemonSearchResults);
+  bindPokemonComparisonActions();
   el.pokemonSearchResults.querySelectorAll("[data-save-search-pokemon]").forEach((button) => {
     button.addEventListener("click", () => {
       const pokemon = findHelperPokemon(button.dataset.searchSource, button.dataset.saveSearchPokemon);
@@ -2542,6 +2584,139 @@ function renderPokemonSearch() {
       renderSavedCustomOptions();
     });
   });
+}
+
+function renderPokemonSearchCard(pokemon, index, comparisonReady) {
+  const comparisonIndex = pokemonComparison.picks.findIndex((pick) => pick && comparisonPokemonKey(pick) === comparisonPokemonKey(pokemon));
+  const selected = comparisonIndex >= 0;
+  const statsAvailable = Boolean(getPokemonBaseStats(pokemon));
+  const opponent = comparisonReady ? pokemonComparison.picks[comparisonIndex === 0 ? 1 : 0] : null;
+  const comparisonSelector = pokemonComparison.active && !comparisonReady
+    ? `<button class="pokemon-comparison-selector ${selected ? "selected" : ""}" type="button"
+        data-compare-pokemon-key="${escapeHtml(comparisonPokemonKey(pokemon))}"
+        aria-pressed="${selected}" ${statsAvailable ? "" : "disabled"}
+        title="${statsAvailable ? (selected ? "Retirer de la comparaison" : "Choisir pour la comparaison") : "Statistiques indisponibles"}">
+        <span aria-hidden="true">${selected ? "✓" : selectedCountLabel()}</span>
+        <span class="visually-hidden">${selected ? "Retirer" : "Choisir"} ${escapeHtml(pokemon.name)}</span>
+      </button>`
+    : "";
+  return `
+    <article class="pokemon-card pokemon-search-card collapsible ${comparisonReady ? "expanded pokemon-comparison-card" : ""} ${selected ? "comparison-selected" : ""}" style="${pokemonCardStyle(pokemon)}">
+      ${comparisonSelector}
+      ${renderPokemonCard({
+        ...pokemon,
+        attacks: pokemon.attacks || pokemon.types
+      }, {
+        index: comparisonReady ? null : index,
+        showSprite: true,
+        includePokeball: false,
+        originLabel: helperSourceLabel(pokemon.helperSource),
+        toggleable: !comparisonReady,
+        statsExpanded: comparisonReady,
+        comparedWith: comparisonReady ? opponent : null
+      })}
+      <div class="helper-card-actions">
+        ${comparisonReady
+          ? `<button class="small-button" type="button" data-replace-comparison-pokemon="${comparisonIndex}">Remplacer</button>`
+          : pokemonComparison.active
+            ? ""
+            : `<button class="small-button" type="button" data-save-search-pokemon="${escapeHtml(pokemonOptionLabel(pokemon))}" data-search-source="${pokemon.helperSource}">Ajouter aux sauvegardes</button>`}
+      </div>
+    </article>
+  `;
+}
+
+function selectedCountLabel() {
+  return String(Math.min(2, pokemonComparison.picks.filter(Boolean).length + 1));
+}
+
+function comparisonPokemonKey(pokemon) {
+  return `${pokemon.helperSource || pokemon.origin || getActiveGameKey()}::${pokemon.id || pokemon.sourceId || pokemon.name}`;
+}
+
+function renderPokemonComparisonToolbar() {
+  if (!pokemonComparison.active) return "";
+  const picks = pokemonComparison.picks.filter(Boolean);
+  if (picks.length === 2) {
+    return `<div class="pokemon-comparison-toolbar confirmed"><strong>Comparatif des statistiques de base</strong><span>Les valeurs les plus fortes sont mises en avant.</span></div>`;
+  }
+  const selectedPokemon = picks[0];
+  const instruction = selectedPokemon
+    ? `${selectedPokemon.name} est sélectionné. Cherche maintenant son adversaire.`
+    : "Recherche puis sélectionne deux Pokémon disposant de statistiques officielles.";
+  return `
+    <div class="pokemon-comparison-toolbar">
+      <div>
+        <strong>${picks.length}/2 sélectionné</strong>
+        <span>${escapeHtml(instruction)}</span>
+      </div>
+      ${selectedPokemon ? `
+        <div class="pokemon-comparison-selected-chip">
+          <span class="pokemon-comparison-selected-name">${escapeHtml(selectedPokemon.name)}</span>
+          <span class="name-type-logos">${selectedPokemon.types.map(typeLogoOnly).join("")}</span>
+          <button type="button" data-remove-comparison-pokemon="${escapeHtml(comparisonPokemonKey(selectedPokemon))}" aria-label="Retirer ${escapeHtml(selectedPokemon.name)}" title="Retirer ${escapeHtml(selectedPokemon.name)}">&times;</button>
+        </div>
+      ` : ""}
+    </div>
+  `;
+}
+
+function togglePokemonComparison() {
+  pokemonComparison = pokemonComparison.active
+    ? { active: false, picks: [], confirmed: false, replacing: null }
+    : { active: true, picks: [], confirmed: false, replacing: null };
+  renderPokemonSearch();
+}
+
+function bindPokemonComparisonActions() {
+  el.pokemonSearchResults.querySelectorAll("[data-compare-pokemon-key]").forEach((button) => {
+    button.addEventListener("click", () => selectPokemonForComparison(button.dataset.comparePokemonKey));
+  });
+  el.pokemonSearchResults.querySelector("[data-remove-comparison-pokemon]")?.addEventListener("click", (event) => {
+    removePokemonFromComparison(event.currentTarget.dataset.removeComparisonPokemon);
+  });
+  el.pokemonSearchResults.querySelectorAll("[data-replace-comparison-pokemon]").forEach((button) => {
+    button.addEventListener("click", () => replaceComparisonPokemon(Number(button.dataset.replaceComparisonPokemon)));
+  });
+}
+
+function selectPokemonForComparison(key) {
+  const pokemon = getHelperPokemonSource().find((item) => comparisonPokemonKey(item) === key);
+  if (!pokemon || !getPokemonBaseStats(pokemon)) return;
+  const existingIndex = pokemonComparison.picks.findIndex((pick) => pick && comparisonPokemonKey(pick) === key);
+  if (existingIndex >= 0) {
+    pokemonComparison.picks[existingIndex] = null;
+  } else if (pokemonComparison.replacing !== null) {
+    pokemonComparison.picks[pokemonComparison.replacing] = pokemon;
+    pokemonComparison.replacing = null;
+  } else if (pokemonComparison.picks.filter(Boolean).length < 2) {
+    const emptyIndex = pokemonComparison.picks.findIndex((pick) => !pick);
+    if (emptyIndex >= 0) pokemonComparison.picks[emptyIndex] = pokemon;
+    else pokemonComparison.picks.push(pokemon);
+  }
+  if (pokemonComparison.picks.filter(Boolean).length === 2) {
+    pokemonSearchFilters = { query: "", typeOne: "", typeTwo: "" };
+    pokemonComparison.confirmed = true;
+  }
+  renderPokemonSearch();
+}
+
+function removePokemonFromComparison(key) {
+  const index = pokemonComparison.picks.findIndex((pick) => pick && comparisonPokemonKey(pick) === key);
+  if (index >= 0) pokemonComparison.picks[index] = null;
+  pokemonComparison.confirmed = false;
+  pokemonComparison.replacing = null;
+  renderPokemonSearch();
+}
+
+function replaceComparisonPokemon(index) {
+  if (![0, 1].includes(index)) return;
+  pokemonComparison.picks[index] = null;
+  pokemonComparison.confirmed = false;
+  pokemonComparison.replacing = index;
+  pokemonSearchFilters = { query: "", typeOne: "", typeTwo: "" };
+  renderPokemonSearch();
+  el.pokemonSearchQuery.focus();
 }
 
 function renderSavedPokemonManager() {
@@ -2829,7 +3004,9 @@ function renderPokemonCard(pokemon, options = {}) {
     compact = false,
     includePokeball = true,
     toggleable = true,
-    infoLookup = showSprite
+    infoLookup = showSprite,
+    statsExpanded = false,
+    comparedWith = null
   } = options;
   const defensive = analyzePokemonDefense(pokemon.types);
   const weaknesses = defensive.filter((item) => item.multiplier > 1);
@@ -2855,7 +3032,7 @@ function renderPokemonCard(pokemon, options = {}) {
         <span>${titlePrefix}${escapeHtml(pokemon.name)} ${originLabel ? `<span class="library-kind">${originLabel}</span>` : ""}<span class="name-type-logos">${pokemon.types.map(typeLogoOnly).join("")}</span></span>
       </span>
     </span>
-    <span class="pokemon-reveal-hint">Details</span>
+    ${toggleable ? `<span class="pokemon-reveal-hint">Details</span>` : ""}
   `;
   const heading = toggleable
     ? `<button class="pokemon-card-toggle" type="button" data-pokemon-card-toggle="${escapeHtml(sourceId)}" aria-expanded="false">${headingContent}</button>`
@@ -2875,7 +3052,70 @@ function renderPokemonCard(pokemon, options = {}) {
       <div class="mini-line summary-line resistance-line"><span class="slot-meta">Resistances</span>${renderMultiplierList(resistances)}</div>
       <div class="mini-line summary-line immunity-line"><span class="slot-meta">Immunites</span>${renderMultiplierList(immunities)}</div>
       <div class="mini-line summary-line attack-line"><span class="slot-meta">Attaques</span>${attacks.length ? attacks.map(typeBadge).join("") : `<span class="multiplier">Aucune</span>`}</div>
+      ${renderPokemonStatsBlock(pokemon, { expanded: statsExpanded, comparedWith })}
     </div>
+  `;
+}
+
+function getPokemonBaseStats(pokemon) {
+  if (typeof OFFICIAL_POKEMON_STATS === "undefined") return null;
+  const nationalId = getPokemonNationalId(pokemon);
+  return nationalId ? OFFICIAL_POKEMON_STATS[nationalId] || null : null;
+}
+
+function pokemonStatStrength(value) {
+  if (value < 50) return "very-low";
+  if (value < 70) return "low";
+  if (value < 90) return "medium";
+  if (value < 110) return "high";
+  return "very-high";
+}
+
+function renderPokemonStatsBlock(pokemon, options = {}) {
+  const stats = getPokemonBaseStats(pokemon);
+  const opponentStats = options.comparedWith ? getPokemonBaseStats(options.comparedWith) : null;
+  return `
+    <div class="pokemon-stats-block">
+      <button class="pokemon-stats-toggle" type="button" data-pokemon-stats-toggle aria-expanded="${options.expanded ? "true" : "false"}" title="Statistiques de base">
+        ${statsChartIconSvg()}
+        <span>Statistiques</span>
+      </button>
+      <div class="pokemon-stats-panel ${options.expanded ? "" : "hidden"}" data-pokemon-stats-panel>
+        ${stats ? `
+          <div class="pokemon-stats-grid">
+            ${POKEMON_STAT_DEFINITIONS.map((definition) => {
+              const value = stats[definition.key];
+              const opponentValue = opponentStats?.[definition.key];
+              const comparison = Number.isInteger(opponentValue)
+                ? value > opponentValue ? "winner" : value < opponentValue ? "loser" : "tie"
+                : "";
+              const difference = Number.isInteger(opponentValue) && value !== opponentValue
+                ? `<small>${value > opponentValue ? "+" : ""}${value - opponentValue}</small>`
+                : "";
+              return `
+                <div class="pokemon-stat ${pokemonStatStrength(value)} ${comparison}" title="${definition.label}">
+                  <span>${definition.short}</span>
+                  <strong>${value}</strong>
+                  ${difference}
+                </div>
+              `;
+            }).join("")}
+          </div>
+          <div class="pokemon-stat-total"><span>Total</span><strong>${Object.values(stats).reduce((sum, value) => sum + value, 0)}</strong></div>
+        ` : `<div class="pokemon-stats-unavailable">Statistiques officielles indisponibles pour cette forme.</div>`}
+      </div>
+    </div>
+  `;
+}
+
+function statsChartIconSvg() {
+  return `
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M4 19V9"></path>
+      <path d="M10 19V5"></path>
+      <path d="M16 19v-7"></path>
+      <path d="M22 19H2"></path>
+    </svg>
   `;
 }
 
