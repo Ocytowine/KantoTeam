@@ -64,6 +64,9 @@
     assert(zFilledTeamPokeball?.getAttribute("src").endsWith("_z.png"), "La variante Z de l'icone d'equipe n'est pas chargee");
     assert(doc.querySelector("#app-title-logo").getAttribute("src") === "assets/Titre_Pokemon_Z.png", "Logo Pokemon Z non charge");
     assert(doc.querySelector("#catalog-select").options.length === 1018, "Catalogue Pokemon Z incomplet");
+    const mobileNavLabel = win.getComputedStyle(doc.querySelector("#open-type-helper"), "::after");
+    assert(mobileNavLabel.display !== "none" && Number(mobileNavLabel.opacity) > 0.8, "Le libelle mobile des raccourcis n'est pas visible");
+    assert(mobileNavLabel.content.includes("Guide des types"), "Le libelle mobile ne reprend pas le nom du raccourci");
     const roucoolGuide = win.getPokemonZGuideInfo("pokemon-z-16");
     assert(roucoolGuide.methods.filter((method) => method.kind === "capture").length === 1, "La capture de Roucool est affichee en double");
     assert(roucoolGuide.methods.some((method) => method.text.includes("niveaux 5 à 6")), "La capture interne detaillee de Roucool n'est pas prioritaire");
@@ -87,6 +90,19 @@
     doc.querySelector("#open-pokemon-search").click();
     assert(doc.querySelector("#game-version-switch").classList.contains("hidden"), "Le switch reste visible hors de la selection d'equipe");
     const query = doc.querySelector("#pokemon-search-query");
+    const searchTypeOne = doc.querySelector("#pokemon-search-type-one");
+    const statSort = doc.querySelector("#pokemon-search-stat-sort");
+    searchTypeOne.value = "Dragon";
+    searchTypeOne.dispatchEvent(new win.Event("change", { bubbles: true }));
+    statSort.click();
+    const sortedTotals = Array.from(doc.querySelectorAll("#pokemon-search-results .pokemon-card"))
+      .map((card) => Number(card.querySelector(".pokemon-stat-total strong")?.textContent || -1));
+    assert(statSort.getAttribute("aria-pressed") === "true", "Le classement par total de statistiques ne s'active pas");
+    assert(sortedTotals.every((total, index) => index === 0 || sortedTotals[index - 1] >= total), "Les Pokemon ne sont pas classes par total decroissant");
+    statSort.click();
+    searchTypeOne.value = "";
+    searchTypeOne.dispatchEvent(new win.Event("change", { bubbles: true }));
+    await wait(1200);
     query.value = "Carapuce";
     query.dispatchEvent(new win.Event("input", { bubbles: true }));
     await wait();

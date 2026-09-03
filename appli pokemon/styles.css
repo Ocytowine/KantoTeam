@@ -3795,6 +3795,18 @@ body[data-game-theme="pokemon-z"] .share-icon-button::after {
   box-shadow: 0 0 0 2px rgba(244, 200, 74, 0.12);
 }
 
+.pokemon-search-stat-sort .small-button {
+  width: 100%;
+  min-height: 42px;
+}
+
+.pokemon-search-stat-sort .small-button.active,
+.pokemon-search-stat-sort .small-button[aria-pressed="true"] {
+  border-color: rgba(69, 231, 176, 0.78);
+  color: #45e7b0;
+  box-shadow: 0 0 0 2px rgba(69, 231, 176, 0.12);
+}
+
 .pokemon-search-controls {
   display: grid;
   grid-template-columns: minmax(170px, 220px) minmax(220px, 1fr) repeat(2, minmax(150px, 180px));
@@ -4705,11 +4717,34 @@ body[data-game-theme="pokemon-z"] .share-icon-button::after {
 
   .icon-nav-button {
     width: 68px;
-    height: 68px;
+    height: 94px;
+    padding-bottom: 26px;
   }
 
-  .icon-nav-button::after {
-    display: none;
+  body .icon-nav-button::after {
+    display: grid;
+    place-items: center;
+    bottom: 4px;
+    width: 78px;
+    min-height: 22px;
+    padding: 0 3px;
+    border: 0;
+    background: transparent;
+    color: var(--ui-text-gold);
+    content: attr(aria-label);
+    font-size: 0.62rem;
+    line-height: 1.08;
+    opacity: 0.86;
+    white-space: normal;
+    text-align: center;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.38);
+    transform: translateX(-50%);
+  }
+
+  body[data-game-theme="pokemon-z"] .icon-nav-button::after {
+    background: transparent;
+    color: var(--ui-text-gold);
+    text-shadow: none;
   }
 
   .picker-grid {

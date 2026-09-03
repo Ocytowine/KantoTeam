@@ -56,6 +56,7 @@ let pokemonSearchFilters = {
   typeOne: "",
   typeTwo: ""
 };
+let pokemonSearchSortByStats = false;
 let pokemonComparison = {
   active: false,
   picks: [],
@@ -127,6 +128,7 @@ const el = {
   pokemonSearchTypeTwo: document.querySelector("#pokemon-search-type-two"),
   pokemonSearchCount: document.querySelector("#pokemon-search-count"),
   pokemonSearchResults: document.querySelector("#pokemon-search-results"),
+  pokemonSearchStatSort: document.querySelector("#pokemon-search-stat-sort"),
   pokemonCompareToggle: document.querySelector("#pokemon-compare-toggle"),
   sharedTeamsPanel: document.querySelector("#shared-teams-panel"),
   sharedTeamsList: document.querySelector("#shared-teams-list"),
@@ -274,6 +276,10 @@ function bindEvents() {
     });
   });
   el.pokemonCompareToggle.addEventListener("click", togglePokemonComparison);
+  el.pokemonSearchStatSort.addEventListener("click", () => {
+    pokemonSearchSortByStats = !pokemonSearchSortByStats;
+    renderPokemonSearch();
+  });
   [el.helperTypeOne, el.helperTypeTwo, el.helperTargetBase].forEach((field) => {
     field.addEventListener("change", () => {
       resetHelperResultSelection();
@@ -560,6 +566,7 @@ function switchGame(game) {
   teamSettingsOpen = false;
   teamAddPanelOpen = false;
   pokemonSearchFilters = { query: "", typeOne: "", typeTwo: "" };
+  pokemonSearchSortByStats = false;
   pokemonComparison = { active: false, picks: [], confirmed: false, replacing: null };
   el.teamName.value = draftTeam.name || "";
   el.addMode.value = "catalog";
@@ -2528,6 +2535,8 @@ function renderPokemonSearch() {
   el.pokemonSearchQuery.value = pokemonSearchFilters.query;
   el.pokemonSearchTypeOne.value = typeOne;
   el.pokemonSearchTypeTwo.value = typeTwo;
+  el.pokemonSearchStatSort.setAttribute("aria-pressed", String(pokemonSearchSortByStats));
+  el.pokemonSearchStatSort.classList.toggle("active", pokemonSearchSortByStats);
   el.pokemonSearchPanel.classList.toggle("comparison-active", pokemonComparison.active);
   el.pokemonSearchPanel.classList.toggle("comparison-ready", comparisonReady);
   el.pokemonSearchPanel.classList.toggle("comparison-confirmed", pokemonComparison.confirmed);
@@ -2549,6 +2558,7 @@ function renderPokemonSearch() {
         && (!typeOne || pokemon.types.includes(typeOne))
         && (!typeTwo || pokemon.types.includes(typeTwo))
       ))
+      .sort(comparePokemonSearchResults)
       .slice(0, 36);
   el.pokemonSearchCount.textContent = comparisonReady
     ? `${selectedPokemon.length}/2`
@@ -2584,6 +2594,19 @@ function renderPokemonSearch() {
       renderSavedCustomOptions();
     });
   });
+}
+
+function comparePokemonSearchResults(left, right) {
+  if (!pokemonSearchSortByStats) return 0;
+  const leftTotal = getPokemonStatTotal(left);
+  const rightTotal = getPokemonStatTotal(right);
+  if (leftTotal !== rightTotal) return rightTotal - leftTotal;
+  return left.name.localeCompare(right.name, "fr");
+}
+
+function getPokemonStatTotal(pokemon) {
+  const stats = getPokemonBaseStats(pokemon);
+  return stats ? Object.values(stats).reduce((sum, value) => sum + value, 0) : -1;
 }
 
 function renderPokemonSearchCard(pokemon, index, comparisonReady) {
