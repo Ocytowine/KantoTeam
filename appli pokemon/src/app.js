@@ -3203,7 +3203,7 @@ async function getPokemonInfoData({ id, name, game, guideKey }) {
   let evolution = null;
   if (id && navigator.onLine) {
     try {
-      evolution = await getPokemonEvolutionData(id, { reforged });
+      evolution = await getPokemonEvolutionData(id, { reforged, pokemonZ: !reforged, guideKey });
     } catch {
       evolution = null;
     }
@@ -3255,10 +3255,17 @@ async function getPokemonEvolutionData(id, options = {}) {
 
   return {
     currentId: id,
-    sourceLabel: options.reforged ? "Arborescence officielle, annotations Reforged" : "Arborescence officielle",
+    sourceLabel: options.reforged
+      ? "Arborescence officielle, annotations Reforged"
+      : options.pokemonZ
+        ? "Lignée officielle, conditions Pokémon Z v2.12"
+        : "Arborescence officielle",
     tree: buildEvolutionTree(chain.chain, {
       currentId: id,
       reforged: Boolean(options.reforged),
+      pokemonZ: Boolean(options.pokemonZ),
+      currentGuideKey: options.guideKey || "",
+      isRoot: true,
       incomingDetails: []
     })
   };
@@ -3269,19 +3276,46 @@ function buildEvolutionTree(node, context) {
   const fallbackName = formatApiName(node.species?.name || "");
   const name = pokemonDisplayNameByNationalId(id, fallbackName);
   const guide = context.reforged ? getReforgedGuideInfo(name) : null;
+  const zPokemon = context.pokemonZ ? findPokemonZEvolutionEntry(id, context.currentId, context.currentGuideKey) : null;
   return {
     id,
-    name,
+    name: zPokemon?.name || name,
     current: id === context.currentId,
-    requirement: formatEvolutionRequirement(context.incomingDetails),
+    requirement: context.pokemonZ
+      ? getPokemonZEvolutionRequirement(zPokemon, context.incomingDetails, context.isRoot)
+      : formatEvolutionRequirement(context.incomingDetails),
     locations: guide ? dedupeGuideLabels(guide.locations || []) : [],
     reforgedEvolution: guide?.evolution || "",
     children: (node.evolves_to || []).map((child) => buildEvolutionTree(child, {
       currentId: context.currentId,
       reforged: context.reforged,
+      pokemonZ: context.pokemonZ,
+      currentGuideKey: context.currentGuideKey,
+      isRoot: false,
       incomingDetails: child.evolution_details || []
     }))
   };
+}
+
+function findPokemonZEvolutionEntry(nationalId, currentId, currentGuideKey) {
+  if (!nationalId || typeof POKEMON_Z_V212 === "undefined") return null;
+  if (nationalId === currentId && currentGuideKey) {
+    const current = POKEMON_Z_V212.find((pokemon) => pokemon.id === currentGuideKey);
+    if (current?.nationalId === nationalId) return current;
+  }
+  return POKEMON_Z_V212.find((pokemon) => pokemon.nationalId === nationalId) || null;
+}
+
+function getPokemonZEvolutionRequirement(pokemon, officialDetails = [], isRoot = false) {
+  // La racine d'une lignée n'a pas de condition entrante.
+  if (isRoot) return "";
+  const methods = pokemon ? getPokemonZGuideInfo(pokemon.id)?.methods || [] : [];
+  const evolutionMethods = methods.filter((method) => method.kind === "evolution");
+  if (!evolutionMethods.length) return "Condition non documentée pour Pokémon Z";
+  return evolutionMethods
+    .map((method) => localizePokemonZPokemonNames(translatePokemonZLocationText(method.text || "").text))
+    .filter(Boolean)
+    .join(" · ");
 }
 
 function getEvolutionChainItems(tree) {
@@ -3420,6 +3454,23 @@ function renderPokemonZPokemonLinks(text) {
   });
 }
 
+function localizePokemonZPokemonNames(text) {
+  const sourceEntries = typeof POKEMON_Z_GUIDE_POKEMON_NAMES !== "undefined"
+    ? POKEMON_Z_GUIDE_POKEMON_NAMES
+    : (typeof POKEMON_Z_TRADE_POKEMON !== "undefined" ? POKEMON_Z_TRADE_POKEMON : []);
+  let translated = String(text || "");
+  for (const entry of [...sourceEntries].sort((left, right) => right.source.length - left.source.length)) {
+    const pokemon = POKEMON_Z_V212.find((item) => item.nationalId === entry.nationalId);
+    if (!pokemon) continue;
+    const escapedName = entry.source.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    translated = translated.replace(
+      new RegExp(`(?<![\\p{L}\\p{N}])${escapedName}(?![\\p{L}\\p{N}])`, "giu"),
+      pokemon.name
+    );
+  }
+  return translated;
+}
+
 function bindPokemonTradeLinks(container) {
   container.querySelectorAll("[data-trade-pokemon-id]").forEach((button) => {
     button.addEventListener("click", (event) => {
@@ -3517,6 +3568,47 @@ function translatePokemonZLocationText(text) {
       pending = true;
     }
   }
+  translated = translated
+    .replace(/\bPokémon Center\b/giu, "Centre Pokémon")
+    .replace(/\bsealed door\b/giu, "porte scellée")
+    .replace(/\bMercuric Key door\b/giu, "porte de la Clé Mercurielle")
+    .replace(/\bstation door\b/giu, "porte de la station")
+    .replace(/\bleft path\b/giu, "chemin de gauche")
+    .replace(/\bupper left\b/giu, "en haut à gauche")
+    .replace(/\bbottom of\b/giu, "fond de")
+    .replace(/\bdeepest area of\b/giu, "zone la plus profonde de")
+    .replace(/\bnorthernmost area of\b/giu, "zone la plus au nord de")
+    .replace(/\bmountain area\b/giu, "zone montagneuse")
+    .replace(/\briver path\b/giu, "chemin de la rivière")
+    .replace(/\bsurf path\b/giu, "passage accessible avec Surf")
+    .replace(/\bSurf required\b/giu, "Surf requis")
+    .replace(/\bDive path\b/giu, "passage en plongée")
+    .replace(/\bhidden door\b/giu, "porte cachée")
+    .replace(/\bstatue event\b/giu, "événement de la statue")
+    .replace(/\bthree Hoenn Regis\b/giu, "trois Regis de Hoenn")
+    .replace(/\brequires\b/giu, "requiert")
+    .replace(/\bbefore\b/giu, "avant")
+    .replace(/\bdetour\b/giu, "détour")
+    .replace(/\bpuzzle rock\b/giu, "rocher de l'énigme")
+    .replace(/\bpuzzle\b/giu, "énigme")
+    .replace(/\bPostgame\b/giu, "après la Ligue")
+    .replace(/\bsummit\b/giu, "sommet")
+    .replace(/\bbalcony\b/giu, "balcon")
+    .replace(/\bupstairs\b/giu, "à l'étage")
+    .replace(/\bstairs\b/giu, "escaliers")
+    .replace(/\bcages\b/giu, "cages")
+    .replace(/\bcenter\b/giu, "centre")
+    .replace(/\bgarden\b/giu, "jardin")
+    .replace(/\bexit\b/giu, "sortie")
+    .replace(/\bpath\b/giu, "chemin")
+    .replace(/\bevent\b/giu, "événement")
+    .replace(/\breward\b/giu, "récompense")
+    .replace(/\bcoins\b/giu, "jetons")
+    .replace(/\bafter\b/giu, "après")
+    .replace(/\bwhere you met\b/giu, "où vous avez rencontré")
+    .replace(/\bthe\s+/giu, "")
+    .replace(/\s+/g, " ")
+    .trim();
   return { text: translated, pending };
 }
 

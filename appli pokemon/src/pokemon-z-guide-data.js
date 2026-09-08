@@ -190,8 +190,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-18": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : the Service Station",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : the Service Station ou Évolue depuis Pidgeotto au niveau 36",
+        "text": "Évolue depuis Pidgeotto au niveau 36",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -256,8 +263,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-24": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Route 12",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Route 12 ou Évolue depuis Ekans au niveau 22",
+        "text": "Évolue depuis Ekans au niveau 22",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -432,8 +446,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-40": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Pokémon Villa",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Pokémon Villa ou Évolue depuis Jigglypuff avec Pierre Lune",
+        "text": "Évolue depuis Jigglypuff avec Pierre Lune",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -454,8 +475,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-42": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Southern Catacombs",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Southern Catacombs ou Évolue depuis Zubat au niveau 22",
+        "text": "Évolue depuis Zubat au niveau 22",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -509,8 +537,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-47": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Old Vanitas",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Old Vanitas ou Évolue depuis Paras (Z) au niveau 22",
+        "text": "Évolue depuis Paras (Z) au niveau 22",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -663,8 +698,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-61": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Route 13",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Route 13 ou Évolue depuis Poliwag au niveau 22",
+        "text": "Évolue depuis Poliwag au niveau 22",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -696,8 +738,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-64": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Route 13",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Route 13 ou Évolue depuis Abra au niveau 16",
+        "text": "Évolue depuis Abra au niveau 16",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -707,8 +756,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-65": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Western Catacombs",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Western Catacombs ou Évolue depuis Kadabra au niveau 45",
+        "text": "Évolue depuis Kadabra au niveau 45",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -729,8 +785,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-67": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Profane Town",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Profane Town ou Évolue depuis Machop au niveau 16",
+        "text": "Évolue depuis Machop au niveau 16",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -762,8 +825,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-70": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Route 15",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Route 15 ou Évolue depuis Bellsprout au niveau 21",
+        "text": "Évolue depuis Bellsprout au niveau 21",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -795,8 +865,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-73": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : the Seafloor",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : the Seafloor ou Évolue depuis Tentacool au niveau 30",
+        "text": "Évolue depuis Tentacool au niveau 30",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -817,8 +894,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-75": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Gloomy Cave",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Gloomy Cave ou Évolue depuis Geodude au niveau 25",
+        "text": "Évolue depuis Geodude au niveau 25",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -850,8 +934,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-78": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Route 12",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Route 12 ou Évolue depuis Ponyta au niveau 40",
+        "text": "Évolue depuis Ponyta au niveau 40",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -872,8 +963,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-80": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Route 19",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Route 19 ou Évolue depuis Slowpoke au niveau 37",
+        "text": "Évolue depuis Slowpoke au niveau 37",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -1004,7 +1102,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-92": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Capturable : Southern Catacombs",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
@@ -1015,8 +1113,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-93": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Profane Swamp, Route 5 cemetery event,",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Profane Swamp, Route 5 cemetery event, ou Évolue depuis Gastly au niveau 25",
+        "text": "Évolue depuis Gastly au niveau 25",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -1026,8 +1131,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-94": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Vanitas Bastion",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Vanitas Bastion ou Évolue depuis Haunter au niveau 45",
+        "text": "Évolue depuis Haunter au niveau 45",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -1059,8 +1171,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-97": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Luminalia Crypts",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Luminalia Crypts ou Évolue depuis Drowzee au niveau 26",
+        "text": "Évolue depuis Drowzee au niveau 26",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -1092,7 +1211,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-100": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Capturable : the Poké Ball Factory",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
@@ -1103,8 +1222,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-101": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : the Poké Ball Factory",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : the Poké Ball Factory ou Évolue depuis Voltorb au niveau 30",
+        "text": "Évolue depuis Voltorb au niveau 30",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -1125,8 +1251,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-103": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Montesanto Island",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Montesanto Island ou Évolue depuis Exeggcute avec Pierre Plante",
+        "text": "Évolue depuis Exeggcute avec Pierre Plante",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -1147,8 +1280,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-105": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Gloomy Cave",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Gloomy Cave ou Évolue depuis Cubone (Z) au niveau 28",
+        "text": "Évolue depuis Cubone (Z) au niveau 28",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -1224,8 +1364,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-112": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : the Service Station",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : the Service Station ou Évolue depuis Rhyhorn au niveau 30",
+        "text": "Évolue depuis Rhyhorn au niveau 30",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -1312,7 +1459,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-120": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Chateau Rosillon",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
@@ -1367,7 +1514,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-125": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Capturable : Storm Hill",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
@@ -1422,8 +1569,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-130": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 24",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 24 ou Évolue depuis Magikarp au niveau 20",
+        "text": "Évolue depuis Magikarp au niveau 20",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -1433,7 +1587,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-131": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Capturable : Frozen Grotto",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
@@ -1455,7 +1609,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-133": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Pokémon Villa ou Obtenu après avoir rendu the scarf to Isidora",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
@@ -1565,8 +1719,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-143": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 25",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 25 ou Évolue depuis Munchlax avec un bonheur élevé",
+        "text": "Évolue depuis Munchlax avec un bonheur élevé",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -1576,7 +1737,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-144": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Capturable : Kalos Pyrenees",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
@@ -1587,7 +1748,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-145": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Capturable : Storm Hill",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
@@ -1598,7 +1759,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-146": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Capturable : Burning Abyss (Fiery Chasm / Sima Ardiente)",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
@@ -1631,8 +1792,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-149": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 23",
+        "source": "Guide Pokemon Z - Generation 1",
+        "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 23 ou Évolue depuis Dragonair au niveau 55",
+        "text": "Évolue depuis Dragonair au niveau 55",
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
@@ -1854,8 +2022,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-168": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable dans Northern Catacombs",
+        "source": "Guide Pokemon Z - Generation 2",
+        "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable dans Northern Catacombs ou Évolue depuis Spinarak au niveau 21",
+        "text": "Évolue depuis Spinarak au niveau 21",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -1865,8 +2040,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-169": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable dans Bastion Vanitas",
+        "source": "Guide Pokemon Z - Generation 2",
+        "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable dans Bastion Vanitas ou Évolue depuis Golbat avec un bonheur élevé",
+        "text": "Évolue depuis Golbat avec un bonheur élevé",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2030,8 +2212,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-184": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable dans Earthbound Grotto",
+        "source": "Guide Pokemon Z - Generation 2",
+        "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable dans Earthbound Grotto ou Évolue depuis Marill au niveau 18",
+        "text": "Évolue depuis Marill au niveau 18",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2052,8 +2241,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-186": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable dans Romantis City",
+        "source": "Guide Pokemon Z - Generation 2",
+        "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable dans Romantis City ou Faire évoluer Poliwhirl en gagnant un niveau avec Roche Royale pendant la journée",
+        "text": "Faire évoluer Poliwhirl en gagnant un niveau avec Roche Royale pendant la journée",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2118,8 +2314,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-192": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable sur Route 5",
+        "source": "Guide Pokemon Z - Generation 2",
+        "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable sur Route 5 ou Évolue depuis Sunkern avec Pierre Soleil",
+        "text": "Évolue depuis Sunkern avec Pierre Soleil",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2151,8 +2354,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-195": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable dans Murky Cave",
+        "source": "Guide Pokemon Z - Generation 2",
+        "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable dans Murky Cave ou Évolue depuis Wooper au niveau 20",
+        "text": "Évolue depuis Wooper au niveau 20",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2195,8 +2405,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-199": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable dans Azure Bay",
+        "source": "Guide Pokemon Z - Generation 2",
+        "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable dans Azure Bay ou Évolue depuis Slowpoke avec Pierre Eau",
+        "text": "Évolue depuis Slowpoke avec Pierre Eau",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2294,8 +2511,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-208": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable dans Fiery Chasm",
+        "source": "Guide Pokemon Z - Generation 2",
+        "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable dans Fiery Chasm ou Évolue depuis Onix au niveau 42",
+        "text": "Évolue depuis Onix au niveau 42",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2393,8 +2617,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-217": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable sur Route 16",
+        "source": "Guide Pokemon Z - Generation 2",
+        "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable sur Route 16 ou Évolue depuis Teddiursa au niveau 30",
+        "text": "Évolue depuis Teddiursa au niveau 30",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2437,8 +2668,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-221": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable dans Kalos Pyrenees",
+        "source": "Guide Pokemon Z - Generation 2",
+        "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable dans Kalos Pyrenees ou Évolue depuis Swinub au niveau 33",
+        "text": "Évolue depuis Swinub au niveau 33",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2470,8 +2708,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-224": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable dans Earthbound Grotto",
+        "source": "Guide Pokemon Z - Generation 2",
+        "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable dans Earthbound Grotto ou Évolue depuis Remoraid au niveau 25",
+        "text": "Évolue depuis Remoraid au niveau 25",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2744,8 +2989,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-247": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable dans Resolution Cave",
+        "source": "Guide Pokemon Z - Generation 2",
+        "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable dans Resolution Cave ou Évolue depuis Larvitar au niveau 30",
+        "text": "Évolue depuis Larvitar au niveau 30",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
@@ -2766,14 +3018,14 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-249": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "dans the Seafloor of Petroglifo",
         "source": "Guide Pokemon Z - Generation 2",
         "sourceUrl": "https://pokemonzfangame.com/gen-2-pokemon-location/",
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Petroglifo Seafloor",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -2930,8 +3182,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-262": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 15",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 15 ou Faire évoluer Poochyena au niveau 18",
+        "text": "Faire évoluer Poochyena au niveau 18",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -2952,8 +3211,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-264": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Old Vanitas",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Old Vanitas ou Faire évoluer Zigzagoon au niveau 20",
+        "text": "Faire évoluer Zigzagoon au niveau 20",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -2964,7 +3230,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Beautifly/Dustox",
+        "text": "Obtenu par reproduction de Beautifly/Dustox",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3029,8 +3295,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-271": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 5",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 5 ou Faire évoluer Lotad au niveau 14",
+        "text": "Faire évoluer Lotad au niveau 14",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3040,8 +3313,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-272": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 21",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 21 ou Faire évoluer Lombre avec Pierre Eau",
+        "text": "Faire évoluer Lombre avec Pierre Eau",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3139,8 +3419,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-281": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 8",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 8 ou Faire évoluer Ralts au niveau 20",
+        "text": "Faire évoluer Ralts au niveau 20",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3172,8 +3459,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-284": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Old Vanitas",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Old Vanitas ou Faire évoluer Surskit au niveau 25",
+        "text": "Faire évoluer Surskit au niveau 25",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3206,7 +3500,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Vigoroth/Slaking",
+        "text": "Obtenu par reproduction de Vigoroth/Slaking",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3238,7 +3532,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-290": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Chateau Rosillon Garden",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
@@ -3293,8 +3587,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-295": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 25",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 25 ou Faire évoluer Loudred au niveau 40",
+        "text": "Faire évoluer Loudred au niveau 40",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3305,7 +3606,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Hariyama",
+        "text": "Obtenu par reproduction de Hariyama",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3327,7 +3628,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Marill/Azumarill",
+        "text": "Obtenu par reproduction de Marill/Azumarill",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3370,7 +3671,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-302": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Earthbound Grotto",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
@@ -3393,7 +3694,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Lairon",
+        "text": "Obtenu par reproduction de Lairon",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3414,8 +3715,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-306": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "East Kalos Battle",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "East Kalos Battle ou Faire évoluer Lairon au niveau 42",
+        "text": "Faire évoluer Lairon au niveau 42",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3436,8 +3744,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-308": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Batik City",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Batik City ou Faire évoluer Meditite au niveau 37",
+        "text": "Faire évoluer Meditite au niveau 37",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3513,8 +3828,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-315": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 8",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 8 ou Faire évoluer Budew au niveau 20",
+        "text": "Faire évoluer Budew au niveau 20",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3535,8 +3857,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-317": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 13",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 13 ou Faire évoluer Gulpin au niveau 28",
+        "text": "Faire évoluer Gulpin au niveau 28",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3547,7 +3876,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Sharpedo",
+        "text": "Obtenu par reproduction de Sharpedo",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3601,8 +3930,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-323": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 10",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 10 ou Faire évoluer Numel au niveau 33",
+        "text": "Faire évoluer Numel au niveau 33",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3634,8 +3970,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-326": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 18",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 18 ou Faire évoluer Spoink au niveau 32",
+        "text": "Faire évoluer Spoink au niveau 32",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3657,7 +4000,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Vibrava/Flygon",
+        "text": "Obtenu par reproduction de Vibrava/Flygon",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3690,7 +4033,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Cacturne",
+        "text": "Obtenu par reproduction de Cacturne",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3700,7 +4043,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-332": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Prison of Oblivion",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
@@ -3755,7 +4098,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-337": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Flooded Forge",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
@@ -3766,7 +4109,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-338": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Flooded Forge",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
@@ -3788,8 +4131,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-340": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 12",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 12 ou Faire évoluer Barboach au niveau 30",
+        "text": "Faire évoluer Barboach au niveau 30",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3810,8 +4160,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-342": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Bloodshore Coast",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Bloodshore Coast ou Faire évoluer Corphish au niveau 30",
+        "text": "Faire évoluer Corphish au niveau 30",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3822,7 +4179,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Claydol",
+        "text": "Obtenu par reproduction de Claydol",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3832,7 +4189,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-344": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Prison of Oblivion",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
@@ -3887,7 +4244,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-349": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Chateau Rosillon",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
@@ -3898,8 +4255,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-350": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Yantra City",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Yantra City ou Faire évoluer Feebas au niveau 37",
+        "text": "Faire évoluer Feebas au niveau 37",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3920,7 +4284,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-352": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Chateau Rosillon Garden",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
@@ -3931,7 +4295,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-353": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Storm Hill",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
@@ -3942,8 +4306,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-354": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Pokémon Village",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Pokémon Village ou Faire évoluer Shuppet au niveau 32",
+        "text": "Faire évoluer Shuppet au niveau 32",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3954,7 +4325,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Dusclops",
+        "text": "Obtenu par reproduction de Dusclops",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -3964,7 +4335,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-356": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Southern Catacombs",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
@@ -3986,7 +4357,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-358": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Earthbound Grotto",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
@@ -4009,7 +4380,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Wobbuffet",
+        "text": "Obtenu par reproduction de Wobbuffet",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -4019,7 +4390,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-361": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Kalos Pyrenees",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
@@ -4030,8 +4401,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-362": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Kalos Pyrenees",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Kalos Pyrenees ou Faire évoluer Snorunt au niveau 42",
+        "text": "Faire évoluer Snorunt au niveau 42",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -4042,7 +4420,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Sealeo/Walrein",
+        "text": "Obtenu par reproduction de Sealeo/Walrein",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -4052,7 +4430,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-364": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Frozen Grotto",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
@@ -4063,8 +4441,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-365": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 18",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 18 ou Faire évoluer Sealeo au niveau 44",
+        "text": "Faire évoluer Sealeo au niveau 44",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -4085,8 +4470,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-367": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Seafloor",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Seafloor ou Faire évoluer Clamperl avec Pierre Nuit",
+        "text": "Faire évoluer Clamperl avec Pierre Nuit",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -4096,8 +4488,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-368": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Seafloor",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Seafloor ou Faire évoluer Clamperl avec Pierre Eau",
+        "text": "Faire évoluer Clamperl avec Pierre Eau",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -4107,7 +4506,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-369": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Petroglifo Seafloor",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
@@ -4162,7 +4561,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-374": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "South Luminalia Expansions",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
@@ -4173,8 +4572,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-375": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Reflection Cave",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Reflection Cave ou Faire évoluer Beldum au niveau 20",
+        "text": "Faire évoluer Beldum au niveau 20",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -4184,8 +4590,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-376": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Reflection Cave",
+        "source": "Guide Pokemon Z - Generation 3",
+        "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Reflection Cave ou Faire évoluer Metang au niveau 45",
+        "text": "Faire évoluer Metang au niveau 45",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
@@ -4213,14 +4626,14 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-378": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Frozen Grotto",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Frozen Grotto (Lens of Truth)",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -4231,7 +4644,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-379": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Scorched Chasm",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
@@ -4292,7 +4705,7 @@ const POKEMON_Z_GUIDE = {
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Bottom of Fluxus Lake",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -4303,14 +4716,14 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-383": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Prison of Oblivion après Yantra",
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Prison of Oblivion exit",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -4328,7 +4741,7 @@ const POKEMON_Z_GUIDE = {
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Abandoned Lighthouse summit",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -4364,7 +4777,7 @@ const POKEMON_Z_GUIDE = {
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Mysterious Place (station door)",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -4475,7 +4888,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Staravia/Staraptor",
+        "text": "Obtenu par reproduction de Staravia/Staraptor",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4485,7 +4898,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-397": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Chateau Rosillon",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
@@ -4518,8 +4931,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-400": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Kalos Pyrenees",
+        "source": "Guide Pokemon Z - Generation 4",
+        "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Kalos Pyrenees ou Faire évoluer Bidoof (Z) au niveau 16",
+        "text": "Faire évoluer Bidoof (Z) au niveau 16",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4562,8 +4982,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-404": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Relief City",
+        "source": "Guide Pokemon Z - Generation 4",
+        "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Relief City ou Faire évoluer Shinx au niveau 16",
+        "text": "Faire évoluer Shinx au niveau 16",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4727,8 +5154,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-419": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Mosaic Town",
+        "source": "Guide Pokemon Z - Generation 4",
+        "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Mosaic Town ou Faire évoluer Buizel au niveau 26",
+        "text": "Faire évoluer Buizel au niveau 26",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4771,8 +5205,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-423": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 11",
+        "source": "Guide Pokemon Z - Generation 4",
+        "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 11 ou Faire évoluer Shellos au niveau 30",
+        "text": "Faire évoluer Shellos au niveau 30",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4804,8 +5245,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-426": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 22",
+        "source": "Guide Pokemon Z - Generation 4",
+        "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 22 ou Faire évoluer Drifloon au niveau 28",
+        "text": "Faire évoluer Drifloon au niveau 28",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4816,7 +5264,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Lopunny",
+        "text": "Obtenu par reproduction de Lopunny",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4870,8 +5318,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-432": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Luminalia City",
+        "source": "Guide Pokemon Z - Generation 4",
+        "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Luminalia City ou Faire évoluer Glameow au niveau 28",
+        "text": "Faire évoluer Glameow au niveau 28",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4881,7 +5336,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-433": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Earthbound Grotto",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
@@ -4937,7 +5392,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Sudowoodo",
+        "text": "Obtenu par reproduction de Sudowoodo",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4959,7 +5414,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Chansey/Blissey",
+        "text": "Obtenu par reproduction de Chansey/Blissey",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -4980,7 +5435,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-442": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Luminalia Crypts",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
@@ -4992,7 +5447,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Gabite/Garchomp",
+        "text": "Obtenu par reproduction de Gabite/Garchomp",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5002,7 +5457,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-444": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "South Luminalia Expansions",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
@@ -5024,7 +5479,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-446": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Vanitas Orchard event",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
@@ -5046,7 +5501,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-448": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "evolution",
         "text": "Bonheur élevé + gain de niveau de jour",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
@@ -5058,7 +5513,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Hippowdon",
+        "text": "Obtenu par reproduction de Hippowdon",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5068,7 +5523,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-450": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Prison of Oblivion",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
@@ -5090,8 +5545,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-452": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Bastion Vanitas",
+        "source": "Guide Pokemon Z - Generation 4",
+        "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Bastion Vanitas ou Faire évoluer Skorupi au niveau 32",
+        "text": "Faire évoluer Skorupi au niveau 32",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5135,7 +5597,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Lumineon",
+        "text": "Obtenu par reproduction de Lumineon",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5157,7 +5619,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Mantine",
+        "text": "Obtenu par reproduction de Mantine",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5167,7 +5629,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-459": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Kalos Pyrenees",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
@@ -5178,8 +5640,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-460": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Kalos Pyrenees",
+        "source": "Guide Pokemon Z - Generation 4",
+        "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Kalos Pyrenees ou Faire évoluer Snover au niveau 40",
+        "text": "Faire évoluer Snover au niveau 40",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5189,8 +5658,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-461": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 18",
+        "source": "Guide Pokemon Z - Generation 4",
+        "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 18 ou Faire évoluer Sneasel au niveau 38",
+        "text": "Faire évoluer Sneasel au niveau 38",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5310,8 +5786,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-472": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 20",
+        "source": "Guide Pokemon Z - Generation 4",
+        "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 20 ou Faire évoluer Gligar au niveau 42",
+        "text": "Faire évoluer Gligar au niveau 42",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5321,8 +5804,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-473": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Kalos Pyrenees",
+        "source": "Guide Pokemon Z - Generation 4",
+        "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Kalos Pyrenees ou Faire évoluer Piloswine en connaissant Ancient Power",
+        "text": "Faire évoluer Piloswine en connaissant Ancient Power",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5376,8 +5866,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-478": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Kalos Pyrenees",
+        "source": "Guide Pokemon Z - Generation 4",
+        "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Kalos Pyrenees ou Faire évoluer femelle Snorunt avec Pierre Aube",
+        "text": "Faire évoluer femelle Snorunt avec Pierre Aube",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5449,14 +5946,14 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-484": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "East Luminalia Expansions après Yantra",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "East Luminalia Extensions",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -5467,14 +5964,14 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-485": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Scorched Chasm",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Burning Abyss left path",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -5521,14 +6018,14 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-488": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Manorial Cathedral (sealed door)",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Manorial Cathedral (Mercuric Key door)",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -5540,7 +6037,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding Manaphy",
+        "text": "Obtenu par reproduction de Manaphy",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
@@ -5575,14 +6072,14 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-491": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Luminalia Crypts (sealed door)",
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Luminalia Crypts (upper left)",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -5747,7 +6244,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding depuis Watchog",
+        "text": "Obtenu par reproduction de Watchog",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -5801,7 +6298,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-509": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Southern Catacombs",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -5834,7 +6331,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-512": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "evolution",
         "text": "Utiliser Pierre Plante",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -5856,7 +6353,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-514": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "evolution",
         "text": "Utiliser Pierre Feu",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -5878,7 +6375,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-516": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "evolution",
         "text": "Utiliser Pierre Eau",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -5900,7 +6397,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-518": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "evolution",
         "text": "Utiliser Pierre Lune",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -5912,7 +6409,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breed depuis Tranquill",
+        "text": "Obtenu par reproduction de Tranquill",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -5944,7 +6441,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-522": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Chateau Rosillon",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -5977,8 +6474,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-525": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Unity Cave",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Unity Cave ou Évolue au 23",
+        "text": "Évolue au niveau 23",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -5988,8 +6492,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-526": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Reflection Cave",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Reflection Cave ou Évolue au 40",
+        "text": "Évolue au niveau 40",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6011,7 +6522,14 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "capture",
-        "text": "Dark Cave ou bonheur élevé",
+        "text": "Dark Cave",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
+        "kind": "evolution",
+        "text": "bonheur élevé",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6032,8 +6550,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-530": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Terminus Cave",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Terminus Cave ou Évolue au 31",
+        "text": "Évolue au niveau 31",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6065,8 +6590,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-533": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Poké Ball Factory",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Poké Ball Factory ou Évolue au 23",
+        "text": "Évolue au niveau 23",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6077,7 +6609,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Faire évoluer Gurdurr à 45",
+        "text": "Faire évoluer Gurdurr au niveau 45",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6098,8 +6630,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-536": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 14",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 14 ou Évolue au 21",
+        "text": "Évolue au niveau 21",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6109,8 +6648,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-537": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 14",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 14 ou Évolue au 36",
+        "text": "Évolue au niveau 36",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6143,7 +6689,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breed depuis Swadloon/Leavanny",
+        "text": "Obtenu par reproduction de Swadloon/Leavanny",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6176,7 +6722,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breed depuis Whirlipede/Scolipede",
+        "text": "Obtenu par reproduction de Whirlipede/Scolipede",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6197,8 +6743,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-545": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Prosperity Sanctuary",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Prosperity Sanctuary ou Évolue au 30",
+        "text": "Évolue au niveau 30",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6219,7 +6772,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-547": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "evolution",
         "text": "Pierre Soleil",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -6241,7 +6794,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-549": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "evolution",
         "text": "Pierre Soleil",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -6264,7 +6817,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breed depuis Krokorok/Krookodile",
+        "text": "Obtenu par reproduction de Krokorok/Krookodile",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6274,7 +6827,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-552": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Prison of Oblivion",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -6286,7 +6839,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au 40",
+        "text": "Évolue au niveau 40",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6296,7 +6849,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-554": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Fiery Chasm",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -6307,8 +6860,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-555": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Fiery Chasm",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Fiery Chasm ou Évolue au 35",
+        "text": "Évolue au niveau 35",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6318,7 +6878,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-556": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Prison of Oblivion",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -6340,8 +6900,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-558": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Dark Cave",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Dark Cave ou Évolue au 32",
+        "text": "Évolue au niveau 32",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6352,7 +6919,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breed depuis Scrafty",
+        "text": "Obtenu par reproduction de Scrafty",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6373,7 +6940,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-561": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Southern Catacombs",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -6396,7 +6963,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au 34",
+        "text": "Évolue au niveau 34",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6418,7 +6985,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au 37",
+        "text": "Évolue au niveau 37",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6440,7 +7007,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au 37",
+        "text": "Évolue au niveau 37",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6451,7 +7018,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breed depuis Garbodor",
+        "text": "Obtenu par reproduction de Garbodor",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6461,7 +7028,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-569": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Luminalia Crypts ou Old Vanitas",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -6473,7 +7040,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breed depuis Zoroark",
+        "text": "Obtenu par reproduction de Zoroark",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6495,7 +7062,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breed depuis Cinccino",
+        "text": "Obtenu par reproduction de Cinccino",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6517,7 +7084,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breed depuis Gothorita",
+        "text": "Obtenu par reproduction de Gothorita",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6539,7 +7106,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au 38",
+        "text": "Évolue au niveau 38",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6549,7 +7116,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-577": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Old Vanitas",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -6560,8 +7127,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-578": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Old Vanitas",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Old Vanitas ou Évolue au 25",
+        "text": "Évolue au niveau 25",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6571,8 +7145,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-579": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 20",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 20 ou Évolue au 38",
+        "text": "Évolue au niveau 38",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6594,7 +7175,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au 30",
+        "text": "Évolue au niveau 30",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6615,8 +7196,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-583": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 17",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 17 ou Évolue au 25",
+        "text": "Évolue au niveau 25",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6627,7 +7215,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au 40",
+        "text": "Évolue au niveau 40",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6649,7 +7237,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au 32",
+        "text": "Évolue au niveau 32",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6682,7 +7270,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au 32",
+        "text": "Évolue au niveau 32",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6703,8 +7291,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-591": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Pokémon Villa",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Pokémon Villa ou Évolue au 36",
+        "text": "Évolue au niveau 36",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6725,8 +7320,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-593": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Lake Depths",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Lake Depths ou Évolue au 35",
+        "text": "Évolue au niveau 35",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6747,7 +7349,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-595": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Ancient Library",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -6759,7 +7361,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au 32",
+        "text": "Évolue au niveau 32",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6770,7 +7372,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breed depuis Ferrothorn",
+        "text": "Obtenu par reproduction de Ferrothorn",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6802,8 +7404,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-600": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Poké Ball Factory",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Poké Ball Factory ou Évolue au 25",
+        "text": "Évolue au niveau 25",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6814,7 +7423,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au 40",
+        "text": "Évolue au niveau 40",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6835,8 +7444,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-603": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Old Flooded Forge",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Old Flooded Forge ou Évolue au 30",
+        "text": "Évolue au niveau 30",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6846,7 +7462,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-604": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "evolution",
         "text": "Pierre Foudre",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -6858,7 +7474,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding",
+        "text": "Reproduction",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6879,7 +7495,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-607": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Ancient Library",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -6890,8 +7506,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-608": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Old Vanitas",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Old Vanitas ou Évolue au 34",
+        "text": "Évolue au niveau 34",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6901,7 +7524,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-609": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "evolution",
         "text": "Pierre Nuit",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -6924,7 +7547,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au 30",
+        "text": "Évolue au niveau 30",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6935,7 +7558,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au 48",
+        "text": "Évolue au niveau 48",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6946,7 +7569,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breed depuis Beartic",
+        "text": "Obtenu par reproduction de Beartic",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -6990,7 +7613,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au 32",
+        "text": "Évolue au niveau 32",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -7012,7 +7635,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breed depuis Mienshao",
+        "text": "Obtenu par reproduction de Mienshao",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -7044,7 +7667,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-622": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Ancient Library",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -7055,8 +7678,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-623": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Old Flooded Forge",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Old Flooded Forge ou Évolue au 35",
+        "text": "Évolue au niveau 35",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -7078,7 +7708,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au 30",
+        "text": "Évolue au niveau 30",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -7110,8 +7740,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-628": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 23",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 23 ou Évolue au 35",
+        "text": "Évolue au niveau 35",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -7121,7 +7758,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-629": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Prison of Oblivion",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -7132,8 +7769,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-630": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Prison of Oblivion",
+        "source": "Guide Pokemon Z - Generation 5",
+        "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Prison of Oblivion ou Évolue au 35",
+        "text": "Évolue au niveau 35",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -7143,7 +7787,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-631": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Poké Ball Factory",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -7154,7 +7798,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-632": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Poké Ball Factory",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -7166,7 +7810,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breed depuis Zweilous/Hydreigon",
+        "text": "Obtenu par reproduction de Zweilous/Hydreigon",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -7210,7 +7854,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au 55",
+        "text": "Évolue au niveau 55",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
@@ -7220,7 +7864,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-638": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Poké Ball Factory (après event)",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
@@ -7275,14 +7919,14 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-643": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Chateau Rosillon après Yantra",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Chateau Rosillon balcony",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -7293,14 +7937,14 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-644": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Chateau Lanto après Yantra",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Chateau Lanto",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -7322,14 +7966,14 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-646": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Kalos Pyrenees",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Kalos Pyrenees path",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -7358,14 +8002,14 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-648": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "West Luminalia après Yantra",
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "West Luminalia",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -7526,8 +8170,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-662": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 5",
+        "source": "Guide Pokemon Z - Generation 6",
+        "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 5 ou Évolue au Lv. 17",
+        "text": "Évolue au niveau Lv. 17",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7538,7 +8189,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au Lv. 35",
+        "text": "Évolue au niveau Lv. 35",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7560,7 +8211,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au Lv. 9",
+        "text": "Évolue au niveau Lv. 9",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7571,7 +8222,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au Lv. 16",
+        "text": "Évolue au niveau Lv. 16",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7592,8 +8243,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-668": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 13",
+        "source": "Guide Pokemon Z - Generation 6",
+        "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 13 ou Évolue au Lv. 30",
+        "text": "Évolue au niveau Lv. 30",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7615,7 +8273,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au Lv. 19",
+        "text": "Évolue au niveau Lv. 19",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7625,7 +8283,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-671": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "evolution",
         "text": "Utiliser Pierre Jour",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
@@ -7647,8 +8305,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-673": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "East Kalos Battle",
+        "source": "Guide Pokemon Z - Generation 6",
+        "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "East Kalos Battle ou Évolue au Lv. 32",
+        "text": "Évolue au niveau Lv. 32",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7670,7 +8335,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au Lv. 32",
+        "text": "Évolue au niveau Lv. 32",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7702,8 +8367,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-678": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Prosperity Sanctuary",
+        "source": "Guide Pokemon Z - Generation 6",
+        "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Prosperity Sanctuary ou Évolue au Lv. 25",
+        "text": "Évolue au niveau Lv. 25",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7713,7 +8385,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-679": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "South Watchtower",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
@@ -7725,7 +8397,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au Lv. 35",
+        "text": "Évolue au niveau Lv. 35",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7735,8 +8407,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-681": {
     "methods": [
       {
-        "kind": "special",
-        "text": "East Kalos Battle ou Pierre Nuit",
+        "kind": "capture",
+        "text": "East Kalos Battle",
+        "source": "Guide Pokemon Z - Generation 6",
+        "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
+        "kind": "evolution",
+        "text": "Pierre Nuit",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7758,7 +8437,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au Lv. 27",
+        "text": "Évolue au niveau Lv. 27",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7769,7 +8448,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breed depuis Slurpuff",
+        "text": "Obtenu par reproduction de Slurpuff",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7791,7 +8470,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breed depuis Malamar",
+        "text": "Obtenu par reproduction de Malamar",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7823,8 +8502,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-689": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 11",
+        "source": "Guide Pokemon Z - Generation 6",
+        "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 11 ou Évolue au Lv. 39",
+        "text": "Évolue au niveau Lv. 39",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7845,8 +8531,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-691": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 14",
+        "source": "Guide Pokemon Z - Generation 6",
+        "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 14 ou Évolue au Lv. 35",
+        "text": "Évolue au niveau Lv. 35",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7867,8 +8560,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-693": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Montesanto Island",
+        "source": "Guide Pokemon Z - Generation 6",
+        "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Montesanto Island ou Évolue au Lv. 35",
+        "text": "Évolue au niveau Lv. 35",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7879,7 +8579,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breed depuis Heliolisk",
+        "text": "Obtenu par reproduction de Heliolisk",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7889,7 +8589,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-695": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "South Luminalia Expansions",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
@@ -7912,7 +8612,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au Lv. 39",
+        "text": "Évolue au niveau Lv. 39",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7934,7 +8634,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au Lv. 39",
+        "text": "Évolue au niveau Lv. 39",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -7944,7 +8644,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-700": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "evolution",
         "text": "Utiliser Pierre Jour",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
@@ -7977,7 +8677,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-703": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Flooded Forge ou Tierraunida Grotto",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
@@ -7999,8 +8699,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-705": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 14",
+        "source": "Guide Pokemon Z - Generation 6",
+        "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 14 ou Évolue au Lv. 30",
+        "text": "Évolue au niveau Lv. 30",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -8011,7 +8718,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au Lv. 50",
+        "text": "Évolue au niveau Lv. 50",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -8021,7 +8728,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-707": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Luminalia Crypts",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
@@ -8043,8 +8750,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-709": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 16",
+        "source": "Guide Pokemon Z - Generation 6",
+        "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 16 ou Évolue au Lv. 38",
+        "text": "Évolue au niveau Lv. 38",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -8065,8 +8779,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-711": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 15",
+        "source": "Guide Pokemon Z - Generation 6",
+        "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 15 ou Évolue au Lv. 37",
+        "text": "Évolue au niveau Lv. 37",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -8088,7 +8809,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au Lv. 37",
+        "text": "Évolue au niveau Lv. 37",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -8098,7 +8819,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-714": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Northern Catacombs",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
@@ -8110,7 +8831,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue au Lv. 42",
+        "text": "Évolue au niveau Lv. 42",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
@@ -8138,14 +8859,14 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-717": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Circus Nightmare (Postgame)",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Circus Nightmare",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -8156,14 +8877,14 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-718": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Prism Tower (Postgame)",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Prism Tower summit",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -8210,14 +8931,14 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-721": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "West Luminalia Expansion Pokémon Center",
         "source": "Guide Pokemon Z - Generation 6",
         "sourceUrl": "https://pokemonzfangame.com/gen-6-pokemon-location/",
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "West Luminalia event",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -8328,7 +9049,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding depuis Toucannon",
+        "text": "Obtenu par reproduction de Toucannon",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -8349,7 +9070,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-733": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Isle Montesanto",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
@@ -8361,7 +9082,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding depuis Gumshoos",
+        "text": "Obtenu par reproduction de Gumshoos",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -8371,7 +9092,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-735": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Isle Montesanto",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
@@ -8437,7 +9158,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-741": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Isle Montesanto",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
@@ -8492,7 +9213,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-746": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Isle Montesanto",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
@@ -8504,7 +9225,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding depuis Toxapex",
+        "text": "Obtenu par reproduction de Toxapex",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -8514,7 +9235,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-748": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Isle Montesanto",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
@@ -8536,8 +9257,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-750": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 9",
+        "source": "Guide Pokemon Z - Generation 7",
+        "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 9 ou Evolution",
+        "text": "Evolution",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -8558,8 +9286,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-752": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 22",
+        "source": "Guide Pokemon Z - Generation 7",
+        "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 22 ou Evolution",
+        "text": "Evolution",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -8569,7 +9304,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-753": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Isle Montesanto",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
@@ -8580,8 +9315,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-754": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Isle Montesanto",
+        "source": "Guide Pokemon Z - Generation 7",
+        "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Isle Montesanto ou Evolution",
+        "text": "Evolution",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -8614,7 +9356,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding depuis Salazzle",
+        "text": "Obtenu par reproduction de Salazzle",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -8646,8 +9388,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-760": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Route 22",
+        "source": "Guide Pokemon Z - Generation 7",
+        "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Route 22 ou Evolution",
+        "text": "Evolution",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -8658,7 +9407,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding depuis Steenee/Tsareena",
+        "text": "Obtenu par reproduction de Steenee/Tsareena",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -8690,7 +9439,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-764": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Certijo Isle",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
@@ -8701,7 +9450,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-765": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Certijo Isle",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
@@ -8712,7 +9461,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-766": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Certijo Isle",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
@@ -8734,8 +9483,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-768": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Isle Montesanto",
+        "source": "Guide Pokemon Z - Generation 7",
+        "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Isle Montesanto ou Evolution",
+        "text": "Evolution",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -8756,8 +9512,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-770": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Sanguina Coast",
+        "source": "Guide Pokemon Z - Generation 7",
+        "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Sanguina Coast ou Evolution",
+        "text": "Evolution",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -8811,7 +9574,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-775": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Isle Montesanto",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
@@ -8822,7 +9585,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-776": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Fiery Chasm",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
@@ -8889,7 +9652,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding depuis Hakamo-o",
+        "text": "Obtenu par reproduction de Hakamo-o",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
@@ -8899,7 +9662,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-783": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Isle Montesanto ou Service Station",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
@@ -8921,7 +9684,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-785": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Isle Montesanto (après Loto Event)",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
@@ -8932,7 +9695,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-786": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Isle Montesanto (après Loto Event)",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
@@ -8943,7 +9706,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-787": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Isle Montesanto (après Loto Event)",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
@@ -8954,7 +9717,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-788": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Isle Montesanto (après Loto Event)",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
@@ -8965,7 +9728,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-789": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Certijo Isle ou Old Vanitas (après Yantra)",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
@@ -9107,14 +9870,14 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-800": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Luminalia Crypts",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Luminalia Crypts center",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -9143,14 +9906,14 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-802": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Sanguina Coast (après Yantra)",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Sanguine Coast",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -9205,14 +9968,14 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-807": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Service Station (upstairs)",
         "source": "Guide Pokemon Z - Generation 7",
         "sourceUrl": "https://pokemonzfangame.com/gen-7-pokemon-location/",
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Service Station stairs",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -9257,7 +10020,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Grookey à 18.",
+        "text": "Évolue depuis Grookey au niveau 18.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9268,7 +10031,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Thwackey à 45.",
+        "text": "Évolue depuis Thwackey au niveau 45.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9290,7 +10053,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Scorbunny à 18.",
+        "text": "Évolue depuis Scorbunny au niveau 18.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9301,7 +10064,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Raboot à 45.",
+        "text": "Évolue depuis Raboot au niveau 45.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9323,7 +10086,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Sobble à 18.",
+        "text": "Évolue depuis Sobble au niveau 18.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9334,7 +10097,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Drizzile à 45.",
+        "text": "Évolue depuis Drizzile au niveau 45.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9389,7 +10152,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Corvisquire à 38.",
+        "text": "Évolue depuis Corvisquire au niveau 38.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9411,7 +10174,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Blipbug à 10.",
+        "text": "Évolue depuis Blipbug au niveau 10.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9422,7 +10185,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Dottler à 30.",
+        "text": "Évolue depuis Dottler au niveau 30.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9443,8 +10206,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-828": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Profane Town",
+        "source": "Guide Pokemon Z - Generation 8",
+        "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Profane Town ou Évolue depuis Nickit à 18.",
+        "text": "Évolue depuis Nickit au niveau 18.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9487,8 +10257,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-832": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Route 9",
+        "source": "Guide Pokemon Z - Generation 8",
+        "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Route 9 ou Évolue depuis Wooloo à 24.",
+        "text": "Évolue depuis Wooloo au niveau 24.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9509,8 +10286,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-834": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Fresh Town",
+        "source": "Guide Pokemon Z - Generation 8",
+        "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Fresh Town ou Évolue depuis Chewtle à 24.",
+        "text": "Évolue depuis Chewtle au niveau 24.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9532,7 +10316,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Yamper à 25.",
+        "text": "Évolue depuis Yamper au niveau 25.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9553,8 +10337,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-838": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Dark Cave",
+        "source": "Guide Pokemon Z - Generation 8",
+        "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Dark Cave ou Évolue depuis Rolycoly à 18.",
+        "text": "Évolue depuis Rolycoly au niveau 18.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9565,7 +10356,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Carkol à 40.",
+        "text": "Évolue depuis Carkol au niveau 40.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9619,7 +10410,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-844": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Capturable : Prison of Oblivion.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
@@ -9675,7 +10466,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Toxel à 30.",
+        "text": "Évolue depuis Toxel au niveau 30.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9696,7 +10487,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-851": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Capturable : Prison of Oblivion.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
@@ -9719,7 +10510,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Clobbopus à 40.",
+        "text": "Évolue depuis Clobbopus au niveau 40.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9774,7 +10565,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Hattrem à 42.",
+        "text": "Évolue depuis Hattrem au niveau 42.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9795,8 +10586,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-860": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Old Vanitas",
+        "source": "Guide Pokemon Z - Generation 8",
+        "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Old Vanitas ou Évolue depuis Impidimp à 32.",
+        "text": "Évolue depuis Impidimp au niveau 32.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9807,7 +10605,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Morgrem à 42.",
+        "text": "Évolue depuis Morgrem au niveau 42.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9818,7 +10616,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Linoone à 35.",
+        "text": "Évolue depuis Linoone au niveau 35.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9828,8 +10626,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-863": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Route 25",
+        "source": "Guide Pokemon Z - Generation 8",
+        "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Route 25 ou Évolue depuis Meowth avec Pierre Nuit.",
+        "text": "Évolue depuis Meowth avec Pierre Nuit.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9861,8 +10666,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-866": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Batik City",
+        "source": "Guide Pokemon Z - Generation 8",
+        "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Batik City ou Évolue depuis Mr. Mime avec Pierre Aube.",
+        "text": "Évolue depuis Mr. Mime avec Pierre Aube.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9872,8 +10684,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-867": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Route 25",
+        "source": "Guide Pokemon Z - Generation 8",
+        "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Route 25 ou Évolue depuis Yamask avec Pierre Nuit.",
+        "text": "Évolue depuis Yamask avec Pierre Nuit.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9894,8 +10713,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-869": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : Route 8",
+        "source": "Guide Pokemon Z - Generation 8",
+        "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : Route 8 ou Évolue depuis Milcery avec Pierre Lune.",
+        "text": "Évolue depuis Milcery avec Pierre Lune.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -9927,7 +10753,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-872": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Capturable : Kalos Pyrenees.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
@@ -9971,7 +10797,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-876": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Capturable : South Luminalia Expansions.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
@@ -9993,7 +10819,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-878": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Capturable : the Service Station.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
@@ -10004,8 +10830,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-879": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable : the Service Station",
+        "source": "Guide Pokemon Z - Generation 8",
+        "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable : the Service Station ou Évolue depuis Cufant à 34.",
+        "text": "Évolue depuis Cufant au niveau 34.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -10059,7 +10892,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-884": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Capturable : South Luminalia Expansions.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
@@ -10082,7 +10915,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Dreepy à 50.",
+        "text": "Évolue depuis Dreepy au niveau 50.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -10093,7 +10926,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Drakloak à 60.",
+        "text": "Évolue depuis Drakloak au niveau 60.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -10139,7 +10972,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-890": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "dans Western Catacombs après its puzzle.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
@@ -10190,7 +11023,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-894": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "dans the Grand Exhibition après Yantra.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
@@ -10237,7 +11070,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-897": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "dans the Dark Tower après Yantra.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
@@ -10248,7 +11081,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-898": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "dans Vanitas Orchard après Yantra.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
@@ -10271,7 +11104,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Stantler à 40.",
+        "text": "Évolue depuis Stantler au niveau 40.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -10282,7 +11115,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Basculin à 40.",
+        "text": "Évolue depuis Basculin au niveau 40.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -10315,7 +11148,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Ursaring à 45.",
+        "text": "Évolue depuis Ursaring au niveau 45.",
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
@@ -10348,7 +11181,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Sprigatito à 18",
+        "text": "Évolue depuis Sprigatito au niveau 18",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10359,7 +11192,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Floragato à 45",
+        "text": "Évolue depuis Floragato au niveau 45",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10381,7 +11214,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Fuecoco à 18",
+        "text": "Évolue depuis Fuecoco au niveau 18",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10392,7 +11225,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Crocalor à 45",
+        "text": "Évolue depuis Crocalor au niveau 45",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10414,7 +11247,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Quaxly à 18",
+        "text": "Évolue depuis Quaxly au niveau 18",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10425,7 +11258,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Quaxwell à 45",
+        "text": "Évolue depuis Quaxwell au niveau 45",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10446,8 +11279,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-919": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable sur Route 9",
+        "source": "Guide Pokemon Z - Generation 9",
+        "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable sur Route 9 ou Évolue depuis Lechonk à 18.",
+        "text": "Évolue depuis Lechonk au niveau 18.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10457,8 +11297,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-920": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable sur Route 24",
+        "source": "Guide Pokemon Z - Generation 9",
+        "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable sur Route 24 ou Évolue depuis Dunsparce à 37.",
+        "text": "Évolue depuis Dunsparce au niveau 37.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10469,7 +11316,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Disponible through breeding depuis Spidops.",
+        "text": "Disponible through Obtenu par reproduction de Spidops.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10502,7 +11349,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Nymble à 24.",
+        "text": "Évolue depuis Nymble au niveau 24.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10524,7 +11371,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Rellor à 30.",
+        "text": "Évolue depuis Rellor au niveau 30.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10546,7 +11393,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Greavard à 30.",
+        "text": "Évolue depuis Greavard au niveau 30.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10568,7 +11415,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Flittle à 35.",
+        "text": "Évolue depuis Flittle au niveau 35.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10579,7 +11426,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Girafarig à 40.",
+        "text": "Évolue depuis Girafarig au niveau 40.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10622,8 +11469,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-935": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable dans the seabed of Acrílico Town",
+        "source": "Guide Pokemon Z - Generation 9",
+        "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable dans the seabed of Acrílico Town ou Évolue depuis Finizen à 38.",
+        "text": "Évolue depuis Finizen au niveau 38.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10634,7 +11488,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Disponible through breeding depuis Dolliv/Arboliva.",
+        "text": "Disponible through Obtenu par reproduction de Dolliv/Arboliva.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10656,7 +11510,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Dolliv à 35.",
+        "text": "Évolue depuis Dolliv au niveau 35.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10711,7 +11565,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Disponible through breeding depuis Revaroom.",
+        "text": "Disponible through Obtenu par reproduction de Revaroom.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10755,7 +11609,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Tandemaus à 25.",
+        "text": "Évolue depuis Tandemaus au niveau 25.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10766,7 +11620,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Disponible through breeding depuis Cetitan.",
+        "text": "Disponible through Obtenu par reproduction de Cetitan.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10799,7 +11653,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Frigibax à 35.",
+        "text": "Évolue depuis Frigibax au niveau 35.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10810,7 +11664,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Arctibax à 54.",
+        "text": "Évolue depuis Arctibax au niveau 54.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10854,7 +11708,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Pawmi à 18.",
+        "text": "Évolue depuis Pawmi au niveau 18.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10886,8 +11740,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-959": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable sur Route 11",
+        "source": "Guide Pokemon Z - Generation 9",
+        "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable sur Route 11 ou Évolue depuis Wattrel à 25.",
+        "text": "Évolue depuis Wattrel au niveau 25.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10942,7 +11803,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Breeding depuis Naclstack/Garganacl.",
+        "text": "Obtenu par reproduction de Naclstack/Garganacl.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10963,8 +11824,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-966": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable dans East Kalos Battle",
+        "source": "Guide Pokemon Z - Generation 9",
+        "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable dans East Kalos Battle ou Évolue depuis Naclstack à 38.",
+        "text": "Évolue depuis Naclstack au niveau 38.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10985,8 +11853,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-968": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable dans Northern Catacombs",
+        "source": "Guide Pokemon Z - Generation 9",
+        "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable dans Northern Catacombs ou Évolue depuis Glimmet à 35.",
+        "text": "Évolue depuis Glimmet au niveau 35.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -10997,7 +11872,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Disponible through breeding depuis Grafaiai.",
+        "text": "Disponible through Obtenu par reproduction de Grafaiai.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11030,7 +11905,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Fidough à 26.",
+        "text": "Évolue depuis Fidough au niveau 26.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11052,7 +11927,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Maschiff à 30.",
+        "text": "Évolue depuis Maschiff au niveau 30.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11063,7 +11938,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "breeding",
-        "text": "Disponible through breeding depuis Brambleghast",
+        "text": "Disponible through Obtenu par reproduction de Brambleghast",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11096,7 +11971,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Gimmighoul à 50.",
+        "text": "Évolue depuis Gimmighoul au niveau 50.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11118,7 +11993,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Tinkatink à 24.",
+        "text": "Évolue depuis Tinkatink au niveau 24.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11129,7 +12004,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Tinkatuff à 38.",
+        "text": "Évolue depuis Tinkatuff au niveau 38.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11173,7 +12048,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Bisharp à 42.",
+        "text": "Évolue depuis Bisharp au niveau 42.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11183,8 +12058,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-986": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable dans Profane Swamp",
+        "source": "Guide Pokemon Z - Generation 9",
+        "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable dans Profane Swamp ou Évolue depuis Wooper if it knows Poison Jab.",
+        "text": "Évolue depuis Wooper if it knows Poison Jab.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11195,7 +12077,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Primeape à 45.",
+        "text": "Évolue depuis Primeape au niveau 45.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11205,7 +12087,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-988": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "dans the Northern Catacombs",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
@@ -11216,7 +12098,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-989": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "dans the Southern Catacombs.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
@@ -11227,7 +12109,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-990": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "dans the Eastern Catacombs",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
@@ -11238,7 +12120,7 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-991": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "dans the Western Catacombs.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
@@ -11256,7 +12138,7 @@ const POKEMON_Z_GUIDE = {
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Druidic Chamber",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -11267,14 +12149,14 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-993": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "dans the Poké Ball Factory.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Poke Ball Factory",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -11286,7 +12168,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Applin à 28.",
+        "text": "Évolue depuis Applin au niveau 28.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11358,8 +12240,15 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-1005": {
     "methods": [
       {
+        "kind": "capture",
+        "text": "Capturable dans Luminalia Expansions",
+        "source": "Guide Pokemon Z - Generation 9",
+        "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
+        "confidence": "documented"
+      },
+      {
         "kind": "evolution",
-        "text": "Capturable dans Luminalia Expansions ou Évolue depuis Duraludon à 55.",
+        "text": "Évolue depuis Duraludon au niveau 55.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11370,7 +12259,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Dipplin à 50.",
+        "text": "Évolue depuis Dipplin au niveau 50.",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
@@ -11380,14 +12269,14 @@ const POKEMON_Z_GUIDE = {
   "pokemon-z-1016": {
     "methods": [
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "dans the Abandoned Forge après Yantra",
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
       },
       {
-        "kind": "special",
+        "kind": "capture",
         "text": "Ancient Flooded Forge",
         "source": "Guide Pokemon Z - Legendaires",
         "sourceUrl": "https://pokemonzfangame.com/all-legendary-pokemon-locations/",
@@ -11421,7 +12310,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Mawile à 45.",
+        "text": "Évolue depuis Mawile au niveau 45.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11432,7 +12321,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Banette à 40.",
+        "text": "Évolue depuis Banette au niveau 40.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11443,7 +12332,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Audino à 40.",
+        "text": "Évolue depuis Audino au niveau 40.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11465,7 +12354,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Cherrim à 32.",
+        "text": "Évolue depuis Cherrim au niveau 32.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11487,7 +12376,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Maushold à 38.",
+        "text": "Évolue depuis Maushold au niveau 38.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11498,7 +12387,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Hawlucha à 55.",
+        "text": "Évolue depuis Hawlucha au niveau 55.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11509,7 +12398,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Seviper à 52.",
+        "text": "Évolue depuis Seviper au niveau 52.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11520,7 +12409,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Zangoose à 52.",
+        "text": "Évolue depuis Zangoose au niveau 52.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11531,7 +12420,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Jynx à 65.",
+        "text": "Évolue depuis Jynx au niveau 65.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11542,7 +12431,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Hypno à 65.",
+        "text": "Évolue depuis Hypno au niveau 65.",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11564,7 +12453,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Luvdisc à 60",
+        "text": "Évolue depuis Luvdisc au niveau 60",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11575,7 +12464,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Marowak à 65",
+        "text": "Évolue depuis Marowak au niveau 65",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"
@@ -11586,7 +12475,7 @@ const POKEMON_Z_GUIDE = {
     "methods": [
       {
         "kind": "evolution",
-        "text": "Évolue depuis Sudowoodo à 70",
+        "text": "Évolue depuis Sudowoodo au niveau 70",
         "source": "Guide Pokemon Z - Fakemon",
         "sourceUrl": "https://pokemonzfangame.com/all-new-fakemon-locations/",
         "confidence": "documented"

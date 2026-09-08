@@ -6,6 +6,8 @@ Le switch principal bascule toute l'application entre `Kanto Reforged` et `Pokem
 
 La source Pokemon Z contient les 1 018 entrees definies par le jeu : Pokemon officiels disponibles, formes Z et Fakemon. Le guide d'obtention associe une methode documentee aux 1 018 entrees (capture, evolution, echange PNJ, reproduction, fossile, don ou condition speciale). Les rencontres sauvages sont completees avec les tables internes et les noms de cartes francais de la v2.12 Patch 1.
 
+Pour les fiches Pokemon Z, les rencontres internes de la v2.12 FR sont prioritaires pour les captures. Les conditions d'evolution viennent du guide Pokemon Z et non des regles des jeux officiels recents ; PokeAPI ne sert qu'a relier les membres de la lignee et a charger les sprites/statistiques.
+
 Les sprites sont optionnels. Lorsqu'une connexion est disponible, le bouton `Afficher les sprites` charge uniquement les images des Pokemon presents dans les equipes via PokéAPI. Hors ligne, le bouton et les images restent masques sans avertissement.
 
 ## Lancer le site

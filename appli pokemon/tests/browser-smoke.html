@@ -75,6 +75,18 @@
     assert(carvanhaGuide.methods.some((method) => method.kind === "breeding"), "La reproduction documentee de Carvanha a ete supprimee");
     const mewtwoGuide = win.getPokemonZGuideInfo("pokemon-z-150");
     assert(mewtwoGuide.methods.some((method) => method.kind === "capture"), "La capture de Mewtwo disponible uniquement dans le guide a ete supprimee");
+    const scalpionEvolution = win.getPokemonZEvolutionRequirement(
+      win.POKEMON_Z_V212?.find((pokemon) => pokemon.id === "pokemon-z-625") || { id: "pokemon-z-625" },
+      [{ min_level: 52 }]
+    );
+    assert(scalpionEvolution.includes("30"), "Le niveau d'evolution Z de Scalpion n'est pas prioritaire");
+    assert(!scalpionEvolution.includes("52"), "Le niveau officiel 52 ecrase encore la regle Pokemon Z");
+    const scalproieEvolution = win.getPokemonZEvolutionRequirement(
+      win.POKEMON_Z_V212?.find((pokemon) => pokemon.id === "pokemon-z-985") || { id: "pokemon-z-985" },
+      [{ trigger: { name: "level-up" } }]
+    );
+    assert(scalproieEvolution.includes("42"), "La condition Z de Scalpereur est absente");
+    assert(!scalproieEvolution.toLowerCase().includes("bisharp"), "Le nom Bisharp n'est pas traduit dans la condition Z");
     const stored = JSON.parse(win.localStorage.getItem("kantoTeamState:v2"));
     assert(stored.activeGame === "pokemon-z", "Version active non persistee");
     assert(stored.games.reforged.teams.length === 3 && stored.games["pokemon-z"].teams.length === 3, "Les 6 slots ne sont pas repartis en 3 + 3");

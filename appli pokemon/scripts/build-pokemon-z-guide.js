@@ -78,11 +78,11 @@ async function loadOfficialPokemonNames() {
 function getKind(text) {
   const value = normalize(text);
   if (/trade|exchange| for a | for an /.test(value)) return "trade";
-  if (/evolve|evolution|level up/.test(value)) return "evolution";
+  if (/evolve|evolution|level up|friendship|happiness|\bstone\b/.test(value)) return "evolution";
   if (/breed|egg/.test(value)) return "breeding";
   if (/fossil|revive/.test(value)) return "fossil";
   if (/gift|given|receive|reward/.test(value)) return "gift";
-  if (/capture|catch|obtainable|route|cave|town|city|forest|swamp|island|sanctuary|laboratory|workshop/.test(value)) return "capture";
+  if (/capture|capturable|catch|obtainable|route|cave|cavern|town|city|forest|swamp|island|isle|sanctuary|laboratory|workshop|forge|catacomb|chateau|bastion|seafloor|coast|station|orchard|grotto|crypt|lighthouse|pyrenees|vanitas|luminalia|villa|village|factory|hill|abyss|chasm|prison|library|cathedral|lake|circus|tower|exhibition|chamber/.test(value)) return "capture";
   return "special";
 }
 
@@ -91,16 +91,20 @@ function translateMethod(text) {
     .replace(/How to obtain:\s*/gi, "")
     .replace(/Obtainable by breeding/gi, "Obtenu par reproduction de")
     .replace(/Obtained by breeding/gi, "Obtenu par reproduction de")
+    .replace(/Breed(?:ing)? from/gi, "Obtenu par reproduction de")
+    .replace(/^Breeding\s+/gi, "Obtenu par reproduction de ")
+    .replace(/^Breeding$/gi, "Reproduction")
     .replace(/Obtainable (?:on|in|at) /gi, "Capturable : ")
     .replace(/Capturable (?:on|in|at) /gi, "Capturable : ")
     .replace(/\bCatchable\b/gi, "Capturable")
     .replace(/\bObtained\b/gi, "Obtenu")
     .replace(/\bObtainable\b/gi, "Disponible")
     .replace(/Evolves? from/gi, "Évolue depuis")
-    .replace(/Evolves? at/gi, "Évolue au")
+    .replace(/Evolves? at(?: [Ll]evel)?/gi, "Évolue au niveau")
     .replace(/\bEvolve\b/gi, "Faire évoluer")
     .replace(/\bevolves\b/gi, "évolue")
     .replace(/at [Ll]evel/gi, "au niveau")
+    .replace(/\bat (\d+)\b/gi, "au niveau $1")
     .replace(/with a[n]? /gi, "avec ")
     .replace(/Trade for a[n]? /gi, "Échanger ")
     .replace(/Trade a[n]? /gi, "Échanger ")
@@ -164,19 +168,33 @@ function translateMethod(text) {
     .trim();
 }
 
+// Le guide regroupe souvent deux vérités dans une même cellule, par exemple
+// "Route 14 or evolve at 21". Les séparer permet aux rencontres internes de
+// remplacer uniquement le lieu web, sans supprimer la condition d'évolution.
+function splitMethods(text) {
+  return String(text || "")
+    .split(/\s+(?:or|\/)\s+(?=(?:evolves?|evolution|friendship|happiness|use\b|[a-z]+\s+stone\b))/gi)
+    .map((method) => method.trim())
+    .filter(Boolean);
+}
+
 function addMethod(guide, pokemon, text, source, confidence = "documented") {
   if (!pokemon || !text) return;
-  const record = {
-    kind: getKind(text),
-    text: translateMethod(text),
-    source: source.label,
-    sourceUrl: source.url,
-    confidence
-  };
   guide[pokemon.id] ||= { methods: [] };
-  const key = `${record.kind}|${normalize(record.text)}`;
-  if (!guide[pokemon.id].methods.some((item) => `${item.kind}|${normalize(item.text)}` === key)) {
-    guide[pokemon.id].methods.push(record);
+  const methods = splitMethods(text);
+  for (const [index, method] of methods.entries()) {
+    const detectedKind = getKind(method);
+    const record = {
+      kind: methods.length > 1 && index === 0 && detectedKind === "special" ? "capture" : detectedKind,
+      text: translateMethod(method),
+      source: source.label,
+      sourceUrl: source.url,
+      confidence
+    };
+    const key = `${record.kind}|${normalize(record.text)}`;
+    if (!guide[pokemon.id].methods.some((item) => `${item.kind}|${normalize(item.text)}` === key)) {
+      guide[pokemon.id].methods.push(record);
+    }
   }
 }
 
