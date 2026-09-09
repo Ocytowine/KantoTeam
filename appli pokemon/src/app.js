@@ -69,6 +69,7 @@ const pokemonEfficiencyScoreCache = new Map();
 
 const mobileVersusMedia = window.matchMedia("(max-width: 920px)");
 const spriteUrls = new Map();
+const largeSpriteUrls = new Map();
 const pokemonInfoCache = new Map();
 const themedAssetAvailability = new Map();
 const SPRITE_NAME_ALIASES = {
@@ -144,6 +145,7 @@ const el = {
   teamSettingsToggle: document.querySelector("#team-settings-toggle"),
   teamSettingsPanel: document.querySelector("#team-settings-panel"),
   compositionTeamName: document.querySelector("#composition-team-name"),
+  compositionTeamFavorite: document.querySelector("#composition-team-favorite"),
   compositionAddPanel: document.querySelector("#composition-add-panel"),
   compositionToAnalysis: document.querySelector("#composition-to-analysis"),
   pokemonEditPanel: document.querySelector("#pokemon-edit-panel"),
@@ -323,6 +325,13 @@ function bindEvents() {
   el.shareSms.addEventListener("click", () => openMessageShare("sms"));
   el.saveSharedTeam.addEventListener("click", saveCurrentSharedTeam);
   document.addEventListener("click", (event) => {
+    const sprite = event.target.closest("[data-pokemon-sprite-view]");
+    if (!sprite) return;
+    event.preventDefault();
+    event.stopPropagation();
+    openPokemonSpriteViewer(sprite);
+  }, true);
+  document.addEventListener("click", (event) => {
     const insightButton = event.target.closest("[data-pokemon-insight-toggle]");
     if (insightButton) {
       const panel = insightButton.parentElement?.querySelector("[data-pokemon-insight-panel]");
@@ -337,7 +346,17 @@ function bindEvents() {
     closeShareMenu();
   });
   document.addEventListener("keydown", (event) => {
+    const sprite = event.target.closest?.("[data-pokemon-sprite-view]");
+    if (sprite && ["Enter", " "].includes(event.key)) {
+      event.preventDefault();
+      openPokemonSpriteViewer(sprite);
+      return;
+    }
     if (event.key !== "Escape") return;
+    if (document.querySelector(".sprite-viewer-overlay")) {
+      closePokemonSpriteViewer();
+      return;
+    }
     document.querySelectorAll(".type-wheel.open").forEach(closeTypeWheel);
     if (tradePokemonModal) {
       closeTradePokemonModal();
@@ -353,6 +372,7 @@ function bindEvents() {
   window.addEventListener("offline", () => {
     spritesEnabled = false;
     spriteUrls.clear();
+    largeSpriteUrls.clear();
     renderAll();
   });
   el.compositionToAnalysis.addEventListener("click", () => openView("analysis"));
@@ -758,7 +778,8 @@ function createEmptyTeam(slot) {
     name: "",
     preferredSource: getActiveGameKey(),
     pokemon: [],
-    reservePokemonIds: []
+    reservePokemonIds: [],
+    favoritePokemonInstanceId: null
   };
 }
 
@@ -933,8 +954,10 @@ function renderSlots() {
     const card = document.createElement("article");
     card.className = `slot-card ${team ? "" : "empty"} ${index === state.selectedSlot ? "active" : ""}`;
     const reserveCount = team ? getTeamReservePokemon(team).length : 0;
+    const favoritePokemon = team ? getTeamFavoritePokemon(team) : null;
     const status = team ? `${team.pokemon.length}/6 Pokemon · ${reserveCount} reserve · ${preferredSourceLabel(getTeamPreferredSource(team))}` : "Slot vide";
     card.innerHTML = team ? `
+      ${renderTeamFavoriteBackdrop(favoritePokemon)}
       <div class="team-slot-heading">
         <img class="team-slot-logo" src="assets/team-pokeball.png" data-theme-asset="assets/team-pokeball.png" data-theme-fallback="assets/pokeball.png" alt="" aria-hidden="true">
         <span>
@@ -1019,14 +1042,18 @@ async function syncPokemonSprites(pokemon) {
   if (!navigator.onLine) return;
   const list = Array.isArray(pokemon) ? pokemon : [pokemon];
   const ids = Array.from(new Set(list.map(getPokemonNationalId).filter(Boolean)))
-    .filter((id) => !spriteUrls.has(id));
+    .filter((id) => !spriteUrls.has(id) || !largeSpriteUrls.has(id));
   await Promise.allSettled(ids.map(async (id) => {
     try {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
       if (!response.ok) return;
       const data = await response.json();
       const sprite = data.sprites?.front_default;
+      const largeSprite = data.sprites?.other?.home?.front_default
+        || data.sprites?.other?.["official-artwork"]?.front_default
+        || sprite;
       if (sprite) spriteUrls.set(id, sprite);
+      if (largeSprite) largeSpriteUrls.set(id, largeSprite);
     } catch {
       // Une image indisponible reste simplement masquee.
     }
@@ -1052,7 +1079,41 @@ function renderPokemonSprite(pokemon) {
   const nationalId = getPokemonNationalId(pokemon);
   const url = nationalId ? spriteUrls.get(nationalId) : null;
   if (!url) return "";
-  return `<img class="pokemon-sprite" src="${escapeHtml(url)}" alt="${escapeHtml(pokemon.name)}" loading="lazy" onerror="this.remove()">`;
+  return `<img class="pokemon-sprite" src="${escapeHtml(url)}" alt="${escapeHtml(pokemon.name)}" loading="lazy" ${enlargeableSpriteAttributes(pokemon.name, largeSpriteUrls.get(nationalId))} onerror="this.remove()">`;
+}
+
+function enlargeableSpriteAttributes(name, largeUrl = "") {
+  return `data-pokemon-sprite-view${largeUrl ? ` data-pokemon-large-sprite="${escapeHtml(largeUrl)}"` : ""} role="button" tabindex="0" title="Agrandir le sprite de ${escapeHtml(name)}"`;
+}
+
+function closePokemonSpriteViewer() {
+  document.querySelector(".sprite-viewer-overlay")?.remove();
+  document.body.classList.remove("sprite-viewer-open");
+}
+
+function openPokemonSpriteViewer(sourceImage) {
+  if (!sourceImage?.src) return;
+  closePokemonSpriteViewer();
+  const overlay = document.createElement("div");
+  overlay.className = "sprite-viewer-overlay";
+  overlay.setAttribute("role", "dialog");
+  overlay.setAttribute("aria-modal", "true");
+  overlay.setAttribute("aria-label", `Sprite agrandi de ${sourceImage.alt || "Pokemon"}`);
+  overlay.setAttribute("tabindex", "-1");
+  overlay.innerHTML = `
+    <img class="sprite-viewer-image" src="${escapeHtml(sourceImage.dataset.pokemonLargeSprite || sourceImage.currentSrc || sourceImage.src)}" alt="${escapeHtml(sourceImage.alt || "Sprite Pokemon")}">
+  `;
+  const enlargedImage = overlay.querySelector(".sprite-viewer-image");
+  const updateResolution = () => {
+    const highResolution = enlargedImage.naturalWidth > 128 || enlargedImage.naturalHeight > 128;
+    enlargedImage.classList.toggle("high-resolution", highResolution);
+  };
+  if (enlargedImage.complete) updateResolution();
+  else enlargedImage.addEventListener("load", updateResolution, { once: true });
+  overlay.addEventListener("click", closePokemonSpriteViewer);
+  document.body.append(overlay);
+  document.body.classList.add("sprite-viewer-open");
+  overlay.focus();
 }
 
 function renderPokemonInfoButton(pokemon, enabled) {
@@ -1120,7 +1181,7 @@ function renderVersusSprite(pokemon, side) {
   const nationalId = getPokemonNationalId(pokemon);
   const url = nationalId ? spriteUrls.get(nationalId) : null;
   if (!url) return "";
-  return `<img class="versus-pokemon-sprite ${side}" src="${escapeHtml(url)}" alt="${escapeHtml(pokemon.name)}" onerror="this.remove()">`;
+  return `<img class="versus-pokemon-sprite ${side}" src="${escapeHtml(url)}" alt="${escapeHtml(pokemon.name)}" ${enlargeableSpriteAttributes(pokemon.name, largeSpriteUrls.get(nationalId))} onerror="this.remove()">`;
 }
 
 function renderVersusSpriteFaceoff(enemy, choice) {
@@ -1483,6 +1544,7 @@ function renderDraftTeam() {
   el.teamList.querySelectorAll("[data-remove]").forEach((button) => {
     button.addEventListener("click", () => {
       draftTeam.pokemon = draftTeam.pokemon.filter((pokemon) => pokemon.instanceId !== button.dataset.remove);
+      if (draftTeam.favoritePokemonInstanceId === button.dataset.remove) draftTeam.favoritePokemonInstanceId = null;
       renderDraftTeam();
     });
   });
@@ -1506,7 +1568,13 @@ function renderComposition(team) {
     const card = document.createElement("article");
     card.className = "pokemon-card collapsible";
     card.setAttribute("style", pokemonCardStyle(pokemon));
-    card.innerHTML = renderPokemonCard(pokemon, { index, editable: !sharedTeam, showSprite: true });
+    card.innerHTML = renderPokemonCard(pokemon, {
+      index,
+      editable: !sharedTeam,
+      showSprite: true,
+      favoriteSelectable: !sharedTeam,
+      favorite: team.favoritePokemonInstanceId === pokemon.instanceId
+    });
     el.compositionList.append(card);
   });
   bindPokemonCardToggles(el.compositionList);
@@ -1520,6 +1588,10 @@ function renderComposition(team) {
       const pokemon = team.pokemon.find((item) => item.instanceId === button.dataset.editPokemon);
       if (pokemon) openPokemonEditModal(pokemon, { mode: "linked", sourceId: pokemon.sourceId ?? pokemon.id });
     });
+  });
+
+  el.compositionList.querySelectorAll("[data-set-team-favorite]").forEach((button) => {
+    button.addEventListener("click", () => setTeamFavoritePokemon(button.dataset.setTeamFavorite));
   });
 }
 
@@ -1550,7 +1622,13 @@ function renderManagedComposition(team) {
     const card = document.createElement("article");
     card.className = "pokemon-card collapsible";
     card.setAttribute("style", pokemonCardStyle(pokemon));
-    card.innerHTML = renderPokemonCard(pokemon, { index, editable, showSprite: true });
+    card.innerHTML = renderPokemonCard(pokemon, {
+      index,
+      editable,
+      showSprite: true,
+      favoriteSelectable: editable,
+      favorite: displayTeam.favoritePokemonInstanceId === pokemon.instanceId
+    });
     el.compositionList.append(card);
   });
 
@@ -1590,6 +1668,10 @@ function renderManagedComposition(team) {
       const pokemon = displayTeam.pokemon.find((item) => item.instanceId === button.dataset.editPokemon);
       if (pokemon) openPokemonEditModal(pokemon, { mode: "linked", sourceId: pokemon.sourceId ?? pokemon.id });
     });
+  });
+
+  el.compositionList.querySelectorAll("[data-set-team-favorite]").forEach((button) => {
+    button.addEventListener("click", () => setTeamFavoritePokemon(button.dataset.setTeamFavorite));
   });
 
   el.compositionList.querySelectorAll("[data-open-team-add]").forEach((button) => {
@@ -1686,6 +1768,8 @@ function syncTeamSettingsInputs(team) {
   if (document.activeElement !== el.compositionTeamName) {
     el.compositionTeamName.value = team.name || "";
   }
+  const favoritePokemon = getTeamFavoritePokemon(team);
+  el.compositionTeamFavorite.textContent = favoritePokemon?.name || "Aucun · clique sur un cœur";
 }
 
 function toggleTeamSettings() {
@@ -2623,6 +2707,38 @@ function getPokemonStatTotal(pokemon) {
   return stats ? Object.values(stats).reduce((sum, value) => sum + value, 0) : -1;
 }
 
+function getTeamFavoritePokemon(team) {
+  if (!team?.favoritePokemonInstanceId) return null;
+  return team.pokemon?.find((pokemon) => pokemon.instanceId === team.favoritePokemonInstanceId) || null;
+}
+
+function setTeamFavoritePokemon(instanceId) {
+  if (sharedTeam || !draftTeam?.pokemon?.some((pokemon) => pokemon.instanceId === instanceId)) return;
+  draftTeam.favoritePokemonInstanceId = draftTeam.favoritePokemonInstanceId === instanceId ? null : instanceId;
+  persistDraftTeam();
+  renderAll();
+}
+
+function heartIconSvg() {
+  return `
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M12 20.4 4.2 13A5.2 5.2 0 0 1 11.6 5.7L12 6.1l.4-.4A5.2 5.2 0 0 1 19.8 13Z"></path>
+    </svg>
+  `;
+}
+
+function renderTeamFavoriteBackdrop(pokemon) {
+  if (!pokemon || !spritesEnabled || !navigator.onLine) return "";
+  const nationalId = getPokemonNationalId(pokemon);
+  const url = nationalId ? largeSpriteUrls.get(nationalId) || spriteUrls.get(nationalId) : null;
+  if (!url) return "";
+  return `
+    <div class="team-slot-favorite-backdrop" aria-hidden="true">
+      <img src="${escapeHtml(url)}" alt="" onerror="this.parentElement.remove()">
+    </div>
+  `;
+}
+
 function isLegendaryPokemon(pokemon) {
   const nationalId = getPokemonNationalId(pokemon);
   if (nationalId && typeof OFFICIAL_LEGENDARY_OR_MYTHICAL_IDS !== "undefined"
@@ -2814,6 +2930,7 @@ function removePokemonFromCurrentTeam(instanceId) {
   const team = state.teams[state.selectedSlot];
   if (!team) return;
   team.pokemon = team.pokemon.filter((pokemon) => pokemon.instanceId !== instanceId);
+  if (team.favoritePokemonInstanceId === instanceId) team.favoritePokemonInstanceId = null;
   state.teams[state.selectedSlot] = team;
   draftTeam = structuredClone(team);
   saveState();
@@ -3056,7 +3173,9 @@ function renderPokemonCard(pokemon, options = {}) {
     toggleable = true,
     infoLookup = showSprite,
     statsExpanded = false,
-    comparedWith = null
+    comparedWith = null,
+    favoriteSelectable = false,
+    favorite = false
   } = options;
   const defensive = analyzePokemonDefense(pokemon.types);
   const weaknesses = defensive.filter((item) => item.multiplier > 1);
@@ -3068,6 +3187,7 @@ function renderPokemonCard(pokemon, options = {}) {
   const sprite = showSprite ? renderPokemonSprite(pokemon) : "";
   const infoButton = renderPokemonInfoButton(pokemon, Boolean(infoLookup));
   const actions = [
+    favoriteSelectable ? `<button class="icon-action-button favorite-action ${favorite ? "active" : ""}" type="button" data-set-team-favorite="${pokemon.instanceId}" aria-label="${favorite ? "Retirer" : "Définir"} ${escapeHtml(pokemon.name)} comme Pokémon préféré" aria-pressed="${favorite}" title="${favorite ? "Pokémon préféré" : "Définir comme préféré"}">${heartIconSvg()}</button>` : "",
     savedId ? `<button class="icon-action-button" type="button" data-edit-saved-pokemon="${savedId}" aria-label="Editer ${escapeHtml(pokemon.name)}" title="Editer">${actionIconSvg("edit")}</button>` : "",
     savedId ? `<button class="icon-action-button danger" type="button" data-delete-saved-pokemon="${savedId}" aria-label="Supprimer ${escapeHtml(pokemon.name)}" title="Supprimer">${actionIconSvg("delete")}</button>` : "",
     editable ? `<button class="icon-action-button" type="button" data-edit-pokemon="${pokemon.instanceId}" aria-label="Editer ${escapeHtml(pokemon.name)}" title="Editer">${actionIconSvg("edit")}</button>` : "",
@@ -3145,6 +3265,7 @@ function getEfficiencyReferencePool(game = getActiveGameKey()) {
     statDistributions.bulk.push(metrics.bulk);
     statDistributions.speed.push(metrics.speed);
   });
+
   const reference = { game, pokemon: pool, statDistributions };
   efficiencyReferenceCache.set(game, reference);
   return reference;
@@ -3315,10 +3436,32 @@ function efficiencyScoreTitle(score) {
   return "Triche activée";
 }
 
+function efficiencyScoreProfile(score) {
+  const values = [score.offense, score.defense, score.synergy];
+  const highest = Math.max(...values);
+  const lowest = Math.min(...values);
+  if (highest - lowest <= 5) {
+    return score.total >= 75 ? "Menace sans angle mort" : "Couteau suisse";
+  }
+  if (score.offense >= 72 && score.synergy >= 70 && score.defense + 7 < Math.min(score.offense, score.synergy)) {
+    return "Chasseur de faiblesses";
+  }
+  if (score.defense >= 72 && score.synergy >= 70 && score.offense + 7 < Math.min(score.defense, score.synergy)) {
+    return "Piège blindé";
+  }
+  if (score.offense >= 72 && score.defense >= 70 && score.synergy + 7 < Math.min(score.offense, score.defense)) {
+    return "Bélier blindé";
+  }
+  if (score.offense === highest) return score.offense >= 80 ? "Arsenal ambulant" : "Briseur de lignes";
+  if (score.defense === highest) return score.defense >= 80 ? "Forteresse de poche" : "Dur à cuire";
+  return score.synergy >= 80 ? "Maître du contre" : "Stratège opportuniste";
+}
+
 function renderPokemonEfficiencyScore(pokemon, attackTypes = pokemon?.attacks) {
   const score = calculatePokemonEfficiencyScore(pokemon, attackTypes);
   const estimated = score.attacksEstimated || score.statsEstimated;
   const scoreTitle = efficiencyScoreTitle(score.total);
+  const scoreProfile = efficiencyScoreProfile(score);
   const details = [
     {
       key: "offense",
@@ -3341,11 +3484,11 @@ function renderPokemonEfficiencyScore(pokemon, attackTypes = pokemon?.attacks) {
   ];
   return `
     <section class="pokemon-efficiency-score pokemon-insight-block ${efficiencyScoreLevel(score.total)}">
-      <button class="pokemon-insight-toggle pokemon-efficiency-toggle" type="button" data-pokemon-insight-toggle data-pokemon-efficiency-toggle aria-expanded="false" title="${scoreTitle}. Cliquez pour afficher le calcul détaillé.">
+      <button class="pokemon-insight-toggle pokemon-efficiency-toggle" type="button" data-pokemon-insight-toggle data-pokemon-efficiency-toggle aria-expanded="false" title="${scoreTitle} — ${scoreProfile}. Meilleur atout : ${score.offense >= score.defense && score.offense >= score.synergy ? `attaque (${score.offense})` : score.defense >= score.synergy ? `défense (${score.defense})` : `synergie (${score.synergy})`}. Cliquez pour afficher le calcul détaillé.">
         ${efficiencyGaugeIconSvg()}
         <span class="pokemon-insight-copy">
           <span>Efficacité${estimated ? " estimée" : ""}</span>
-          <strong>${scoreTitle}</strong>
+          <strong>${scoreTitle} · ${scoreProfile}</strong>
         </span>
         <strong class="pokemon-insight-value pokemon-efficiency-total">${score.total}<small>/100</small></strong>
         ${insightChevronSvg()}
@@ -3857,7 +4000,7 @@ function renderTradePokemonModal() {
     <article class="team-modal pokemon-trade-modal" role="dialog" aria-modal="true" aria-labelledby="pokemon-trade-modal-title">
       <header class="pokemon-trade-modal-heading">
         ${sprite
-          ? `<img class="pokemon-trade-modal-sprite" src="${escapeHtml(sprite)}" alt="${escapeHtml(pokemon.name)}" onerror="this.remove()">`
+          ? `<img class="pokemon-trade-modal-sprite" src="${escapeHtml(sprite)}" alt="${escapeHtml(pokemon.name)}" ${enlargeableSpriteAttributes(pokemon.name, largeSpriteUrls.get(pokemon.nationalId))} onerror="this.remove()">`
           : `<span class="pokemon-editor-sprite-placeholder" aria-hidden="true"></span>`}
         <div>
           <p class="eyebrow">Pokémon proposé à l'échange</p>
@@ -3999,7 +4142,7 @@ function renderEvolutionMiniCard(evolution, reforged) {
   const sprite = evolution.id ? spriteUrls.get(evolution.id) : null;
   return `
     <div class="pokemon-evolution-card ${evolution.current ? "current" : ""}">
-      ${sprite ? `<img class="pokemon-info-sprite" src="${escapeHtml(sprite)}" alt="${escapeHtml(evolution.name)}" loading="lazy" onerror="this.remove()">` : ""}
+      ${sprite ? `<img class="pokemon-info-sprite" src="${escapeHtml(sprite)}" alt="${escapeHtml(evolution.name)}" loading="lazy" ${enlargeableSpriteAttributes(evolution.name, largeSpriteUrls.get(evolution.id))} onerror="this.remove()">` : ""}
       <strong>${escapeHtml(evolution.name)}</strong>
       ${reforged ? renderEvolutionCaptureInfo(evolution) : ""}
     </div>
@@ -5024,7 +5167,7 @@ function renderPokemonEditorSprite(pokemon) {
   const id = getPokemonNationalId(pokemon);
   const url = id ? spriteUrls.get(id) : null;
   return url
-    ? `<img class="pokemon-editor-sprite" src="${escapeHtml(url)}" alt="${escapeHtml(pokemon.name)}">`
+    ? `<img class="pokemon-editor-sprite" src="${escapeHtml(url)}" alt="${escapeHtml(pokemon.name)}" ${enlargeableSpriteAttributes(pokemon.name, largeSpriteUrls.get(id))}>`
     : `<span class="pokemon-editor-sprite-placeholder" aria-hidden="true"></span>`;
 }
 
@@ -5891,7 +6034,7 @@ function renderRankingSprite(pokemon) {
   const nationalId = getPokemonNationalId(pokemon);
   const url = nationalId ? spriteUrls.get(nationalId) : null;
   if (!url) return "";
-  return `<img class="ranking-sprite" src="${escapeHtml(url)}" alt="${escapeHtml(pokemon.name)}" title="${escapeHtml(pokemon.name)}" onerror="this.parentElement.classList.remove('has-sprite');this.remove()">`;
+  return `<img class="ranking-sprite" src="${escapeHtml(url)}" alt="${escapeHtml(pokemon.name)}" ${enlargeableSpriteAttributes(pokemon.name, largeSpriteUrls.get(nationalId))} onerror="this.parentElement.classList.remove('has-sprite');this.remove()">`;
 }
 
 function renderDefensiveRankingRow(item, index) {

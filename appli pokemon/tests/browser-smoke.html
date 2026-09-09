@@ -103,6 +103,24 @@
     assert(doc.querySelectorAll("#composition-list .composition-add-slot").length === 5, "Les slots Pokemon libres ne sont pas affiches");
     assert(Array.from(doc.querySelectorAll("#composition-list .composition-add-slot")).every((slot) => !slot.textContent.trim()), "Un slot Pokemon libre contient encore du texte");
     assert(win.getComputedStyle(doc.querySelector("#composition-list .composition-add-slot img")).width === "72px", "Le logo d'ajout Pokemon n'est pas agrandi");
+    const compositionSprite = doc.querySelector("#composition-list .pokemon-sprite");
+    assert(compositionSprite?.matches("[data-pokemon-sprite-view]"), "Le sprite de la carte ne peut pas etre agrandi");
+    assert(compositionSprite.dataset.pokemonLargeSprite?.includes("/other/home/"), "L'image haute definition Pokemon HOME n'est pas preparee pour l'agrandissement");
+    compositionSprite.click();
+    await wait(100);
+    assert(doc.querySelector(".sprite-viewer-overlay"), "La visionneuse de sprite ne s'ouvre pas");
+    assert(doc.querySelector(".sprite-viewer-image"), "L'image agrandie est absente de la visionneuse");
+    assert(!doc.querySelector(".sprite-viewer-card, .sprite-viewer-resolution, .sprite-viewer-close"), "La visionneuse affiche encore un cadre, un titre ou une taille");
+    doc.querySelector(".sprite-viewer-overlay").click();
+    assert(!doc.querySelector(".sprite-viewer-overlay"), "La visionneuse de sprite ne se ferme pas");
+    const favoriteButton = doc.querySelector("#composition-list [data-set-team-favorite]");
+    assert(favoriteButton, "Le coeur permettant de choisir le Pokemon prefere est absent");
+    favoriteButton.click();
+    await wait();
+    assert(doc.querySelector("#composition-list [data-set-team-favorite]")?.getAttribute("aria-pressed") === "true", "Le coeur du Pokemon prefere n'est pas active");
+    assert(doc.querySelector("#composition-team-favorite")?.textContent === "Bulbizarre", "Le Pokemon prefere n'est pas affiche dans les reglages");
+    const favoriteStored = JSON.parse(win.localStorage.getItem("kantoTeamState:v2"));
+    assert(favoriteStored.games["pokemon-z"].teams[0].favoritePokemonInstanceId === "z-bulbizarre", "Le Pokemon prefere n'est pas persiste");
     const compositionEfficiency = doc.querySelector("#composition-list .pokemon-efficiency-score");
     assert(compositionEfficiency, "Le score d'efficacite est absent de la fiche Pokemon");
     assert(compositionEfficiency.querySelector("[data-pokemon-efficiency-panel]").classList.contains("hidden"), "Le detail d'efficacite n'est pas replie par defaut");
@@ -156,6 +174,10 @@
     assert(efficiencyMarkup.includes("data-pokemon-efficiency-toggle") && efficiencyMarkup.includes("data-pokemon-efficiency-panel"), "L'efficacite n'utilise pas le bandeau repliable normalise");
     assert(efficiencyMarkup.includes("60 % couverture offensive") && efficiencyMarkup.includes("55 % efficacité des types") && efficiencyMarkup.includes("60 % associations attaque/défense"), "Les formules detaillees manquent dans les infobulles du score");
     assert(win.efficiencyScoreTitle(81) === "Boss de fin", "Le palier Boss de fin n'est pas attribue a une efficacite de 81");
+    assert(win.efficiencyScoreProfile({ total: 81, offense: 88, defense: 66, synergy: 72 }) === "Arsenal ambulant", "Le profil offensif d'efficacite est incorrect");
+    assert(win.efficiencyScoreProfile({ total: 81, offense: 65, defense: 88, synergy: 72 }) === "Forteresse de poche", "Le profil defensif d'efficacite est incorrect");
+    assert(win.efficiencyScoreProfile({ total: 81, offense: 66, defense: 70, synergy: 88 }) === "Maître du contre", "Le profil de synergie est incorrect");
+    assert(win.efficiencyScoreProfile({ total: 81, offense: 82, defense: 80, synergy: 81 }) === "Menace sans angle mort", "Le profil equilibre d'efficacite est incorrect");
     const mewtwoEfficiencyScore = win.calculatePokemonEfficiencyScore({
       nationalId: 150,
       name: "Mewtwo",
@@ -167,6 +189,8 @@
     assert(mewtwoStatsProfile.profile === "Machine de guerre" && mewtwoStatsProfile.level === "Hors catégorie", "Le profil statistique de Mewtwo est sous-evalue");
     doc.querySelector("#back-to-slots").click();
     await wait();
+    assert(doc.querySelector("#team-slots .team-slot-favorite-backdrop img"), "Le sprite prefere n'apparait pas en fond de carte d'equipe");
+    assert(!doc.querySelector("#team-slots .team-slot-favorite-backdrop svg"), "Un coeur decoratif reste affiche sur la carte d'equipe");
     doc.querySelector("#open-pokemon-search").click();
     assert(doc.querySelector("#game-version-switch").classList.contains("hidden"), "Le switch reste visible hors de la selection d'equipe");
     const query = doc.querySelector("#pokemon-search-query");
