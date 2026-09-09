@@ -3705,11 +3705,28 @@ body.sprite-viewer-open {
 }
 
 .attack-coverage-item {
+  position: relative;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   min-width: 72px;
+  padding-inline: 5px;
+}
+
+.attack-coverage-item + .attack-coverage-item::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: -5px;
+  width: 1px;
+  border-radius: 999px;
+  background: rgba(169, 179, 195, 0.24);
+}
+
+body[data-game-theme="pokemon-z"] .attack-coverage-item + .attack-coverage-item::before {
+  background: rgba(91, 69, 31, 0.2);
 }
 
 .attack-coverage-groups {

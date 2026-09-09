@@ -133,6 +133,9 @@
     assert(offensiveCoverageMarkup.includes("attack-coverage-item"), "La couverture n'est pas regroupee sous chaque attaque");
     assert(offensiveCoverageMarkup.includes("Faiblesse couverte"), "Le symbole de faiblesse couverte est absent");
     assert(offensiveCoverageMarkup.includes("Résistance ou immunité"), "Le symbole de resistance ou immunite est absent");
+    const attackCoverageItems = doc.querySelectorAll("#composition-list .attack-coverage-item");
+    assert(attackCoverageItems.length >= 2, "Les types d'attaque ne sont pas affiches separement");
+    assert(win.getComputedStyle(attackCoverageItems[1], "::before").content !== "none", "Le separateur vertical entre les types d'attaque est absent");
     const doubledMultipliersMarkup = win.renderMultiplierList([
       { type: "Roche", multiplier: 4 },
       { type: "Plante", multiplier: 0.25 }
