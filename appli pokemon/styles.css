@@ -587,6 +587,7 @@ h3 {
 
 .slot-card {
   position: relative;
+  isolation: isolate;
   min-height: 112px;
   padding: 14px;
   text-align: left;
@@ -596,17 +597,17 @@ h3 {
 
 .slot-card > :not(.team-slot-favorite-backdrop) {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
 .team-slot-favorite-backdrop {
   position: absolute;
-  z-index: 0;
+  z-index: 1;
   inset: 0 0 0 auto;
   width: min(47%, 180px);
   pointer-events: none;
   overflow: hidden;
-  opacity: 0.18;
+  opacity: 0.46;
   -webkit-mask-image: linear-gradient(to right, transparent, #000 38%);
   mask-image: linear-gradient(to right, transparent, #000 38%);
 }
@@ -618,9 +619,102 @@ h3 {
   width: 175px;
   height: 175px;
   object-fit: contain;
-  image-rendering: pixelated;
-  filter: grayscale(0.15) drop-shadow(0 8px 10px rgba(0, 0, 0, 0.45));
+  image-rendering: auto;
+  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.38));
   transform: translateY(-50%);
+}
+
+.slot-card.has-favorite-pokemon {
+  overflow: visible;
+  border-color: color-mix(in srgb, var(--favorite-type-one) 58%, var(--line));
+  box-shadow: var(--shadow);
+}
+
+.slot-card.has-favorite-pokemon::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -6px;
+  border-radius: 12px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 20%, var(--favorite-type-one) 0 9%, transparent 38%),
+    radial-gradient(circle at 88% 78%, var(--favorite-type-two) 0 9%, transparent 38%),
+    linear-gradient(110deg, var(--favorite-type-one), var(--favorite-type-two), var(--favorite-type-one));
+  background-size: 190% 190%, 190% 190%, 260% 260%;
+  opacity: 0.72;
+  filter: blur(11px) saturate(1.42);
+  transform: translate3d(-6px, -3px, 0) scale(0.98);
+  animation: favorite-type-halo-flow 4.4s linear infinite;
+  animation-delay: var(--favorite-halo-delay, 0s);
+}
+
+.team-slots .slot-card:nth-child(1) {
+  --favorite-halo-delay: -0.35s;
+}
+
+.team-slots .slot-card:nth-child(2) {
+  --favorite-halo-delay: -1.8s;
+}
+
+.team-slots .slot-card:nth-child(3) {
+  --favorite-halo-delay: -3.15s;
+}
+
+.slot-card.has-favorite-pokemon::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--favorite-type-one) 30%, rgba(27, 32, 41, 0.96)) 0 46%,
+      color-mix(in srgb, var(--favorite-type-two) 30%, rgba(27, 32, 41, 0.96)) 54% 100%);
+}
+
+body[data-game-theme="pokemon-z"] .slot-card.has-favorite-pokemon::before {
+  opacity: 0.62;
+  mix-blend-mode: normal;
+}
+
+body[data-game-theme="pokemon-z"] .slot-card.has-favorite-pokemon::after {
+  background:
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--favorite-type-one) 24%, rgba(255, 253, 248, 0.97)) 0 46%,
+      color-mix(in srgb, var(--favorite-type-two) 24%, rgba(255, 253, 248, 0.97)) 54% 100%);
+}
+
+@keyframes favorite-type-halo-flow {
+  0%,
+  100% {
+    opacity: 0.5;
+    background-position: 0% 0%, 100% 100%, 0% 50%;
+    transform: translate3d(-7px, -4px, 0) scale(0.98);
+  }
+  25% {
+    opacity: 0.82;
+    background-position: 85% 5%, 15% 95%, 50% 0%;
+    transform: translate3d(6px, -3px, 0) scale(1.035);
+  }
+  50% {
+    opacity: 0.62;
+    background-position: 95% 90%, 5% 10%, 100% 50%;
+    transform: translate3d(5px, 5px, 0) scale(1.01);
+  }
+  75% {
+    opacity: 0.72;
+    background-position: 10% 100%, 90% 0%, 50% 100%;
+    transform: translate3d(-5px, 4px, 0) scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slot-card.has-favorite-pokemon::before {
+    animation: none;
+    opacity: 0.48;
+  }
 }
 
 .team-slot-heading {

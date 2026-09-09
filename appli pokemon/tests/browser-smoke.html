@@ -194,6 +194,15 @@
     await wait();
     assert(doc.querySelector("#team-slots .team-slot-favorite-backdrop img"), "Le sprite prefere n'apparait pas en fond de carte d'equipe");
     assert(!doc.querySelector("#team-slots .team-slot-favorite-backdrop svg"), "Un coeur decoratif reste affiche sur la carte d'equipe");
+    const favoriteTeamCard = doc.querySelector("#team-slots .slot-card.has-favorite-pokemon");
+    assert(favoriteTeamCard, "La carte d'equipe ne reprend pas les types du Pokemon prefere");
+    assert(favoriteTeamCard.style.getPropertyValue("--favorite-type-one") && favoriteTeamCard.style.getPropertyValue("--favorite-type-two"), "Les couleurs des types du favori ne sont pas appliquees");
+    const favoriteHaloStyle = win.getComputedStyle(favoriteTeamCard, "::before");
+    assert(favoriteHaloStyle.animationName === "favorite-type-halo-flow", "Le halo colore du favori n'est pas anime");
+    assert(favoriteHaloStyle.zIndex === "-1" && win.getComputedStyle(favoriteTeamCard).overflow === "visible", "Le halo n'est pas place derriere la carte");
+    const haloDelays = Array.from(doc.querySelectorAll("#team-slots .slot-card"))
+      .map((card) => win.getComputedStyle(card).getPropertyValue("--favorite-halo-delay").trim());
+    assert(new Set(haloDelays).size === 3, "Les animations des trois slots ne sont pas desynchronisees");
     doc.querySelector("#open-pokemon-search").click();
     assert(doc.querySelector("#game-version-switch").classList.contains("hidden"), "Le switch reste visible hors de la selection d'equipe");
     const query = doc.querySelector("#pokemon-search-query");

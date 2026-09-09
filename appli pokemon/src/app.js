@@ -955,6 +955,10 @@ function renderSlots() {
     card.className = `slot-card ${team ? "" : "empty"} ${index === state.selectedSlot ? "active" : ""}`;
     const reserveCount = team ? getTeamReservePokemon(team).length : 0;
     const favoritePokemon = team ? getTeamFavoritePokemon(team) : null;
+    if (favoritePokemon) {
+      card.classList.add("has-favorite-pokemon");
+      card.setAttribute("style", teamFavoriteCardStyle(favoritePokemon));
+    }
     const status = team ? `${team.pokemon.length}/6 Pokemon · ${reserveCount} reserve · ${preferredSourceLabel(getTeamPreferredSource(team))}` : "Slot vide";
     card.innerHTML = team ? `
       ${renderTeamFavoriteBackdrop(favoritePokemon)}
@@ -2737,6 +2741,12 @@ function renderTeamFavoriteBackdrop(pokemon) {
       <img src="${escapeHtml(url)}" alt="" onerror="this.parentElement.remove()">
     </div>
   `;
+}
+
+function teamFavoriteCardStyle(pokemon) {
+  const first = TYPE_COLORS[pokemon?.types?.[0]] || "#a9b3c3";
+  const second = TYPE_COLORS[pokemon?.types?.[1]] || first;
+  return `--favorite-type-one:${first};--favorite-type-two:${second}`;
 }
 
 function isLegendaryPokemon(pokemon) {
