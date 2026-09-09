@@ -8,6 +8,8 @@ La source Pokemon Z contient les 1 018 entrees definies par le jeu : Pokemon off
 
 Pour les fiches Pokemon Z, les rencontres internes de la v2.12 FR sont prioritaires pour les captures. Les conditions d'evolution viennent du guide Pokemon Z et non des regles des jeux officiels recents ; PokeAPI ne sert qu'a relier les membres de la lignee et a charger les sprites/statistiques.
 
+Les methodes d'obtention cumulent les tableaux par generation et les echanges PNJ supplementaires de la documentation maitre. Une regeneration du guide conserve cette fusion.
+
 Les sprites sont optionnels. Lorsqu'une connexion est disponible, le bouton `Afficher les sprites` charge uniquement les images des Pokemon presents dans les equipes via PokéAPI. Hors ligne, le bouton et les images restent masques sans avertissement.
 
 ## Lancer le site
@@ -57,7 +59,7 @@ Les rencontres sauvages sont generees separement afin qu'une mise a jour du guid
 node scripts/build-pokemon-z-encounters.js "C:\chemin\vers\PBS\encounters.txt" "C:\chemin\vers\PBS\pokemon.txt" "C:\chemin\vers\map-names.json"
 ```
 
-Les statistiques de base officielles sont embarquees localement et peuvent etre regenerees depuis les donnees PokeAPI :
+Les statistiques de base et la classification locale des Pokemon legendaires/fabuleux sont embarquees et peuvent etre regenerees depuis les donnees PokeAPI :
 
 ```powershell
 node scripts/build-official-pokemon-stats.js

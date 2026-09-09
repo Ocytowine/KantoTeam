@@ -87,6 +87,12 @@
     );
     assert(scalproieEvolution.includes("42"), "La condition Z de Scalpereur est absente");
     assert(!scalproieEvolution.toLowerCase().includes("bisharp"), "Le nom Bisharp n'est pas traduit dans la condition Z");
+    const rioluGuide = win.getPokemonZGuideInfo("pokemon-z-447");
+    const rioluTrades = rioluGuide.methods.filter((method) => method.kind === "trade");
+    assert(rioluTrades.some((method) => method.text.includes("Timburr")), "L'echange Riolu/Charpenti du document maître est absent");
+    assert(rioluTrades.some((method) => method.text.includes("Aggron")), "Le second echange de Riolu du document maître est absent");
+    const pachirisuGuide = win.getPokemonZGuideInfo("pokemon-z-417");
+    assert(pachirisuGuide.methods.some((method) => method.kind === "trade" && method.text.includes("Morpeko")), "L'echange Pachirisu/Morpeko est absent");
     const stored = JSON.parse(win.localStorage.getItem("kantoTeamState:v2"));
     assert(stored.activeGame === "pokemon-z", "Version active non persistee");
     assert(stored.games.reforged.teams.length === 3 && stored.games["pokemon-z"].teams.length === 3, "Les 6 slots ne sont pas repartis en 3 + 3");
@@ -97,6 +103,33 @@
     assert(doc.querySelectorAll("#composition-list .composition-add-slot").length === 5, "Les slots Pokemon libres ne sont pas affiches");
     assert(Array.from(doc.querySelectorAll("#composition-list .composition-add-slot")).every((slot) => !slot.textContent.trim()), "Un slot Pokemon libre contient encore du texte");
     assert(win.getComputedStyle(doc.querySelector("#composition-list .composition-add-slot img")).width === "72px", "Le logo d'ajout Pokemon n'est pas agrandi");
+    const offensiveCoverage = win.analyzePokemonOffensiveCoverage(["Feu"], ["Plante", "Feu"]);
+    assert(offensiveCoverage.find((item) => item.type === "Eau")?.relation === "covers-weakness", "La couverture d'une faiblesse personnelle n'est pas detectee");
+    assert(offensiveCoverage.find((item) => item.type === "Plante")?.relation === "covers-resistance", "La couverture d'un type resiste n'est pas detectee");
+    const offensiveCoverageMarkup = win.renderPokemonOffensiveCoverage(["Feu"], ["Plante", "Feu"], true);
+    assert(offensiveCoverageMarkup.includes("attack-coverage-item"), "La couverture n'est pas regroupee sous chaque attaque");
+    assert(offensiveCoverageMarkup.includes("Faiblesse couverte"), "Le symbole de faiblesse couverte est absent");
+    assert(offensiveCoverageMarkup.includes("Résistance ou immunité"), "Le symbole de resistance ou immunite est absent");
+    const doubledMultipliersMarkup = win.renderMultiplierList([
+      { type: "Roche", multiplier: 4 },
+      { type: "Plante", multiplier: 0.25 }
+    ]);
+    assert(doubledMultipliersMarkup.includes("double-weakness"), "La double faiblesse x4 n'est pas mise en valeur");
+    assert(doubledMultipliersMarkup.includes("double-resistance"), "La double resistance x0.25 n'est pas mise en valeur");
+    win.openPokemonEditModal({
+      id: "coverage-refresh-test",
+      name: "Test couverture",
+      types: ["Feu"],
+      attacks: ["Plante"]
+    }, { mode: "linked", sourceId: "coverage-refresh-test" });
+    const coverageTypeSelect = doc.querySelector("#modal-edit-pokemon-type-one");
+    const initialWaterTarget = doc.querySelector("#modal-edit-coverage-preview [title*='contre Eau']");
+    assert(initialWaterTarget?.closest(".covers-weakness"), "La faiblesse Eau initiale est absente de l'aperçu d'edition");
+    coverageTypeSelect.value = "Eau";
+    coverageTypeSelect.dispatchEvent(new win.Event("change", { bubbles: true }));
+    const refreshedWaterTarget = doc.querySelector("#modal-edit-coverage-preview [title*='contre Eau']");
+    assert(refreshedWaterTarget?.closest(".covers-resistance"), "La relation attaque/defense ne change pas avec le type edite");
+    win.closePokemonEditModal();
     doc.querySelector("#back-to-slots").click();
     await wait();
     doc.querySelector("#open-pokemon-search").click();
@@ -104,6 +137,21 @@
     const query = doc.querySelector("#pokemon-search-query");
     const searchTypeOne = doc.querySelector("#pokemon-search-type-one");
     const statSort = doc.querySelector("#pokemon-search-stat-sort");
+    const legendaryFilter = doc.querySelector("#pokemon-search-legendary-filter");
+    query.value = "Mewtwo";
+    query.dispatchEvent(new win.Event("input", { bubbles: true }));
+    await wait();
+    assert(doc.querySelector("#pokemon-search-results").textContent.includes("Mewtwo"), "Un legendaire inclus par defaut est masque");
+    legendaryFilter.click();
+    assert(legendaryFilter.getAttribute("aria-pressed") === "false", "Le filtre des legendaires ne passe pas en exclusion");
+    assert(!doc.querySelector("#pokemon-search-results").textContent.includes("Mewtwo"), "Mewtwo reste visible quand les legendaires sont exclus");
+    query.value = "Dracaufeu";
+    query.dispatchEvent(new win.Event("input", { bubbles: true }));
+    await wait();
+    assert(doc.querySelector("#pokemon-search-results").textContent.includes("Dracaufeu"), "Le filtre des legendaires masque un Pokemon ordinaire");
+    legendaryFilter.click();
+    query.value = "";
+    query.dispatchEvent(new win.Event("input", { bubbles: true }));
     searchTypeOne.value = "Dragon";
     searchTypeOne.dispatchEvent(new win.Event("change", { bubbles: true }));
     statSort.click();
@@ -171,6 +219,8 @@
     const carvanhaMethods = doc.querySelector("#pokemon-search-results .pokemon-info-panel")?.textContent || "";
     assert(carvanhaMethods.includes("Vieille Canne") && carvanhaMethods.includes("Roche-sur-Gliffe"), "La capture v2.12 absente du guide web n'est pas ajoutee pour Carvanha");
     doc.querySelector("#pokemon-compare-toggle").click();
+    searchTypeOne.value = "Electrik";
+    searchTypeOne.dispatchEvent(new win.Event("change", { bubbles: true }));
     query.value = "Pikachu";
     query.dispatchEvent(new win.Event("input", { bubbles: true }));
     await wait();
@@ -189,6 +239,7 @@
     assert(doc.querySelectorAll("#pokemon-search-results [data-replace-comparison-pokemon]").length === 2, "Les boutons Remplacer sont absents");
     doc.querySelector("#pokemon-search-results [data-replace-comparison-pokemon='0']").click();
     assert(!doc.querySelector("#pokemon-search-panel").classList.contains("comparison-ready"), "Les filtres ne reviennent pas pendant un remplacement");
+    assert(searchTypeOne.value === "Electrik", "Le filtre de type est perdu pendant le remplacement comparatif");
     const remainingPokemon = doc.querySelector("#pokemon-search-results .pokemon-comparison-selected-chip");
     assert(remainingPokemon?.textContent.includes("Raichu"), "Le Pokemon non remplace n'est pas conserve dans la barre");
     assert(remainingPokemon.querySelector(".type-logo-only"), "Le type du Pokemon conserve n'est pas affiche dans la barre");

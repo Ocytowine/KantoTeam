@@ -20,6 +20,32 @@ const SOURCES = [
   }
 ];
 
+// Échanges décrits dans le parcours du document maître mais absents des
+// tableaux d'obtention par génération. Le numéro est celui du Pokédex Z.
+const MASTER_DOCUMENT_TRADES = [
+  { zIndex: 447, requested: "Timburr", location: "Savinion, bâtiment au nord-ouest (1er étage)" },
+  { zIndex: 465, requested: "Mantine", location: "Relifac-le-Haut, maison au nord-ouest" },
+  { zIndex: 281, requested: "Kadabra", location: "Illumis - Est, maison du quartier pauvre" },
+  { zIndex: 467, requested: "Electivire", location: "Illumis - Nord, près du lac" },
+  { zIndex: 466, requested: "Magmortar", location: "Mozheim, maison près du Centre Pokémon" },
+  { zIndex: 553, requested: "Kingambit", location: "Auffrac-les-Congères, maison au nord-ouest" },
+  { zIndex: 447, requested: "Aggron", location: "Campement de Crisanto" },
+  { zIndex: 875, requested: "Glalie", location: "Des-Rires, tente du cirque" },
+  { zIndex: 417, requested: "Morpeko", location: "Des-Rires" },
+  { zIndex: 949, requested: "Eiscue", location: "Banlieue d'Illumis - Ouest, Centre Pokémon" },
+  { zIndex: 539, requested: "Hitmonlee", location: "Yantreizh, maison en ville" },
+  { zIndex: 538, requested: "Hitmonchan", location: "Yantreizh, maison en ville" },
+  { zIndex: 297, requested: "Hitmontop", location: "Yantreizh, maison en ville" },
+  { zIndex: 68, requested: "Annihilape", location: "Yantreizh, maison en ville" },
+  { zIndex: 65, requested: "Grumpig", location: "Yantreizh, Tour Maîtrise (étage supérieur)" },
+  { zIndex: 904, requested: "Bronzong", location: "Yantreizh, Tour Maîtrise (premier étage)" }
+];
+
+const MASTER_DOCUMENT_SOURCE = {
+  url: "https://pokemonzfangame.com/full-documentation/",
+  label: "Documentation maître officielle Pokémon Z"
+};
+
 function normalize(value) {
   return String(value || "")
     .normalize("NFD")
@@ -77,13 +103,32 @@ async function loadOfficialPokemonNames() {
 
 function getKind(text) {
   const value = normalize(text);
+  if (/fossil|revive/.test(value)) return "fossil";
   if (/trade|exchange| for a | for an /.test(value)) return "trade";
   if (/evolve|evolution|level up|friendship|happiness|\bstone\b/.test(value)) return "evolution";
   if (/breed|egg/.test(value)) return "breeding";
-  if (/fossil|revive/.test(value)) return "fossil";
   if (/gift|given|receive|reward/.test(value)) return "gift";
   if (/capture|capturable|catch|obtainable|route|cave|cavern|town|city|forest|swamp|island|isle|sanctuary|laboratory|workshop|forge|catacomb|chateau|bastion|seafloor|coast|station|orchard|grotto|crypt|lighthouse|pyrenees|vanitas|luminalia|villa|village|factory|hill|abyss|chasm|prison|library|cathedral|lake|circus|tower|exhibition|chamber/.test(value)) return "capture";
   return "special";
+}
+
+function addMasterDocumentTrades(guide, catalog) {
+  for (const trade of MASTER_DOCUMENT_TRADES) {
+    const pokemon = catalog.find((item) => item.id === `pokemon-z-${trade.zIndex}`);
+    if (!pokemon) throw new Error(`Échange du document maître sans Pokémon Z #${trade.zIndex}`);
+    const record = {
+      kind: "trade",
+      text: `Donner ${trade.requested} à un PNJ — ${trade.location}`,
+      source: MASTER_DOCUMENT_SOURCE.label,
+      sourceUrl: MASTER_DOCUMENT_SOURCE.url,
+      confidence: "official-master-document"
+    };
+    guide[pokemon.id] ||= { methods: [] };
+    const key = `${record.kind}|${normalize(record.text)}`;
+    if (!guide[pokemon.id].methods.some((item) => `${item.kind}|${normalize(item.text)}` === key)) {
+      guide[pokemon.id].methods.push(record);
+    }
+  }
 }
 
 function translateMethod(text) {
@@ -173,7 +218,7 @@ function translateMethod(text) {
 // remplacer uniquement le lieu web, sans supprimer la condition d'évolution.
 function splitMethods(text) {
   return String(text || "")
-    .split(/\s+(?:or|\/)\s+(?=(?:evolves?|evolution|friendship|happiness|use\b|[a-z]+\s+stone\b))/gi)
+    .split(/\s+(?:or|\/)\s+(?=(?:evolves?|evolution|friendship|happiness|use\b|trade\b|exchange\b|[a-z]+\s+stone\b))/gi)
     .map((method) => method.trim())
     .filter(Boolean);
 }
@@ -231,6 +276,7 @@ async function main() {
       }
     }
   }
+  addMasterDocumentTrades(guide, catalog);
 
   const globalNotes = [
     {

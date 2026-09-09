@@ -54,7 +54,8 @@ let helperSelectedTypes = null;
 let pokemonSearchFilters = {
   query: "",
   typeOne: "",
-  typeTwo: ""
+  typeTwo: "",
+  includeLegendary: true
 };
 let pokemonSearchSortByStats = false;
 let pokemonComparison = {
@@ -129,6 +130,7 @@ const el = {
   pokemonSearchCount: document.querySelector("#pokemon-search-count"),
   pokemonSearchResults: document.querySelector("#pokemon-search-results"),
   pokemonSearchStatSort: document.querySelector("#pokemon-search-stat-sort"),
+  pokemonSearchLegendaryFilter: document.querySelector("#pokemon-search-legendary-filter"),
   pokemonCompareToggle: document.querySelector("#pokemon-compare-toggle"),
   sharedTeamsPanel: document.querySelector("#shared-teams-panel"),
   sharedTeamsList: document.querySelector("#shared-teams-list"),
@@ -278,6 +280,10 @@ function bindEvents() {
   el.pokemonCompareToggle.addEventListener("click", togglePokemonComparison);
   el.pokemonSearchStatSort.addEventListener("click", () => {
     pokemonSearchSortByStats = !pokemonSearchSortByStats;
+    renderPokemonSearch();
+  });
+  el.pokemonSearchLegendaryFilter.addEventListener("click", () => {
+    pokemonSearchFilters.includeLegendary = !pokemonSearchFilters.includeLegendary;
     renderPokemonSearch();
   });
   [el.helperTypeOne, el.helperTypeTwo, el.helperTargetBase].forEach((field) => {
@@ -565,7 +571,7 @@ function switchGame(game) {
   pokemonInfoCache.clear();
   teamSettingsOpen = false;
   teamAddPanelOpen = false;
-  pokemonSearchFilters = { query: "", typeOne: "", typeTwo: "" };
+  pokemonSearchFilters = { query: "", typeOne: "", typeTwo: "", includeLegendary: true };
   pokemonSearchSortByStats = false;
   pokemonComparison = { active: false, picks: [], confirmed: false, replacing: null };
   el.teamName.value = draftTeam.name || "";
@@ -1311,7 +1317,7 @@ function renderPreview() {
       <div class="mini-line"><span class="slot-meta">Faiblesses</span>${renderMultiplierList(weaknesses)}</div>
       <div class="mini-line"><span class="slot-meta">Resistances</span>${renderMultiplierList(resistances)}</div>
       <div class="mini-line"><span class="slot-meta">Immunites</span>${renderMultiplierList(immunities)}</div>
-      <div class="mini-line"><span class="slot-meta">Attaques</span>${attacks.length ? attacks.map(typeBadge).join("") : `<span class="slot-meta">Aucune</span>`}</div>
+      ${renderPokemonOffensiveCoverage(pokemon.types, attacks)}
     </div>
   `;
 }
@@ -2529,6 +2535,7 @@ function renderPokemonSearch() {
   const query = normalize(pokemonSearchFilters.query);
   const typeOne = pokemonSearchFilters.typeOne;
   const typeTwo = pokemonSearchFilters.typeTwo;
+  const includeLegendary = pokemonSearchFilters.includeLegendary;
   const selectedPokemon = pokemonComparison.picks.filter(Boolean);
   const comparisonReady = pokemonComparison.active && selectedPokemon.length === 2;
   const canShowResults = comparisonReady || query.length >= 3 || Boolean(typeOne);
@@ -2537,6 +2544,9 @@ function renderPokemonSearch() {
   el.pokemonSearchTypeTwo.value = typeTwo;
   el.pokemonSearchStatSort.setAttribute("aria-pressed", String(pokemonSearchSortByStats));
   el.pokemonSearchStatSort.classList.toggle("active", pokemonSearchSortByStats);
+  el.pokemonSearchLegendaryFilter.setAttribute("aria-pressed", String(includeLegendary));
+  el.pokemonSearchLegendaryFilter.classList.toggle("active", includeLegendary);
+  el.pokemonSearchLegendaryFilter.textContent = includeLegendary ? "Légendaires inclus" : "Légendaires exclus";
   el.pokemonSearchPanel.classList.toggle("comparison-active", pokemonComparison.active);
   el.pokemonSearchPanel.classList.toggle("comparison-ready", comparisonReady);
   el.pokemonSearchPanel.classList.toggle("comparison-confirmed", pokemonComparison.confirmed);
@@ -2557,6 +2567,7 @@ function renderPokemonSearch() {
         (!query || normalize(pokemon.name).includes(query))
         && (!typeOne || pokemon.types.includes(typeOne))
         && (!typeTwo || pokemon.types.includes(typeTwo))
+        && (includeLegendary || !isLegendaryPokemon(pokemon))
       ))
       .sort(comparePokemonSearchResults)
       .slice(0, 36);
@@ -2607,6 +2618,19 @@ function comparePokemonSearchResults(left, right) {
 function getPokemonStatTotal(pokemon) {
   const stats = getPokemonBaseStats(pokemon);
   return stats ? Object.values(stats).reduce((sum, value) => sum + value, 0) : -1;
+}
+
+function isLegendaryPokemon(pokemon) {
+  const nationalId = getPokemonNationalId(pokemon);
+  if (nationalId && typeof OFFICIAL_LEGENDARY_OR_MYTHICAL_IDS !== "undefined"
+    && OFFICIAL_LEGENDARY_OR_MYTHICAL_IDS.has(nationalId)) return true;
+
+  const sourceId = pokemon?.pokemonZId || pokemon?.id || pokemon?.sourceId || "";
+  const pokemonZId = String(sourceId).startsWith("pokemon-z-") ? sourceId : null;
+  if (!pokemonZId || typeof POKEMON_Z_GUIDE === "undefined") return false;
+  return (POKEMON_Z_GUIDE[pokemonZId]?.methods || []).some((method) => (
+    normalize(method.source).includes("legendaire")
+  ));
 }
 
 function renderPokemonSearchCard(pokemon, index, comparisonReady) {
@@ -2718,7 +2742,7 @@ function selectPokemonForComparison(key) {
     else pokemonComparison.picks.push(pokemon);
   }
   if (pokemonComparison.picks.filter(Boolean).length === 2) {
-    pokemonSearchFilters = { query: "", typeOne: "", typeTwo: "" };
+    pokemonSearchFilters.query = "";
     pokemonComparison.confirmed = true;
   }
   renderPokemonSearch();
@@ -2737,7 +2761,7 @@ function replaceComparisonPokemon(index) {
   pokemonComparison.picks[index] = null;
   pokemonComparison.confirmed = false;
   pokemonComparison.replacing = index;
-  pokemonSearchFilters = { query: "", typeOne: "", typeTwo: "" };
+  pokemonSearchFilters.query = "";
   renderPokemonSearch();
   el.pokemonSearchQuery.focus();
 }
@@ -3074,7 +3098,7 @@ function renderPokemonCard(pokemon, options = {}) {
       <div class="mini-line summary-line weakness-line"><span class="slot-meta">Faiblesses</span>${renderMultiplierList(weaknesses)}</div>
       <div class="mini-line summary-line resistance-line"><span class="slot-meta">Resistances</span>${renderMultiplierList(resistances)}</div>
       <div class="mini-line summary-line immunity-line"><span class="slot-meta">Immunites</span>${renderMultiplierList(immunities)}</div>
-      <div class="mini-line summary-line attack-line"><span class="slot-meta">Attaques</span>${attacks.length ? attacks.map(typeBadge).join("") : `<span class="multiplier">Aucune</span>`}</div>
+      ${renderPokemonOffensiveCoverage(pokemon.types, attacks, true)}
       ${renderPokemonStatsBlock(pokemon, { expanded: statsExpanded, comparedWith })}
     </div>
   `;
@@ -4667,6 +4691,9 @@ function renderPokemonEditModal() {
             </label>
           `).join("")}
         </div>
+        <div id="modal-edit-coverage-preview" class="pokemon-editor-coverage-preview" aria-live="polite">
+          ${renderPokemonOffensiveCoverage(draft.types, draft.attacks)}
+        </div>
       </fieldset>
       <section class="pokemon-editor-evolution" aria-labelledby="pokemon-editor-evolution-title">
         <div class="pokemon-editor-section-heading">
@@ -4754,7 +4781,11 @@ function bindPokemonEditModalEvents() {
       }
       const count = el.pokemonEditModal.querySelector("#modal-edit-attack-count");
       if (count) count.textContent = `${getModalPokemonAttackTypes().length}/4`;
+      updatePokemonEditCoveragePreview();
     });
+  });
+  ["#modal-edit-pokemon-type-one", "#modal-edit-pokemon-type-two"].forEach((selector) => {
+    el.pokemonEditModal.querySelector(selector)?.addEventListener("change", updatePokemonEditCoveragePreview);
   });
   el.pokemonEditModal.querySelector("#modal-edit-pick-source")?.addEventListener("change", (event) => {
     const options = el.pokemonEditModal.querySelector("#modal-edit-pick-options-" + (pokemonEditContext.enemyIndex ?? 0));
@@ -4767,6 +4798,17 @@ function bindPokemonEditModalEvents() {
     button.addEventListener("click", () => selectPokemonEditEvolution(Number(button.dataset.selectEvolution)));
   });
   el.pokemonEditModal.querySelector("[data-confirm-pokemon-edit]").addEventListener("click", savePokemonEditModal);
+}
+
+function updatePokemonEditCoveragePreview() {
+  if (!pokemonEditContext) return;
+  capturePokemonEditForm();
+  const preview = el.pokemonEditModal.querySelector("#modal-edit-coverage-preview");
+  if (!preview) return;
+  preview.innerHTML = renderPokemonOffensiveCoverage(
+    pokemonEditContext.draft.types,
+    pokemonEditContext.draft.attacks
+  );
 }
 
 function capturePokemonEditForm() {
@@ -5299,6 +5341,103 @@ function getCoveredDefenderTypes(attackTypes) {
   return Array.from(covered).sort((a, b) => KANTO_TYPES.indexOf(a) - KANTO_TYPES.indexOf(b));
 }
 
+function analyzePokemonOffensiveCoverage(pokemonTypes, attackTypes) {
+  const uniqueAttackTypes = Array.from(new Set(attackTypes || []))
+    .filter((type) => KANTO_TYPES.includes(type));
+
+  return KANTO_TYPES.map((targetType) => {
+    const effectiveAttackTypes = uniqueAttackTypes
+      .filter((attackType) => getEffectiveness(attackType, targetType) > 1);
+    if (!effectiveAttackTypes.length) return null;
+
+    const defensiveMultiplier = (pokemonTypes || [])
+      .reduce((value, pokemonType) => value * getEffectiveness(targetType, pokemonType), 1);
+    const relation = defensiveMultiplier > 1
+      ? "covers-weakness"
+      : defensiveMultiplier < 1 ? "covers-resistance" : "neutral";
+
+    return { type: targetType, effectiveAttackTypes, defensiveMultiplier, relation };
+  })
+    .filter(Boolean)
+    .sort((a, b) => {
+      const rank = { "covers-weakness": 0, "covers-resistance": 1, neutral: 2 };
+      return rank[a.relation] - rank[b.relation]
+        || KANTO_TYPES.indexOf(a.type) - KANTO_TYPES.indexOf(b.type);
+    });
+}
+
+function renderPokemonOffensiveCoverage(pokemonTypes, attackTypes, summary = false) {
+  const coverage = analyzePokemonOffensiveCoverage(pokemonTypes, attackTypes);
+  const uniqueAttackTypes = Array.from(new Set(attackTypes || []))
+    .filter((type) => KANTO_TYPES.includes(type));
+  const lineClass = summary ? " summary-line attack-line" : "";
+  if (!uniqueAttackTypes.length) {
+    return `<div class="mini-line${lineClass}"><span class="slot-meta">Attaques</span><span class="multiplier">Aucune</span></div>`;
+  }
+
+  const attacks = uniqueAttackTypes.map((attackType) => {
+    const attackCoverage = coverage.filter((item) => item.effectiveAttackTypes.includes(attackType));
+    const groups = ["covers-resistance", "neutral", "covers-weakness"]
+      .map((relation) => renderAttackCoverageGroup(attackType, attackCoverage, relation))
+      .join("");
+    return `
+      <div class="attack-coverage-item">
+        ${typeBadge(attackType)}
+        <div class="attack-coverage-groups">
+          ${groups || `<span class="attack-coverage-empty" title="Ce type n'est super efficace contre aucun autre type.">—</span>`}
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  return `
+    <div class="mini-line${lineClass} attack-coverage-line">
+      <span class="slot-meta">Attaques</span>
+      <div class="attack-coverage-list">${attacks}</div>
+    </div>
+  `;
+}
+
+function renderAttackCoverageGroup(attackType, coverage, relation) {
+  const targets = coverage.filter((item) => item.relation === relation);
+  if (!targets.length) return "";
+
+  const labels = {
+    "covers-resistance": "Résistance ou immunité",
+    neutral: "Couverture offensive",
+    "covers-weakness": "Faiblesse couverte"
+  };
+  const targetLogos = targets.map((item) => {
+    const isImmune = item.defensiveMultiplier === 0;
+    const defenseText = relation === "covers-weakness"
+      ? `Ce type inflige ${formatMultiplierLabel(item.defensiveMultiplier)} à ce Pokémon.`
+      : relation === "covers-resistance"
+        ? isImmune
+          ? "Ce Pokémon est immunisé contre ce type."
+          : `Ce Pokémon résiste à ce type (${formatMultiplierLabel(item.defensiveMultiplier)}).`
+        : "La relation défensive est neutre.";
+    const title = `${attackType} est super efficace contre ${item.type}. ${defenseText}`;
+    return `<span class="attack-coverage-type${isImmune ? " immunity-coverage" : ""}" title="${escapeHtml(title)}">${typeLogo(item.type)}</span>`;
+  }).join("");
+
+  return `
+    <span class="attack-coverage-group ${relation}" title="${labels[relation]}">
+      ${coverageRelationIcon(relation, labels[relation])}
+      ${targetLogos}
+    </span>
+  `;
+}
+
+function coverageRelationIcon(relation, label) {
+  if (relation === "covers-resistance") {
+    return `<span class="coverage-relation-icon" role="img" aria-label="${label}"><svg viewBox="0 0 16 18" aria-hidden="true"><path d="M8 1.5 14 4v4.5c0 3.7-2.5 6.4-6 8-3.5-1.6-6-4.3-6-8V4l6-2.5Z"/></svg></span>`;
+  }
+  if (relation === "covers-weakness") {
+    return `<span class="coverage-relation-icon" role="img" aria-label="${label}"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="m9 1.5 7.3 13H1.7L9 1.5Z"/><path d="M9 6v4.2M9 12.6v.1"/></svg></span>`;
+  }
+  return `<span class="coverage-relation-icon" role="img" aria-label="${label}"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3"/></svg></span>`;
+}
+
 function getOffensiveDetails(team) {
   return team.pokemon.reduce((details, pokemon) => {
     pokemon.attacks.forEach((attackType) => {
@@ -5568,7 +5707,13 @@ function renderMultiplierList(items) {
   if (!items.length) return `<span class="slot-meta">Aucune</span>`;
   return items.map((item) => {
     const kind = item.multiplier === 0 ? "immune" : item.multiplier > 1 ? "weak" : "resist";
-    return `<span class="multiplier ${kind}" title="${item.type}">${typeLogo(item.type)} ${formatMultiplierLabel(item.multiplier)}</span>`;
+    const doubled = item.multiplier >= 4
+      ? "double-weakness"
+      : item.multiplier > 0 && item.multiplier <= 0.25 ? "double-resistance" : "";
+    const emphasis = doubled === "double-weakness"
+      ? " — Double faiblesse"
+      : doubled === "double-resistance" ? " — Double résistance" : "";
+    return `<span class="multiplier ${kind} ${doubled}" title="${item.type}${emphasis}">${typeLogo(item.type)} ${formatMultiplierLabel(item.multiplier)}</span>`;
   }).join("");
 }
 
