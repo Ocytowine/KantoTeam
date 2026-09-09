@@ -103,6 +103,7 @@
     assert(doc.querySelectorAll("#composition-list .composition-add-slot").length === 5, "Les slots Pokemon libres ne sont pas affiches");
     assert(Array.from(doc.querySelectorAll("#composition-list .composition-add-slot")).every((slot) => !slot.textContent.trim()), "Un slot Pokemon libre contient encore du texte");
     assert(win.getComputedStyle(doc.querySelector("#composition-list .composition-add-slot img")).width === "72px", "Le logo d'ajout Pokemon n'est pas agrandi");
+    assert(doc.querySelector("#composition-list .pokemon-efficiency-score"), "Le score d'efficacite est absent de la fiche Pokemon");
     const offensiveCoverage = win.analyzePokemonOffensiveCoverage(["Feu"], ["Plante", "Feu"]);
     assert(offensiveCoverage.find((item) => item.type === "Eau")?.relation === "covers-weakness", "La couverture d'une faiblesse personnelle n'est pas detectee");
     assert(offensiveCoverage.find((item) => item.type === "Plante")?.relation === "covers-resistance", "La couverture d'un type resiste n'est pas detectee");
@@ -130,6 +131,32 @@
     const refreshedWaterTarget = doc.querySelector("#modal-edit-coverage-preview [title*='contre Eau']");
     assert(refreshedWaterTarget?.closest(".covers-resistance"), "La relation attaque/defense ne change pas avec le type edite");
     win.closePokemonEditModal();
+    const efficiencyReference = win.getEfficiencyReferencePool("pokemon-z");
+    assert(efficiencyReference.pokemon.length > 800, "La population de reference Pokemon Z est incomplete");
+    assert(efficiencyReference.pokemon.every((pokemon) => !win.isLegendaryPokemon({ nationalId: pokemon.nationalId, name: pokemon.name })), "Un legendaire est present dans le score d'efficacite");
+    const efficiencyPokemon = efficiencyReference.pokemon.find((pokemon) => pokemon.nationalId === 6);
+    const efficiencyScore = win.calculatePokemonEfficiencyScore(efficiencyPokemon, ["Feu", "Vol"], "pokemon-z");
+    assert([efficiencyScore.total, efficiencyScore.offense, efficiencyScore.defense, efficiencyScore.synergy].every((value) => Number.isInteger(value) && value >= 0 && value <= 100), "Un sous-score d'efficacite sort de l'echelle sur 100");
+    const displayedWeightedScore = Math.round(efficiencyScore.offense * 0.4 + efficiencyScore.defense * 0.3 + efficiencyScore.synergy * 0.3);
+    assert(Math.abs(efficiencyScore.total - displayedWeightedScore) <= 1, "La ponderation 40/30/30 du score est incorrecte");
+    const singleAttackScore = win.calculatePokemonEfficiencyScore(efficiencyPokemon, ["Insecte"], "pokemon-z");
+    const diverseAttackScore = win.calculatePokemonEfficiencyScore(efficiencyPokemon, ["Insecte", "Eau", "Sol", "Glace"], "pokemon-z");
+    assert(diverseAttackScore.offense > singleAttackScore.offense, "Les attaques complementaires n'ameliorent pas la couverture offensive");
+    const fragileDefense = win.calculatePokemonEfficiencyScore({ nationalId: 292, name: "Munja test", types: ["Acier"], attacks: ["Acier"] }, ["Acier"], "pokemon-z");
+    const robustDefense = win.calculatePokemonEfficiencyScore({ nationalId: 208, name: "Steelix test", types: ["Acier"], attacks: ["Acier"] }, ["Acier"], "pokemon-z");
+    assert(robustDefense.defense > fragileDefense.defense, "La robustesse statistique ne pondere pas le score DEF");
+    const estimatedEfficiencyScore = win.calculatePokemonEfficiencyScore(efficiencyPokemon, [], "pokemon-z");
+    assert(estimatedEfficiencyScore.attacksEstimated, "Le score sans attaques renseignees n'est pas signale comme estime");
+    const efficiencyMarkup = win.renderPokemonEfficiencyScore(efficiencyPokemon, ["Feu", "Vol"]);
+    assert(efficiencyMarkup.includes("pokemon-efficiency-total") && efficiencyMarkup.includes("/100"), "La note d'efficacite n'est pas affichee dans la fiche");
+    assert(efficiencyMarkup.includes("60 % couverture offensive") && efficiencyMarkup.includes("55 % efficacité des types") && efficiencyMarkup.includes("60 % associations attaque/défense"), "Les formules detaillees manquent dans les infobulles du score");
+    const mewtwoEfficiencyScore = win.calculatePokemonEfficiencyScore({
+      nationalId: 150,
+      name: "Mewtwo",
+      types: ["Psy", "Tenebres"],
+      attacks: ["Electrik", "Combat", "Psy", "Insecte"]
+    }, ["Electrik", "Combat", "Psy", "Insecte"], "pokemon-z");
+    assert(mewtwoEfficiencyScore.total >= 75, "Les statistiques exceptionnelles de Mewtwo restent sous-ponderees");
     doc.querySelector("#back-to-slots").click();
     await wait();
     doc.querySelector("#open-pokemon-search").click();

@@ -3651,6 +3651,116 @@ body[data-game-theme="pokemon-z"] .attack-coverage-group.covers-weakness {
   color: #8b3a28;
 }
 
+.pokemon-efficiency-score {
+  --efficiency-color: #a9b3c3;
+  display: grid;
+  gap: 8px;
+  border: 1px solid color-mix(in srgb, var(--efficiency-color) 58%, transparent);
+  border-radius: 8px;
+  padding: 9px 10px;
+  color: var(--text);
+  background: color-mix(in srgb, var(--efficiency-color) 9%, rgba(15, 18, 24, 0.68));
+}
+
+.pokemon-efficiency-score.excellent {
+  --efficiency-color: #49d99a;
+}
+
+.pokemon-efficiency-score.good {
+  --efficiency-color: #7ec4ff;
+}
+
+.pokemon-efficiency-score.average {
+  --efficiency-color: #f4c84a;
+}
+
+.pokemon-efficiency-score.limited {
+  --efficiency-color: #f07f7f;
+}
+
+.pokemon-efficiency-heading,
+.pokemon-efficiency-detail {
+  display: flex;
+  align-items: center;
+}
+
+.pokemon-efficiency-heading {
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pokemon-efficiency-heading > span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.pokemon-efficiency-heading small,
+.pokemon-efficiency-reference {
+  color: var(--muted);
+}
+
+.pokemon-efficiency-total {
+  color: var(--efficiency-color);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.pokemon-efficiency-total small {
+  margin-left: 2px;
+  color: currentColor;
+  font-size: 0.65rem;
+}
+
+.pokemon-efficiency-details {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.pokemon-efficiency-detail {
+  min-width: 0;
+  gap: 5px;
+  font-size: 0.7rem;
+  font-weight: 850;
+}
+
+.pokemon-efficiency-detail > span {
+  width: 26px;
+  flex: 0 0 26px;
+  color: var(--muted);
+}
+
+.pokemon-efficiency-detail > strong {
+  width: 22px;
+  flex: 0 0 22px;
+  text-align: right;
+}
+
+.pokemon-efficiency-track {
+  height: 6px;
+  min-width: 18px;
+  flex: 1;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(169, 179, 195, 0.2);
+}
+
+.pokemon-efficiency-track i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--efficiency-color);
+}
+
+.pokemon-efficiency-reference {
+  font-size: 0.67rem;
+}
+
+body[data-game-theme="pokemon-z"] .pokemon-efficiency-score {
+  background: color-mix(in srgb, var(--efficiency-color) 8%, #fffdf8);
+}
+
 .analysis-content {
   display: grid;
   gap: 18px;

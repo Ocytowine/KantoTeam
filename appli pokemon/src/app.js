@@ -64,6 +64,8 @@ let pokemonComparison = {
   confirmed: false,
   replacing: null
 };
+const efficiencyReferenceCache = new Map();
+const pokemonEfficiencyScoreCache = new Map();
 
 const mobileVersusMedia = window.matchMedia("(max-width: 920px)");
 const spriteUrls = new Map();
@@ -1318,6 +1320,7 @@ function renderPreview() {
       <div class="mini-line"><span class="slot-meta">Resistances</span>${renderMultiplierList(resistances)}</div>
       <div class="mini-line"><span class="slot-meta">Immunites</span>${renderMultiplierList(immunities)}</div>
       ${renderPokemonOffensiveCoverage(pokemon.types, attacks)}
+      ${renderPokemonEfficiencyScore(pokemon, attacks)}
     </div>
   `;
 }
@@ -3099,6 +3102,7 @@ function renderPokemonCard(pokemon, options = {}) {
       <div class="mini-line summary-line resistance-line"><span class="slot-meta">Resistances</span>${renderMultiplierList(resistances)}</div>
       <div class="mini-line summary-line immunity-line"><span class="slot-meta">Immunites</span>${renderMultiplierList(immunities)}</div>
       ${renderPokemonOffensiveCoverage(pokemon.types, attacks, true)}
+      ${renderPokemonEfficiencyScore(pokemon, attacks)}
       ${renderPokemonStatsBlock(pokemon, { expanded: statsExpanded, comparedWith })}
     </div>
   `;
@@ -3108,6 +3112,237 @@ function getPokemonBaseStats(pokemon) {
   if (typeof OFFICIAL_POKEMON_STATS === "undefined") return null;
   const nationalId = getPokemonNationalId(pokemon);
   return nationalId ? OFFICIAL_POKEMON_STATS[nationalId] || null : null;
+}
+
+function getEfficiencyReferencePool(game = getActiveGameKey()) {
+  if (efficiencyReferenceCache.has(game)) return efficiencyReferenceCache.get(game);
+  const catalog = game === "pokemon-z" ? POKEMON_Z_V212 : KANTO_REFORGED_POKEMON;
+  const seen = new Set();
+  const pool = catalog.reduce((items, pokemon) => {
+    if (isLegendaryPokemon(pokemon)) return items;
+    const nationalId = getPokemonNationalId(pokemon);
+    const key = nationalId ? `national-${nationalId}` : `name-${normalize(pokemon.name)}`;
+    if (seen.has(key)) return items;
+    seen.add(key);
+    items.push({
+      key,
+      nationalId: nationalId || null,
+      name: pokemon.name,
+      types: [...pokemon.types],
+      stats: getPokemonBaseStats(pokemon)
+    });
+    return items;
+  }, []);
+  const statDistributions = {
+    power: [],
+    bulk: [],
+    speed: []
+  };
+  pool.forEach((pokemon) => {
+    if (!pokemon.stats) return;
+    const metrics = pokemonEfficiencyStatMetrics(pokemon.stats);
+    statDistributions.power.push(metrics.power);
+    statDistributions.bulk.push(metrics.bulk);
+    statDistributions.speed.push(metrics.speed);
+  });
+  const reference = { game, pokemon: pool, statDistributions };
+  efficiencyReferenceCache.set(game, reference);
+  return reference;
+}
+
+function pokemonEfficiencyStatMetrics(stats) {
+  return {
+    power: Math.max(stats.attack, stats.specialAttack),
+    bulk: Math.cbrt(stats.hp * stats.defense * stats.specialDefense),
+    speed: stats.speed
+  };
+}
+
+function percentileRank(values, value) {
+  if (!values.length || !Number.isFinite(value)) return null;
+  let below = 0;
+  let equal = 0;
+  values.forEach((entry) => {
+    if (entry < value) below += 1;
+    else if (entry === value) equal += 1;
+  });
+  return ((below + equal * 0.5) / values.length) * 100;
+}
+
+function offensiveEffectivenessScore(multiplier) {
+  if (multiplier <= 0) return 0;
+  if (multiplier <= 0.25) return 5;
+  if (multiplier <= 0.5) return 15;
+  if (multiplier < 2) return 35;
+  if (multiplier < 4) return 85;
+  return 100;
+}
+
+function defensiveEffectivenessScore(multiplier) {
+  if (multiplier <= 0) return 100;
+  if (multiplier <= 0.25) return 95;
+  if (multiplier <= 0.5) return 80;
+  if (multiplier < 2) return 50;
+  if (multiplier < 4) return 20;
+  return 0;
+}
+
+function matchupAssociationScore(outgoingMultiplier, incomingMultiplier) {
+  const superEffective = outgoingMultiplier >= 2;
+  const veryEffective = outgoingMultiplier >= 4;
+  const usable = outgoingMultiplier >= 1;
+
+  if (incomingMultiplier > 1) {
+    if (veryEffective) return 90;
+    if (superEffective) return 80;
+    return usable ? 15 : 0;
+  }
+  if (incomingMultiplier === 0) {
+    if (superEffective) return 100;
+    return usable ? 70 : 40;
+  }
+  if (incomingMultiplier < 1) {
+    if (superEffective) return 95;
+    return usable ? 65 : 30;
+  }
+  if (superEffective) return 65;
+  return usable ? 45 : 15;
+}
+
+function calculatePokemonEfficiencyScore(pokemon, attackTypes = pokemon?.attacks, game = getActiveGameKey()) {
+  const reference = getEfficiencyReferencePool(game);
+  const configuredAttacks = Array.from(new Set(attackTypes || []))
+    .filter((type) => KANTO_TYPES.includes(type));
+  const effectiveAttacks = configuredAttacks.length
+    ? configuredAttacks
+    : Array.from(new Set(pokemon?.types || [])).filter((type) => KANTO_TYPES.includes(type));
+  const types = Array.from(new Set(pokemon?.types || [])).filter((type) => KANTO_TYPES.includes(type));
+  const nationalId = getPokemonNationalId(pokemon);
+  const cacheKey = [
+    game,
+    nationalId || normalize(pokemon?.name),
+    types.join("/"),
+    effectiveAttacks.join("/"),
+    configuredAttacks.length ? "configured" : "estimated"
+  ].join("|");
+  if (pokemonEfficiencyScoreCache.has(cacheKey)) return pokemonEfficiencyScoreCache.get(cacheKey);
+
+  const matchupValues = reference.pokemon.map((opponent) => {
+    const bestMultiplier = effectiveAttacks.reduce((best, attackType) => {
+      const multiplier = opponent.types.reduce(
+        (value, defenderType) => value * getEffectiveness(attackType, defenderType),
+        1
+      );
+      return Math.max(best, multiplier);
+    }, 0);
+    const incoming = opponent.types.map((attackType) => {
+      const multiplier = types.reduce(
+        (value, defenderType) => value * getEffectiveness(attackType, defenderType),
+        1
+      );
+      return { multiplier, score: defensiveEffectivenessScore(multiplier) };
+    });
+    if (!incoming.length) {
+      return { coverage: offensiveEffectivenessScore(bestMultiplier), typeDefense: 50, association: 45 };
+    }
+    const mostDangerous = incoming.reduce((worst, item) => (
+      item.multiplier > worst.multiplier ? item : worst
+    ));
+    const averageDefense = incoming.reduce((sum, item) => sum + item.score, 0) / incoming.length;
+    return {
+      coverage: offensiveEffectivenessScore(bestMultiplier),
+      typeDefense: mostDangerous.score * 0.65 + averageDefense * 0.35,
+      association: matchupAssociationScore(bestMultiplier, mostDangerous.multiplier)
+    };
+  });
+  const averageMatchupValue = (key, fallback) => matchupValues.length
+    ? matchupValues.reduce((sum, value) => sum + value[key], 0) / matchupValues.length
+    : fallback;
+  const coverage = averageMatchupValue("coverage", 0);
+  const typeDefense = averageMatchupValue("typeDefense", 0);
+  const association = averageMatchupValue("association", 0);
+
+  const stats = getPokemonBaseStats(pokemon);
+  let power = 50;
+  let bulk = 50;
+  let speed = 50;
+  if (stats) {
+    const metrics = pokemonEfficiencyStatMetrics(stats);
+    power = percentileRank(reference.statDistributions.power, metrics.power) ?? 50;
+    bulk = percentileRank(reference.statDistributions.bulk, metrics.bulk) ?? 50;
+    speed = percentileRank(reference.statDistributions.speed, metrics.speed) ?? 50;
+  }
+  const offense = coverage * 0.6 + power * 0.4;
+  const defense = typeDefense * 0.55 + bulk * 0.45;
+  const synergy = association * 0.6 + speed * 0.4;
+  const total = offense * 0.4 + defense * 0.3 + synergy * 0.3;
+  const result = {
+    total: Math.round(total),
+    offense: Math.round(offense),
+    defense: Math.round(defense),
+    synergy: Math.round(synergy),
+    coverage: Math.round(coverage),
+    power: Math.round(power),
+    typeDefense: Math.round(typeDefense),
+    bulk: Math.round(bulk),
+    association: Math.round(association),
+    speed: Math.round(speed),
+    population: reference.pokemon.length,
+    attacksEstimated: configuredAttacks.length === 0,
+    statsEstimated: !stats
+  };
+  pokemonEfficiencyScoreCache.set(cacheKey, result);
+  return result;
+}
+
+function efficiencyScoreLevel(score) {
+  if (score >= 75) return "excellent";
+  if (score >= 60) return "good";
+  if (score >= 45) return "average";
+  return "limited";
+}
+
+function renderPokemonEfficiencyScore(pokemon, attackTypes = pokemon?.attacks) {
+  const score = calculatePokemonEfficiencyScore(pokemon, attackTypes);
+  const estimated = score.attacksEstimated || score.statsEstimated;
+  const details = [
+    {
+      key: "offense",
+      short: "ATQ",
+      value: score.offense,
+      title: `ATQ ${score.offense}/100 = 60 % couverture offensive (${score.coverage}) + 40 % puissance statistique (${score.power}e percentile). Pour chaque adversaire, seule la meilleure attaque est retenue.`
+    },
+    {
+      key: "defense",
+      short: "DEF",
+      value: score.defense,
+      title: `DEF ${score.defense}/100 = 55 % efficacité des types (${score.typeDefense}) + 45 % robustesse (${score.bulk}e percentile), calculée avec les PV, la Défense et la Défense Spéciale.`
+    },
+    {
+      key: "synergy",
+      short: "SYN",
+      value: score.synergy,
+      title: `SYN ${score.synergy}/100 = 60 % associations attaque/défense (${score.association}) + 40 % Vitesse (${score.speed}e percentile). Les faiblesses couvertes et les cibles résistées ou immunisées sont récompensées.`
+    }
+  ];
+  return `
+    <section class="pokemon-efficiency-score ${efficiencyScoreLevel(score.total)}">
+      <div class="pokemon-efficiency-heading">
+        <span><strong>Efficacité</strong>${estimated ? `<small> estimée</small>` : ""}</span>
+        <strong class="pokemon-efficiency-total" title="Score global ${score.total}/100 = 40 % ATQ (${score.offense}) + 30 % DEF (${score.defense}) + 30 % SYN (${score.synergy}).">${score.total}<small>/100</small></strong>
+      </div>
+      <div class="pokemon-efficiency-details">
+        ${details.map((item) => `
+          <div class="pokemon-efficiency-detail ${item.key}" title="${item.title}">
+            <span>${item.short}</span>
+            <div class="pokemon-efficiency-track"><i style="width:${item.value ?? 0}%"></i></div>
+            <strong>${item.value ?? "?"}</strong>
+          </div>
+        `).join("")}
+      </div>
+      <small class="pokemon-efficiency-reference">Référence : ${score.population} Pokémon non légendaires${score.attacksEstimated ? " · attaques naturelles utilisées" : ""}${score.statsEstimated ? " · statistiques indisponibles" : ""}</small>
+    </section>
+  `;
 }
 
 function pokemonStatStrength(value) {
@@ -4693,6 +4928,7 @@ function renderPokemonEditModal() {
         </div>
         <div id="modal-edit-coverage-preview" class="pokemon-editor-coverage-preview" aria-live="polite">
           ${renderPokemonOffensiveCoverage(draft.types, draft.attacks)}
+          ${renderPokemonEfficiencyScore(draft, draft.attacks)}
         </div>
       </fieldset>
       <section class="pokemon-editor-evolution" aria-labelledby="pokemon-editor-evolution-title">
@@ -4808,7 +5044,7 @@ function updatePokemonEditCoveragePreview() {
   preview.innerHTML = renderPokemonOffensiveCoverage(
     pokemonEditContext.draft.types,
     pokemonEditContext.draft.attacks
-  );
+  ) + renderPokemonEfficiencyScore(pokemonEditContext.draft, pokemonEditContext.draft.attacks);
 }
 
 function capturePokemonEditForm() {
