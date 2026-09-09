@@ -4345,6 +4345,149 @@ body[data-game-theme="pokemon-z"] .share-icon-button::after {
   font-size: 0.82rem;
 }
 
+.pokemon-insight-block,
+.pokemon-stats-block.pokemon-insight-block {
+  display: grid;
+  gap: 0;
+  margin-top: 4px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0;
+}
+
+.pokemon-efficiency-score.pokemon-insight-block {
+  border-color: color-mix(in srgb, var(--efficiency-color) 58%, transparent);
+}
+
+.pokemon-insight-toggle,
+.pokemon-stats-toggle.pokemon-insight-toggle {
+  display: grid;
+  width: 100%;
+  min-height: 48px;
+  grid-template-columns: 22px minmax(0, 1fr) auto 18px;
+  align-items: center;
+  justify-self: stretch;
+  gap: 9px;
+  border: 0;
+  border-radius: 0;
+  padding: 7px 10px;
+  color: var(--text);
+  background: rgba(16, 19, 25, 0.48);
+  text-align: left;
+  cursor: pointer;
+}
+
+.pokemon-efficiency-toggle {
+  color: var(--efficiency-color);
+}
+
+.pokemon-insight-toggle:hover,
+.pokemon-insight-toggle:focus-visible,
+.pokemon-stats-toggle.pokemon-insight-toggle:hover,
+.pokemon-stats-toggle.pokemon-insight-toggle:focus-visible,
+.pokemon-insight-toggle[aria-expanded="true"] {
+  border: 0;
+  background: color-mix(in srgb, currentColor 10%, rgba(16, 19, 25, 0.58));
+}
+
+.pokemon-insight-icon,
+.pokemon-insight-toggle > svg:first-child {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pokemon-insight-copy {
+  display: grid;
+  min-width: 0;
+  gap: 1px;
+}
+
+.pokemon-insight-copy > span {
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pokemon-insight-copy > strong {
+  overflow: hidden;
+  color: var(--text);
+  font-size: 0.79rem;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pokemon-insight-value {
+  color: currentColor;
+  font-size: 0.86rem;
+  white-space: nowrap;
+}
+
+.pokemon-insight-chevron {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  transition: transform 180ms ease;
+}
+
+.pokemon-insight-toggle[aria-expanded="true"] .pokemon-insight-chevron {
+  transform: rotate(180deg);
+}
+
+.pokemon-insight-panel {
+  border-top: 1px solid var(--line);
+}
+
+.pokemon-insight-panel.hidden {
+  display: none;
+}
+
+.pokemon-efficiency-panel {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+}
+
+.pokemon-stats-panel.pokemon-insight-panel {
+  border-right: 0;
+  border-bottom: 0;
+  border-left: 0;
+  border-radius: 0;
+}
+
+body[data-game-theme="pokemon-z"] .pokemon-insight-toggle {
+  background: rgba(255, 253, 248, 0.76);
+}
+
+body[data-game-theme="pokemon-z"] .pokemon-insight-toggle:hover,
+body[data-game-theme="pokemon-z"] .pokemon-insight-toggle:focus-visible,
+body[data-game-theme="pokemon-z"] .pokemon-insight-toggle[aria-expanded="true"] {
+  background: color-mix(in srgb, currentColor 8%, #fffdf8);
+}
+
+@media (max-width: 460px) {
+  .pokemon-insight-toggle,
+  .pokemon-stats-toggle.pokemon-insight-toggle {
+    grid-template-columns: 20px minmax(0, 1fr) auto 16px;
+    gap: 7px;
+    padding-inline: 8px;
+  }
+
+  .pokemon-insight-copy > strong {
+    font-size: 0.73rem;
+  }
+}
+
 .visually-hidden {
   position: absolute !important;
   width: 1px !important;

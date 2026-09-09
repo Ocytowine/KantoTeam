@@ -103,7 +103,11 @@
     assert(doc.querySelectorAll("#composition-list .composition-add-slot").length === 5, "Les slots Pokemon libres ne sont pas affiches");
     assert(Array.from(doc.querySelectorAll("#composition-list .composition-add-slot")).every((slot) => !slot.textContent.trim()), "Un slot Pokemon libre contient encore du texte");
     assert(win.getComputedStyle(doc.querySelector("#composition-list .composition-add-slot img")).width === "72px", "Le logo d'ajout Pokemon n'est pas agrandi");
-    assert(doc.querySelector("#composition-list .pokemon-efficiency-score"), "Le score d'efficacite est absent de la fiche Pokemon");
+    const compositionEfficiency = doc.querySelector("#composition-list .pokemon-efficiency-score");
+    assert(compositionEfficiency, "Le score d'efficacite est absent de la fiche Pokemon");
+    assert(compositionEfficiency.querySelector("[data-pokemon-efficiency-panel]").classList.contains("hidden"), "Le detail d'efficacite n'est pas replie par defaut");
+    compositionEfficiency.querySelector("[data-pokemon-efficiency-toggle]").click();
+    assert(!compositionEfficiency.querySelector("[data-pokemon-efficiency-panel]").classList.contains("hidden"), "Le detail d'efficacite ne s'ouvre pas");
     const offensiveCoverage = win.analyzePokemonOffensiveCoverage(["Feu"], ["Plante", "Feu"]);
     assert(offensiveCoverage.find((item) => item.type === "Eau")?.relation === "covers-weakness", "La couverture d'une faiblesse personnelle n'est pas detectee");
     assert(offensiveCoverage.find((item) => item.type === "Plante")?.relation === "covers-resistance", "La couverture d'un type resiste n'est pas detectee");
@@ -149,7 +153,9 @@
     assert(estimatedEfficiencyScore.attacksEstimated, "Le score sans attaques renseignees n'est pas signale comme estime");
     const efficiencyMarkup = win.renderPokemonEfficiencyScore(efficiencyPokemon, ["Feu", "Vol"]);
     assert(efficiencyMarkup.includes("pokemon-efficiency-total") && efficiencyMarkup.includes("/100"), "La note d'efficacite n'est pas affichee dans la fiche");
+    assert(efficiencyMarkup.includes("data-pokemon-efficiency-toggle") && efficiencyMarkup.includes("data-pokemon-efficiency-panel"), "L'efficacite n'utilise pas le bandeau repliable normalise");
     assert(efficiencyMarkup.includes("60 % couverture offensive") && efficiencyMarkup.includes("55 % efficacité des types") && efficiencyMarkup.includes("60 % associations attaque/défense"), "Les formules detaillees manquent dans les infobulles du score");
+    assert(win.efficiencyScoreTitle(81) === "Boss de fin", "Le palier Boss de fin n'est pas attribue a une efficacite de 81");
     const mewtwoEfficiencyScore = win.calculatePokemonEfficiencyScore({
       nationalId: 150,
       name: "Mewtwo",
@@ -157,6 +163,8 @@
       attacks: ["Electrik", "Combat", "Psy", "Insecte"]
     }, ["Electrik", "Combat", "Psy", "Insecte"], "pokemon-z");
     assert(mewtwoEfficiencyScore.total >= 75, "Les statistiques exceptionnelles de Mewtwo restent sous-ponderees");
+    const mewtwoStatsProfile = win.pokemonStatsProfile({ nationalId: 150, name: "Mewtwo" });
+    assert(mewtwoStatsProfile.profile === "Machine de guerre" && mewtwoStatsProfile.level === "Hors catégorie", "Le profil statistique de Mewtwo est sous-evalue");
     doc.querySelector("#back-to-slots").click();
     await wait();
     doc.querySelector("#open-pokemon-search").click();
@@ -261,7 +269,9 @@
     assert(doc.querySelectorAll("#pokemon-search-results .pokemon-comparison-card").length === 2, "Les deux Pokemon choisis ne sont pas isoles");
     assert(doc.querySelector("#pokemon-search-panel").classList.contains("comparison-confirmed"), "La comparaison ne demarre pas automatiquement");
     assert(!doc.querySelector("#pokemon-search-results [data-confirm-pokemon-comparison]"), "Une confirmation est encore demandee avant le comparatif");
-    assert(doc.querySelectorAll("#pokemon-search-results .pokemon-stats-panel:not(.hidden)").length === 2, "Les statistiques comparees ne sont pas ouvertes");
+    assert(doc.querySelectorAll("#pokemon-search-results .pokemon-stats-panel.hidden").length === 2, "Les statistiques comparees ne sont pas repliees par defaut");
+    doc.querySelectorAll("#pokemon-search-results [data-pokemon-stats-toggle]").forEach((button) => button.click());
+    assert(doc.querySelectorAll("#pokemon-search-results .pokemon-stats-panel:not(.hidden)").length === 2, "Les statistiques comparees ne s'ouvrent pas au clic");
     assert(doc.querySelectorAll("#pokemon-search-results .pokemon-stat.winner").length > 0, "Aucune statistique gagnante n'est mise en avant");
     assert(doc.querySelectorAll("#pokemon-search-results [data-replace-comparison-pokemon]").length === 2, "Les boutons Remplacer sont absents");
     doc.querySelector("#pokemon-search-results [data-replace-comparison-pokemon='0']").click();

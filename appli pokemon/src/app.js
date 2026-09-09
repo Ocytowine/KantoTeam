@@ -323,12 +323,12 @@ function bindEvents() {
   el.shareSms.addEventListener("click", () => openMessageShare("sms"));
   el.saveSharedTeam.addEventListener("click", saveCurrentSharedTeam);
   document.addEventListener("click", (event) => {
-    const statsButton = event.target.closest("[data-pokemon-stats-toggle]");
-    if (statsButton) {
-      const panel = statsButton.parentElement?.querySelector("[data-pokemon-stats-panel]");
+    const insightButton = event.target.closest("[data-pokemon-insight-toggle]");
+    if (insightButton) {
+      const panel = insightButton.parentElement?.querySelector("[data-pokemon-insight-panel]");
       if (panel) {
         const expanded = panel.classList.toggle("hidden") === false;
-        statsButton.setAttribute("aria-expanded", String(expanded));
+        insightButton.setAttribute("aria-expanded", String(expanded));
       }
       return;
     }
@@ -2662,7 +2662,7 @@ function renderPokemonSearchCard(pokemon, index, comparisonReady) {
         includePokeball: false,
         originLabel: helperSourceLabel(pokemon.helperSource),
         toggleable: !comparisonReady,
-        statsExpanded: comparisonReady,
+        statsExpanded: false,
         comparedWith: comparisonReady ? opponent : null
       })}
       <div class="helper-card-actions">
@@ -3302,9 +3302,23 @@ function efficiencyScoreLevel(score) {
   return "limited";
 }
 
+function efficiencyScoreTitle(score) {
+  if (score < 20) return "Magicarpe hors de l'eau";
+  if (score < 30) return "Touriste en tongs";
+  if (score < 40) return "Abonné au banc";
+  if (score < 50) return "Situation compliquée";
+  if (score < 60) return "Fiable sans faire de bruit";
+  if (score < 70) return "Efficace";
+  if (score < 80) return "Monstre de poche";
+  if (score < 90) return "Boss de fin";
+  if (score < 97) return "Terreur du Pokédex";
+  return "Triche activée";
+}
+
 function renderPokemonEfficiencyScore(pokemon, attackTypes = pokemon?.attacks) {
   const score = calculatePokemonEfficiencyScore(pokemon, attackTypes);
   const estimated = score.attacksEstimated || score.statsEstimated;
+  const scoreTitle = efficiencyScoreTitle(score.total);
   const details = [
     {
       key: "offense",
@@ -3326,23 +3340,75 @@ function renderPokemonEfficiencyScore(pokemon, attackTypes = pokemon?.attacks) {
     }
   ];
   return `
-    <section class="pokemon-efficiency-score ${efficiencyScoreLevel(score.total)}">
-      <div class="pokemon-efficiency-heading">
-        <span><strong>Efficacité</strong>${estimated ? `<small> estimée</small>` : ""}</span>
-        <strong class="pokemon-efficiency-total" title="Score global ${score.total}/100 = 40 % ATQ (${score.offense}) + 30 % DEF (${score.defense}) + 30 % SYN (${score.synergy}).">${score.total}<small>/100</small></strong>
+    <section class="pokemon-efficiency-score pokemon-insight-block ${efficiencyScoreLevel(score.total)}">
+      <button class="pokemon-insight-toggle pokemon-efficiency-toggle" type="button" data-pokemon-insight-toggle data-pokemon-efficiency-toggle aria-expanded="false" title="${scoreTitle}. Cliquez pour afficher le calcul détaillé.">
+        ${efficiencyGaugeIconSvg()}
+        <span class="pokemon-insight-copy">
+          <span>Efficacité${estimated ? " estimée" : ""}</span>
+          <strong>${scoreTitle}</strong>
+        </span>
+        <strong class="pokemon-insight-value pokemon-efficiency-total">${score.total}<small>/100</small></strong>
+        ${insightChevronSvg()}
+      </button>
+      <div class="pokemon-efficiency-panel pokemon-insight-panel hidden" data-pokemon-insight-panel data-pokemon-efficiency-panel>
+        <div class="pokemon-efficiency-details">
+          ${details.map((item) => `
+            <div class="pokemon-efficiency-detail ${item.key}" title="${item.title}">
+              <span>${item.short}</span>
+              <div class="pokemon-efficiency-track"><i style="width:${item.value ?? 0}%"></i></div>
+              <strong>${item.value ?? "?"}</strong>
+            </div>
+          `).join("")}
+        </div>
+        <small class="pokemon-efficiency-reference">Référence : ${score.population} Pokémon non légendaires${score.attacksEstimated ? " · attaques naturelles utilisées" : ""}${score.statsEstimated ? " · statistiques indisponibles" : ""}</small>
       </div>
-      <div class="pokemon-efficiency-details">
-        ${details.map((item) => `
-          <div class="pokemon-efficiency-detail ${item.key}" title="${item.title}">
-            <span>${item.short}</span>
-            <div class="pokemon-efficiency-track"><i style="width:${item.value ?? 0}%"></i></div>
-            <strong>${item.value ?? "?"}</strong>
-          </div>
-        `).join("")}
-      </div>
-      <small class="pokemon-efficiency-reference">Référence : ${score.population} Pokémon non légendaires${score.attacksEstimated ? " · attaques naturelles utilisées" : ""}${score.statsEstimated ? " · statistiques indisponibles" : ""}</small>
     </section>
   `;
+}
+
+function efficiencyGaugeIconSvg() {
+  return `<svg class="pokemon-insight-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17a8 8 0 1 1 14 0"/><path d="m12 13 4-4"/><path d="M8 18h8"/></svg>`;
+}
+
+function insightChevronSvg() {
+  return `<svg class="pokemon-insight-chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5"/></svg>`;
+}
+
+function pokemonStatsProfile(pokemon) {
+  const stats = getPokemonBaseStats(pokemon);
+  if (!stats) return { profile: "Profil mystérieux", level: "Données manquantes", total: null, title: "Statistiques indisponibles pour cette forme." };
+  const reference = getEfficiencyReferencePool();
+  const metrics = pokemonEfficiencyStatMetrics(stats);
+  const power = Math.round(percentileRank(reference.statDistributions.power, metrics.power) ?? 50);
+  const bulk = Math.round(percentileRank(reference.statDistributions.bulk, metrics.bulk) ?? 50);
+  const speed = Math.round(percentileRank(reference.statDistributions.speed, metrics.speed) ?? 50);
+  const global = Math.round(power * 0.4 + bulk * 0.35 + speed * 0.25);
+  const highest = Math.max(power, bulk, speed);
+  const lowest = Math.min(power, bulk, speed);
+  let profile = "Couteau suisse";
+  if (global >= 85 && lowest >= 70) profile = "Machine de guerre";
+  else if (speed >= 80 && bulk <= 40) profile = "Fusée en carton";
+  else if (speed >= power + 12 && speed >= bulk + 12) profile = "Éclair sur pattes";
+  else if (bulk >= power + 12 && bulk >= speed + 12) profile = "Mur avec des jambes";
+  else if (power >= bulk + 12 && power >= speed + 12) profile = "Canon ambulant";
+  else if (power >= 72 && speed >= 72) profile = "Prédateur express";
+  else if (power >= 72 && bulk >= 72) profile = "Colosse offensif";
+  else if (highest - lowest <= 15) profile = "Équilibré au millimètre";
+
+  const level = global < 15 ? "Très faible"
+    : global < 30 ? "Faible"
+      : global < 45 ? "Modéré"
+        : global < 60 ? "Solide"
+          : global < 72 ? "Très solide"
+            : global < 84 ? "Redoutable"
+              : global < 94 ? "Monstrueux" : "Hors catégorie";
+  return {
+    profile,
+    level,
+    global,
+    total: Object.values(stats).reduce((sum, value) => sum + value, 0),
+    title: `Profil ${profile}, niveau global ${level}. Puissance : ${power}e percentile, robustesse : ${bulk}e percentile, vitesse : ${speed}e percentile.`
+  };
 }
 
 function pokemonStatStrength(value) {
@@ -3356,13 +3422,19 @@ function pokemonStatStrength(value) {
 function renderPokemonStatsBlock(pokemon, options = {}) {
   const stats = getPokemonBaseStats(pokemon);
   const opponentStats = options.comparedWith ? getPokemonBaseStats(options.comparedWith) : null;
+  const profile = pokemonStatsProfile(pokemon);
   return `
-    <div class="pokemon-stats-block">
-      <button class="pokemon-stats-toggle" type="button" data-pokemon-stats-toggle aria-expanded="${options.expanded ? "true" : "false"}" title="Statistiques de base">
+    <div class="pokemon-stats-block pokemon-insight-block">
+      <button class="pokemon-stats-toggle pokemon-insight-toggle" type="button" data-pokemon-insight-toggle data-pokemon-stats-toggle aria-expanded="${options.expanded ? "true" : "false"}" title="${profile.title}">
         ${statsChartIconSvg()}
-        <span>Statistiques</span>
+        <span class="pokemon-insight-copy">
+          <span>Statistiques</span>
+          <strong>${profile.profile} · ${profile.level}</strong>
+        </span>
+        <strong class="pokemon-insight-value">${profile.total === null ? "?" : `${profile.total} pts`}</strong>
+        ${insightChevronSvg()}
       </button>
-      <div class="pokemon-stats-panel ${options.expanded ? "" : "hidden"}" data-pokemon-stats-panel>
+      <div class="pokemon-stats-panel pokemon-insight-panel ${options.expanded ? "" : "hidden"}" data-pokemon-insight-panel data-pokemon-stats-panel>
         ${stats ? `
           <div class="pokemon-stats-grid">
             ${POKEMON_STAT_DEFINITIONS.map((definition) => {
