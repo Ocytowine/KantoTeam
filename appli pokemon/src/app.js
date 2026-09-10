@@ -1,6 +1,8 @@
 const STORAGE_KEY = "kantoTeamState:v2";
 const LEGACY_STORAGE_KEY = "kantoTeamState:v1";
 const LEGACY_BACKUP_KEY = "kantoTeamState:legacy:v1";
+const POKEMON_Z_PROGRESS_KEY = "kantoTeam:pokemonZProgress:v1";
+const POKEMON_Z_ALCHEMY_KEY = "kantoTeam:pokemonZAlchemy:v1";
 const GAME_KEYS = ["reforged", "pokemon-z"];
 const POKEMON_STAT_DEFINITIONS = [
   { key: "hp", short: "PV", label: "Points de vie" },
@@ -33,6 +35,8 @@ let simulationDraft = {
 let versusApplyModalOpen = false;
 let versusSharedModalOpen = false;
 let versusInsightModal = null;
+let pokemonZProgress = loadPokemonZProgress();
+let pokemonZAlchemyCollected = loadPokemonZAlchemyCollected();
 let gameSwitchTransitioning = false;
 let pokemonEditContext = null;
 let pokemonEditEvolution = { status: "idle", items: [] };
@@ -70,6 +74,7 @@ let pokemonZWikiMachineFilters = {
 let pokemonZWikiExpandedMachineId = null;
 let pokemonZWikiSelectedSpeciesId = null;
 let pokemonZWikiPokemonMoveMode = null;
+let pokemonZProgressEditing = false;
 let pokemonZWikiLoadPromise = null;
 let pokemonZLearnsetLoadPromise = null;
 let pokemonZWikiLoadError = "";
@@ -177,6 +182,7 @@ const el = {
   versusAutoOpponent: document.querySelector("#versus-auto-opponent"),
   versusApplyTeam: document.querySelector("#versus-apply-team"),
   versusSharedLoader: document.querySelector("#versus-shared-loader"),
+  versusStoryTrainers: document.querySelector("#versus-story-trainers"),
   versusSharedModal: document.querySelector("#versus-shared-modal"),
   versusInsightModal: document.querySelector("#versus-insight-modal"),
   versusApplyModal: document.querySelector("#versus-apply-modal"),
@@ -312,6 +318,22 @@ function bindEvents() {
     renderPokemonZWiki();
   });
   el.pokemonZWikiContent.addEventListener("click", (event) => {
+    const saveProgressButton = event.target.closest("[data-save-pokemon-z-progress]");
+    if (saveProgressButton) {
+      const badges = Number(el.pokemonZWikiContent.querySelector("#pokemon-z-progress-badges")?.value);
+      const level = Number(el.pokemonZWikiContent.querySelector("#pokemon-z-progress-level")?.value);
+      if (!Number.isInteger(badges) || badges < 0 || badges > 12 || !Number.isInteger(level) || level < 1 || level > 100) return;
+      pokemonZProgress = { badges, level };
+      pokemonZProgressEditing = false;
+      localStorage.setItem(POKEMON_Z_PROGRESS_KEY, JSON.stringify(pokemonZProgress));
+      renderPokemonZWiki();
+      return;
+    }
+    if (event.target.closest("[data-edit-pokemon-z-progress]")) {
+      pokemonZProgressEditing = true;
+      renderPokemonZWiki();
+      return;
+    }
     const pokemonMoveModeButton = event.target.closest("[data-wiki-pokemon-move-mode]");
     if (pokemonMoveModeButton) {
       pokemonZWikiPokemonMoveMode = pokemonMoveModeButton.dataset.wikiPokemonMoveMode;
@@ -380,6 +402,15 @@ function bindEvents() {
     }
   });
   el.pokemonZWikiContent.addEventListener("change", (event) => {
+    const alchemyPage = event.target.closest("[data-pokemon-z-alchemy-page]");
+    if (alchemyPage) {
+      const id = alchemyPage.dataset.pokemonZAlchemyPage;
+      if (alchemyPage.checked) pokemonZAlchemyCollected.add(id);
+      else pokemonZAlchemyCollected.delete(id);
+      localStorage.setItem(POKEMON_Z_ALCHEMY_KEY, JSON.stringify([...pokemonZAlchemyCollected]));
+      renderPokemonZWiki();
+      return;
+    }
     const filter = event.target.closest("[data-wiki-machine-filter]");
     if (!filter) return;
     pokemonZWikiMachineFilters[filter.dataset.wikiMachineFilter] = filter.value;
@@ -1145,6 +1176,35 @@ function renderActiveView() {
   el.analysisPanel.classList.toggle("hidden", view !== "analysis");
 }
 
+function loadPokemonZProgress() {
+  try {
+    const value = JSON.parse(localStorage.getItem(POKEMON_Z_PROGRESS_KEY));
+    const badges = Number(value?.badges);
+    const level = Number(value?.level);
+    return Number.isInteger(badges) && badges >= 0 && badges <= 12 && Number.isInteger(level) && level >= 1 && level <= 100
+      ? { badges, level }
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+function loadPokemonZAlchemyCollected() {
+  try {
+    const values = JSON.parse(localStorage.getItem(POKEMON_Z_ALCHEMY_KEY));
+    return new Set(Array.isArray(values) ? values.map(String) : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function pokemonZEffectiveProgressStage(progress = pokemonZProgress) {
+  if (!progress) return -1;
+  const caps = [17, 27, 36, 42, 50, 56, 70, 75, 80, 85, 94, 100, 100];
+  const levelStage = Math.max(0, caps.findIndex((cap) => progress.level <= cap));
+  return Math.min(progress.badges, levelStage);
+}
+
 function getPokemonZWikiData() {
   return typeof POKEMON_Z_WIKI_DATA === "undefined" ? null : POKEMON_Z_WIKI_DATA;
 }
@@ -1315,6 +1375,7 @@ function renderPokemonZWiki() {
     return;
   }
   if (pokemonZWikiCategory === "pokemonMoves") renderPokemonZWikiPokemonMoves(wiki);
+  else if (pokemonZWikiCategory === "adventure") renderPokemonZWikiAdventure(wiki);
   else if (pokemonZWikiCategory === "machines") renderPokemonZWikiMachines(wiki);
   else if (pokemonZWikiCategory === "leaders") renderPokemonZWikiLeaders(wiki);
   else if (pokemonZWikiCategory === "progression") renderPokemonZWikiProgression(wiki);
@@ -1323,6 +1384,57 @@ function renderPokemonZWiki() {
   else if (pokemonZWikiCategory === "tips") renderPokemonZWikiTips(wiki);
   else if (pokemonZWikiCategory === "mechanics") renderPokemonZWikiMechanics(wiki);
   else renderPokemonZWikiOverview(wiki);
+}
+
+function renderPokemonZProgressQuestionnaire() {
+  const badges = pokemonZProgress?.badges ?? 0;
+  const level = pokemonZProgress?.level ?? 15;
+  el.pokemonZWikiCount.textContent = "Profil requis";
+  el.pokemonZWikiContent.innerHTML = `
+    <section class="wiki-progress-questionnaire">
+      <div><p class="eyebrow">Questionnaire anti-spoiler</p><h3>Où en es-tu dans l’aventure ?</h3></div>
+      <p>Ces deux réponses servent au guide et aux adversaires proposés dans le mode Versus. Aucun lieu, personnage ou combat futur ne sera nommé avant son seuil.</p>
+      <div class="wiki-progress-fields">
+        <label class="field"><span>Nombre de victoires majeures</span><select id="pokemon-z-progress-badges">${Array.from({ length: 13 }, (_, value) => `<option value="${value}" ${value === badges ? "selected" : ""}>${value} badge${value > 1 ? "s" : ""}</option>`).join("")}</select></label>
+        <label class="field"><span>Niveau du Pokémon le plus fort</span><input id="pokemon-z-progress-level" type="number" min="1" max="100" value="${level}"></label>
+      </div>
+      <button class="primary-button confirm" type="button" data-save-pokemon-z-progress>Afficher mon guide sans spoiler</button>
+    </section>
+  `;
+}
+
+function renderPokemonZWikiAdventure(wiki) {
+  if (!pokemonZProgress || pokemonZProgressEditing) {
+    renderPokemonZProgressQuestionnaire();
+    return;
+  }
+  const stage = pokemonZEffectiveProgressStage();
+  const chapter = wiki.storyChapters[Math.min(stage, wiki.storyChapters.length - 1)];
+  const visibleChapters = wiki.storyChapters.filter((entry) => entry.badges <= stage);
+  const visiblePages = wiki.alchemyPages.filter((page) => page.requiredBadges <= stage);
+  const collectedVisible = visiblePages.filter((page) => pokemonZAlchemyCollected.has(page.id)).length;
+  el.pokemonZWikiCount.textContent = `${pokemonZProgress.badges} badge${pokemonZProgress.badges > 1 ? "s" : ""} · niv. ${pokemonZProgress.level}`;
+  el.pokemonZWikiContent.innerHTML = `
+    <div class="wiki-progress-profile">
+      <div><p class="eyebrow">Progression enregistrée</p><strong>${pokemonZProgress.badges} badge${pokemonZProgress.badges > 1 ? "s" : ""} · niveau ${pokemonZProgress.level}</strong></div>
+      <button class="small-button" type="button" data-edit-pokemon-z-progress>Modifier</button>
+    </div>
+    <section class="wiki-current-objective">
+      <p class="eyebrow">Reprendre ma partie</p><h3>${escapeHtml(chapter.title)}</h3>
+      <strong>${escapeHtml(chapter.location)}</strong><p>${escapeHtml(chapter.recap)}</p>
+      ${stage < pokemonZProgress.badges ? `<small>Le niveau enregistré limite volontairement le guide au chapitre ${stage} pour éviter un dévoilement incohérent.</small>` : ""}
+    </section>
+    <section class="wiki-adventure-section">
+      <div class="pokemon-z-wiki-section-heading"><div><p class="eyebrow">Déjà parcouru</p><h3>Repères chronologiques</h3></div><span>${visibleChapters.length} étape${visibleChapters.length > 1 ? "s" : ""}</span></div>
+      <div class="wiki-story-timeline">${visibleChapters.map((entry) => `<article class="${entry.badges === stage ? "current" : ""}"><span>${entry.badges}</span><div><strong>${escapeHtml(entry.title)}</strong><p>${escapeHtml(entry.location)}</p></div></article>`).join("")}</div>
+      <p class="wiki-hidden-future">${Math.max(0, wiki.storyChapters.length - visibleChapters.length)} étape${wiki.storyChapters.length - visibleChapters.length > 1 ? "s" : ""} future${wiki.storyChapters.length - visibleChapters.length > 1 ? "s" : ""} masquée${wiki.storyChapters.length - visibleChapters.length > 1 ? "s" : ""}.</p>
+    </section>
+    <section class="wiki-adventure-section">
+      <div class="pokemon-z-wiki-section-heading"><div><p class="eyebrow">Checklist sans spoiler</p><h3>Pages d’alchimie accessibles</h3></div><span>${collectedVisible}/${visiblePages.length} cochées</span></div>
+      <p class="wiki-pokemon-learnset-note">Une page physique n’a pas de numéro fixe : elle augmente le compteur et débloque la recette suivante. Les lieux futurs restent entièrement cachés.</p>
+      <div class="wiki-alchemy-checklist">${visiblePages.map((page) => `<label class="wiki-alchemy-page ${pokemonZAlchemyCollected.has(page.id) ? "collected" : ""}"><input type="checkbox" data-pokemon-z-alchemy-page="${page.id}" ${pokemonZAlchemyCollected.has(page.id) ? "checked" : ""}><span><strong>${escapeHtml(page.location)}</strong><small>Page d’alchimie à récupérer dans cette zone</small></span></label>`).join("") || `<div class="empty-state">Aucune page annexe n’est encore révélée à ce stade.</div>`}</div>
+    </section>
+  `;
 }
 
 function pokemonZWikiMoveStats(move) {
@@ -1483,6 +1595,9 @@ function renderPokemonZWikiOverview(wiki) {
   const capLabels = ["Départ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11+"];
   el.pokemonZWikiContent.innerHTML = `
     <div class="pokemon-z-wiki-home-grid">
+      <button class="pokemon-z-wiki-home-card" type="button" data-wiki-open-category="adventure">
+        <span class="wiki-home-icon">→</span><strong>Aventure sans spoiler</strong><small>Reprendre sa partie et suivre les pages d’alchimie</small>
+      </button>
       <button class="pokemon-z-wiki-home-card" type="button" data-wiki-open-category="machines">
         <span class="wiki-home-icon">CT</span><strong>CT et CS</strong><small>${wiki.machines.filter((entry) => entry.kind === "CT").length} CT · ${wiki.machines.filter((entry) => entry.kind === "CS").length} CS</small>
       </button>

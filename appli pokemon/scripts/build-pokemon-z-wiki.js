@@ -296,6 +296,106 @@ function buildLeaders(messages) {
   });
 }
 
+const NOTABLE_TRAINER_TYPE_IDS = [
+  21, 23, 24, 26, 29, 33, 36, 41, 42, 45, 48, 52, 50, 54, 63, 65, 72, 73,
+  82, 83, 84, 85, 86, 88, 104, 107, 111, 116, 117, 119, 123, 126, 139, 156,
+  148, 158, 144, 182, 188, 189, 190, 192, 193
+];
+
+function buildNotableTrainers(messages) {
+  const trainers = loadRubyMarshal(readData("trainers.dat"));
+  const trainerNames = translatedHash(messages, 14);
+  const moveData = readData("moves.dat");
+  const dexData = readData("dexdata.dat");
+  const caps = [17, 27, 36, 42, 50, 56, 70, 75, 80, 85, 94, 100];
+  return trainers.filter((record) => NOTABLE_TRAINER_TYPE_IDS.includes(record[0])).map((record, index) => {
+    const sourceName = text(record[1]);
+    const className = text(messages[13]?.[record[0]]) || "Personnalité";
+    const team = record[3].map((pokemon) => {
+      const speciesId = pokemon[0];
+      const dexOffset = (speciesId - 1) * 76;
+      const types = [...new Set([dexData[dexOffset + 8], dexData[dexOffset + 9]])]
+        .map((typeId) => text(messages[12]?.[typeId]) || "Inconnu");
+      const attacks = [...new Set(pokemon.slice(3, 7).filter(Boolean).map((moveId) => (
+        text(messages[12]?.[moveData[moveId * 14 + 3]]) || "Inconnu"
+      )))];
+      return {
+        speciesId,
+        name: text(messages[1]?.[speciesId]) || `Pokémon n°${speciesId}`,
+        level: pokemon[1],
+        types,
+        attacks
+      };
+    });
+    const maxLevel = Math.max(...team.map((pokemon) => pokemon.level));
+    const requiredBadges = Math.max(0, caps.findIndex((cap) => maxLevel <= cap));
+    return {
+      id: `trainer-${record[0]}-${record[4]}-${index}`,
+      typeId: record[0],
+      partyId: record[4],
+      name: trainerNames.get(sourceName) || sourceName,
+      title: className,
+      category: /Régent|Régente/u.test(className) ? "Régents" : /Rival/u.test(className) ? "Rivaux" : "Personnalités",
+      requiredBadges,
+      minLevel: Math.min(...team.map((pokemon) => pokemon.level)),
+      maxLevel,
+      team
+    };
+  });
+}
+
+function alchemyRequiredBadges(location) {
+  const route = Number(location.match(/Route (\d+)/u)?.[1]);
+  const routeBadges = { 3: 1, 4: 1, 5: 2, 7: 3, 8: 3, 9: 5, 10: 4, 11: 5, 13: 6, 14: 7, 15: 8, 17: 9, 18: 9, 19: 10, 20: 10, 21: 10, 22: 11, 23: 11 };
+  if (routeBadges[route] !== undefined) return routeBadges[route];
+  const stages = [
+    [/Navarroc|Grotte Navarre/u, 0], [/Bois-en-Tronc|Manoir Rosillon|Bibliothèque Ancestrale/u, 1],
+    [/Marais Impie|Clairière Collinaire|Sanctuaire Royal/u, 2], [/Ancien Atelier|Académie d'Essience|Château Drazat/u, 3],
+    [/Bridouville|Jardin Boyard|Catacombes/u, 5], [/Vieux Vanitas|Jardin Vanitas/u, 6],
+    [/Illumis|Café Soleil|Votre-Gentilhomme/u, 7], [/Pires-Aînées|Asile d'Hache-Âme/u, 8],
+    [/Fonds marins/u, 7], [/Bois du Dédale/u, 10]
+  ];
+  return stages.find(([pattern]) => pattern.test(location))?.[1] ?? 0;
+}
+
+function buildAlchemyPages(messages, mapInfos) {
+  const mapNames = messages[21] || [];
+  const pages = [];
+  for (let mapId = 1; mapId < mapNames.length; mapId += 1) {
+    const filename = path.join(dataDirectory, `Map${String(mapId).padStart(3, "0")}.rxdata`);
+    if (!fs.existsSync(filename)) continue;
+    const map = loadRubyMarshal(fs.readFileSync(filename));
+    for (const [eventId, event] of map["@events"]?.entries() || []) {
+      const grantsPage = (event["@pages"] || []).some((page) => (page["@list"] || []).some((command) => {
+        const parameters = command["@parameters"] || [];
+        return command["@code"] === 122 && parameters[0] <= 926 && parameters[1] >= 926 && parameters[2] === 1;
+      }));
+      if (!grantsPage) continue;
+      const location = eventLocation(mapId, mapNames, mapInfos);
+      pages.push({
+        id: `alchemy-${mapId}-${eventId}`,
+        location,
+        mapId,
+        x: event["@x"],
+        y: event["@y"],
+        requiredBadges: alchemyRequiredBadges(location),
+        hint: `Cherche un point interactif à proximité des coordonnées internes ${event["@x"]}, ${event["@y"]}.`
+      });
+    }
+  }
+  return pages;
+}
+
+function buildStoryChapters(leaders) {
+  const opening = { badges: 0, title: "Le départ", location: "Bourg Canvas → Grotte Navarre → Navarroc", recap: "L’aventure commence et l’Alchimie Pokémon est introduite avant la première grande épreuve." };
+  return [opening, ...leaders.map((leader, index) => ({
+    badges: index + 1,
+    title: index === leaders.length - 1 ? "Après les douze victoires" : `Après ${index + 1} victoire${index ? "s" : ""}`,
+    location: index === leaders.length - 1 ? "Suite de l’aventure et objectifs restants" : `Prochaine étape majeure : ${leaders[index + 1].location}`,
+    recap: `La grande étape de ${leader.location} est terminée. ${index === leaders.length - 1 ? "Les contenus de fin d’aventure deviennent pertinents." : "Poursuis vers la prochaine forteresse en explorant les routes et détours désormais accessibles."}`
+  }))];
+}
+
 function buildRecipes(messages, constants, scripts) {
   const source = [...scripts.entries()].find(([name]) => /Crafteo/i.test(name))?.[1] || "";
   const itemIds = constants.PBItems || new Map();
@@ -565,6 +665,7 @@ const constants = loadConstants();
 const scripts = loadGameScripts();
 const mapInfos = loadRubyMarshal(readData("MapInfos.rxdata"));
 const moveDex = buildMoveDex(messages);
+const leaders = buildLeaders(messages);
 const learnsetData = {
   moves: moveDex,
   naturalLearnsets: buildNaturalLearnsets(moveDex)
@@ -574,7 +675,10 @@ const wiki = {
   generatedFrom: "Données internes compilées du jeu",
   levelCaps: [17, 27, 36, 42, 50, 56, 70, 75, 80, 85, 94, 100],
   machines: buildMachines(messages, constants, mapInfos),
-  leaders: buildLeaders(messages),
+  leaders,
+  notableTrainers: buildNotableTrainers(messages),
+  alchemyPages: buildAlchemyPages(messages, mapInfos),
+  storyChapters: buildStoryChapters(leaders),
   mechanics,
   progressionGuides,
   quests: buildQuests(),

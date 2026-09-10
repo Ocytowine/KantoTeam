@@ -29870,6 +29870,5156 @@ const POKEMON_Z_WIKI_DATA = {
       ]
     }
   ],
+  "notableTrainers": [
+    {
+      "id": "trainer-21-0-0",
+      "typeId": 21,
+      "partyId": 0,
+      "name": "Annelotte",
+      "title": "Régente",
+      "category": "Régents",
+      "requiredBadges": 0,
+      "minLevel": 14,
+      "maxLevel": 15,
+      "team": [
+        {
+          "speciesId": 453,
+          "name": "Cradopaud",
+          "level": 14,
+          "types": [
+            "Poison",
+            "Combat"
+          ],
+          "attacks": [
+            "Normal",
+            "Combat",
+            "Ténèbres",
+            "Poison"
+          ]
+        },
+        {
+          "speciesId": 307,
+          "name": "Méditikka",
+          "level": 14,
+          "types": [
+            "Combat",
+            "Psy"
+          ],
+          "attacks": [
+            "Roche",
+            "Psy",
+            "Combat"
+          ]
+        },
+        {
+          "speciesId": 402,
+          "name": "Mélokrik",
+          "level": 15,
+          "types": [
+            "Insecte",
+            "Combat"
+          ],
+          "attacks": [
+            "Ténèbres",
+            "Combat",
+            "Insecte",
+            "Normal"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-23-0-1",
+      "typeId": 23,
+      "partyId": 0,
+      "name": "Marie",
+      "title": "Chef Azoth",
+      "category": "Personnalités",
+      "requiredBadges": 1,
+      "minLevel": 18,
+      "maxLevel": 19,
+      "team": [
+        {
+          "speciesId": 70,
+          "name": "Boustiflor",
+          "level": 18,
+          "types": [
+            "Plante",
+            "Poison"
+          ],
+          "attacks": [
+            "Plante",
+            "Poison",
+            "Insecte"
+          ]
+        },
+        {
+          "speciesId": 436,
+          "name": "Archéomire",
+          "level": 18,
+          "types": [
+            "Acier",
+            "Psy"
+          ],
+          "attacks": [
+            "Psy",
+            "Spectre",
+            "Acier"
+          ]
+        },
+        {
+          "speciesId": 578,
+          "name": "Méios",
+          "level": 19,
+          "types": [
+            "Psy",
+            "Poison"
+          ],
+          "attacks": [
+            "Psy",
+            "Poison",
+            "Fée"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-24-1-2",
+      "typeId": 24,
+      "partyId": 1,
+      "name": "Christian",
+      "title": "Rival",
+      "category": "Rivaux",
+      "requiredBadges": 1,
+      "minLevel": 18,
+      "maxLevel": 20,
+      "team": [
+        {
+          "speciesId": 39,
+          "name": "Rondoudou",
+          "level": 18,
+          "types": [
+            "Normal",
+            "Fée"
+          ],
+          "attacks": [
+            "Normal",
+            "Fée",
+            "Combat"
+          ]
+        },
+        {
+          "speciesId": 280,
+          "name": "Tarsal",
+          "level": 19,
+          "types": [
+            "Psy",
+            "Fée"
+          ],
+          "attacks": [
+            "Psy",
+            "Glace",
+            "Fée",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 657,
+          "name": "Croâporal",
+          "level": 20,
+          "types": [
+            "Eau",
+            "Psy"
+          ],
+          "attacks": [
+            "Eau",
+            "Psy",
+            "Vol",
+            "Ténèbres"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-24-2-3",
+      "typeId": 24,
+      "partyId": 2,
+      "name": "Christian",
+      "title": "Rival",
+      "category": "Rivaux",
+      "requiredBadges": 1,
+      "minLevel": 18,
+      "maxLevel": 20,
+      "team": [
+        {
+          "speciesId": 39,
+          "name": "Rondoudou",
+          "level": 18,
+          "types": [
+            "Normal",
+            "Fée"
+          ],
+          "attacks": [
+            "Normal",
+            "Fée",
+            "Combat"
+          ]
+        },
+        {
+          "speciesId": 280,
+          "name": "Tarsal",
+          "level": 19,
+          "types": [
+            "Psy",
+            "Fée"
+          ],
+          "attacks": [
+            "Psy",
+            "Glace",
+            "Fée",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 651,
+          "name": "Boguérisse",
+          "level": 20,
+          "types": [
+            "Plante",
+            "Sol"
+          ],
+          "attacks": [
+            "Plante",
+            "Ténèbres",
+            "Sol"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-24-3-4",
+      "typeId": 24,
+      "partyId": 3,
+      "name": "Christian",
+      "title": "Rival",
+      "category": "Rivaux",
+      "requiredBadges": 1,
+      "minLevel": 18,
+      "maxLevel": 20,
+      "team": [
+        {
+          "speciesId": 39,
+          "name": "Rondoudou",
+          "level": 18,
+          "types": [
+            "Normal",
+            "Fée"
+          ],
+          "attacks": [
+            "Normal",
+            "Fée",
+            "Combat"
+          ]
+        },
+        {
+          "speciesId": 280,
+          "name": "Tarsal",
+          "level": 19,
+          "types": [
+            "Psy",
+            "Fée"
+          ],
+          "attacks": [
+            "Psy",
+            "Glace",
+            "Fée",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 654,
+          "name": "Roussil",
+          "level": 20,
+          "types": [
+            "Feu",
+            "Électrik"
+          ],
+          "attacks": [
+            "Feu",
+            "Électrik",
+            "Combat"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-26-1-5",
+      "typeId": 26,
+      "partyId": 1,
+      "name": "Mélia",
+      "title": "Rival",
+      "category": "Rivaux",
+      "requiredBadges": 1,
+      "minLevel": 21,
+      "maxLevel": 22,
+      "team": [
+        {
+          "speciesId": 670,
+          "name": "Floette",
+          "level": 21,
+          "types": [
+            "Fée"
+          ],
+          "attacks": [
+            "Fée",
+            "Plante",
+            "Eau"
+          ]
+        },
+        {
+          "speciesId": 517,
+          "name": "Munna",
+          "level": 21,
+          "types": [
+            "Psy"
+          ],
+          "attacks": [
+            "Psy",
+            "Électrik",
+            "Fée"
+          ]
+        },
+        {
+          "speciesId": 654,
+          "name": "Roussil",
+          "level": 22,
+          "types": [
+            "Feu",
+            "Électrik"
+          ],
+          "attacks": [
+            "Feu",
+            "Électrik",
+            "Combat"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-26-2-6",
+      "typeId": 26,
+      "partyId": 2,
+      "name": "Mélia",
+      "title": "Rival",
+      "category": "Rivaux",
+      "requiredBadges": 1,
+      "minLevel": 21,
+      "maxLevel": 22,
+      "team": [
+        {
+          "speciesId": 670,
+          "name": "Floette",
+          "level": 21,
+          "types": [
+            "Fée"
+          ],
+          "attacks": [
+            "Fée",
+            "Plante",
+            "Eau"
+          ]
+        },
+        {
+          "speciesId": 517,
+          "name": "Munna",
+          "level": 21,
+          "types": [
+            "Psy"
+          ],
+          "attacks": [
+            "Psy",
+            "Électrik",
+            "Fée"
+          ]
+        },
+        {
+          "speciesId": 657,
+          "name": "Croâporal",
+          "level": 22,
+          "types": [
+            "Eau",
+            "Psy"
+          ],
+          "attacks": [
+            "Eau",
+            "Psy",
+            "Vol",
+            "Ténèbres"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-26-3-7",
+      "typeId": 26,
+      "partyId": 3,
+      "name": "Mélia",
+      "title": "Rival",
+      "category": "Rivaux",
+      "requiredBadges": 1,
+      "minLevel": 21,
+      "maxLevel": 22,
+      "team": [
+        {
+          "speciesId": 670,
+          "name": "Floette",
+          "level": 21,
+          "types": [
+            "Fée"
+          ],
+          "attacks": [
+            "Fée",
+            "Plante",
+            "Eau"
+          ]
+        },
+        {
+          "speciesId": 517,
+          "name": "Munna",
+          "level": 21,
+          "types": [
+            "Psy"
+          ],
+          "attacks": [
+            "Psy",
+            "Électrik",
+            "Fée"
+          ]
+        },
+        {
+          "speciesId": 651,
+          "name": "Boguérisse",
+          "level": 22,
+          "types": [
+            "Plante",
+            "Sol"
+          ],
+          "attacks": [
+            "Plante",
+            "Ténèbres",
+            "Sol"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-29-0-8",
+      "typeId": 29,
+      "partyId": 0,
+      "name": "Cid",
+      "title": "Régent",
+      "category": "Régents",
+      "requiredBadges": 1,
+      "minLevel": 23,
+      "maxLevel": 24,
+      "team": [
+        {
+          "speciesId": 608,
+          "name": "Mélancolux",
+          "level": 23,
+          "types": [
+            "Spectre",
+            "Feu"
+          ],
+          "attacks": [
+            "Feu",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 200,
+          "name": "Feuforêve",
+          "level": 23,
+          "types": [
+            "Spectre",
+            "Fée"
+          ],
+          "attacks": [
+            "Spectre",
+            "Fée",
+            "Électrik",
+            "Glace"
+          ]
+        },
+        {
+          "speciesId": 563,
+          "name": "Tutankafer",
+          "level": 24,
+          "types": [
+            "Spectre",
+            "Acier"
+          ],
+          "attacks": [
+            "Spectre",
+            "Acier",
+            "Feu"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-33-0-9",
+      "typeId": 33,
+      "partyId": 0,
+      "name": "Mirra",
+      "title": "Moine",
+      "category": "Personnalités",
+      "requiredBadges": 1,
+      "minLevel": 25,
+      "maxLevel": 26,
+      "team": [
+        {
+          "speciesId": 372,
+          "name": "Drackhaus",
+          "level": 25,
+          "types": [
+            "Dragon"
+          ],
+          "attacks": [
+            "Ténèbres",
+            "Feu",
+            "Électrik",
+            "Dragon"
+          ]
+        },
+        {
+          "speciesId": 64,
+          "name": "Kadabra",
+          "level": 25,
+          "types": [
+            "Psy"
+          ],
+          "attacks": [
+            "Psy",
+            "Électrik",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 359,
+          "name": "Absol",
+          "level": 26,
+          "types": [
+            "Ténèbres"
+          ],
+          "attacks": [
+            "Ténèbres",
+            "Vol",
+            "Normal"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-36-0-10",
+      "typeId": 36,
+      "partyId": 0,
+      "name": "Merlot",
+      "title": "Capitaine",
+      "category": "Personnalités",
+      "requiredBadges": 2,
+      "minLevel": 28,
+      "maxLevel": 29,
+      "team": [
+        {
+          "speciesId": 673,
+          "name": "Chevroum",
+          "level": 28,
+          "types": [
+            "Plante"
+          ],
+          "attacks": [
+            "Plante",
+            "Sol",
+            "Roche"
+          ]
+        },
+        {
+          "speciesId": 99,
+          "name": "Krabboss",
+          "level": 28,
+          "types": [
+            "Eau"
+          ],
+          "attacks": [
+            "Eau",
+            "Acier",
+            "Normal",
+            "Roche"
+          ]
+        },
+        {
+          "speciesId": 996,
+          "name": "Venysos",
+          "level": 29,
+          "types": [
+            "Poison",
+            "Plante"
+          ],
+          "attacks": [
+            "Psy",
+            "Poison",
+            "Plante"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-41-0-11",
+      "typeId": 41,
+      "partyId": 0,
+      "name": "Tucker",
+      "title": "Alchimiste Azoth",
+      "category": "Personnalités",
+      "requiredBadges": 2,
+      "minLevel": 32,
+      "maxLevel": 33,
+      "team": [
+        {
+          "speciesId": 168,
+          "name": "Migalos",
+          "level": 32,
+          "types": [
+            "Insecte",
+            "Poison"
+          ],
+          "attacks": [
+            "Insecte",
+            "Poison",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 752,
+          "name": "Tarenbulle",
+          "level": 32,
+          "types": [
+            "Eau",
+            "Insecte"
+          ],
+          "attacks": [
+            "Insecte",
+            "Eau",
+            "Ténèbres"
+          ]
+        },
+        {
+          "speciesId": 596,
+          "name": "Mygavolt",
+          "level": 33,
+          "types": [
+            "Insecte",
+            "Électrik"
+          ],
+          "attacks": [
+            "Insecte",
+            "Électrik",
+            "Plante"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-42-1-12",
+      "typeId": 42,
+      "partyId": 1,
+      "name": "F3",
+      "title": "Régent",
+      "category": "Régents",
+      "requiredBadges": 2,
+      "minLevel": 33,
+      "maxLevel": 34,
+      "team": [
+        {
+          "speciesId": 137,
+          "name": "Porygon",
+          "level": 33,
+          "types": [
+            "Normal",
+            "Électrik"
+          ],
+          "attacks": [
+            "Électrik",
+            "Psy",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 233,
+          "name": "Porygon2",
+          "level": 33,
+          "types": [
+            "Normal",
+            "Électrik"
+          ],
+          "attacks": [
+            "Électrik",
+            "Spectre",
+            "Insecte",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 474,
+          "name": "Porygon-Z",
+          "level": 34,
+          "types": [
+            "Normal",
+            "Électrik"
+          ],
+          "attacks": [
+            "Électrik",
+            "Feu",
+            "Normal"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-42-2-13",
+      "typeId": 42,
+      "partyId": 2,
+      "name": "F3",
+      "title": "Régent",
+      "category": "Régents",
+      "requiredBadges": 2,
+      "minLevel": 33,
+      "maxLevel": 34,
+      "team": [
+        {
+          "speciesId": 137,
+          "name": "Porygon",
+          "level": 33,
+          "types": [
+            "Normal",
+            "Électrik"
+          ],
+          "attacks": [
+            "Électrik",
+            "Psy",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 233,
+          "name": "Porygon2",
+          "level": 33,
+          "types": [
+            "Normal",
+            "Électrik"
+          ],
+          "attacks": [
+            "Électrik",
+            "Spectre",
+            "Insecte",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 474,
+          "name": "Porygon-Z",
+          "level": 34,
+          "types": [
+            "Normal",
+            "Électrik"
+          ],
+          "attacks": [
+            "Électrik",
+            "Feu",
+            "Normal"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-42-3-14",
+      "typeId": 42,
+      "partyId": 3,
+      "name": "F3",
+      "title": "Régent",
+      "category": "Régents",
+      "requiredBadges": 2,
+      "minLevel": 33,
+      "maxLevel": 34,
+      "team": [
+        {
+          "speciesId": 871,
+          "name": "Wattapik",
+          "level": 33,
+          "types": [
+            "Électrik"
+          ],
+          "attacks": [
+            "Électrik",
+            "Eau",
+            "Normal",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 137,
+          "name": "Porygon",
+          "level": 33,
+          "types": [
+            "Normal",
+            "Électrik"
+          ],
+          "attacks": [
+            "Électrik",
+            "Psy",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 233,
+          "name": "Porygon2",
+          "level": 33,
+          "types": [
+            "Normal",
+            "Électrik"
+          ],
+          "attacks": [
+            "Électrik",
+            "Spectre",
+            "Insecte",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 474,
+          "name": "Porygon-Z",
+          "level": 34,
+          "types": [
+            "Normal",
+            "Électrik"
+          ],
+          "attacks": [
+            "Électrik",
+            "Feu",
+            "Normal"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-45-1-15",
+      "typeId": 45,
+      "partyId": 1,
+      "name": "Christian",
+      "title": "Rival",
+      "category": "Rivaux",
+      "requiredBadges": 2,
+      "minLevel": 34,
+      "maxLevel": 36,
+      "team": [
+        {
+          "speciesId": 40,
+          "name": "Grodoudou",
+          "level": 35,
+          "types": [
+            "Normal",
+            "Fée"
+          ],
+          "attacks": [
+            "Normal",
+            "Fée",
+            "Glace"
+          ]
+        },
+        {
+          "speciesId": 281,
+          "name": "Kirlia",
+          "level": 34,
+          "types": [
+            "Psy",
+            "Fée"
+          ],
+          "attacks": [
+            "Psy",
+            "Fée",
+            "Électrik",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 673,
+          "name": "Chevroum",
+          "level": 34,
+          "types": [
+            "Plante"
+          ],
+          "attacks": [
+            "Plante",
+            "Sol",
+            "Roche",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 657,
+          "name": "Croâporal",
+          "level": 36,
+          "types": [
+            "Eau",
+            "Psy"
+          ],
+          "attacks": [
+            "Eau",
+            "Psy",
+            "Glace",
+            "Ténèbres"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-45-2-16",
+      "typeId": 45,
+      "partyId": 2,
+      "name": "Christian",
+      "title": "Rival",
+      "category": "Rivaux",
+      "requiredBadges": 2,
+      "minLevel": 34,
+      "maxLevel": 36,
+      "team": [
+        {
+          "speciesId": 40,
+          "name": "Grodoudou",
+          "level": 35,
+          "types": [
+            "Normal",
+            "Fée"
+          ],
+          "attacks": [
+            "Normal",
+            "Fée",
+            "Glace"
+          ]
+        },
+        {
+          "speciesId": 281,
+          "name": "Kirlia",
+          "level": 34,
+          "types": [
+            "Psy",
+            "Fée"
+          ],
+          "attacks": [
+            "Psy",
+            "Fée",
+            "Électrik",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 673,
+          "name": "Chevroum",
+          "level": 34,
+          "types": [
+            "Plante"
+          ],
+          "attacks": [
+            "Plante",
+            "Sol",
+            "Roche",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 651,
+          "name": "Boguérisse",
+          "level": 36,
+          "types": [
+            "Plante",
+            "Sol"
+          ],
+          "attacks": [
+            "Plante",
+            "Ténèbres",
+            "Sol"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-45-3-17",
+      "typeId": 45,
+      "partyId": 3,
+      "name": "Christian",
+      "title": "Rival",
+      "category": "Rivaux",
+      "requiredBadges": 2,
+      "minLevel": 34,
+      "maxLevel": 36,
+      "team": [
+        {
+          "speciesId": 40,
+          "name": "Grodoudou",
+          "level": 35,
+          "types": [
+            "Normal",
+            "Fée"
+          ],
+          "attacks": [
+            "Normal",
+            "Fée",
+            "Glace"
+          ]
+        },
+        {
+          "speciesId": 281,
+          "name": "Kirlia",
+          "level": 34,
+          "types": [
+            "Psy",
+            "Fée"
+          ],
+          "attacks": [
+            "Psy",
+            "Fée",
+            "Électrik",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 673,
+          "name": "Chevroum",
+          "level": 34,
+          "types": [
+            "Plante"
+          ],
+          "attacks": [
+            "Plante",
+            "Sol",
+            "Roche",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 654,
+          "name": "Roussil",
+          "level": 36,
+          "types": [
+            "Feu",
+            "Électrik"
+          ],
+          "attacks": [
+            "Feu",
+            "Électrik",
+            "Combat"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-48-0-18",
+      "typeId": 48,
+      "partyId": 0,
+      "name": "Drazat",
+      "title": "Monsieur",
+      "category": "Personnalités",
+      "requiredBadges": 3,
+      "minLevel": 37,
+      "maxLevel": 39,
+      "team": [
+        {
+          "speciesId": 478,
+          "name": "Momartik",
+          "level": 37,
+          "types": [
+            "Glace",
+            "Spectre"
+          ],
+          "attacks": [
+            "Glace",
+            "Spectre",
+            "Sol"
+          ]
+        },
+        {
+          "speciesId": 282,
+          "name": "Gardevoir",
+          "level": 38,
+          "types": [
+            "Psy",
+            "Fée"
+          ],
+          "attacks": [
+            "Psy",
+            "Fée",
+            "Plante"
+          ]
+        },
+        {
+          "speciesId": 432,
+          "name": "Chaffreux",
+          "level": 37,
+          "types": [
+            "Normal"
+          ],
+          "attacks": [
+            "Normal",
+            "Fée",
+            "Ténèbres"
+          ]
+        },
+        {
+          "speciesId": 549,
+          "name": "Fragilady",
+          "level": 39,
+          "types": [
+            "Plante",
+            "Feu"
+          ],
+          "attacks": [
+            "Plante",
+            "Feu",
+            "Insecte",
+            "Roche"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-50-0-19",
+      "typeId": 50,
+      "partyId": 0,
+      "name": "Mirra",
+      "title": "Moine",
+      "category": "Personnalités",
+      "requiredBadges": 3,
+      "minLevel": 39,
+      "maxLevel": 41,
+      "team": [
+        {
+          "speciesId": 372,
+          "name": "Drackhaus",
+          "level": 39,
+          "types": [
+            "Dragon"
+          ],
+          "attacks": [
+            "Ténèbres",
+            "Dragon",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 64,
+          "name": "Kadabra",
+          "level": 39,
+          "types": [
+            "Psy"
+          ],
+          "attacks": [
+            "Psy",
+            "Spectre",
+            "Combat"
+          ]
+        },
+        {
+          "speciesId": 359,
+          "name": "Absol",
+          "level": 41,
+          "types": [
+            "Ténèbres"
+          ],
+          "attacks": [
+            "Ténèbres",
+            "Fée",
+            "Insecte",
+            "Normal"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-52-0-20",
+      "typeId": 52,
+      "partyId": 0,
+      "name": "Justine",
+      "title": "Régente",
+      "category": "Régents",
+      "requiredBadges": 3,
+      "minLevel": 39,
+      "maxLevel": 41,
+      "team": [
+        {
+          "speciesId": 972,
+          "name": "Briochien",
+          "level": 39,
+          "types": [
+            "Fée"
+          ],
+          "attacks": [
+            "Fée",
+            "Psy",
+            "Combat"
+          ]
+        },
+        {
+          "speciesId": 869,
+          "name": "Charmilly",
+          "level": 40,
+          "types": [
+            "Fée"
+          ],
+          "attacks": [
+            "Fée",
+            "Feu",
+            "Normal",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 584,
+          "name": "Sorbouboul",
+          "level": 39,
+          "types": [
+            "Glace",
+            "Fée"
+          ],
+          "attacks": [
+            "Glace",
+            "Acier",
+            "Fée",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 998,
+          "name": "Famgourmet",
+          "level": 41,
+          "types": [
+            "Normal",
+            "Fée"
+          ],
+          "attacks": [
+            "Fée",
+            "Normal",
+            "Sol",
+            "Feu"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-54-1-21",
+      "typeId": 54,
+      "partyId": 1,
+      "name": "Mélia",
+      "title": "Rival",
+      "category": "Rivaux",
+      "requiredBadges": 3,
+      "minLevel": 40,
+      "maxLevel": 42,
+      "team": [
+        {
+          "speciesId": 670,
+          "name": "Floette",
+          "level": 40,
+          "types": [
+            "Fée"
+          ],
+          "attacks": [
+            "Fée",
+            "Plante",
+            "Eau"
+          ]
+        },
+        {
+          "speciesId": 518,
+          "name": "Mushana",
+          "level": 40,
+          "types": [
+            "Psy"
+          ],
+          "attacks": [
+            "Psy",
+            "Plante",
+            "Insecte",
+            "Fée"
+          ]
+        },
+        {
+          "speciesId": 133,
+          "name": "Évoli",
+          "level": 40,
+          "types": [
+            "Normal"
+          ],
+          "attacks": [
+            "Normal",
+            "Fée",
+            "Ténèbres",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 654,
+          "name": "Roussil",
+          "level": 42,
+          "types": [
+            "Feu",
+            "Électrik"
+          ],
+          "attacks": [
+            "Feu",
+            "Électrik",
+            "Psy",
+            "Ténèbres"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-54-2-22",
+      "typeId": 54,
+      "partyId": 2,
+      "name": "Mélia",
+      "title": "Rival",
+      "category": "Rivaux",
+      "requiredBadges": 3,
+      "minLevel": 40,
+      "maxLevel": 42,
+      "team": [
+        {
+          "speciesId": 670,
+          "name": "Floette",
+          "level": 40,
+          "types": [
+            "Fée"
+          ],
+          "attacks": [
+            "Fée",
+            "Plante",
+            "Eau"
+          ]
+        },
+        {
+          "speciesId": 518,
+          "name": "Mushana",
+          "level": 40,
+          "types": [
+            "Psy"
+          ],
+          "attacks": [
+            "Psy",
+            "Plante",
+            "Insecte",
+            "Fée"
+          ]
+        },
+        {
+          "speciesId": 133,
+          "name": "Évoli",
+          "level": 40,
+          "types": [
+            "Normal"
+          ],
+          "attacks": [
+            "Normal",
+            "Fée",
+            "Ténèbres",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 657,
+          "name": "Croâporal",
+          "level": 42,
+          "types": [
+            "Eau",
+            "Psy"
+          ],
+          "attacks": [
+            "Eau",
+            "Psy",
+            "Ténèbres"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-54-3-23",
+      "typeId": 54,
+      "partyId": 3,
+      "name": "Mélia",
+      "title": "Rival",
+      "category": "Rivaux",
+      "requiredBadges": 3,
+      "minLevel": 40,
+      "maxLevel": 42,
+      "team": [
+        {
+          "speciesId": 670,
+          "name": "Floette",
+          "level": 40,
+          "types": [
+            "Fée"
+          ],
+          "attacks": [
+            "Fée",
+            "Plante",
+            "Eau"
+          ]
+        },
+        {
+          "speciesId": 518,
+          "name": "Mushana",
+          "level": 40,
+          "types": [
+            "Psy"
+          ],
+          "attacks": [
+            "Psy",
+            "Plante",
+            "Insecte",
+            "Fée"
+          ]
+        },
+        {
+          "speciesId": 133,
+          "name": "Évoli",
+          "level": 40,
+          "types": [
+            "Normal"
+          ],
+          "attacks": [
+            "Normal",
+            "Fée",
+            "Ténèbres",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 651,
+          "name": "Boguérisse",
+          "level": 42,
+          "types": [
+            "Plante",
+            "Sol"
+          ],
+          "attacks": [
+            "Plante",
+            "Ténèbres",
+            "Sol"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-63-0-24",
+      "typeId": 63,
+      "partyId": 0,
+      "name": "Loto",
+      "title": "Capitaine",
+      "category": "Personnalités",
+      "requiredBadges": 4,
+      "minLevel": 45,
+      "maxLevel": 46,
+      "team": [
+        {
+          "speciesId": 430,
+          "name": "Corboss",
+          "level": 45,
+          "types": [
+            "Ténèbres",
+            "Vol"
+          ],
+          "attacks": [
+            "Ténèbres",
+            "Vol",
+            "Feu"
+          ]
+        },
+        {
+          "speciesId": 693,
+          "name": "Gamblast",
+          "level": 45,
+          "types": [
+            "Eau"
+          ],
+          "attacks": [
+            "Eau",
+            "Combat",
+            "Normal",
+            "Glace"
+          ]
+        },
+        {
+          "speciesId": 340,
+          "name": "Barbicha",
+          "level": 45,
+          "types": [
+            "Eau",
+            "Sol"
+          ],
+          "attacks": [
+            "Sol",
+            "Eau",
+            "Roche",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 321,
+          "name": "Wailord",
+          "level": 46,
+          "types": [
+            "Eau",
+            "Vol"
+          ],
+          "attacks": [
+            "Vol",
+            "Eau",
+            "Acier",
+            "Normal"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-65-1-25",
+      "typeId": 65,
+      "partyId": 1,
+      "name": "Christian",
+      "title": "Rival",
+      "category": "Rivaux",
+      "requiredBadges": 4,
+      "minLevel": 46,
+      "maxLevel": 48,
+      "team": [
+        {
+          "speciesId": 40,
+          "name": "Grodoudou",
+          "level": 46,
+          "types": [
+            "Normal",
+            "Fée"
+          ],
+          "attacks": [
+            "Normal",
+            "Fée",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 475,
+          "name": "Gallame",
+          "level": 47,
+          "types": [
+            "Psy",
+            "Combat"
+          ],
+          "attacks": [
+            "Psy",
+            "Combat",
+            "Ténèbres"
+          ]
+        },
+        {
+          "speciesId": 673,
+          "name": "Chevroum",
+          "level": 47,
+          "types": [
+            "Plante"
+          ],
+          "attacks": [
+            "Plante",
+            "Sol",
+            "Roche",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 658,
+          "name": "Amphinobi",
+          "level": 48,
+          "types": [
+            "Eau",
+            "Psy"
+          ],
+          "attacks": [
+            "Eau",
+            "Psy",
+            "Glace",
+            "Ténèbres"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-65-2-26",
+      "typeId": 65,
+      "partyId": 2,
+      "name": "Christian",
+      "title": "Rival",
+      "category": "Rivaux",
+      "requiredBadges": 4,
+      "minLevel": 46,
+      "maxLevel": 48,
+      "team": [
+        {
+          "speciesId": 40,
+          "name": "Grodoudou",
+          "level": 46,
+          "types": [
+            "Normal",
+            "Fée"
+          ],
+          "attacks": [
+            "Normal",
+            "Fée",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 475,
+          "name": "Gallame",
+          "level": 47,
+          "types": [
+            "Psy",
+            "Combat"
+          ],
+          "attacks": [
+            "Psy",
+            "Combat",
+            "Ténèbres"
+          ]
+        },
+        {
+          "speciesId": 673,
+          "name": "Chevroum",
+          "level": 47,
+          "types": [
+            "Plante"
+          ],
+          "attacks": [
+            "Plante",
+            "Sol",
+            "Roche",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 652,
+          "name": "Blindépique",
+          "level": 48,
+          "types": [
+            "Plante",
+            "Sol"
+          ],
+          "attacks": [
+            "Plante",
+            "Ténèbres",
+            "Sol"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-65-3-27",
+      "typeId": 65,
+      "partyId": 3,
+      "name": "Christian",
+      "title": "Rival",
+      "category": "Rivaux",
+      "requiredBadges": 4,
+      "minLevel": 46,
+      "maxLevel": 48,
+      "team": [
+        {
+          "speciesId": 40,
+          "name": "Grodoudou",
+          "level": 46,
+          "types": [
+            "Normal",
+            "Fée"
+          ],
+          "attacks": [
+            "Normal",
+            "Fée",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 475,
+          "name": "Gallame",
+          "level": 47,
+          "types": [
+            "Psy",
+            "Combat"
+          ],
+          "attacks": [
+            "Psy",
+            "Combat",
+            "Ténèbres"
+          ]
+        },
+        {
+          "speciesId": 673,
+          "name": "Chevroum",
+          "level": 47,
+          "types": [
+            "Plante"
+          ],
+          "attacks": [
+            "Plante",
+            "Sol",
+            "Roche",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 655,
+          "name": "Goupelin",
+          "level": 48,
+          "types": [
+            "Feu",
+            "Électrik"
+          ],
+          "attacks": [
+            "Feu",
+            "Électrik",
+            "Combat"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-72-0-28",
+      "typeId": 72,
+      "partyId": 0,
+      "name": "Belladonne",
+      "title": "Régente",
+      "category": "Régents",
+      "requiredBadges": 5,
+      "minLevel": 52,
+      "maxLevel": 54,
+      "team": [
+        {
+          "speciesId": 968,
+          "name": "Floréclat",
+          "level": 52,
+          "types": [
+            "Roche",
+            "Poison"
+          ],
+          "attacks": [
+            "Poison",
+            "Roche",
+            "Sol"
+          ]
+        },
+        {
+          "speciesId": 169,
+          "name": "Nostenfer",
+          "level": 52,
+          "types": [
+            "Poison",
+            "Vol"
+          ],
+          "attacks": [
+            "Vol",
+            "Poison",
+            "Feu",
+            "Insecte"
+          ]
+        },
+        {
+          "speciesId": 545,
+          "name": "Brutapode",
+          "level": 53,
+          "types": [
+            "Insecte",
+            "Poison"
+          ],
+          "attacks": [
+            "Insecte",
+            "Poison",
+            "Sol",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 73,
+          "name": "Tentacruel",
+          "level": 53,
+          "types": [
+            "Eau",
+            "Poison"
+          ],
+          "attacks": [
+            "Poison",
+            "Glace",
+            "Eau"
+          ]
+        },
+        {
+          "speciesId": 1008,
+          "name": "Sévipire",
+          "level": 54,
+          "types": [
+            "Poison",
+            "Dragon"
+          ],
+          "attacks": [
+            "Poison",
+            "Dragon",
+            "Ténèbres",
+            "Glace"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-73-1-29",
+      "typeId": 73,
+      "partyId": 1,
+      "name": "Mélia",
+      "title": "Rival",
+      "category": "Rivaux",
+      "requiredBadges": 5,
+      "minLevel": 54,
+      "maxLevel": 55,
+      "team": [
+        {
+          "speciesId": 670,
+          "name": "Floette",
+          "level": 54,
+          "types": [
+            "Fée"
+          ],
+          "attacks": [
+            "Fée",
+            "Plante",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 518,
+          "name": "Mushana",
+          "level": 54,
+          "types": [
+            "Psy"
+          ],
+          "attacks": [
+            "Psy",
+            "Insecte",
+            "Fée"
+          ]
+        },
+        {
+          "speciesId": 134,
+          "name": "Aquali",
+          "level": 54,
+          "types": [
+            "Eau"
+          ],
+          "attacks": [
+            "Eau",
+            "Glace",
+            "Poison",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 655,
+          "name": "Goupelin",
+          "level": 55,
+          "types": [
+            "Feu",
+            "Électrik"
+          ],
+          "attacks": [
+            "Feu",
+            "Électrik",
+            "Psy",
+            "Ténèbres"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-73-2-30",
+      "typeId": 73,
+      "partyId": 2,
+      "name": "Mélia",
+      "title": "Rival",
+      "category": "Rivaux",
+      "requiredBadges": 5,
+      "minLevel": 54,
+      "maxLevel": 55,
+      "team": [
+        {
+          "speciesId": 670,
+          "name": "Floette",
+          "level": 54,
+          "types": [
+            "Fée"
+          ],
+          "attacks": [
+            "Fée",
+            "Plante",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 518,
+          "name": "Mushana",
+          "level": 54,
+          "types": [
+            "Psy"
+          ],
+          "attacks": [
+            "Psy",
+            "Insecte",
+            "Fée"
+          ]
+        },
+        {
+          "speciesId": 135,
+          "name": "Voltali",
+          "level": 54,
+          "types": [
+            "Électrik"
+          ],
+          "attacks": [
+            "Électrik",
+            "Insecte",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 658,
+          "name": "Amphinobi",
+          "level": 55,
+          "types": [
+            "Eau",
+            "Psy"
+          ],
+          "attacks": [
+            "Eau",
+            "Psy",
+            "Ténèbres"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-73-3-31",
+      "typeId": 73,
+      "partyId": 3,
+      "name": "Mélia",
+      "title": "Rival",
+      "category": "Rivaux",
+      "requiredBadges": 5,
+      "minLevel": 54,
+      "maxLevel": 55,
+      "team": [
+        {
+          "speciesId": 670,
+          "name": "Floette",
+          "level": 54,
+          "types": [
+            "Fée"
+          ],
+          "attacks": [
+            "Fée",
+            "Plante",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 518,
+          "name": "Mushana",
+          "level": 54,
+          "types": [
+            "Psy"
+          ],
+          "attacks": [
+            "Psy",
+            "Insecte",
+            "Fée"
+          ]
+        },
+        {
+          "speciesId": 136,
+          "name": "Pyroli",
+          "level": 54,
+          "types": [
+            "Feu"
+          ],
+          "attacks": [
+            "Feu",
+            "Acier",
+            "Roche"
+          ]
+        },
+        {
+          "speciesId": 652,
+          "name": "Blindépique",
+          "level": 55,
+          "types": [
+            "Plante",
+            "Sol"
+          ],
+          "attacks": [
+            "Plante",
+            "Ténèbres",
+            "Sol"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-82-0-32",
+      "typeId": 82,
+      "partyId": 0,
+      "name": "Drazat",
+      "title": "Monsieur",
+      "category": "Personnalités",
+      "requiredBadges": 6,
+      "minLevel": 55,
+      "maxLevel": 57,
+      "team": [
+        {
+          "speciesId": 478,
+          "name": "Momartik",
+          "level": 55,
+          "types": [
+            "Glace",
+            "Spectre"
+          ],
+          "attacks": [
+            "Glace",
+            "Spectre",
+            "Sol"
+          ]
+        },
+        {
+          "speciesId": 428,
+          "name": "Lockpin",
+          "level": 56,
+          "types": [
+            "Normal",
+            "Combat"
+          ],
+          "attacks": [
+            "Combat",
+            "Fée",
+            "Normal",
+            "Vol"
+          ]
+        },
+        {
+          "speciesId": 282,
+          "name": "Gardevoir",
+          "level": 56,
+          "types": [
+            "Psy",
+            "Fée"
+          ],
+          "attacks": [
+            "Psy",
+            "Fée",
+            "Plante"
+          ]
+        },
+        {
+          "speciesId": 432,
+          "name": "Chaffreux",
+          "level": 56,
+          "types": [
+            "Normal"
+          ],
+          "attacks": [
+            "Normal",
+            "Fée",
+            "Ténèbres"
+          ]
+        },
+        {
+          "speciesId": 549,
+          "name": "Fragilady",
+          "level": 57,
+          "types": [
+            "Plante",
+            "Feu"
+          ],
+          "attacks": [
+            "Plante",
+            "Feu",
+            "Insecte",
+            "Roche"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-83-0-33",
+      "typeId": 83,
+      "partyId": 0,
+      "name": "Thyméo",
+      "title": "Capitaine",
+      "category": "Personnalités",
+      "requiredBadges": 6,
+      "minLevel": 57,
+      "maxLevel": 58,
+      "team": [
+        {
+          "speciesId": 776,
+          "name": "Boumata",
+          "level": 57,
+          "types": [
+            "Feu",
+            "Dragon"
+          ],
+          "attacks": [
+            "Feu",
+            "Dragon",
+            "Acier"
+          ]
+        },
+        {
+          "speciesId": 700,
+          "name": "Nymphali",
+          "level": 57,
+          "types": [
+            "Fée"
+          ],
+          "attacks": [
+            "Normal",
+            "Psy",
+            "Spectre",
+            "Feu"
+          ]
+        },
+        {
+          "speciesId": 91,
+          "name": "Crustabri",
+          "level": 57,
+          "types": [
+            "Eau",
+            "Glace"
+          ],
+          "attacks": [
+            "Glace",
+            "Roche",
+            "Eau",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 411,
+          "name": "Bastiodon",
+          "level": 58,
+          "types": [
+            "Roche",
+            "Acier"
+          ],
+          "attacks": [
+            "Poison",
+            "Acier",
+            "Roche"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-84-0-34",
+      "typeId": 84,
+      "partyId": 0,
+      "name": "Dracéna",
+      "title": "Papesse",
+      "category": "Personnalités",
+      "requiredBadges": 6,
+      "minLevel": 57,
+      "maxLevel": 58,
+      "team": [
+        {
+          "speciesId": 468,
+          "name": "Togekiss",
+          "level": 57,
+          "types": [
+            "Fée",
+            "Vol"
+          ],
+          "attacks": [
+            "Fée",
+            "Vol",
+            "Combat"
+          ]
+        },
+        {
+          "speciesId": 472,
+          "name": "Scorvol",
+          "level": 57,
+          "types": [
+            "Sol",
+            "Vol"
+          ],
+          "attacks": [
+            "Sol",
+            "Vol",
+            "Insecte",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 966,
+          "name": "Gigansel",
+          "level": 57,
+          "types": [
+            "Roche"
+          ],
+          "attacks": [
+            "Roche",
+            "Normal",
+            "Acier",
+            "Combat"
+          ]
+        },
+        {
+          "speciesId": 143,
+          "name": "Ronflex",
+          "level": 58,
+          "types": [
+            "Normal"
+          ],
+          "attacks": [
+            "Normal",
+            "Ténèbres",
+            "Combat",
+            "Psy"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-85-0-35",
+      "typeId": 85,
+      "partyId": 0,
+      "name": "Narcisse",
+      "title": "Chambellan",
+      "category": "Personnalités",
+      "requiredBadges": 6,
+      "minLevel": 57,
+      "maxLevel": 58,
+      "team": [
+        {
+          "speciesId": 571,
+          "name": "Zoroark",
+          "level": 57,
+          "types": [
+            "Ténèbres"
+          ],
+          "attacks": [
+            "Ténèbres",
+            "Spectre",
+            "Feu"
+          ]
+        },
+        {
+          "speciesId": 36,
+          "name": "Mélodelfe",
+          "level": 57,
+          "types": [
+            "Fée"
+          ],
+          "attacks": [
+            "Fée",
+            "Normal",
+            "Feu",
+            "Glace"
+          ]
+        },
+        {
+          "speciesId": 157,
+          "name": "Typhlosion",
+          "level": 57,
+          "types": [
+            "Feu",
+            "Normal"
+          ],
+          "attacks": [
+            "Spectre",
+            "Feu",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 94,
+          "name": "Ectoplasma",
+          "level": 58,
+          "types": [
+            "Spectre",
+            "Poison"
+          ],
+          "attacks": [
+            "Électrik",
+            "Spectre",
+            "Poison",
+            "Combat"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-86-0-36",
+      "typeId": 86,
+      "partyId": 0,
+      "name": "Malva",
+      "title": "Reine",
+      "category": "Personnalités",
+      "requiredBadges": 6,
+      "minLevel": 57,
+      "maxLevel": 58,
+      "team": [
+        {
+          "speciesId": 1009,
+          "name": "Mangoule",
+          "level": 57,
+          "types": [
+            "Normal",
+            "Spectre"
+          ],
+          "attacks": [
+            "Normal",
+            "Ténèbres",
+            "Combat"
+          ]
+        },
+        {
+          "speciesId": 452,
+          "name": "Drascore",
+          "level": 57,
+          "types": [
+            "Poison",
+            "Ténèbres"
+          ],
+          "attacks": [
+            "Ténèbres",
+            "Poison",
+            "Insecte",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 65,
+          "name": "Alakazam",
+          "level": 57,
+          "types": [
+            "Psy"
+          ],
+          "attacks": [
+            "Psy",
+            "Plante",
+            "Combat",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 612,
+          "name": "Tranchodon",
+          "level": 58,
+          "types": [
+            "Dragon"
+          ],
+          "attacks": [
+            "Dragon",
+            "Poison",
+            "Sol"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-88-0-37",
+      "typeId": 88,
+      "partyId": 0,
+      "name": "Aster et Angéline",
+      "title": "Souverains Eternels",
+      "category": "Personnalités",
+      "requiredBadges": 6,
+      "minLevel": 58,
+      "maxLevel": 60,
+      "team": [
+        {
+          "speciesId": 623,
+          "name": "Golemastoc",
+          "level": 58,
+          "types": [
+            "Sol",
+            "Spectre"
+          ],
+          "attacks": [
+            "Spectre",
+            "Sol",
+            "Combat",
+            "Glace"
+          ]
+        },
+        {
+          "speciesId": 130,
+          "name": "Léviator",
+          "level": 58,
+          "types": [
+            "Eau",
+            "Vol"
+          ],
+          "attacks": [
+            "Eau",
+            "Glace",
+            "Vol",
+            "Ténèbres"
+          ]
+        },
+        {
+          "speciesId": 324,
+          "name": "Chartor",
+          "level": 59,
+          "types": [
+            "Feu"
+          ],
+          "attacks": [
+            "Feu",
+            "Poison",
+            "Sol"
+          ]
+        },
+        {
+          "speciesId": 997,
+          "name": "Royali",
+          "level": 59,
+          "types": [
+            "Normal"
+          ],
+          "attacks": [
+            "Normal",
+            "Combat",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 561,
+          "name": "Cryptéro",
+          "level": 59,
+          "types": [
+            "Psy",
+            "Vol"
+          ],
+          "attacks": [
+            "Psy",
+            "Vol"
+          ]
+        },
+        {
+          "speciesId": 671,
+          "name": "Florges",
+          "level": 60,
+          "types": [
+            "Fée"
+          ],
+          "attacks": [
+            "Normal",
+            "Fée",
+            "Plante",
+            "Psy"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-104-0-38",
+      "typeId": 104,
+      "partyId": 0,
+      "name": "Arthur",
+      "title": "Régent",
+      "category": "Régents",
+      "requiredBadges": 6,
+      "minLevel": 66,
+      "maxLevel": 67,
+      "team": [
+        {
+          "speciesId": 561,
+          "name": "Cryptéro",
+          "level": 66,
+          "types": [
+            "Psy",
+            "Vol"
+          ],
+          "attacks": [
+            "Psy",
+            "Vol",
+            "Feu"
+          ]
+        },
+        {
+          "speciesId": 344,
+          "name": "Kaorine",
+          "level": 66,
+          "types": [
+            "Sol",
+            "Psy"
+          ],
+          "attacks": [
+            "Sol",
+            "Glace",
+            "Psy",
+            "Plante"
+          ]
+        },
+        {
+          "speciesId": 121,
+          "name": "Staross",
+          "level": 66,
+          "types": [
+            "Eau",
+            "Psy"
+          ],
+          "attacks": [
+            "Eau",
+            "Psy",
+            "Glace"
+          ]
+        },
+        {
+          "speciesId": 687,
+          "name": "Sepiatroce",
+          "level": 66,
+          "types": [
+            "Ténèbres",
+            "Psy"
+          ],
+          "attacks": [
+            "Psy",
+            "Ténèbres",
+            "Combat"
+          ]
+        },
+        {
+          "speciesId": 1011,
+          "name": "Hypnomal",
+          "level": 67,
+          "types": [
+            "Psy",
+            "Ténèbres"
+          ],
+          "attacks": [
+            "Psy",
+            "Ténèbres",
+            "Fée"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-107-1-39",
+      "typeId": 107,
+      "partyId": 1,
+      "name": "Christian",
+      "title": "Capitaine",
+      "category": "Personnalités",
+      "requiredBadges": 7,
+      "minLevel": 70,
+      "maxLevel": 71,
+      "team": [
+        {
+          "speciesId": 475,
+          "name": "Gallame",
+          "level": 70,
+          "types": [
+            "Psy",
+            "Combat"
+          ],
+          "attacks": [
+            "Psy",
+            "Plante",
+            "Combat",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 40,
+          "name": "Grodoudou",
+          "level": 70,
+          "types": [
+            "Normal",
+            "Fée"
+          ],
+          "attacks": [
+            "Normal",
+            "Fée",
+            "Psy",
+            "Ténèbres"
+          ]
+        },
+        {
+          "speciesId": 673,
+          "name": "Chevroum",
+          "level": 70,
+          "types": [
+            "Plante"
+          ],
+          "attacks": [
+            "Normal",
+            "Sol",
+            "Roche",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 706,
+          "name": "Muplodocus",
+          "level": 70,
+          "types": [
+            "Dragon"
+          ],
+          "attacks": [
+            "Dragon",
+            "Eau",
+            "Acier",
+            "Glace"
+          ]
+        },
+        {
+          "speciesId": 658,
+          "name": "Amphinobi",
+          "level": 71,
+          "types": [
+            "Eau",
+            "Psy"
+          ],
+          "attacks": [
+            "Eau",
+            "Glace",
+            "Psy"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-107-2-40",
+      "typeId": 107,
+      "partyId": 2,
+      "name": "Christian",
+      "title": "Capitaine",
+      "category": "Personnalités",
+      "requiredBadges": 7,
+      "minLevel": 70,
+      "maxLevel": 71,
+      "team": [
+        {
+          "speciesId": 475,
+          "name": "Gallame",
+          "level": 70,
+          "types": [
+            "Psy",
+            "Combat"
+          ],
+          "attacks": [
+            "Psy",
+            "Plante",
+            "Combat",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 40,
+          "name": "Grodoudou",
+          "level": 70,
+          "types": [
+            "Normal",
+            "Fée"
+          ],
+          "attacks": [
+            "Normal",
+            "Fée",
+            "Psy",
+            "Ténèbres"
+          ]
+        },
+        {
+          "speciesId": 673,
+          "name": "Chevroum",
+          "level": 70,
+          "types": [
+            "Plante"
+          ],
+          "attacks": [
+            "Normal",
+            "Sol",
+            "Roche",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 706,
+          "name": "Muplodocus",
+          "level": 70,
+          "types": [
+            "Dragon"
+          ],
+          "attacks": [
+            "Dragon",
+            "Eau",
+            "Acier",
+            "Glace"
+          ]
+        },
+        {
+          "speciesId": 652,
+          "name": "Blindépique",
+          "level": 71,
+          "types": [
+            "Plante",
+            "Sol"
+          ],
+          "attacks": [
+            "Plante",
+            "Ténèbres",
+            "Sol",
+            "Combat"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-107-3-41",
+      "typeId": 107,
+      "partyId": 3,
+      "name": "Christian",
+      "title": "Capitaine",
+      "category": "Personnalités",
+      "requiredBadges": 7,
+      "minLevel": 70,
+      "maxLevel": 71,
+      "team": [
+        {
+          "speciesId": 475,
+          "name": "Gallame",
+          "level": 70,
+          "types": [
+            "Psy",
+            "Combat"
+          ],
+          "attacks": [
+            "Psy",
+            "Plante",
+            "Combat",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 40,
+          "name": "Grodoudou",
+          "level": 70,
+          "types": [
+            "Normal",
+            "Fée"
+          ],
+          "attacks": [
+            "Normal",
+            "Fée",
+            "Psy",
+            "Ténèbres"
+          ]
+        },
+        {
+          "speciesId": 673,
+          "name": "Chevroum",
+          "level": 70,
+          "types": [
+            "Plante"
+          ],
+          "attacks": [
+            "Normal",
+            "Sol",
+            "Roche",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 706,
+          "name": "Muplodocus",
+          "level": 70,
+          "types": [
+            "Dragon"
+          ],
+          "attacks": [
+            "Dragon",
+            "Eau",
+            "Acier",
+            "Glace"
+          ]
+        },
+        {
+          "speciesId": 655,
+          "name": "Goupelin",
+          "level": 71,
+          "types": [
+            "Feu",
+            "Électrik"
+          ],
+          "attacks": [
+            "Feu",
+            "Électrik",
+            "Normal",
+            "Combat"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-111-0-42",
+      "typeId": 111,
+      "partyId": 0,
+      "name": "Jeanne",
+      "title": "Régente",
+      "category": "Régents",
+      "requiredBadges": 7,
+      "minLevel": 70,
+      "maxLevel": 72,
+      "team": [
+        {
+          "speciesId": 38,
+          "name": "Feunard",
+          "level": 70,
+          "types": [
+            "Feu"
+          ],
+          "attacks": [
+            "Feu",
+            "Psy",
+            "Plante"
+          ]
+        },
+        {
+          "speciesId": 229,
+          "name": "Démolosse",
+          "level": 71,
+          "types": [
+            "Ténèbres",
+            "Feu"
+          ],
+          "attacks": [
+            "Feu",
+            "Ténèbres"
+          ]
+        },
+        {
+          "speciesId": 78,
+          "name": "Galopa",
+          "level": 71,
+          "types": [
+            "Feu"
+          ],
+          "attacks": [
+            "Feu",
+            "Sol",
+            "Insecte",
+            "Électrik"
+          ]
+        },
+        {
+          "speciesId": 940,
+          "name": "Scovilain",
+          "level": 71,
+          "types": [
+            "Plante",
+            "Feu"
+          ],
+          "attacks": [
+            "Feu",
+            "Plante",
+            "Électrik",
+            "Ténèbres"
+          ]
+        },
+        {
+          "speciesId": 576,
+          "name": "Sidérella",
+          "level": 72,
+          "types": [
+            "Spectre",
+            "Feu"
+          ],
+          "attacks": [
+            "Feu",
+            "Spectre",
+            "Psy"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-116-0-43",
+      "typeId": 116,
+      "partyId": 0,
+      "name": "AZ",
+      "title": "Ex-roi",
+      "category": "Personnalités",
+      "requiredBadges": 7,
+      "minLevel": 72,
+      "maxLevel": 75,
+      "team": [
+        {
+          "speciesId": 473,
+          "name": "Mammochon",
+          "level": 73,
+          "types": [
+            "Glace",
+            "Sol"
+          ],
+          "attacks": [
+            "Sol",
+            "Roche",
+            "Glace"
+          ]
+        },
+        {
+          "speciesId": 369,
+          "name": "Relicanth",
+          "level": 72,
+          "types": [
+            "Eau",
+            "Roche"
+          ],
+          "attacks": [
+            "Eau",
+            "Roche",
+            "Sol",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 324,
+          "name": "Chartor",
+          "level": 73,
+          "types": [
+            "Feu"
+          ],
+          "attacks": [
+            "Feu",
+            "Poison",
+            "Sol"
+          ]
+        },
+        {
+          "speciesId": 561,
+          "name": "Cryptéro",
+          "level": 72,
+          "types": [
+            "Psy",
+            "Vol"
+          ],
+          "attacks": [
+            "Psy",
+            "Vol"
+          ]
+        },
+        {
+          "speciesId": 623,
+          "name": "Golemastoc",
+          "level": 74,
+          "types": [
+            "Sol",
+            "Spectre"
+          ],
+          "attacks": [
+            "Spectre",
+            "Sol",
+            "Combat",
+            "Glace"
+          ]
+        },
+        {
+          "speciesId": 809,
+          "name": "Melmetal",
+          "level": 75,
+          "types": [
+            "Acier"
+          ],
+          "attacks": [
+            "Acier",
+            "Glace",
+            "Sol",
+            "Électrik"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-117-1-44",
+      "typeId": 117,
+      "partyId": 1,
+      "name": "Mélia",
+      "title": "Meunière",
+      "category": "Personnalités",
+      "requiredBadges": 7,
+      "minLevel": 73,
+      "maxLevel": 75,
+      "team": [
+        {
+          "speciesId": 670,
+          "name": "Floette",
+          "level": 73,
+          "types": [
+            "Fée"
+          ],
+          "attacks": [
+            "Fée",
+            "Plante",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 518,
+          "name": "Mushana",
+          "level": 73,
+          "types": [
+            "Psy"
+          ],
+          "attacks": [
+            "Psy",
+            "Insecte",
+            "Fée"
+          ]
+        },
+        {
+          "speciesId": 134,
+          "name": "Aquali",
+          "level": 73,
+          "types": [
+            "Eau"
+          ],
+          "attacks": [
+            "Eau",
+            "Glace",
+            "Poison",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 448,
+          "name": "Lucario",
+          "level": 73,
+          "types": [
+            "Combat",
+            "Acier"
+          ],
+          "attacks": [
+            "Combat",
+            "Acier",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 655,
+          "name": "Goupelin",
+          "level": 75,
+          "types": [
+            "Feu",
+            "Électrik"
+          ],
+          "attacks": [
+            "Feu",
+            "Électrik",
+            "Psy",
+            "Ténèbres"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-117-2-45",
+      "typeId": 117,
+      "partyId": 2,
+      "name": "Mélia",
+      "title": "Meunière",
+      "category": "Personnalités",
+      "requiredBadges": 7,
+      "minLevel": 73,
+      "maxLevel": 75,
+      "team": [
+        {
+          "speciesId": 670,
+          "name": "Floette",
+          "level": 73,
+          "types": [
+            "Fée"
+          ],
+          "attacks": [
+            "Fée",
+            "Plante",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 518,
+          "name": "Mushana",
+          "level": 73,
+          "types": [
+            "Psy"
+          ],
+          "attacks": [
+            "Psy",
+            "Insecte",
+            "Fée"
+          ]
+        },
+        {
+          "speciesId": 135,
+          "name": "Voltali",
+          "level": 73,
+          "types": [
+            "Électrik"
+          ],
+          "attacks": [
+            "Électrik",
+            "Insecte",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 448,
+          "name": "Lucario",
+          "level": 73,
+          "types": [
+            "Combat",
+            "Acier"
+          ],
+          "attacks": [
+            "Combat",
+            "Acier",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 658,
+          "name": "Amphinobi",
+          "level": 75,
+          "types": [
+            "Eau",
+            "Psy"
+          ],
+          "attacks": [
+            "Eau",
+            "Psy",
+            "Ténèbres"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-117-3-46",
+      "typeId": 117,
+      "partyId": 3,
+      "name": "Mélia",
+      "title": "Meunière",
+      "category": "Personnalités",
+      "requiredBadges": 7,
+      "minLevel": 73,
+      "maxLevel": 75,
+      "team": [
+        {
+          "speciesId": 670,
+          "name": "Floette",
+          "level": 73,
+          "types": [
+            "Fée"
+          ],
+          "attacks": [
+            "Fée",
+            "Plante",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 518,
+          "name": "Mushana",
+          "level": 73,
+          "types": [
+            "Psy"
+          ],
+          "attacks": [
+            "Psy",
+            "Insecte",
+            "Fée"
+          ]
+        },
+        {
+          "speciesId": 136,
+          "name": "Pyroli",
+          "level": 73,
+          "types": [
+            "Feu"
+          ],
+          "attacks": [
+            "Feu",
+            "Acier",
+            "Roche"
+          ]
+        },
+        {
+          "speciesId": 448,
+          "name": "Lucario",
+          "level": 73,
+          "types": [
+            "Combat",
+            "Acier"
+          ],
+          "attacks": [
+            "Combat",
+            "Acier",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 652,
+          "name": "Blindépique",
+          "level": 75,
+          "types": [
+            "Plante",
+            "Sol"
+          ],
+          "attacks": [
+            "Plante",
+            "Ténèbres",
+            "Sol"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-123-0-47",
+      "typeId": 123,
+      "partyId": 0,
+      "name": "Olivier",
+      "title": "Professeure",
+      "category": "Personnalités",
+      "requiredBadges": 8,
+      "minLevel": 75,
+      "maxLevel": 77,
+      "team": [
+        {
+          "speciesId": 130,
+          "name": "Léviator",
+          "level": 75,
+          "types": [
+            "Eau",
+            "Vol"
+          ],
+          "attacks": [
+            "Eau",
+            "Ténèbres",
+            "Glace",
+            "Dragon"
+          ]
+        },
+        {
+          "speciesId": 715,
+          "name": "Bruyverne",
+          "level": 76,
+          "types": [
+            "Vol",
+            "Dragon"
+          ],
+          "attacks": [
+            "Dragon",
+            "Vol",
+            "Spectre",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 423,
+          "name": "Tritosor",
+          "level": 76,
+          "types": [
+            "Eau",
+            "Sol"
+          ],
+          "attacks": [
+            "Eau",
+            "Sol",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 668,
+          "name": "Némélios",
+          "level": 77,
+          "types": [
+            "Feu",
+            "Normal"
+          ],
+          "attacks": [
+            "Feu",
+            "Normal",
+            "Ténèbres"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-119-0-48",
+      "typeId": 119,
+      "partyId": 0,
+      "name": "Stephaïstos",
+      "title": "Régent",
+      "category": "Régents",
+      "requiredBadges": 8,
+      "minLevel": 77,
+      "maxLevel": 78,
+      "team": [
+        {
+          "speciesId": 526,
+          "name": "Gigalithe",
+          "level": 77,
+          "types": [
+            "Roche"
+          ],
+          "attacks": [
+            "Combat",
+            "Roche",
+            "Sol"
+          ]
+        },
+        {
+          "speciesId": 139,
+          "name": "Amonistar",
+          "level": 77,
+          "types": [
+            "Roche",
+            "Eau"
+          ],
+          "attacks": [
+            "Eau",
+            "Roche",
+            "Glace",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 59,
+          "name": "Arcanin",
+          "level": 77,
+          "types": [
+            "Feu"
+          ],
+          "attacks": [
+            "Feu",
+            "Roche",
+            "Électrik",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 719,
+          "name": "Diancie",
+          "level": 77,
+          "types": [
+            "Roche",
+            "Fée"
+          ],
+          "attacks": [
+            "Fée",
+            "Roche",
+            "Sol"
+          ]
+        },
+        {
+          "speciesId": 1012,
+          "name": "Stellairoc",
+          "level": 78,
+          "types": [
+            "Roche",
+            "Psy"
+          ],
+          "attacks": [
+            "Roche",
+            "Psy",
+            "Spectre"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-123-1-49",
+      "typeId": 123,
+      "partyId": 1,
+      "name": "Olivier",
+      "title": "Professeure",
+      "category": "Personnalités",
+      "requiredBadges": 8,
+      "minLevel": 78,
+      "maxLevel": 80,
+      "team": [
+        {
+          "speciesId": 523,
+          "name": "Zéblitz",
+          "level": 78,
+          "types": [
+            "Électrik"
+          ],
+          "attacks": [
+            "Électrik",
+            "Feu",
+            "Acier",
+            "Sol"
+          ]
+        },
+        {
+          "speciesId": 49,
+          "name": "Aéromite",
+          "level": 78,
+          "types": [
+            "Insecte",
+            "Poison"
+          ],
+          "attacks": [
+            "Insecte",
+            "Psy",
+            "Plante"
+          ]
+        },
+        {
+          "speciesId": 715,
+          "name": "Bruyverne",
+          "level": 78,
+          "types": [
+            "Vol",
+            "Dragon"
+          ],
+          "attacks": [
+            "Dragon",
+            "Vol",
+            "Spectre",
+            "Feu"
+          ]
+        },
+        {
+          "speciesId": 423,
+          "name": "Tritosor",
+          "level": 79,
+          "types": [
+            "Eau",
+            "Sol"
+          ],
+          "attacks": [
+            "Eau",
+            "Sol",
+            "Poison",
+            "Glace"
+          ]
+        },
+        {
+          "speciesId": 130,
+          "name": "Léviator",
+          "level": 79,
+          "types": [
+            "Eau",
+            "Vol"
+          ],
+          "attacks": [
+            "Eau",
+            "Ténèbres",
+            "Glace",
+            "Dragon"
+          ]
+        },
+        {
+          "speciesId": 668,
+          "name": "Némélios",
+          "level": 80,
+          "types": [
+            "Feu",
+            "Normal"
+          ],
+          "attacks": [
+            "Normal",
+            "Ténèbres",
+            "Feu"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-126-0-50",
+      "typeId": 126,
+      "partyId": 0,
+      "name": "Elsarotchka",
+      "title": "Générale",
+      "category": "Personnalités",
+      "requiredBadges": 9,
+      "minLevel": 80,
+      "maxLevel": 82,
+      "team": [
+        {
+          "speciesId": 699,
+          "name": "Dragmara",
+          "level": 80,
+          "types": [
+            "Roche",
+            "Glace"
+          ],
+          "attacks": [
+            "Glace",
+            "Roche"
+          ]
+        },
+        {
+          "speciesId": 395,
+          "name": "Pingoléon",
+          "level": 80,
+          "types": [
+            "Eau",
+            "Acier"
+          ],
+          "attacks": [
+            "Eau",
+            "Acier",
+            "Glace",
+            "Vol"
+          ]
+        },
+        {
+          "speciesId": 461,
+          "name": "Dimoret",
+          "level": 81,
+          "types": [
+            "Ténèbres",
+            "Glace"
+          ],
+          "attacks": [
+            "Glace",
+            "Ténèbres",
+            "Combat",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 952,
+          "name": "Glaivodo",
+          "level": 81,
+          "types": [
+            "Dragon",
+            "Glace"
+          ],
+          "attacks": [
+            "Dragon",
+            "Glace",
+            "Ténèbres",
+            "Sol"
+          ]
+        },
+        {
+          "speciesId": 896,
+          "name": "Blizzeval",
+          "level": 81,
+          "types": [
+            "Glace"
+          ],
+          "attacks": [
+            "Glace",
+            "Sol",
+            "Combat",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 1010,
+          "name": "Skadippoutou",
+          "level": 82,
+          "types": [
+            "Psy",
+            "Glace"
+          ],
+          "attacks": [
+            "Normal",
+            "Fée",
+            "Psy"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-139-0-51",
+      "typeId": 139,
+      "partyId": 0,
+      "name": "Esternelle",
+      "title": "Maître de Cérémonie",
+      "category": "Personnalités",
+      "requiredBadges": 10,
+      "minLevel": 88,
+      "maxLevel": 90,
+      "team": [
+        {
+          "speciesId": 553,
+          "name": "Crocorible",
+          "level": 88,
+          "types": [
+            "Sol",
+            "Ténèbres"
+          ],
+          "attacks": [
+            "Ténèbres",
+            "Sol",
+            "Roche",
+            "Acier"
+          ]
+        },
+        {
+          "speciesId": 89,
+          "name": "Grotadmorv",
+          "level": 88,
+          "types": [
+            "Poison"
+          ],
+          "attacks": [
+            "Poison",
+            "Ténèbres",
+            "Feu",
+            "Glace"
+          ]
+        },
+        {
+          "speciesId": 630,
+          "name": "Vaututrice",
+          "level": 88,
+          "types": [
+            "Ténèbres",
+            "Vol"
+          ],
+          "attacks": [
+            "Ténèbres",
+            "Poison",
+            "Vol",
+            "Feu"
+          ]
+        },
+        {
+          "speciesId": 442,
+          "name": "Spiritomb",
+          "level": 89,
+          "types": [
+            "Spectre",
+            "Ténèbres"
+          ],
+          "attacks": [
+            "Ténèbres",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 491,
+          "name": "Darkrai",
+          "level": 89,
+          "types": [
+            "Ténèbres"
+          ],
+          "attacks": [
+            "Ténèbres",
+            "Glace",
+            "Électrik"
+          ]
+        },
+        {
+          "speciesId": 1013,
+          "name": "Lovdécès",
+          "level": 90,
+          "types": [
+            "Eau",
+            "Ténèbres"
+          ],
+          "attacks": [
+            "Eau",
+            "Ténèbres",
+            "Fée",
+            "Psy"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-144-0-52",
+      "typeId": 144,
+      "partyId": 0,
+      "name": "Angéline",
+      "title": "Dresseuse",
+      "category": "Personnalités",
+      "requiredBadges": 10,
+      "minLevel": 88,
+      "maxLevel": 90,
+      "team": [
+        {
+          "speciesId": 181,
+          "name": "Pharamp",
+          "level": 88,
+          "types": [
+            "Électrik"
+          ],
+          "attacks": [
+            "Électrik",
+            "Roche",
+            "Dragon",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 350,
+          "name": "Milobellus",
+          "level": 88,
+          "types": [
+            "Eau"
+          ],
+          "attacks": [
+            "Eau",
+            "Glace",
+            "Dragon",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 711,
+          "name": "Banshitrouye",
+          "level": 89,
+          "types": [
+            "Spectre",
+            "Plante"
+          ],
+          "attacks": [
+            "Spectre",
+            "Feu",
+            "Psy",
+            "Plante"
+          ]
+        },
+        {
+          "speciesId": 437,
+          "name": "Archéodong",
+          "level": 89,
+          "types": [
+            "Acier",
+            "Psy"
+          ],
+          "attacks": [
+            "Acier",
+            "Psy",
+            "Sol"
+          ]
+        },
+        {
+          "speciesId": 671,
+          "name": "Florges",
+          "level": 90,
+          "types": [
+            "Fée"
+          ],
+          "attacks": [
+            "Normal",
+            "Fée",
+            "Plante",
+            "Psy"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-156-0-53",
+      "typeId": 156,
+      "partyId": 0,
+      "name": "Myrtin",
+      "title": "Régent Légendaire",
+      "category": "Régents",
+      "requiredBadges": 10,
+      "minLevel": 88,
+      "maxLevel": 90,
+      "team": [
+        {
+          "speciesId": 596,
+          "name": "Mygavolt",
+          "level": 88,
+          "types": [
+            "Insecte",
+            "Électrik"
+          ],
+          "attacks": [
+            "Électrik",
+            "Insecte",
+            "Plante"
+          ]
+        },
+        {
+          "speciesId": 469,
+          "name": "Yanmega",
+          "level": 88,
+          "types": [
+            "Insecte",
+            "Vol"
+          ],
+          "attacks": [
+            "Insecte",
+            "Vol",
+            "Plante",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 545,
+          "name": "Brutapode",
+          "level": 89,
+          "types": [
+            "Insecte",
+            "Poison"
+          ],
+          "attacks": [
+            "Poison",
+            "Insecte",
+            "Sol",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 637,
+          "name": "Pyrax",
+          "level": 89,
+          "types": [
+            "Insecte",
+            "Feu"
+          ],
+          "attacks": [
+            "Feu",
+            "Insecte",
+            "Plante"
+          ]
+        },
+        {
+          "speciesId": 558,
+          "name": "Crabaraque",
+          "level": 89,
+          "types": [
+            "Insecte",
+            "Roche"
+          ],
+          "attacks": [
+            "Normal",
+            "Insecte",
+            "Roche",
+            "Sol"
+          ]
+        },
+        {
+          "speciesId": 330,
+          "name": "Libégon",
+          "level": 90,
+          "types": [
+            "Insecte",
+            "Dragon"
+          ],
+          "attacks": [
+            "Normal",
+            "Sol",
+            "Dragon",
+            "Feu"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-158-0-54",
+      "typeId": 158,
+      "partyId": 0,
+      "name": "Lysandre",
+      "title": "Boss de la Team Flare",
+      "category": "Personnalités",
+      "requiredBadges": 10,
+      "minLevel": 88,
+      "maxLevel": 90,
+      "team": [
+        {
+          "speciesId": 620,
+          "name": "Shaofouine",
+          "level": 88,
+          "types": [
+            "Combat"
+          ],
+          "attacks": [
+            "Combat",
+            "Vol",
+            "Roche",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 430,
+          "name": "Corboss",
+          "level": 88,
+          "types": [
+            "Ténèbres",
+            "Vol"
+          ],
+          "attacks": [
+            "Vol",
+            "Ténèbres",
+            "Feu"
+          ]
+        },
+        {
+          "speciesId": 523,
+          "name": "Zéblitz",
+          "level": 89,
+          "types": [
+            "Électrik"
+          ],
+          "attacks": [
+            "Électrik",
+            "Feu",
+            "Fée",
+            "Acier"
+          ]
+        },
+        {
+          "speciesId": 668,
+          "name": "Némélios",
+          "level": 89,
+          "types": [
+            "Feu",
+            "Normal"
+          ],
+          "attacks": [
+            "Feu",
+            "Normal",
+            "Ténèbres"
+          ]
+        },
+        {
+          "speciesId": 130,
+          "name": "Léviator",
+          "level": 90,
+          "types": [
+            "Eau",
+            "Vol"
+          ],
+          "attacks": [
+            "Eau",
+            "Ténèbres",
+            "Glace",
+            "Dragon"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-148-0-55",
+      "typeId": 148,
+      "partyId": 0,
+      "name": "l'Héraut de l'Or",
+      "title": "Mirra",
+      "category": "Personnalités",
+      "requiredBadges": 10,
+      "minLevel": 88,
+      "maxLevel": 90,
+      "team": [
+        {
+          "speciesId": 479,
+          "name": "Motisma",
+          "level": 88,
+          "types": [
+            "Électrik",
+            "Spectre"
+          ],
+          "attacks": [
+            "Normal",
+            "Ténèbres",
+            "Électrik"
+          ]
+        },
+        {
+          "speciesId": 350,
+          "name": "Milobellus",
+          "level": 88,
+          "types": [
+            "Eau"
+          ],
+          "attacks": [
+            "Eau",
+            "Dragon",
+            "Glace",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 243,
+          "name": "Raikou",
+          "level": 89,
+          "types": [
+            "Électrik"
+          ],
+          "attacks": [
+            "Électrik",
+            "Combat",
+            "Spectre",
+            "Eau"
+          ]
+        },
+        {
+          "speciesId": 65,
+          "name": "Alakazam",
+          "level": 89,
+          "types": [
+            "Psy"
+          ],
+          "attacks": [
+            "Psy",
+            "Spectre",
+            "Combat"
+          ]
+        },
+        {
+          "speciesId": 373,
+          "name": "Drattak",
+          "level": 89,
+          "types": [
+            "Dragon",
+            "Vol"
+          ],
+          "attacks": [
+            "Dragon",
+            "Feu",
+            "Vol"
+          ]
+        },
+        {
+          "speciesId": 359,
+          "name": "Absol",
+          "level": 90,
+          "types": [
+            "Ténèbres"
+          ],
+          "attacks": [
+            "Ténèbres",
+            "Fée",
+            "Normal"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-182-0-56",
+      "typeId": 182,
+      "partyId": 0,
+      "name": "Romarin",
+      "title": "Sonneur",
+      "category": "Personnalités",
+      "requiredBadges": 11,
+      "minLevel": 98,
+      "maxLevel": 100,
+      "team": [
+        {
+          "speciesId": 621,
+          "name": "Drakkarmin",
+          "level": 99,
+          "types": [
+            "Dragon"
+          ],
+          "attacks": [
+            "Dragon",
+            "Ténèbres",
+            "Feu",
+            "Électrik"
+          ]
+        },
+        {
+          "speciesId": 437,
+          "name": "Archéodong",
+          "level": 98,
+          "types": [
+            "Acier",
+            "Psy"
+          ],
+          "attacks": [
+            "Acier",
+            "Psy",
+            "Sol",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 567,
+          "name": "Aéroptéryx",
+          "level": 98,
+          "types": [
+            "Roche",
+            "Vol"
+          ],
+          "attacks": [
+            "Vol",
+            "Sol",
+            "Roche",
+            "Insecte"
+          ]
+        },
+        {
+          "speciesId": 381,
+          "name": "Latios",
+          "level": 98,
+          "types": [
+            "Dragon",
+            "Psy"
+          ],
+          "attacks": [
+            "Dragon",
+            "Psy",
+            "Spectre"
+          ]
+        },
+        {
+          "speciesId": 740,
+          "name": "Crabominable",
+          "level": 99,
+          "types": [
+            "Combat",
+            "Glace"
+          ],
+          "attacks": [
+            "Glace",
+            "Combat",
+            "Électrik",
+            "Poison"
+          ]
+        },
+        {
+          "speciesId": 244,
+          "name": "Entei",
+          "level": 100,
+          "types": [
+            "Feu"
+          ],
+          "attacks": [
+            "Feu",
+            "Roche",
+            "Acier",
+            "Normal"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-188-0-57",
+      "typeId": 188,
+      "partyId": 0,
+      "name": "France",
+      "title": "Reine Immortelle",
+      "category": "Personnalités",
+      "requiredBadges": 11,
+      "minLevel": 97,
+      "maxLevel": 100,
+      "team": [
+        {
+          "speciesId": 645,
+          "name": "Démétéros",
+          "level": 97,
+          "types": [
+            "Sol",
+            "Vol"
+          ],
+          "attacks": [
+            "Roche",
+            "Sol",
+            "Insecte"
+          ]
+        },
+        {
+          "speciesId": 31,
+          "name": "Nidoqueen",
+          "level": 98,
+          "types": [
+            "Poison",
+            "Sol"
+          ],
+          "attacks": [
+            "Poison",
+            "Électrik",
+            "Glace",
+            "Sol"
+          ]
+        },
+        {
+          "speciesId": 994,
+          "name": "Ursaking",
+          "level": 98,
+          "types": [
+            "Normal",
+            "Sol"
+          ],
+          "attacks": [
+            "Sol",
+            "Normal",
+            "Spectre",
+            "Fée"
+          ]
+        },
+        {
+          "speciesId": 445,
+          "name": "Carchakrok",
+          "level": 99,
+          "types": [
+            "Dragon",
+            "Sol"
+          ],
+          "attacks": [
+            "Sol",
+            "Dragon",
+            "Acier",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 389,
+          "name": "Torterra",
+          "level": 99,
+          "types": [
+            "Plante",
+            "Sol"
+          ],
+          "attacks": [
+            "Sol",
+            "Plante",
+            "Roche",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 1014,
+          "name": "Ossassin",
+          "level": 100,
+          "types": [
+            "Sol",
+            "Acier"
+          ],
+          "attacks": [
+            "Acier",
+            "Sol",
+            "Feu",
+            "Roche"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-189-0-58",
+      "typeId": 189,
+      "partyId": 0,
+      "name": "Aure",
+      "title": "Roi Immortel",
+      "category": "Personnalités",
+      "requiredBadges": 11,
+      "minLevel": 97,
+      "maxLevel": 100,
+      "team": [
+        {
+          "speciesId": 192,
+          "name": "Héliatronc",
+          "level": 97,
+          "types": [
+            "Plante",
+            "Feu"
+          ],
+          "attacks": [
+            "Plante",
+            "Feu",
+            "Sol"
+          ]
+        },
+        {
+          "speciesId": 911,
+          "name": "Miascarade",
+          "level": 99,
+          "types": [
+            "Plante",
+            "Ténèbres"
+          ],
+          "attacks": [
+            "Plante",
+            "Ténèbres",
+            "Insecte",
+            "Fée"
+          ]
+        },
+        {
+          "speciesId": 101,
+          "name": "Electrode",
+          "level": 98,
+          "types": [
+            "Électrik"
+          ],
+          "attacks": [
+            "Plante",
+            "Électrik",
+            "Insecte"
+          ]
+        },
+        {
+          "speciesId": 272,
+          "name": "Ludicolo",
+          "level": 98,
+          "types": [
+            "Eau",
+            "Plante"
+          ],
+          "attacks": [
+            "Eau",
+            "Plante",
+            "Glace",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 254,
+          "name": "Jungko",
+          "level": 99,
+          "types": [
+            "Plante",
+            "Dragon"
+          ],
+          "attacks": [
+            "Plante",
+            "Dragon",
+            "Sol",
+            "Normal"
+          ]
+        },
+        {
+          "speciesId": 1015,
+          "name": "Simulmarbre",
+          "level": 100,
+          "types": [
+            "Roche",
+            "Plante"
+          ],
+          "attacks": [
+            "Plante",
+            "Roche",
+            "Combat"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-190-0-59",
+      "typeId": 190,
+      "partyId": 0,
+      "name": "Primula",
+      "title": "Reine Immortelle",
+      "category": "Personnalités",
+      "requiredBadges": 11,
+      "minLevel": 97,
+      "maxLevel": 100,
+      "team": [
+        {
+          "speciesId": 508,
+          "name": "Mastouffe",
+          "level": 97,
+          "types": [
+            "Normal"
+          ],
+          "attacks": [
+            "Normal",
+            "Ténèbres",
+            "Fée",
+            "Électrik"
+          ]
+        },
+        {
+          "speciesId": 997,
+          "name": "Royali",
+          "level": 99,
+          "types": [
+            "Normal"
+          ],
+          "attacks": [
+            "Normal",
+            "Plante",
+            "Spectre",
+            "Poison"
+          ]
+        },
+        {
+          "speciesId": 760,
+          "name": "Chelours",
+          "level": 98,
+          "types": [
+            "Normal",
+            "Combat"
+          ],
+          "attacks": [
+            "Combat",
+            "Normal",
+            "Spectre",
+            "Acier"
+          ]
+        },
+        {
+          "speciesId": 780,
+          "name": "Draïeul",
+          "level": 98,
+          "types": [
+            "Normal",
+            "Dragon"
+          ],
+          "attacks": [
+            "Dragon",
+            "Normal",
+            "Feu",
+            "Psy"
+          ]
+        },
+        {
+          "speciesId": 132,
+          "name": "Métamorph",
+          "level": 99,
+          "types": [
+            "Normal"
+          ],
+          "attacks": []
+        },
+        {
+          "speciesId": 1009,
+          "name": "Mangoule",
+          "level": 100,
+          "types": [
+            "Normal",
+            "Spectre"
+          ],
+          "attacks": [
+            "Spectre",
+            "Normal",
+            "Combat"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-192-0-60",
+      "typeId": 192,
+      "partyId": 0,
+      "name": "de la lignée Red",
+      "title": "Malvo",
+      "category": "Personnalités",
+      "requiredBadges": 11,
+      "minLevel": 97,
+      "maxLevel": 100,
+      "team": [
+        {
+          "speciesId": 25,
+          "name": "Pikachu",
+          "level": 100,
+          "types": [
+            "Électrik",
+            "Poison"
+          ],
+          "attacks": [
+            "Électrik",
+            "Acier",
+            "Combat",
+            "Eau"
+          ]
+        },
+        {
+          "speciesId": 131,
+          "name": "Lokhlass",
+          "level": 97,
+          "types": [
+            "Eau",
+            "Glace"
+          ],
+          "attacks": [
+            "Psy",
+            "Eau",
+            "Glace",
+            "Électrik"
+          ]
+        },
+        {
+          "speciesId": 143,
+          "name": "Ronflex",
+          "level": 98,
+          "types": [
+            "Normal"
+          ],
+          "attacks": [
+            "Normal",
+            "Ténèbres",
+            "Acier",
+            "Sol"
+          ]
+        },
+        {
+          "speciesId": 3,
+          "name": "Florizarre",
+          "level": 98,
+          "types": [
+            "Plante",
+            "Poison"
+          ],
+          "attacks": [
+            "Plante",
+            "Poison",
+            "Sol"
+          ]
+        },
+        {
+          "speciesId": 9,
+          "name": "Tortank",
+          "level": 99,
+          "types": [
+            "Eau"
+          ],
+          "attacks": [
+            "Eau",
+            "Acier",
+            "Glace",
+            "Ténèbres"
+          ]
+        },
+        {
+          "speciesId": 6,
+          "name": "Dracaufeu",
+          "level": 99,
+          "types": [
+            "Feu",
+            "Vol"
+          ],
+          "attacks": [
+            "Feu",
+            "Dragon",
+            "Sol",
+            "Normal"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trainer-193-0-61",
+      "typeId": 193,
+      "partyId": 0,
+      "name": "Rosa",
+      "title": "Dresseuse",
+      "category": "Personnalités",
+      "requiredBadges": 11,
+      "minLevel": 100,
+      "maxLevel": 100,
+      "team": [
+        {
+          "speciesId": 555,
+          "name": "Darumacho",
+          "level": 100,
+          "types": [
+            "Feu"
+          ],
+          "attacks": [
+            "Sol",
+            "Feu",
+            "Insecte",
+            "Roche"
+          ]
+        },
+        {
+          "speciesId": 691,
+          "name": "Kravarech",
+          "level": 100,
+          "types": [
+            "Poison",
+            "Dragon"
+          ],
+          "attacks": [
+            "Poison",
+            "Dragon",
+            "Eau",
+            "Glace"
+          ]
+        },
+        {
+          "speciesId": 892,
+          "name": "Shifours",
+          "level": 100,
+          "types": [
+            "Combat",
+            "Ténèbres"
+          ],
+          "attacks": [
+            "Combat",
+            "Eau",
+            "Insecte",
+            "Poison"
+          ]
+        },
+        {
+          "speciesId": 635,
+          "name": "Trioxhydre",
+          "level": 100,
+          "types": [
+            "Ténèbres",
+            "Dragon"
+          ],
+          "attacks": [
+            "Ténèbres",
+            "Feu",
+            "Dragon"
+          ]
+        },
+        {
+          "speciesId": 897,
+          "name": "Spectreval",
+          "level": 100,
+          "types": [
+            "Spectre"
+          ],
+          "attacks": [
+            "Psy",
+            "Feu",
+            "Spectre",
+            "Ténèbres"
+          ]
+        },
+        {
+          "speciesId": 861,
+          "name": "Angoliath",
+          "level": 100,
+          "types": [
+            "Ténèbres",
+            "Fée"
+          ],
+          "attacks": [
+            "Fée",
+            "Ténèbres",
+            "Électrik",
+            "Feu"
+          ]
+        }
+      ]
+    }
+  ],
+  "alchemyPages": [
+    {
+      "id": "alchemy-17-20",
+      "location": "Navarroc",
+      "mapId": 17,
+      "x": 68,
+      "y": 26,
+      "requiredBadges": 0,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 68, 26."
+    },
+    {
+      "id": "alchemy-23-11",
+      "location": "Route 3",
+      "mapId": 23,
+      "x": 58,
+      "y": 40,
+      "requiredBadges": 1,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 58, 40."
+    },
+    {
+      "id": "alchemy-27-18",
+      "location": "Route 4",
+      "mapId": 27,
+      "x": 57,
+      "y": 40,
+      "requiredBadges": 1,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 57, 40."
+    },
+    {
+      "id": "alchemy-29-14",
+      "location": "Bois-en-Tronc",
+      "mapId": 29,
+      "x": 47,
+      "y": 23,
+      "requiredBadges": 1,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 47, 23."
+    },
+    {
+      "id": "alchemy-36-6",
+      "location": "Château Rosillon",
+      "mapId": 36,
+      "x": 6,
+      "y": 58,
+      "requiredBadges": 0,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 6, 58."
+    },
+    {
+      "id": "alchemy-39-1",
+      "location": "Bibliothèque Ancestrale",
+      "mapId": 39,
+      "x": 71,
+      "y": 21,
+      "requiredBadges": 1,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 71, 21."
+    },
+    {
+      "id": "alchemy-43-8",
+      "location": "Marais Impie",
+      "mapId": 43,
+      "x": 67,
+      "y": 6,
+      "requiredBadges": 2,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 67, 6."
+    },
+    {
+      "id": "alchemy-46-9",
+      "location": "Clairière Collinaire",
+      "mapId": 46,
+      "x": 20,
+      "y": 14,
+      "requiredBadges": 2,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 20, 14."
+    },
+    {
+      "id": "alchemy-56-9",
+      "location": "Route 5",
+      "mapId": 56,
+      "x": 54,
+      "y": 15,
+      "requiredBadges": 2,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 54, 15."
+    },
+    {
+      "id": "alchemy-58-8",
+      "location": "Sanctuaire Royal",
+      "mapId": 58,
+      "x": 36,
+      "y": 12,
+      "requiredBadges": 2,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 36, 12."
+    },
+    {
+      "id": "alchemy-79-7",
+      "location": "Route 7",
+      "mapId": 79,
+      "x": 23,
+      "y": 43,
+      "requiredBadges": 3,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 23, 43."
+    },
+    {
+      "id": "alchemy-81-23",
+      "location": "Ancien Atelier",
+      "mapId": 81,
+      "x": 40,
+      "y": 15,
+      "requiredBadges": 3,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 40, 15."
+    },
+    {
+      "id": "alchemy-81-15",
+      "location": "Ancien Atelier",
+      "mapId": 81,
+      "x": 8,
+      "y": 38,
+      "requiredBadges": 3,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 8, 38."
+    },
+    {
+      "id": "alchemy-90-48",
+      "location": "Académie d'Essience",
+      "mapId": 90,
+      "x": 34,
+      "y": 31,
+      "requiredBadges": 3,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 34, 31."
+    },
+    {
+      "id": "alchemy-91-6",
+      "location": "Route 8",
+      "mapId": 91,
+      "x": 25,
+      "y": 12,
+      "requiredBadges": 3,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 25, 12."
+    },
+    {
+      "id": "alchemy-95-12",
+      "location": "Château Drazat",
+      "mapId": 95,
+      "x": 65,
+      "y": 10,
+      "requiredBadges": 3,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 65, 10."
+    },
+    {
+      "id": "alchemy-96-16",
+      "location": "Route 10",
+      "mapId": 96,
+      "x": 42,
+      "y": 42,
+      "requiredBadges": 4,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 42, 42."
+    },
+    {
+      "id": "alchemy-100-11",
+      "location": "Route 8",
+      "mapId": 100,
+      "x": 7,
+      "y": 27,
+      "requiredBadges": 3,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 7, 27."
+    },
+    {
+      "id": "alchemy-107-15",
+      "location": "Route 11",
+      "mapId": 107,
+      "x": 13,
+      "y": 49,
+      "requiredBadges": 5,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 13, 49."
+    },
+    {
+      "id": "alchemy-110-28",
+      "location": "Route 11",
+      "mapId": 110,
+      "x": 46,
+      "y": 35,
+      "requiredBadges": 5,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 46, 35."
+    },
+    {
+      "id": "alchemy-113-22",
+      "location": "Bridouville",
+      "mapId": 113,
+      "x": 78,
+      "y": 26,
+      "requiredBadges": 5,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 78, 26."
+    },
+    {
+      "id": "alchemy-121-10",
+      "location": "Route 9",
+      "mapId": 121,
+      "x": 9,
+      "y": 31,
+      "requiredBadges": 5,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 9, 31."
+    },
+    {
+      "id": "alchemy-123-26",
+      "location": "Jardin Boyard",
+      "mapId": 123,
+      "x": 29,
+      "y": 28,
+      "requiredBadges": 5,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 29, 28."
+    },
+    {
+      "id": "alchemy-128-17",
+      "location": "Catacombes Septentrionales",
+      "mapId": 128,
+      "x": 38,
+      "y": 18,
+      "requiredBadges": 5,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 38, 18."
+    },
+    {
+      "id": "alchemy-138-37",
+      "location": "Vieux Vanitas",
+      "mapId": 138,
+      "x": 50,
+      "y": 38,
+      "requiredBadges": 6,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 50, 38."
+    },
+    {
+      "id": "alchemy-156-47",
+      "location": "Jardin Vanitas",
+      "mapId": 156,
+      "x": 43,
+      "y": 25,
+      "requiredBadges": 6,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 43, 25."
+    },
+    {
+      "id": "alchemy-159-18",
+      "location": "Route 13",
+      "mapId": 159,
+      "x": 8,
+      "y": 42,
+      "requiredBadges": 6,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 8, 42."
+    },
+    {
+      "id": "alchemy-163-5",
+      "location": "Illumis - Nord",
+      "mapId": 163,
+      "x": 71,
+      "y": 17,
+      "requiredBadges": 7,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 71, 17."
+    },
+    {
+      "id": "alchemy-163-48",
+      "location": "Illumis - Nord",
+      "mapId": 163,
+      "x": 49,
+      "y": 32,
+      "requiredBadges": 7,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 49, 32."
+    },
+    {
+      "id": "alchemy-177-10",
+      "location": "Illumis - Sud — Café Soleil",
+      "mapId": 177,
+      "x": 4,
+      "y": 12,
+      "requiredBadges": 7,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 4, 12."
+    },
+    {
+      "id": "alchemy-183-17",
+      "location": "Votre-Gentilhomme d'Illumis",
+      "mapId": 183,
+      "x": 2,
+      "y": 18,
+      "requiredBadges": 7,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 2, 18."
+    },
+    {
+      "id": "alchemy-234-17",
+      "location": "Route 15",
+      "mapId": 234,
+      "x": 6,
+      "y": 27,
+      "requiredBadges": 8,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 6, 27."
+    },
+    {
+      "id": "alchemy-234-4",
+      "location": "Route 15",
+      "mapId": 234,
+      "x": 37,
+      "y": 40,
+      "requiredBadges": 8,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 37, 40."
+    },
+    {
+      "id": "alchemy-242-11",
+      "location": "Route 17",
+      "mapId": 242,
+      "x": 47,
+      "y": 60,
+      "requiredBadges": 9,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 47, 60."
+    },
+    {
+      "id": "alchemy-258-11",
+      "location": "Pires-Aînées",
+      "mapId": 258,
+      "x": 55,
+      "y": 16,
+      "requiredBadges": 8,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 55, 16."
+    },
+    {
+      "id": "alchemy-263-23",
+      "location": "Asile d'Hache-Âme",
+      "mapId": 263,
+      "x": 65,
+      "y": 26,
+      "requiredBadges": 8,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 65, 26."
+    },
+    {
+      "id": "alchemy-269-14",
+      "location": "Route 14",
+      "mapId": 269,
+      "x": 9,
+      "y": 40,
+      "requiredBadges": 7,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 9, 40."
+    },
+    {
+      "id": "alchemy-287-9",
+      "location": "Route 18",
+      "mapId": 287,
+      "x": 44,
+      "y": 31,
+      "requiredBadges": 9,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 44, 31."
+    },
+    {
+      "id": "alchemy-292-4",
+      "location": "Route 20",
+      "mapId": 292,
+      "x": 32,
+      "y": 53,
+      "requiredBadges": 10,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 32, 53."
+    },
+    {
+      "id": "alchemy-299-11",
+      "location": "Route 19",
+      "mapId": 299,
+      "x": 62,
+      "y": 14,
+      "requiredBadges": 10,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 62, 14."
+    },
+    {
+      "id": "alchemy-323-29",
+      "location": "Fonds Marins",
+      "mapId": 323,
+      "x": 32,
+      "y": 7,
+      "requiredBadges": 0,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 32, 7."
+    },
+    {
+      "id": "alchemy-339-8",
+      "location": "Route 21",
+      "mapId": 339,
+      "x": 53,
+      "y": 12,
+      "requiredBadges": 10,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 53, 12."
+    },
+    {
+      "id": "alchemy-354-2",
+      "location": "Route 23",
+      "mapId": 354,
+      "x": 8,
+      "y": 68,
+      "requiredBadges": 11,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 8, 68."
+    },
+    {
+      "id": "alchemy-358-4",
+      "location": "Route 22",
+      "mapId": 358,
+      "x": 53,
+      "y": 9,
+      "requiredBadges": 11,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 53, 9."
+    },
+    {
+      "id": "alchemy-367-8",
+      "location": "Bois du Dédale",
+      "mapId": 367,
+      "x": 37,
+      "y": 17,
+      "requiredBadges": 10,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 37, 17."
+    },
+    {
+      "id": "alchemy-373-31",
+      "location": "Route 23",
+      "mapId": 373,
+      "x": 34,
+      "y": 19,
+      "requiredBadges": 11,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 34, 19."
+    },
+    {
+      "id": "alchemy-392-4",
+      "location": "Banlieue d'Illumis - Est",
+      "mapId": 392,
+      "x": 37,
+      "y": 26,
+      "requiredBadges": 7,
+      "hint": "Cherche un point interactif à proximité des coordonnées internes 37, 26."
+    }
+  ],
+  "storyChapters": [
+    {
+      "badges": 0,
+      "title": "Le départ",
+      "location": "Bourg Canvas → Grotte Navarre → Navarroc",
+      "recap": "L’aventure commence et l’Alchimie Pokémon est introduite avant la première grande épreuve."
+    },
+    {
+      "badges": 1,
+      "title": "Après 1 victoire",
+      "location": "Prochaine étape majeure : Forteresse de Savinion",
+      "recap": "La grande étape de Forteresse de Navarroc est terminée. Poursuis vers la prochaine forteresse en explorant les routes et détours désormais accessibles."
+    },
+    {
+      "badges": 2,
+      "title": "Après 2 victoires",
+      "location": "Prochaine étape majeure : Forteresse d’Essience",
+      "recap": "La grande étape de Forteresse de Savinion est terminée. Poursuis vers la prochaine forteresse en explorant les routes et détours désormais accessibles."
+    },
+    {
+      "badges": 3,
+      "title": "Après 3 victoires",
+      "location": "Prochaine étape majeure : Forteresse d’Essience",
+      "recap": "La grande étape de Forteresse d’Essience est terminée. Poursuis vers la prochaine forteresse en explorant les routes et détours désormais accessibles."
+    },
+    {
+      "badges": 4,
+      "title": "Après 4 victoires",
+      "location": "Prochaine étape majeure : Lévite-Or",
+      "recap": "La grande étape de Forteresse d’Essience est terminée. Poursuis vers la prochaine forteresse en explorant les routes et détours désormais accessibles."
+    },
+    {
+      "badges": 5,
+      "title": "Après 5 victoires",
+      "location": "Prochaine étape majeure : Forteresse de Fort-Vanitas",
+      "recap": "La grande étape de Lévite-Or est terminée. Poursuis vers la prochaine forteresse en explorant les routes et détours désormais accessibles."
+    },
+    {
+      "badges": 6,
+      "title": "Après 6 victoires",
+      "location": "Prochaine étape majeure : Asile d’Hache-Âme",
+      "recap": "La grande étape de Forteresse de Fort-Vanitas est terminée. Poursuis vers la prochaine forteresse en explorant les routes et détours désormais accessibles."
+    },
+    {
+      "badges": 7,
+      "title": "Après 7 victoires",
+      "location": "Prochaine étape majeure : Forteresse de Romant-sous-Bois",
+      "recap": "La grande étape de Asile d’Hache-Âme est terminée. Poursuis vers la prochaine forteresse en explorant les routes et détours désormais accessibles."
+    },
+    {
+      "badges": 8,
+      "title": "Après 8 victoires",
+      "location": "Prochaine étape majeure : Forteresse de Flusselles",
+      "recap": "La grande étape de Forteresse de Romant-sous-Bois est terminée. Poursuis vers la prochaine forteresse en explorant les routes et détours désormais accessibles."
+    },
+    {
+      "badges": 9,
+      "title": "Après 9 victoires",
+      "location": "Prochaine étape majeure : Forteresse d’Auffrac-les-Congères",
+      "recap": "La grande étape de Forteresse de Flusselles est terminée. Poursuis vers la prochaine forteresse en explorant les routes et détours désormais accessibles."
+    },
+    {
+      "badges": 10,
+      "title": "Après 10 victoires",
+      "location": "Prochaine étape majeure : Coulisses du Cirnique",
+      "recap": "La grande étape de Forteresse d’Auffrac-les-Congères est terminée. Poursuis vers la prochaine forteresse en explorant les routes et détours désormais accessibles."
+    },
+    {
+      "badges": 11,
+      "title": "Après 11 victoires",
+      "location": "Prochaine étape majeure : Toileries",
+      "recap": "La grande étape de Coulisses du Cirnique est terminée. Poursuis vers la prochaine forteresse en explorant les routes et détours désormais accessibles."
+    },
+    {
+      "badges": 12,
+      "title": "Après les douze victoires",
+      "location": "Suite de l’aventure et objectifs restants",
+      "recap": "La grande étape de Toileries est terminée. Les contenus de fin d’aventure deviennent pertinents."
+    }
+  ],
   "mechanics": [
     {
       "id": "level-cap",
