@@ -20,6 +20,8 @@ assert.strictEqual(wiki.machines.length, 114, "Le wiki doit contenir 108 CT et 6
 assert.strictEqual(wiki.machines.filter((machine) => machine.kind === "CT").length, 108, "Nombre de CT incorrect.");
 assert.strictEqual(wiki.machines.filter((machine) => machine.kind === "CS").length, 6, "Nombre de CS incorrect.");
 assert.strictEqual(new Set(wiki.machines.map((machine) => machine.code)).size, 114, "Une CT ou CS est presente en double.");
+assert.strictEqual(wiki.machines.filter((machine) => machine.variablePower).length, 4, "Les quatre CT a puissance variable ne sont pas identifiees.");
+assert(wiki.machines.filter((machine) => machine.variablePower).every((machine) => machine.power === null), "Une puissance variable est encore exposee comme une valeur fixe.");
 assert(wiki.machines.filter((machine) => machine.kind === "CT").every((machine) => machine.sources.length), "Une CT n'a aucun lieu d'obtention detecte.");
 assert.strictEqual(wiki.machines.filter((machine) => machine.kind === "CS" && machine.relatedMachines?.length).length, 4, "Les quatre CT equivalentes aux CS ne sont pas reliees.");
 assert(wiki.machines.filter((machine) => machine.kind === "CS").every((machine) => machine.fieldUse), "Une CS ne decrit pas son usage sur le terrain.");
@@ -45,6 +47,21 @@ for (const machine of wiki.machines) {
 assert.strictEqual(wiki.leaders.length, 12, "Le parcours doit contenir 12 chefs.");
 assert.strictEqual(wiki.leaders.reduce((total, leader) => total + leader.variants.length, 0), 14, "Le nombre de configurations de chefs est incorrect.");
 assert.deepStrictEqual(Array.from(wiki.levelCaps), [17, 27, 36, 42, 50, 56, 70, 75, 80, 85, 94, 100], "Les plafonds de niveau ont change.");
+
+assert.strictEqual(wiki.storyChapters.length, 13, "Le guide anti-spoiler doit couvrir le depart et les 12 grandes etapes.");
+assert.deepStrictEqual(Array.from(wiki.storyChapters, (chapter) => chapter.badges), Array.from({ length: 13 }, (_, index) => index), "Les etapes du guide ne suivent pas la progression.");
+assert(wiki.storyChapters.every((chapter) => chapter.title && chapter.location && chapter.recap), "Une etape du guide d'aventure est incomplete.");
+
+assert.strictEqual(wiki.alchemyPages.length, 47, "Les 47 pages physiques d'alchimie ne sont pas toutes referencees.");
+assert.strictEqual(new Set(wiki.alchemyPages.map((page) => page.id)).size, 47, "Une page physique d'alchimie est presente en double.");
+assert(wiki.alchemyPages.every((page) => page.location && page.requiredBadges >= 0 && page.requiredBadges <= 12), "Une page d'alchimie a une progression invalide.");
+
+const appTypes = new Set(["Normal", "Feu", "Eau", "Electrik", "Plante", "Glace", "Combat", "Poison", "Sol", "Vol", "Psy", "Insecte", "Roche", "Spectre", "Dragon", "Tenebres", "Acier", "Fee"]);
+assert.strictEqual(wiki.notableTrainers.length, 62, "Les equipes des personnages importants sont incompletes.");
+assert.strictEqual(new Set(wiki.notableTrainers.map((trainer) => trainer.id)).size, 62, "Une equipe de personnage important est presente en double.");
+assert(wiki.notableTrainers.every((trainer) => trainer.name && trainer.title && trainer.team.length >= 1 && trainer.team.length <= 6), "Une equipe Versus importante est incomplete.");
+assert(wiki.notableTrainers.flatMap((trainer) => trainer.team).every((pokemon) => catalogSpeciesIds.has(pokemon.speciesId)), "Une equipe Versus reference un Pokemon absent du catalogue Z.");
+assert(wiki.notableTrainers.flatMap((trainer) => trainer.team).every((pokemon) => [...pokemon.types, ...pokemon.attacks].every((type) => appTypes.has(type))), "Une equipe Versus utilise un type incompatible avec l'app.");
 
 for (const leader of wiki.leaders) {
   assert(leader.name && leader.location && leader.specialty, `La fiche du chef ${leader.order} est incomplete.`);

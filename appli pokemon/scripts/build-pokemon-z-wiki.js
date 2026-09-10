@@ -163,12 +163,14 @@ function buildMoveDex(messages) {
     const offset = moveId * moveRecordSize;
     const name = text(messages[5]?.[moveId]);
     if (!name) continue;
+    const rawPower = moveData[offset + 2];
     moves[moveId] = {
       name,
       description: text(messages[6]?.[moveId]),
       type: text(messages[12]?.[moveData[offset + 3]]) || "Inconnu",
       category: ["Physique", "Spéciale", "Statut"][moveData[offset + 4]] || "Inconnue",
-      power: moveData[offset + 2],
+      power: rawPower === 1 ? null : rawPower,
+      ...(rawPower === 1 ? { variablePower: true } : {}),
       accuracy: moveData[offset + 5],
       pp: moveData[offset + 6]
     };
@@ -213,6 +215,7 @@ function buildMachines(messages, constants, mapInfos) {
     const moveId = record[9];
     const offset = moveId * moveRecordSize;
     const category = moveData[offset + 4];
+    const rawPower = moveData[offset + 2];
     return {
       id: record[0],
       code: text(messages[7]?.[record[0]]).replace(/[.\s]+$/u, ""),
@@ -222,7 +225,8 @@ function buildMachines(messages, constants, mapInfos) {
       description: text(messages[6]?.[moveId]),
       type: text(messages[12]?.[moveData[offset + 3]]) || "Inconnu",
       category: ["Physique", "Spéciale", "Statut"][category] || "Inconnue",
-      power: moveData[offset + 2],
+      power: rawPower === 1 ? null : rawPower,
+      ...(rawPower === 1 ? { variablePower: true } : {}),
       accuracy: moveData[offset + 5],
       pp: moveData[offset + 6],
       compatibleSpeciesIds: [...new Set(decodeWordArray(compatibility[moveId]))],
@@ -308,6 +312,7 @@ function buildNotableTrainers(messages) {
   const moveData = readData("moves.dat");
   const dexData = readData("dexdata.dat");
   const caps = [17, 27, 36, 42, 50, 56, 70, 75, 80, 85, 94, 100];
+  const appTypeName = (value) => ({ "Électrik": "Electrik", "Ténèbres": "Tenebres", "Fée": "Fee" }[value] || value);
   return trainers.filter((record) => NOTABLE_TRAINER_TYPE_IDS.includes(record[0])).map((record, index) => {
     const sourceName = text(record[1]);
     const className = text(messages[13]?.[record[0]]) || "Personnalité";
@@ -315,9 +320,9 @@ function buildNotableTrainers(messages) {
       const speciesId = pokemon[0];
       const dexOffset = (speciesId - 1) * 76;
       const types = [...new Set([dexData[dexOffset + 8], dexData[dexOffset + 9]])]
-        .map((typeId) => text(messages[12]?.[typeId]) || "Inconnu");
+        .map((typeId) => appTypeName(text(messages[12]?.[typeId]) || "Inconnu"));
       const attacks = [...new Set(pokemon.slice(3, 7).filter(Boolean).map((moveId) => (
-        text(messages[12]?.[moveData[moveId * 14 + 3]]) || "Inconnu"
+        appTypeName(text(messages[12]?.[moveData[moveId * 14 + 3]]) || "Inconnu")
       )))];
       return {
         speciesId,
@@ -349,11 +354,11 @@ function alchemyRequiredBadges(location) {
   const routeBadges = { 3: 1, 4: 1, 5: 2, 7: 3, 8: 3, 9: 5, 10: 4, 11: 5, 13: 6, 14: 7, 15: 8, 17: 9, 18: 9, 19: 10, 20: 10, 21: 10, 22: 11, 23: 11 };
   if (routeBadges[route] !== undefined) return routeBadges[route];
   const stages = [
-    [/Navarroc|Grotte Navarre/u, 0], [/Bois-en-Tronc|Manoir Rosillon|Bibliothèque Ancestrale/u, 1],
+    [/Navarroc|Grotte Navarre/u, 0], [/Bois-en-Tronc|(?:Manoir|Château) Rosillon|Bibliothèque Ancestrale/u, 1],
     [/Marais Impie|Clairière Collinaire|Sanctuaire Royal/u, 2], [/Ancien Atelier|Académie d'Essience|Château Drazat/u, 3],
     [/Bridouville|Jardin Boyard|Catacombes/u, 5], [/Vieux Vanitas|Jardin Vanitas/u, 6],
     [/Illumis|Café Soleil|Votre-Gentilhomme/u, 7], [/Pires-Aînées|Asile d'Hache-Âme/u, 8],
-    [/Fonds marins/u, 7], [/Bois du Dédale/u, 10]
+    [/Fonds Marins/u, 7], [/Bois du Dédale/u, 10]
   ];
   return stages.find(([pattern]) => pattern.test(location))?.[1] ?? 0;
 }

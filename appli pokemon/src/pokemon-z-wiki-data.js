@@ -7055,7 +7055,8 @@ const POKEMON_Z_WIKI_DATA = {
       "description": "Plus le Pokémon apprécie son Dresseur, plus la puissance de cette attaque furieuse augmente.",
       "type": "Normal",
       "category": "Physique",
-      "power": 1,
+      "power": null,
+      "variablePower": true,
       "accuracy": 100,
       "pp": 20,
       "compatibleSpeciesIds": [
@@ -9595,7 +9596,8 @@ const POKEMON_Z_WIKI_DATA = {
       "description": "Un grand coup de pied bas qui fauche la cible. Plus celle-ci est lourde, plus la puissance de cette capacité augmente.",
       "type": "Combat",
       "category": "Physique",
-      "power": 1,
+      "power": null,
+      "variablePower": true,
       "accuracy": 100,
       "pp": 20,
       "compatibleSpeciesIds": [
@@ -18859,7 +18861,8 @@ const POKEMON_Z_WIKI_DATA = {
       "description": "Le lanceur effectue une rotation rapide et frappe la cible. Plus la Vitesse du lanceur est basse par rapport à celle de la cible, plus il inflige de dégâts.",
       "type": "Acier",
       "category": "Physique",
-      "power": 1,
+      "power": null,
+      "variablePower": true,
       "accuracy": 100,
       "pp": 5,
       "compatibleSpeciesIds": [
@@ -21972,7 +21975,8 @@ const POKEMON_Z_WIKI_DATA = {
       "description": "Le lanceur fait des nœuds dans l'herbe pour faire trébucher la cible. Plus la cible est lourde, plus la puissance de cette capacité augmente.",
       "type": "Plante",
       "category": "Spéciale",
-      "power": 1,
+      "power": null,
+      "variablePower": true,
       "accuracy": 100,
       "pp": 20,
       "compatibleSpeciesIds": [
@@ -29893,7 +29897,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Normal",
             "Combat",
-            "Ténèbres",
+            "Tenebres",
             "Poison"
           ]
         },
@@ -29920,7 +29924,7 @@ const POKEMON_Z_WIKI_DATA = {
             "Combat"
           ],
           "attacks": [
-            "Ténèbres",
+            "Tenebres",
             "Combat",
             "Insecte",
             "Normal"
@@ -29978,7 +29982,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Psy",
             "Poison",
-            "Fée"
+            "Fee"
           ]
         }
       ]
@@ -30000,11 +30004,11 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 18,
           "types": [
             "Normal",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Normal",
-            "Fée",
+            "Fee",
             "Combat"
           ]
         },
@@ -30014,12 +30018,12 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 19,
           "types": [
             "Psy",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Psy",
             "Glace",
-            "Fée",
+            "Fee",
             "Spectre"
           ]
         },
@@ -30035,7 +30039,7 @@ const POKEMON_Z_WIKI_DATA = {
             "Eau",
             "Psy",
             "Vol",
-            "Ténèbres"
+            "Tenebres"
           ]
         }
       ]
@@ -30057,11 +30061,11 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 18,
           "types": [
             "Normal",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Normal",
-            "Fée",
+            "Fee",
             "Combat"
           ]
         },
@@ -30071,12 +30075,12 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 19,
           "types": [
             "Psy",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Psy",
             "Glace",
-            "Fée",
+            "Fee",
             "Spectre"
           ]
         },
@@ -30090,7 +30094,7 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Plante",
-            "Ténèbres",
+            "Tenebres",
             "Sol"
           ]
         }
@@ -30113,11 +30117,11 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 18,
           "types": [
             "Normal",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Normal",
-            "Fée",
+            "Fee",
             "Combat"
           ]
         },
@@ -30127,12 +30131,12 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 19,
           "types": [
             "Psy",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Psy",
             "Glace",
-            "Fée",
+            "Fee",
             "Spectre"
           ]
         },
@@ -30142,11 +30146,11 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 20,
           "types": [
             "Feu",
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
             "Feu",
-            "Électrik",
+            "Electrik",
             "Combat"
           ]
         }
@@ -30168,10 +30172,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Floette",
           "level": 21,
           "types": [
-            "Fée"
+            "Fee"
           ],
           "attacks": [
-            "Fée",
+            "Fee",
             "Plante",
             "Eau"
           ]
@@ -30185,8 +30189,8 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Psy",
-            "Électrik",
-            "Fée"
+            "Electrik",
+            "Fee"
           ]
         },
         {
@@ -30195,11 +30199,11 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 22,
           "types": [
             "Feu",
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
             "Feu",
-            "Électrik",
+            "Electrik",
             "Combat"
           ]
         }
@@ -30221,10 +30225,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Floette",
           "level": 21,
           "types": [
-            "Fée"
+            "Fee"
           ],
           "attacks": [
-            "Fée",
+            "Fee",
             "Plante",
             "Eau"
           ]
@@ -30238,8 +30242,8 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Psy",
-            "Électrik",
-            "Fée"
+            "Electrik",
+            "Fee"
           ]
         },
         {
@@ -30254,7 +30258,7 @@ const POKEMON_Z_WIKI_DATA = {
             "Eau",
             "Psy",
             "Vol",
-            "Ténèbres"
+            "Tenebres"
           ]
         }
       ]
@@ -30275,10 +30279,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Floette",
           "level": 21,
           "types": [
-            "Fée"
+            "Fee"
           ],
           "attacks": [
-            "Fée",
+            "Fee",
             "Plante",
             "Eau"
           ]
@@ -30292,8 +30296,8 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Psy",
-            "Électrik",
-            "Fée"
+            "Electrik",
+            "Fee"
           ]
         },
         {
@@ -30306,7 +30310,7 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Plante",
-            "Ténèbres",
+            "Tenebres",
             "Sol"
           ]
         }
@@ -30342,12 +30346,12 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 23,
           "types": [
             "Spectre",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Spectre",
-            "Fée",
-            "Électrik",
+            "Fee",
+            "Electrik",
             "Glace"
           ]
         },
@@ -30386,9 +30390,9 @@ const POKEMON_Z_WIKI_DATA = {
             "Dragon"
           ],
           "attacks": [
-            "Ténèbres",
+            "Tenebres",
             "Feu",
-            "Électrik",
+            "Electrik",
             "Dragon"
           ]
         },
@@ -30401,7 +30405,7 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Psy",
-            "Électrik",
+            "Electrik",
             "Normal"
           ]
         },
@@ -30410,10 +30414,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Absol",
           "level": 26,
           "types": [
-            "Ténèbres"
+            "Tenebres"
           ],
           "attacks": [
-            "Ténèbres",
+            "Tenebres",
             "Vol",
             "Normal"
           ]
@@ -30510,7 +30514,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Insecte",
             "Eau",
-            "Ténèbres"
+            "Tenebres"
           ]
         },
         {
@@ -30519,11 +30523,11 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 33,
           "types": [
             "Insecte",
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
             "Insecte",
-            "Électrik",
+            "Electrik",
             "Plante"
           ]
         }
@@ -30546,10 +30550,10 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 33,
           "types": [
             "Normal",
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
-            "Électrik",
+            "Electrik",
             "Psy",
             "Normal"
           ]
@@ -30560,10 +30564,10 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 33,
           "types": [
             "Normal",
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
-            "Électrik",
+            "Electrik",
             "Spectre",
             "Insecte",
             "Normal"
@@ -30575,10 +30579,10 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 34,
           "types": [
             "Normal",
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
-            "Électrik",
+            "Electrik",
             "Feu",
             "Normal"
           ]
@@ -30602,10 +30606,10 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 33,
           "types": [
             "Normal",
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
-            "Électrik",
+            "Electrik",
             "Psy",
             "Normal"
           ]
@@ -30616,10 +30620,10 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 33,
           "types": [
             "Normal",
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
-            "Électrik",
+            "Electrik",
             "Spectre",
             "Insecte",
             "Normal"
@@ -30631,10 +30635,10 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 34,
           "types": [
             "Normal",
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
-            "Électrik",
+            "Electrik",
             "Feu",
             "Normal"
           ]
@@ -30657,10 +30661,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Wattapik",
           "level": 33,
           "types": [
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
-            "Électrik",
+            "Electrik",
             "Eau",
             "Normal",
             "Spectre"
@@ -30672,10 +30676,10 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 33,
           "types": [
             "Normal",
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
-            "Électrik",
+            "Electrik",
             "Psy",
             "Normal"
           ]
@@ -30686,10 +30690,10 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 33,
           "types": [
             "Normal",
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
-            "Électrik",
+            "Electrik",
             "Spectre",
             "Insecte",
             "Normal"
@@ -30701,10 +30705,10 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 34,
           "types": [
             "Normal",
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
-            "Électrik",
+            "Electrik",
             "Feu",
             "Normal"
           ]
@@ -30728,11 +30732,11 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 35,
           "types": [
             "Normal",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Normal",
-            "Fée",
+            "Fee",
             "Glace"
           ]
         },
@@ -30742,12 +30746,12 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 34,
           "types": [
             "Psy",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Psy",
-            "Fée",
-            "Électrik",
+            "Fee",
+            "Electrik",
             "Spectre"
           ]
         },
@@ -30777,7 +30781,7 @@ const POKEMON_Z_WIKI_DATA = {
             "Eau",
             "Psy",
             "Glace",
-            "Ténèbres"
+            "Tenebres"
           ]
         }
       ]
@@ -30799,11 +30803,11 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 35,
           "types": [
             "Normal",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Normal",
-            "Fée",
+            "Fee",
             "Glace"
           ]
         },
@@ -30813,12 +30817,12 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 34,
           "types": [
             "Psy",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Psy",
-            "Fée",
-            "Électrik",
+            "Fee",
+            "Electrik",
             "Spectre"
           ]
         },
@@ -30846,7 +30850,7 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Plante",
-            "Ténèbres",
+            "Tenebres",
             "Sol"
           ]
         }
@@ -30869,11 +30873,11 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 35,
           "types": [
             "Normal",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Normal",
-            "Fée",
+            "Fee",
             "Glace"
           ]
         },
@@ -30883,12 +30887,12 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 34,
           "types": [
             "Psy",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Psy",
-            "Fée",
-            "Électrik",
+            "Fee",
+            "Electrik",
             "Spectre"
           ]
         },
@@ -30912,11 +30916,11 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 36,
           "types": [
             "Feu",
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
             "Feu",
-            "Électrik",
+            "Electrik",
             "Combat"
           ]
         }
@@ -30953,11 +30957,11 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 38,
           "types": [
             "Psy",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Psy",
-            "Fée",
+            "Fee",
             "Plante"
           ]
         },
@@ -30970,8 +30974,8 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Normal",
-            "Fée",
-            "Ténèbres"
+            "Fee",
+            "Tenebres"
           ]
         },
         {
@@ -31010,7 +31014,7 @@ const POKEMON_Z_WIKI_DATA = {
             "Dragon"
           ],
           "attacks": [
-            "Ténèbres",
+            "Tenebres",
             "Dragon",
             "Psy"
           ]
@@ -31033,11 +31037,11 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Absol",
           "level": 41,
           "types": [
-            "Ténèbres"
+            "Tenebres"
           ],
           "attacks": [
-            "Ténèbres",
-            "Fée",
+            "Tenebres",
+            "Fee",
             "Insecte",
             "Normal"
           ]
@@ -31060,10 +31064,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Briochien",
           "level": 39,
           "types": [
-            "Fée"
+            "Fee"
           ],
           "attacks": [
-            "Fée",
+            "Fee",
             "Psy",
             "Combat"
           ]
@@ -31073,10 +31077,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Charmilly",
           "level": 40,
           "types": [
-            "Fée"
+            "Fee"
           ],
           "attacks": [
-            "Fée",
+            "Fee",
             "Feu",
             "Normal",
             "Psy"
@@ -31088,12 +31092,12 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 39,
           "types": [
             "Glace",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Glace",
             "Acier",
-            "Fée",
+            "Fee",
             "Psy"
           ]
         },
@@ -31103,10 +31107,10 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 41,
           "types": [
             "Normal",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
-            "Fée",
+            "Fee",
             "Normal",
             "Sol",
             "Feu"
@@ -31130,10 +31134,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Floette",
           "level": 40,
           "types": [
-            "Fée"
+            "Fee"
           ],
           "attacks": [
-            "Fée",
+            "Fee",
             "Plante",
             "Eau"
           ]
@@ -31149,7 +31153,7 @@ const POKEMON_Z_WIKI_DATA = {
             "Psy",
             "Plante",
             "Insecte",
-            "Fée"
+            "Fee"
           ]
         },
         {
@@ -31161,8 +31165,8 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Normal",
-            "Fée",
-            "Ténèbres",
+            "Fee",
+            "Tenebres",
             "Spectre"
           ]
         },
@@ -31172,13 +31176,13 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 42,
           "types": [
             "Feu",
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
             "Feu",
-            "Électrik",
+            "Electrik",
             "Psy",
-            "Ténèbres"
+            "Tenebres"
           ]
         }
       ]
@@ -31199,10 +31203,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Floette",
           "level": 40,
           "types": [
-            "Fée"
+            "Fee"
           ],
           "attacks": [
-            "Fée",
+            "Fee",
             "Plante",
             "Eau"
           ]
@@ -31218,7 +31222,7 @@ const POKEMON_Z_WIKI_DATA = {
             "Psy",
             "Plante",
             "Insecte",
-            "Fée"
+            "Fee"
           ]
         },
         {
@@ -31230,8 +31234,8 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Normal",
-            "Fée",
-            "Ténèbres",
+            "Fee",
+            "Tenebres",
             "Spectre"
           ]
         },
@@ -31246,7 +31250,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Eau",
             "Psy",
-            "Ténèbres"
+            "Tenebres"
           ]
         }
       ]
@@ -31267,10 +31271,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Floette",
           "level": 40,
           "types": [
-            "Fée"
+            "Fee"
           ],
           "attacks": [
-            "Fée",
+            "Fee",
             "Plante",
             "Eau"
           ]
@@ -31286,7 +31290,7 @@ const POKEMON_Z_WIKI_DATA = {
             "Psy",
             "Plante",
             "Insecte",
-            "Fée"
+            "Fee"
           ]
         },
         {
@@ -31298,8 +31302,8 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Normal",
-            "Fée",
-            "Ténèbres",
+            "Fee",
+            "Tenebres",
             "Spectre"
           ]
         },
@@ -31313,7 +31317,7 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Plante",
-            "Ténèbres",
+            "Tenebres",
             "Sol"
           ]
         }
@@ -31335,11 +31339,11 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Corboss",
           "level": 45,
           "types": [
-            "Ténèbres",
+            "Tenebres",
             "Vol"
           ],
           "attacks": [
-            "Ténèbres",
+            "Tenebres",
             "Vol",
             "Feu"
           ]
@@ -31407,11 +31411,11 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 46,
           "types": [
             "Normal",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Normal",
-            "Fée",
+            "Fee",
             "Psy"
           ]
         },
@@ -31426,7 +31430,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Psy",
             "Combat",
-            "Ténèbres"
+            "Tenebres"
           ]
         },
         {
@@ -31455,7 +31459,7 @@ const POKEMON_Z_WIKI_DATA = {
             "Eau",
             "Psy",
             "Glace",
-            "Ténèbres"
+            "Tenebres"
           ]
         }
       ]
@@ -31477,11 +31481,11 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 46,
           "types": [
             "Normal",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Normal",
-            "Fée",
+            "Fee",
             "Psy"
           ]
         },
@@ -31496,7 +31500,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Psy",
             "Combat",
-            "Ténèbres"
+            "Tenebres"
           ]
         },
         {
@@ -31523,7 +31527,7 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Plante",
-            "Ténèbres",
+            "Tenebres",
             "Sol"
           ]
         }
@@ -31546,11 +31550,11 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 46,
           "types": [
             "Normal",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Normal",
-            "Fée",
+            "Fee",
             "Psy"
           ]
         },
@@ -31565,7 +31569,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Psy",
             "Combat",
-            "Ténèbres"
+            "Tenebres"
           ]
         },
         {
@@ -31588,11 +31592,11 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 48,
           "types": [
             "Feu",
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
             "Feu",
-            "Électrik",
+            "Electrik",
             "Combat"
           ]
         }
@@ -31678,7 +31682,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Poison",
             "Dragon",
-            "Ténèbres",
+            "Tenebres",
             "Glace"
           ]
         }
@@ -31700,10 +31704,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Floette",
           "level": 54,
           "types": [
-            "Fée"
+            "Fee"
           ],
           "attacks": [
-            "Fée",
+            "Fee",
             "Plante",
             "Psy"
           ]
@@ -31718,7 +31722,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Psy",
             "Insecte",
-            "Fée"
+            "Fee"
           ]
         },
         {
@@ -31741,13 +31745,13 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 55,
           "types": [
             "Feu",
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
             "Feu",
-            "Électrik",
+            "Electrik",
             "Psy",
-            "Ténèbres"
+            "Tenebres"
           ]
         }
       ]
@@ -31768,10 +31772,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Floette",
           "level": 54,
           "types": [
-            "Fée"
+            "Fee"
           ],
           "attacks": [
-            "Fée",
+            "Fee",
             "Plante",
             "Psy"
           ]
@@ -31786,7 +31790,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Psy",
             "Insecte",
-            "Fée"
+            "Fee"
           ]
         },
         {
@@ -31794,10 +31798,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Voltali",
           "level": 54,
           "types": [
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
-            "Électrik",
+            "Electrik",
             "Insecte",
             "Spectre"
           ]
@@ -31813,7 +31817,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Eau",
             "Psy",
-            "Ténèbres"
+            "Tenebres"
           ]
         }
       ]
@@ -31834,10 +31838,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Floette",
           "level": 54,
           "types": [
-            "Fée"
+            "Fee"
           ],
           "attacks": [
-            "Fée",
+            "Fee",
             "Plante",
             "Psy"
           ]
@@ -31852,7 +31856,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Psy",
             "Insecte",
-            "Fée"
+            "Fee"
           ]
         },
         {
@@ -31878,7 +31882,7 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Plante",
-            "Ténèbres",
+            "Tenebres",
             "Sol"
           ]
         }
@@ -31919,7 +31923,7 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Combat",
-            "Fée",
+            "Fee",
             "Normal",
             "Vol"
           ]
@@ -31930,11 +31934,11 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 56,
           "types": [
             "Psy",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Psy",
-            "Fée",
+            "Fee",
             "Plante"
           ]
         },
@@ -31947,8 +31951,8 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Normal",
-            "Fée",
-            "Ténèbres"
+            "Fee",
+            "Tenebres"
           ]
         },
         {
@@ -31998,7 +32002,7 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Nymphali",
           "level": 57,
           "types": [
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Normal",
@@ -32054,11 +32058,11 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Togekiss",
           "level": 57,
           "types": [
-            "Fée",
+            "Fee",
             "Vol"
           ],
           "attacks": [
-            "Fée",
+            "Fee",
             "Vol",
             "Combat"
           ]
@@ -32101,7 +32105,7 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Normal",
-            "Ténèbres",
+            "Tenebres",
             "Combat",
             "Psy"
           ]
@@ -32124,10 +32128,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Zoroark",
           "level": 57,
           "types": [
-            "Ténèbres"
+            "Tenebres"
           ],
           "attacks": [
-            "Ténèbres",
+            "Tenebres",
             "Spectre",
             "Feu"
           ]
@@ -32137,10 +32141,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Mélodelfe",
           "level": 57,
           "types": [
-            "Fée"
+            "Fee"
           ],
           "attacks": [
-            "Fée",
+            "Fee",
             "Normal",
             "Feu",
             "Glace"
@@ -32169,7 +32173,7 @@ const POKEMON_Z_WIKI_DATA = {
             "Poison"
           ],
           "attacks": [
-            "Électrik",
+            "Electrik",
             "Spectre",
             "Poison",
             "Combat"
@@ -32198,7 +32202,7 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Normal",
-            "Ténèbres",
+            "Tenebres",
             "Combat"
           ]
         },
@@ -32208,10 +32212,10 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 57,
           "types": [
             "Poison",
-            "Ténèbres"
+            "Tenebres"
           ],
           "attacks": [
-            "Ténèbres",
+            "Tenebres",
             "Poison",
             "Insecte",
             "Normal"
@@ -32284,7 +32288,7 @@ const POKEMON_Z_WIKI_DATA = {
             "Eau",
             "Glace",
             "Vol",
-            "Ténèbres"
+            "Tenebres"
           ]
         },
         {
@@ -32331,11 +32335,11 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Florges",
           "level": 60,
           "types": [
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Normal",
-            "Fée",
+            "Fee",
             "Plante",
             "Psy"
           ]
@@ -32401,12 +32405,12 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Sepiatroce",
           "level": 66,
           "types": [
-            "Ténèbres",
+            "Tenebres",
             "Psy"
           ],
           "attacks": [
             "Psy",
-            "Ténèbres",
+            "Tenebres",
             "Combat"
           ]
         },
@@ -32416,12 +32420,12 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 67,
           "types": [
             "Psy",
-            "Ténèbres"
+            "Tenebres"
           ],
           "attacks": [
             "Psy",
-            "Ténèbres",
-            "Fée"
+            "Tenebres",
+            "Fee"
           ]
         }
       ]
@@ -32458,13 +32462,13 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 70,
           "types": [
             "Normal",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Normal",
-            "Fée",
+            "Fee",
             "Psy",
-            "Ténèbres"
+            "Tenebres"
           ]
         },
         {
@@ -32543,13 +32547,13 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 70,
           "types": [
             "Normal",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Normal",
-            "Fée",
+            "Fee",
             "Psy",
-            "Ténèbres"
+            "Tenebres"
           ]
         },
         {
@@ -32590,7 +32594,7 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Plante",
-            "Ténèbres",
+            "Tenebres",
             "Sol",
             "Combat"
           ]
@@ -32629,13 +32633,13 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 70,
           "types": [
             "Normal",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Normal",
-            "Fée",
+            "Fee",
             "Psy",
-            "Ténèbres"
+            "Tenebres"
           ]
         },
         {
@@ -32672,11 +32676,11 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 71,
           "types": [
             "Feu",
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
             "Feu",
-            "Électrik",
+            "Electrik",
             "Normal",
             "Combat"
           ]
@@ -32712,12 +32716,12 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Démolosse",
           "level": 71,
           "types": [
-            "Ténèbres",
+            "Tenebres",
             "Feu"
           ],
           "attacks": [
             "Feu",
-            "Ténèbres"
+            "Tenebres"
           ]
         },
         {
@@ -32731,7 +32735,7 @@ const POKEMON_Z_WIKI_DATA = {
             "Feu",
             "Sol",
             "Insecte",
-            "Électrik"
+            "Electrik"
           ]
         },
         {
@@ -32745,8 +32749,8 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Feu",
             "Plante",
-            "Électrik",
-            "Ténèbres"
+            "Electrik",
+            "Tenebres"
           ]
         },
         {
@@ -32857,7 +32861,7 @@ const POKEMON_Z_WIKI_DATA = {
             "Acier",
             "Glace",
             "Sol",
-            "Électrik"
+            "Electrik"
           ]
         }
       ]
@@ -32878,10 +32882,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Floette",
           "level": 73,
           "types": [
-            "Fée"
+            "Fee"
           ],
           "attacks": [
-            "Fée",
+            "Fee",
             "Plante",
             "Psy"
           ]
@@ -32896,7 +32900,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Psy",
             "Insecte",
-            "Fée"
+            "Fee"
           ]
         },
         {
@@ -32933,13 +32937,13 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 75,
           "types": [
             "Feu",
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
             "Feu",
-            "Électrik",
+            "Electrik",
             "Psy",
-            "Ténèbres"
+            "Tenebres"
           ]
         }
       ]
@@ -32960,10 +32964,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Floette",
           "level": 73,
           "types": [
-            "Fée"
+            "Fee"
           ],
           "attacks": [
-            "Fée",
+            "Fee",
             "Plante",
             "Psy"
           ]
@@ -32978,7 +32982,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Psy",
             "Insecte",
-            "Fée"
+            "Fee"
           ]
         },
         {
@@ -32986,10 +32990,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Voltali",
           "level": 73,
           "types": [
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
-            "Électrik",
+            "Electrik",
             "Insecte",
             "Spectre"
           ]
@@ -33019,7 +33023,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Eau",
             "Psy",
-            "Ténèbres"
+            "Tenebres"
           ]
         }
       ]
@@ -33040,10 +33044,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Floette",
           "level": 73,
           "types": [
-            "Fée"
+            "Fee"
           ],
           "attacks": [
-            "Fée",
+            "Fee",
             "Plante",
             "Psy"
           ]
@@ -33058,7 +33062,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Psy",
             "Insecte",
-            "Fée"
+            "Fee"
           ]
         },
         {
@@ -33098,7 +33102,7 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Plante",
-            "Ténèbres",
+            "Tenebres",
             "Sol"
           ]
         }
@@ -33125,7 +33129,7 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Eau",
-            "Ténèbres",
+            "Tenebres",
             "Glace",
             "Dragon"
           ]
@@ -33170,7 +33174,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Feu",
             "Normal",
-            "Ténèbres"
+            "Tenebres"
           ]
         }
       ]
@@ -33224,7 +33228,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Feu",
             "Roche",
-            "Électrik",
+            "Electrik",
             "Normal"
           ]
         },
@@ -33234,10 +33238,10 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 77,
           "types": [
             "Roche",
-            "Fée"
+            "Fee"
           ],
           "attacks": [
-            "Fée",
+            "Fee",
             "Roche",
             "Sol"
           ]
@@ -33274,10 +33278,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Zéblitz",
           "level": 78,
           "types": [
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
-            "Électrik",
+            "Electrik",
             "Feu",
             "Acier",
             "Sol"
@@ -33337,7 +33341,7 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Eau",
-            "Ténèbres",
+            "Tenebres",
             "Glace",
             "Dragon"
           ]
@@ -33352,7 +33356,7 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Normal",
-            "Ténèbres",
+            "Tenebres",
             "Feu"
           ]
         }
@@ -33402,12 +33406,12 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Dimoret",
           "level": 81,
           "types": [
-            "Ténèbres",
+            "Tenebres",
             "Glace"
           ],
           "attacks": [
             "Glace",
-            "Ténèbres",
+            "Tenebres",
             "Combat",
             "Normal"
           ]
@@ -33423,7 +33427,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Dragon",
             "Glace",
-            "Ténèbres",
+            "Tenebres",
             "Sol"
           ]
         },
@@ -33451,7 +33455,7 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Normal",
-            "Fée",
+            "Fee",
             "Psy"
           ]
         }
@@ -33474,10 +33478,10 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 88,
           "types": [
             "Sol",
-            "Ténèbres"
+            "Tenebres"
           ],
           "attacks": [
-            "Ténèbres",
+            "Tenebres",
             "Sol",
             "Roche",
             "Acier"
@@ -33492,7 +33496,7 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Poison",
-            "Ténèbres",
+            "Tenebres",
             "Feu",
             "Glace"
           ]
@@ -33502,11 +33506,11 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Vaututrice",
           "level": 88,
           "types": [
-            "Ténèbres",
+            "Tenebres",
             "Vol"
           ],
           "attacks": [
-            "Ténèbres",
+            "Tenebres",
             "Poison",
             "Vol",
             "Feu"
@@ -33518,10 +33522,10 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 89,
           "types": [
             "Spectre",
-            "Ténèbres"
+            "Tenebres"
           ],
           "attacks": [
-            "Ténèbres",
+            "Tenebres",
             "Spectre"
           ]
         },
@@ -33530,12 +33534,12 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Darkrai",
           "level": 89,
           "types": [
-            "Ténèbres"
+            "Tenebres"
           ],
           "attacks": [
-            "Ténèbres",
+            "Tenebres",
             "Glace",
-            "Électrik"
+            "Electrik"
           ]
         },
         {
@@ -33544,12 +33548,12 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 90,
           "types": [
             "Eau",
-            "Ténèbres"
+            "Tenebres"
           ],
           "attacks": [
             "Eau",
-            "Ténèbres",
-            "Fée",
+            "Tenebres",
+            "Fee",
             "Psy"
           ]
         }
@@ -33571,10 +33575,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Pharamp",
           "level": 88,
           "types": [
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
-            "Électrik",
+            "Electrik",
             "Roche",
             "Dragon",
             "Psy"
@@ -33628,11 +33632,11 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Florges",
           "level": 90,
           "types": [
-            "Fée"
+            "Fee"
           ],
           "attacks": [
             "Normal",
-            "Fée",
+            "Fee",
             "Plante",
             "Psy"
           ]
@@ -33656,10 +33660,10 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 88,
           "types": [
             "Insecte",
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
-            "Électrik",
+            "Electrik",
             "Insecte",
             "Plante"
           ]
@@ -33770,12 +33774,12 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Corboss",
           "level": 88,
           "types": [
-            "Ténèbres",
+            "Tenebres",
             "Vol"
           ],
           "attacks": [
             "Vol",
-            "Ténèbres",
+            "Tenebres",
             "Feu"
           ]
         },
@@ -33784,12 +33788,12 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Zéblitz",
           "level": 89,
           "types": [
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
-            "Électrik",
+            "Electrik",
             "Feu",
-            "Fée",
+            "Fee",
             "Acier"
           ]
         },
@@ -33804,7 +33808,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Feu",
             "Normal",
-            "Ténèbres"
+            "Tenebres"
           ]
         },
         {
@@ -33817,7 +33821,7 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Eau",
-            "Ténèbres",
+            "Tenebres",
             "Glace",
             "Dragon"
           ]
@@ -33840,13 +33844,13 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Motisma",
           "level": 88,
           "types": [
-            "Électrik",
+            "Electrik",
             "Spectre"
           ],
           "attacks": [
             "Normal",
-            "Ténèbres",
-            "Électrik"
+            "Tenebres",
+            "Electrik"
           ]
         },
         {
@@ -33868,10 +33872,10 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Raikou",
           "level": 89,
           "types": [
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
-            "Électrik",
+            "Electrik",
             "Combat",
             "Spectre",
             "Eau"
@@ -33909,11 +33913,11 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Absol",
           "level": 90,
           "types": [
-            "Ténèbres"
+            "Tenebres"
           ],
           "attacks": [
-            "Ténèbres",
-            "Fée",
+            "Tenebres",
+            "Fee",
             "Normal"
           ]
         }
@@ -33939,9 +33943,9 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Dragon",
-            "Ténèbres",
+            "Tenebres",
             "Feu",
-            "Électrik"
+            "Electrik"
           ]
         },
         {
@@ -33999,7 +34003,7 @@ const POKEMON_Z_WIKI_DATA = {
           "attacks": [
             "Glace",
             "Combat",
-            "Électrik",
+            "Electrik",
             "Poison"
           ]
         },
@@ -34054,7 +34058,7 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Poison",
-            "Électrik",
+            "Electrik",
             "Glace",
             "Sol"
           ]
@@ -34071,7 +34075,7 @@ const POKEMON_Z_WIKI_DATA = {
             "Sol",
             "Normal",
             "Spectre",
-            "Fée"
+            "Fee"
           ]
         },
         {
@@ -34152,13 +34156,13 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 99,
           "types": [
             "Plante",
-            "Ténèbres"
+            "Tenebres"
           ],
           "attacks": [
             "Plante",
-            "Ténèbres",
+            "Tenebres",
             "Insecte",
-            "Fée"
+            "Fee"
           ]
         },
         {
@@ -34166,11 +34170,11 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Electrode",
           "level": 98,
           "types": [
-            "Électrik"
+            "Electrik"
           ],
           "attacks": [
             "Plante",
-            "Électrik",
+            "Electrik",
             "Insecte"
           ]
         },
@@ -34240,9 +34244,9 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Normal",
-            "Ténèbres",
-            "Fée",
-            "Électrik"
+            "Tenebres",
+            "Fee",
+            "Electrik"
           ]
         },
         {
@@ -34330,11 +34334,11 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Pikachu",
           "level": 100,
           "types": [
-            "Électrik",
+            "Electrik",
             "Poison"
           ],
           "attacks": [
-            "Électrik",
+            "Electrik",
             "Acier",
             "Combat",
             "Eau"
@@ -34352,7 +34356,7 @@ const POKEMON_Z_WIKI_DATA = {
             "Psy",
             "Eau",
             "Glace",
-            "Électrik"
+            "Electrik"
           ]
         },
         {
@@ -34364,7 +34368,7 @@ const POKEMON_Z_WIKI_DATA = {
           ],
           "attacks": [
             "Normal",
-            "Ténèbres",
+            "Tenebres",
             "Acier",
             "Sol"
           ]
@@ -34394,7 +34398,7 @@ const POKEMON_Z_WIKI_DATA = {
             "Eau",
             "Acier",
             "Glace",
-            "Ténèbres"
+            "Tenebres"
           ]
         },
         {
@@ -34460,7 +34464,7 @@ const POKEMON_Z_WIKI_DATA = {
           "level": 100,
           "types": [
             "Combat",
-            "Ténèbres"
+            "Tenebres"
           ],
           "attacks": [
             "Combat",
@@ -34474,11 +34478,11 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Trioxhydre",
           "level": 100,
           "types": [
-            "Ténèbres",
+            "Tenebres",
             "Dragon"
           ],
           "attacks": [
-            "Ténèbres",
+            "Tenebres",
             "Feu",
             "Dragon"
           ]
@@ -34494,7 +34498,7 @@ const POKEMON_Z_WIKI_DATA = {
             "Psy",
             "Feu",
             "Spectre",
-            "Ténèbres"
+            "Tenebres"
           ]
         },
         {
@@ -34502,13 +34506,13 @@ const POKEMON_Z_WIKI_DATA = {
           "name": "Angoliath",
           "level": 100,
           "types": [
-            "Ténèbres",
-            "Fée"
+            "Tenebres",
+            "Fee"
           ],
           "attacks": [
-            "Fée",
-            "Ténèbres",
-            "Électrik",
+            "Fee",
+            "Tenebres",
+            "Electrik",
             "Feu"
           ]
         }
@@ -34558,7 +34562,7 @@ const POKEMON_Z_WIKI_DATA = {
       "mapId": 36,
       "x": 6,
       "y": 58,
-      "requiredBadges": 0,
+      "requiredBadges": 1,
       "hint": "Cherche un point interactif à proximité des coordonnées internes 6, 58."
     },
     {
@@ -34882,7 +34886,7 @@ const POKEMON_Z_WIKI_DATA = {
       "mapId": 323,
       "x": 32,
       "y": 7,
-      "requiredBadges": 0,
+      "requiredBadges": 7,
       "hint": "Cherche un point interactif à proximité des coordonnées internes 32, 7."
     },
     {

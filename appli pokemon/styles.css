@@ -7034,6 +7034,23 @@ body[data-game-theme="reforged"] .game-version-logo.reforged {
   font-size: 0.69rem;
 }
 
+.wiki-learnset-compact-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wiki-learnset-compact-meta .type-logo-only {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+}
+
+.wiki-learnset-compact-meta .type-logo-only .type-logo {
+  width: 17px;
+  height: 17px;
+}
+
 .wiki-learnset-chevron {
   color: var(--muted);
   font-size: 1rem;
@@ -7276,7 +7293,204 @@ body[data-game-theme="reforged"] .game-version-logo.reforged {
   margin-top: 12px;
 }
 
+.wiki-progress-questionnaire,
+.wiki-current-objective,
+.wiki-progress-profile,
+.wiki-adventure-section {
+  border: 1px solid rgba(185, 128, 11, 0.3);
+  border-radius: 17px;
+  padding: 16px;
+  background: var(--ui-card-overlay);
+}
+
+.wiki-progress-questionnaire {
+  display: grid;
+  gap: 15px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.wiki-progress-questionnaire h3,
+.wiki-progress-questionnaire p,
+.wiki-current-objective h3,
+.wiki-current-objective p {
+  margin: 0;
+}
+
+.wiki-progress-questionnaire > p,
+.wiki-current-objective > p,
+.wiki-current-objective > small {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.wiki-progress-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.wiki-progress-profile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 12px;
+  padding: 11px 14px;
+}
+
+.wiki-progress-profile p {
+  margin: 0 0 3px;
+}
+
+.wiki-current-objective {
+  display: grid;
+  gap: 8px;
+  border-left: 5px solid var(--accent);
+}
+
+.wiki-adventure-section {
+  margin-top: 18px;
+}
+
+.wiki-story-timeline,
+.wiki-alchemy-checklist {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 245px), 1fr));
+  gap: 9px;
+}
+
+.wiki-story-timeline article,
+.wiki-alchemy-page {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  background: var(--ui-control-soft-bg);
+}
+
+.wiki-story-timeline article > span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: #fff;
+  background: #7a8798;
+  font-weight: 900;
+}
+
+.wiki-story-timeline article.current {
+  border-color: var(--accent);
+  background: var(--ui-accent-wash);
+}
+
+.wiki-story-timeline article.current > span {
+  background: var(--accent-strong);
+}
+
+.wiki-story-timeline p,
+.wiki-alchemy-page small {
+  margin: 3px 0 0;
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.wiki-hidden-future {
+  margin: 12px 0 0;
+  color: var(--muted);
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.wiki-alchemy-checklist {
+  margin-top: 13px;
+}
+
+.wiki-alchemy-page {
+  cursor: pointer;
+}
+
+.wiki-alchemy-page input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-strong);
+}
+
+.wiki-alchemy-page > span {
+  display: grid;
+}
+
+.wiki-alchemy-page.collected {
+  opacity: 0.68;
+  background: rgba(74, 197, 132, 0.12);
+}
+
+.wiki-alchemy-page.collected strong {
+  text-decoration: line-through;
+}
+
+.versus-story-trainers {
+  margin: 12px 0 16px;
+}
+
+.versus-story-loading,
+.versus-story-locked,
+.versus-story-picker {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  background: var(--ui-control-soft-bg);
+}
+
+.versus-story-locked,
+.versus-story-picker {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(260px, 1.5fr) auto auto;
+  align-items: end;
+  gap: 10px;
+}
+
+.versus-story-locked {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.versus-story-locked > div,
+.versus-story-picker > div,
+.versus-story-picker label {
+  display: grid;
+  gap: 4px;
+}
+
+.versus-story-locked small,
+.versus-story-picker small,
+.versus-story-picker label > span,
+.duel-pokemon-level {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.versus-story-picker select {
+  width: 100%;
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 6px 9px;
+  color: var(--ink);
+  background: var(--ui-card-base);
+}
+
 @media (max-width: 920px) {
+  .versus-story-picker {
+    grid-template-columns: 1fr auto auto;
+  }
+
+  .versus-story-picker > div {
+    grid-column: 1 / -1;
+  }
   .wiki-machine-select-filters {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -7291,6 +7505,16 @@ body[data-game-theme="reforged"] .game-version-logo.reforged {
 }
 
 @media (max-width: 640px) {
+  .wiki-progress-fields,
+  .versus-story-picker,
+  .versus-story-locked {
+    grid-template-columns: 1fr;
+  }
+
+  .versus-story-picker .small-button,
+  .versus-story-locked .small-button {
+    width: 100%;
+  }
   .wiki-machine-select-filters {
     grid-template-columns: 1fr;
   }

@@ -1200,8 +1200,8 @@ function loadPokemonZAlchemyCollected() {
 
 function pokemonZEffectiveProgressStage(progress = pokemonZProgress) {
   if (!progress) return -1;
-  const caps = [17, 27, 36, 42, 50, 56, 70, 75, 80, 85, 94, 100, 100];
-  const levelStage = Math.max(0, caps.findIndex((cap) => progress.level <= cap));
+  const caps = [17, 27, 36, 42, 50, 56, 70, 75, 80, 85, 94, 99];
+  const levelStage = progress.level >= 100 ? 12 : Math.max(0, caps.findIndex((cap) => progress.level <= cap));
   return Math.min(progress.badges, levelStage);
 }
 
@@ -1302,12 +1302,16 @@ async function openPokemonZLearnset(speciesId) {
   if (state.activeView === "pokemonZWiki") renderPokemonZWiki();
 }
 
-function pokemonZWikiTypeBadge(type) {
-  const appType = {
+function pokemonZWikiAppType(type) {
+  return {
     "Électrik": "Electrik",
     "Ténèbres": "Tenebres",
     "Fée": "Fee"
   }[type] || type;
+}
+
+function pokemonZWikiTypeBadge(type) {
+  const appType = pokemonZWikiAppType(type);
   const color = TYPE_COLORS[appType] || "#a9b3c3";
   const media = TYPE_LOGOS[appType]
     ? `<img class="type-logo" src="${TYPE_LOGOS[appType]}" alt="" aria-hidden="true">`
@@ -1439,7 +1443,7 @@ function renderPokemonZWikiAdventure(wiki) {
 
 function pokemonZWikiMoveStats(move) {
   return `
-    <span><small>Puissance</small><strong>${move.power || "—"}</strong></span>
+    <span><small>Puissance</small><strong>${move.variablePower ? "??" : move.power || "—"}</strong></span>
     <span><small>Précision</small><strong>${move.accuracy ? `${move.accuracy} %` : "—"}</strong></span>
     <span><small>PP</small><strong>${move.pp || "—"}</strong></span>
   `;
@@ -1453,7 +1457,7 @@ function renderPokemonZLearnsetMachine(machine) {
     <article class="wiki-learnset-move-card">
       <button class="wiki-learnset-card-toggle" type="button" data-wiki-learnset-entry="machine-${machine.id}" aria-expanded="false">
         <span class="wiki-machine-code ${machine.kind === "CS" ? "cs" : ""}">${escapeHtml(machine.code)}</span>
-        <span class="wiki-learnset-card-name"><strong>${escapeHtml(machine.move)}</strong><small>${escapeHtml(machine.type)} · ${machine.power ? `Puis. ${machine.power}` : "Statut"}</small></span>
+        <span class="wiki-learnset-card-name"><strong>${escapeHtml(machine.move)}</strong><small class="wiki-learnset-compact-meta">${typeLogoOnly(pokemonZWikiAppType(machine.type))}<span>${machine.variablePower ? "Puis. ??" : machine.category === "Statut" ? "Statut" : `Puis. ${machine.power}`}</span></small></span>
         <span class="wiki-learnset-chevron" aria-hidden="true">⌄</span>
       </button>
       <div class="wiki-learnset-details" hidden>
@@ -1474,7 +1478,7 @@ function renderPokemonZNaturalMove(entry, move) {
     <article class="wiki-learnset-move-card natural">
       <button class="wiki-learnset-card-toggle" type="button" data-wiki-learnset-entry="natural-${entry[0]}-${move.name}" aria-expanded="false">
         ${levelLabel}
-        <span class="wiki-learnset-card-name"><strong>${escapeHtml(move.name)}</strong><small>${escapeHtml(move.type)} · ${move.power ? `Puis. ${move.power}` : "Statut"}</small></span>
+        <span class="wiki-learnset-card-name"><strong>${escapeHtml(move.name)}</strong><small>${escapeHtml(move.type)} · ${move.variablePower ? "Puis. ??" : move.category === "Statut" ? "Statut" : `Puis. ${move.power}`}</small></span>
         <span class="wiki-learnset-chevron" aria-hidden="true">⌄</span>
       </button>
       <div class="wiki-learnset-details" hidden>
@@ -1640,7 +1644,7 @@ function renderPokemonZWikiMachines(wiki) {
       || (pokemonZWikiMachineFilters.availability === "direct" && machine.sources.length > 0)
       || (pokemonZWikiMachineFilters.availability === "equivalent" && machine.relatedMachines?.length > 0)
       || (pokemonZWikiMachineFilters.availability === "undistributed" && machine.sources.length === 0);
-    const powerMatches = pokemonZWikiMachinePowerMatches(machine.power, pokemonZWikiMachineFilters.power);
+    const powerMatches = pokemonZWikiMachinePowerMatches(machine, pokemonZWikiMachineFilters.power);
     return kindMatches && typeMatches && categoryMatches && availabilityMatches && powerMatches
       && pokemonZWikiMatches(pokemonZWikiMachineSearchText(machine), query);
   });
@@ -1657,7 +1661,7 @@ function renderPokemonZWikiMachines(wiki) {
       <div class="wiki-machine-select-filters">
         ${pokemonZWikiMachineFilterSelect("type", "Type", pokemonZWikiMachineFilters.type, [["all", "Tous les types"], ...types.map((type) => [type, type])])}
         ${pokemonZWikiMachineFilterSelect("category", "Catégorie", pokemonZWikiMachineFilters.category, [["all", "Toutes"], ["Physique", "Physique"], ["Spéciale", "Spéciale"], ["Statut", "Statut"]])}
-        ${pokemonZWikiMachineFilterSelect("power", "Puissance", pokemonZWikiMachineFilters.power, [["all", "Toutes"], ["status", "Sans dégâts"], ["1-59", "1 à 59"], ["60-79", "60 à 79"], ["80-99", "80 à 99"], ["100+", "100 et plus"]])}
+        ${pokemonZWikiMachineFilterSelect("power", "Puissance", pokemonZWikiMachineFilters.power, [["all", "Toutes"], ["variable", "Variable (??)"], ["status", "Sans dégâts"], ["1-59", "1 à 59"], ["60-79", "60 à 79"], ["80-99", "80 à 99"], ["100+", "100 et plus"]])}
         ${pokemonZWikiMachineFilterSelect("availability", "Obtention", pokemonZWikiMachineFilters.availability, [["all", "Toutes"], ["direct", "Objet distribué"], ["equivalent", "Via une CT équivalente"], ["undistributed", "Objet non distribué"]])}
       </div>
       <div class="wiki-machine-filter-summary">
@@ -1671,9 +1675,11 @@ function renderPokemonZWikiMachines(wiki) {
   `;
 }
 
-function pokemonZWikiMachinePowerMatches(power, filter) {
+function pokemonZWikiMachinePowerMatches(machine, filter) {
+  const power = machine.power;
   if (filter === "all") return true;
-  if (filter === "status") return power === 0;
+  if (filter === "variable") return machine.variablePower;
+  if (filter === "status") return !machine.variablePower && power === 0;
   if (filter === "1-59") return power >= 1 && power <= 59;
   if (filter === "60-79") return power >= 60 && power <= 79;
   if (filter === "80-99") return power >= 80 && power <= 99;
@@ -1709,7 +1715,7 @@ function renderPokemonZWikiMachineCard(machine) {
         <div><h3>${escapeHtml(machine.move)}</h3><div class="mini-line">${pokemonZWikiTypeBadge(machine.type)}<span class="slot-meta">${escapeHtml(machine.category)}</span></div></div>
       </div>
       <div class="wiki-machine-stats">
-        <span><small>Puissance</small><strong>${machine.power || "—"}</strong></span>
+        <span><small>Puissance</small><strong>${machine.variablePower ? "??" : machine.power || "—"}</strong></span>
         <span><small>Précision</small><strong>${machine.accuracy ? `${machine.accuracy} %` : "—"}</strong></span>
         <span><small>PP</small><strong>${machine.pp}</strong></span>
       </div>
@@ -5141,6 +5147,7 @@ function renderSimulation(team) {
   el.versusApplyTeam.classList.toggle("hidden", !team || !simulationDraft.showResults);
   el.simulationCount.textContent = `${enemyCount}/6 adversaire${enemyCount > 1 ? "s" : ""}`;
   renderVersusSharedLoader();
+  renderVersusStoryTrainers();
   renderVersusApplyModal();
   renderVersusInsightModal();
   el.simulationEnemies.innerHTML = "";
@@ -5249,6 +5256,84 @@ function renderSimulation(team) {
   bindInteractiveResults(el.simulationMobile);
 }
 
+function renderVersusStoryTrainers() {
+  if (!el.versusStoryTrainers) return;
+  if (getActiveGameKey() !== "pokemon-z") {
+    el.versusStoryTrainers.innerHTML = "";
+    el.versusStoryTrainers.classList.add("hidden");
+    return;
+  }
+  el.versusStoryTrainers.classList.remove("hidden");
+  const wiki = getPokemonZWikiData();
+  if (!wiki) {
+    el.versusStoryTrainers.innerHTML = `<div class="versus-story-loading">Chargement des adversaires de Pokémon Z…</div>`;
+    void ensurePokemonZWikiData().then(() => {
+      if (state.activeView === "simulation") renderSimulation(state.teams[state.selectedSlot]);
+    }).catch(() => {
+      el.versusStoryTrainers.innerHTML = `<div class="versus-story-loading">Adversaires indisponibles.</div>`;
+    });
+    return;
+  }
+  if (!pokemonZProgress) {
+    el.versusStoryTrainers.innerHTML = `
+      <div class="versus-story-locked">
+        <div><strong>Équipes du jeu</strong><small>Renseigne ta progression avant de révéler des personnages.</small></div>
+        <button class="small-button" type="button" data-open-versus-progress>Questionnaire anti-spoiler</button>
+      </div>`;
+    el.versusStoryTrainers.querySelector("[data-open-versus-progress]").addEventListener("click", () => {
+      pokemonZWikiCategory = "adventure";
+      pokemonZProgressEditing = false;
+      void openPokemonZWiki();
+    });
+    return;
+  }
+  const stage = pokemonZEffectiveProgressStage();
+  const available = wiki.notableTrainers
+    .filter((trainer) => trainer.requiredBadges <= stage && trainer.minLevel <= pokemonZProgress.level + 5)
+    .sort((left, right) => left.requiredBadges - right.requiredBadges || left.maxLevel - right.maxLevel || left.name.localeCompare(right.name, "fr"));
+  const labelCounts = new Map();
+  available.forEach((trainer) => {
+    const key = `${trainer.title} ${trainer.name}`;
+    labelCounts.set(key, (labelCounts.get(key) || 0) + 1);
+  });
+  el.versusStoryTrainers.innerHTML = `
+    <div class="versus-story-picker">
+      <div><strong>Charger une équipe du jeu</strong><small>${available.length} équipe${available.length > 1 ? "s" : ""} révélée${available.length > 1 ? "s" : ""} selon ${pokemonZProgress.badges} badge${pokemonZProgress.badges > 1 ? "s" : ""} et le niveau ${pokemonZProgress.level}.</small></div>
+      <label><span>Personnalité</span><select data-versus-story-trainer>${available.map((trainer) => {
+        const key = `${trainer.title} ${trainer.name}`;
+        const variant = labelCounts.get(key) > 1 ? ` · équipe ${trainer.partyId + 1}` : "";
+        return `<option value="${escapeHtml(trainer.id)}">${escapeHtml(key)}${variant} · niv. ${trainer.minLevel}–${trainer.maxLevel}</option>`;
+      }).join("")}</select></label>
+      <button class="small-button" type="button" data-load-versus-story-team ${available.length ? "" : "disabled"}>Charger</button>
+      <button class="small-button subtle" type="button" data-open-versus-progress>Progression</button>
+    </div>`;
+  el.versusStoryTrainers.querySelector("[data-load-versus-story-team]")?.addEventListener("click", () => {
+    const id = el.versusStoryTrainers.querySelector("[data-versus-story-trainer]")?.value;
+    const trainer = available.find((entry) => entry.id === id);
+    if (!trainer) return;
+    simulationDraft.enemies = trainer.team.slice(0, 6).map((pokemon) => {
+      const catalogPokemon = pokemonZCatalogBySpeciesId.get(pokemon.speciesId);
+      return {
+        name: pokemon.name,
+        level: pokemon.level,
+        types: pokemon.types,
+        attacks: pokemon.attacks,
+        nationalId: catalogPokemon?.nationalId || null,
+        pokemonZId: catalogPokemon?.id || `pokemon-z-${pokemon.speciesId}`
+      };
+    });
+    simulationDraft.editingIndex = null;
+    simulationDraft.showResults = false;
+    renderSimulation(state.teams[state.selectedSlot]);
+    void syncPokemonSprites(simulationDraft.enemies).then(() => renderSimulation(state.teams[state.selectedSlot]));
+  });
+  el.versusStoryTrainers.querySelector("[data-open-versus-progress]")?.addEventListener("click", () => {
+    pokemonZWikiCategory = "adventure";
+    pokemonZProgressEditing = true;
+    void openPokemonZWiki();
+  });
+}
+
 function renderDesktopDuel(team, enemy, index) {
   const rankings = simulationDraft.showResults
     ? bestTeamMatchups(getVersusCandidateTeam(team), enemy)
@@ -5302,6 +5387,7 @@ function renderDuelParticipant(pokemon, label, side) {
       <div class="duel-sprite-stage">${renderVersusSprite(pokemon, side)}</div>
       <span class="choice-kicker">${escapeHtml(label)}</span>
       <strong>${escapeHtml(pokemon.name)}</strong>
+      ${pokemon.level ? `<small class="duel-pokemon-level">Niveau ${pokemon.level}</small>` : ""}
       <span class="name-type-logos">${pokemon.types.map(typeLogoOnly).join("")}</span>
     </div>
   `;
