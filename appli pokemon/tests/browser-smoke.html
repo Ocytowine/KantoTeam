@@ -89,10 +89,13 @@
     assert(!scalproieEvolution.toLowerCase().includes("bisharp"), "Le nom Bisharp n'est pas traduit dans la condition Z");
     const rioluGuide = win.getPokemonZGuideInfo("pokemon-z-447");
     const rioluTrades = rioluGuide.methods.filter((method) => method.kind === "trade");
-    assert(rioluTrades.some((method) => method.text.includes("Timburr")), "L'echange Riolu/Charpenti du document maître est absent");
-    assert(rioluTrades.some((method) => method.text.includes("Aggron")), "Le second echange de Riolu du document maître est absent");
+    assert(rioluTrades.some((method) => method.text.includes("Charpenti") && method.text.includes("niveau 20")), "L'echange interne Riolu/Charpenti est absent");
+    assert(rioluTrades.some((method) => method.text.includes("Galeking") && method.text.includes("niveau 80")), "Le second echange interne de Riolu est absent");
     const pachirisuGuide = win.getPokemonZGuideInfo("pokemon-z-417");
-    assert(pachirisuGuide.methods.some((method) => method.kind === "trade" && method.text.includes("Morpeko")), "L'echange Pachirisu/Morpeko est absent");
+    assert(pachirisuGuide.methods.some((method) => method.kind === "trade" && method.text.includes("Morpeko") && method.text.includes("niveau 85")), "L'echange interne Pachirisu/Morpeko est absent");
+    const hoopaGuide = win.getPokemonZGuideInfo("pokemon-z-720");
+    assert(hoopaGuide.methods.some((method) => method.kind === "special" && method.text.includes("600 jetons")), "Le coût interne de Hoopa est incorrect");
+    assert(!hoopaGuide.methods.some((method) => method.text.includes("1400")), "L'ancien coût erroné de Hoopa est encore affiché");
     const stored = JSON.parse(win.localStorage.getItem("kantoTeamState:v2"));
     assert(stored.activeGame === "pokemon-z", "Version active non persistee");
     assert(stored.games.reforged.teams.length === 3 && stored.games["pokemon-z"].teams.length === 3, "Les 6 slots ne sont pas repartis en 3 + 3");
@@ -244,7 +247,7 @@
     assert(doc.querySelector("#pokemon-search-results .pokemon-acquisition-method"), "Guide d'obtention Pokemon Z non affiche");
     assert(doc.querySelector("#pokemon-search-results .pokemon-guide-version")?.textContent === "v2.12", "Vignette de version Pokemon Z absente");
     assert(!doc.querySelector("#pokemon-search-results .pokemon-guide-notes"), "La note Le Prodige est affichee a tort pour Carapuce");
-    assert(doc.querySelector("#pokemon-search-results .pokemon-acquisition-method").textContent.includes("Savinion"), "Le lieu francais de Carapuce n'est pas applique");
+    assert(doc.querySelector("#pokemon-search-results .pokemon-acquisition-methods").textContent.includes("Savinion"), "Le lieu francais de Carapuce n'est pas applique");
     const tradePokemonLink = doc.querySelector("#pokemon-search-results [data-trade-pokemon-id='693']");
     assert(tradePokemonLink?.textContent === "Gamblast", "Clawitzer n'est pas traduit en Gamblast");
     tradePokemonLink.click();

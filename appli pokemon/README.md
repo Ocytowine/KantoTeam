@@ -6,9 +6,9 @@ Le switch principal bascule toute l'application entre `Kanto Reforged` et `Pokem
 
 La source Pokemon Z contient les 1 018 entrees definies par le jeu : Pokemon officiels disponibles, formes Z et Fakemon. Le guide d'obtention associe une methode documentee aux 1 018 entrees (capture, evolution, echange PNJ, reproduction, fossile, don ou condition speciale). Les rencontres sauvages sont completees avec les tables internes et les noms de cartes francais de la v2.12 Patch 1.
 
-Pour les fiches Pokemon Z, les rencontres internes de la v2.12 FR sont prioritaires pour les captures. Les conditions d'evolution viennent du guide Pokemon Z et non des regles des jeux officiels recents ; PokeAPI ne sert qu'a relier les membres de la lignee et a charger les sprites/statistiques.
+Pour les fiches Pokémon Z, les rencontres, les rencontres fixes, les dons, les échanges PNJ et les conditions d'évolution proviennent en priorité des fichiers compilés de la v2.12 FR. Le guide web complète uniquement les cas que les données internes ne décrivent pas directement ; PokéAPI ne sert qu'à relier les membres des lignées officielles et à charger les sprites/statistiques.
 
-Les methodes d'obtention cumulent les tableaux par generation et les echanges PNJ supplementaires de la documentation maitre. Une regeneration du guide conserve cette fusion.
+Les méthodes d'obtention issues des pages du guide complètent les données internes. Les échanges PNJ sont lus dans les événements du jeu afin de conserver le bon sens de l'échange, le lieu et le niveau du Pokémon reçu.
 
 Les sprites sont optionnels. Lorsqu'une connexion est disponible, le bouton `Afficher les sprites` charge uniquement les images des Pokemon presents dans les equipes via PokéAPI. Hors ligne, le bouton et les images restent masques sans avertissement.
 
@@ -57,6 +57,24 @@ Les rencontres sauvages sont generees separement afin qu'une mise a jour du guid
 
 ```powershell
 node scripts/build-pokemon-z-encounters.js "C:\chemin\vers\PBS\encounters.txt" "C:\chemin\vers\PBS\pokemon.txt" "C:\chemin\vers\map-names.json"
+```
+
+Lorsque seuls les fichiers compiles du jeu sont disponibles, la commande suivante reconstruit directement les rencontres et les evolutions depuis `encounters.dat`, `evolutions.dat`, `Constants.rxdata` et `french.dat`. Ces donnees internes sont prioritaires sur les conditions du guide web :
+
+```powershell
+node scripts/build-pokemon-z-compiled-guide.js "C:\chemin\vers\Pokemon Z\Data"
+```
+
+Le decodeur Ruby Marshal local prend aussi en charge l'extraction des scripts RGSS pour auditer les regles executees par le jeu :
+
+```powershell
+node scripts/extract-rgss-scripts.js "C:\chemin\vers\Pokemon Z\Data\Scripts.rxdata" "C:\dossier\de\sortie"
+```
+
+Verifier ensuite les invariants du guide :
+
+```powershell
+node tests/pokemon-z-guide-data.test.js
 ```
 
 Les statistiques de base et la classification locale des Pokemon legendaires/fabuleux sont embarquees et peuvent etre regenerees depuis les donnees PokeAPI :

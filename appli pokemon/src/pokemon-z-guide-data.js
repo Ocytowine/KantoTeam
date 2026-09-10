@@ -768,13 +768,6 @@ const POKEMON_Z_GUIDE = {
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
-      },
-      {
-        "kind": "trade",
-        "text": "Donner Grumpig à un PNJ — Yantreizh, Tour Maîtrise (étage supérieur)",
-        "source": "Documentation maître officielle Pokémon Z",
-        "sourceUrl": "https://pokemonzfangame.com/full-documentation/",
-        "confidence": "official-master-document"
       }
     ]
   },
@@ -815,13 +808,6 @@ const POKEMON_Z_GUIDE = {
         "source": "Guide Pokemon Z - Generation 1",
         "sourceUrl": "https://pokemonzfangame.com/gen-1-pokemon-locations/",
         "confidence": "documented"
-      },
-      {
-        "kind": "trade",
-        "text": "Donner Annihilape à un PNJ — Yantreizh, maison en ville",
-        "source": "Documentation maître officielle Pokémon Z",
-        "sourceUrl": "https://pokemonzfangame.com/full-documentation/",
-        "confidence": "official-master-document"
       }
     ]
   },
@@ -3452,13 +3438,6 @@ const POKEMON_Z_GUIDE = {
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
-      },
-      {
-        "kind": "trade",
-        "text": "Donner Kadabra à un PNJ — Illumis - Est, maison du quartier pauvre",
-        "source": "Documentation maître officielle Pokémon Z",
-        "sourceUrl": "https://pokemonzfangame.com/full-documentation/",
-        "confidence": "official-master-document"
       }
     ]
   },
@@ -3649,13 +3628,6 @@ const POKEMON_Z_GUIDE = {
         "source": "Guide Pokemon Z - Generation 3",
         "sourceUrl": "https://pokemonzfangame.com/gen-3-pokemon-location/",
         "confidence": "documented"
-      },
-      {
-        "kind": "trade",
-        "text": "Donner Hitmontop à un PNJ — Yantreizh, maison en ville",
-        "source": "Documentation maître officielle Pokémon Z",
-        "sourceUrl": "https://pokemonzfangame.com/full-documentation/",
-        "confidence": "official-master-document"
       }
     ]
   },
@@ -5172,13 +5144,6 @@ const POKEMON_Z_GUIDE = {
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
-      },
-      {
-        "kind": "trade",
-        "text": "Donner Morpeko à un PNJ — Des-Rires",
-        "source": "Documentation maître officielle Pokémon Z",
-        "sourceUrl": "https://pokemonzfangame.com/full-documentation/",
-        "confidence": "official-master-document"
       }
     ]
   },
@@ -5537,20 +5502,6 @@ const POKEMON_Z_GUIDE = {
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
-      },
-      {
-        "kind": "trade",
-        "text": "Donner Timburr à un PNJ — Savinion, bâtiment au nord-ouest (1er étage)",
-        "source": "Documentation maître officielle Pokémon Z",
-        "sourceUrl": "https://pokemonzfangame.com/full-documentation/",
-        "confidence": "official-master-document"
-      },
-      {
-        "kind": "trade",
-        "text": "Donner Aggron à un PNJ — Campement de Crisanto",
-        "source": "Documentation maître officielle Pokémon Z",
-        "sourceUrl": "https://pokemonzfangame.com/full-documentation/",
-        "confidence": "official-master-document"
       }
     ]
   },
@@ -5770,13 +5721,6 @@ const POKEMON_Z_GUIDE = {
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
-      },
-      {
-        "kind": "trade",
-        "text": "Donner Mantine à un PNJ — Relifac-le-Haut, maison au nord-ouest",
-        "source": "Documentation maître officielle Pokémon Z",
-        "sourceUrl": "https://pokemonzfangame.com/full-documentation/",
-        "confidence": "official-master-document"
       }
     ]
   },
@@ -5788,13 +5732,6 @@ const POKEMON_Z_GUIDE = {
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
-      },
-      {
-        "kind": "trade",
-        "text": "Donner Magmortar à un PNJ — Mozheim, maison près du Centre Pokémon",
-        "source": "Documentation maître officielle Pokémon Z",
-        "sourceUrl": "https://pokemonzfangame.com/full-documentation/",
-        "confidence": "official-master-document"
       }
     ]
   },
@@ -5806,13 +5743,6 @@ const POKEMON_Z_GUIDE = {
         "source": "Guide Pokemon Z - Generation 4",
         "sourceUrl": "https://pokemonzfangame.com/gen-4-pokemon-location/",
         "confidence": "documented"
-      },
-      {
-        "kind": "trade",
-        "text": "Donner Electivire à un PNJ — Illumis - Nord, près du lac",
-        "source": "Documentation maître officielle Pokémon Z",
-        "sourceUrl": "https://pokemonzfangame.com/full-documentation/",
-        "confidence": "official-master-document"
       }
     ]
   },
@@ -6748,13 +6678,6 @@ const POKEMON_Z_GUIDE = {
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
-      },
-      {
-        "kind": "trade",
-        "text": "Donner Hitmonchan à un PNJ — Yantreizh, maison en ville",
-        "source": "Documentation maître officielle Pokémon Z",
-        "sourceUrl": "https://pokemonzfangame.com/full-documentation/",
-        "confidence": "official-master-document"
       }
     ]
   },
@@ -6766,13 +6689,6 @@ const POKEMON_Z_GUIDE = {
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
-      },
-      {
-        "kind": "trade",
-        "text": "Donner Hitmonlee à un PNJ — Yantreizh, maison en ville",
-        "source": "Documentation maître officielle Pokémon Z",
-        "sourceUrl": "https://pokemonzfangame.com/full-documentation/",
-        "confidence": "official-master-document"
       }
     ]
   },
@@ -6934,13 +6850,6 @@ const POKEMON_Z_GUIDE = {
         "source": "Guide Pokemon Z - Generation 5",
         "sourceUrl": "https://pokemonzfangame.com/gen-5-pokemon-location/",
         "confidence": "documented"
-      },
-      {
-        "kind": "trade",
-        "text": "Donner Kingambit à un PNJ — Auffrac-les-Congères, maison au nord-ouest",
-        "source": "Documentation maître officielle Pokémon Z",
-        "sourceUrl": "https://pokemonzfangame.com/full-documentation/",
-        "confidence": "official-master-document"
       }
     ]
   },
@@ -10889,13 +10798,6 @@ const POKEMON_Z_GUIDE = {
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
-      },
-      {
-        "kind": "trade",
-        "text": "Donner Glalie à un PNJ — Des-Rires, tente du cirque",
-        "source": "Documentation maître officielle Pokémon Z",
-        "sourceUrl": "https://pokemonzfangame.com/full-documentation/",
-        "confidence": "official-master-document"
       }
     ]
   },
@@ -11213,13 +11115,6 @@ const POKEMON_Z_GUIDE = {
         "source": "Guide Pokemon Z - Generation 8",
         "sourceUrl": "https://pokemonzfangame.com/gen-8-pokemon-location/",
         "confidence": "documented"
-      },
-      {
-        "kind": "trade",
-        "text": "Donner Bronzong à un PNJ — Yantreizh, Tour Maîtrise (premier étage)",
-        "source": "Documentation maître officielle Pokémon Z",
-        "sourceUrl": "https://pokemonzfangame.com/full-documentation/",
-        "confidence": "official-master-document"
       }
     ]
   },
@@ -11747,13 +11642,6 @@ const POKEMON_Z_GUIDE = {
         "source": "Guide Pokemon Z - Generation 9",
         "sourceUrl": "https://pokemonzfangame.com/gen-9-pokemon-location/",
         "confidence": "documented"
-      },
-      {
-        "kind": "trade",
-        "text": "Donner Eiscue à un PNJ — Banlieue d'Illumis - Ouest, Centre Pokémon",
-        "source": "Documentation maître officielle Pokémon Z",
-        "sourceUrl": "https://pokemonzfangame.com/full-documentation/",
-        "confidence": "official-master-document"
       }
     ]
   },

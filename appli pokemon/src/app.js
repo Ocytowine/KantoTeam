@@ -240,6 +240,12 @@ function init() {
   syncAttackChecksFromCurrentSelection();
   renderAll();
   void preloadPokemonZThemeAssets();
+  const warmPokemonZNameIndex = () => getPokemonZGuideNameIndex();
+  if (typeof window.requestIdleCallback === "function") {
+    window.requestIdleCallback(warmPokemonZNameIndex, { timeout: 500 });
+  } else {
+    window.setTimeout(warmPokemonZNameIndex, 0);
+  }
   startIntro();
   void syncAppSprites(sharedTeam?.pokemon || []).then(renderAll);
 }
@@ -2554,16 +2560,34 @@ function getReforgedGuideInfo(name) {
 function getPokemonZGuideInfo(id) {
   const documented = typeof POKEMON_Z_GUIDE === "undefined" ? null : POKEMON_Z_GUIDE[id];
   const encounters = typeof POKEMON_Z_V212_ENCOUNTERS === "undefined" ? null : POKEMON_Z_V212_ENCOUNTERS[id];
-  if (!documented && !encounters) return null;
+  const evolutions = typeof POKEMON_Z_V212_EVOLUTIONS === "undefined" ? null : POKEMON_Z_V212_EVOLUTIONS[id];
+  if (!documented && !encounters && !evolutions) return null;
   const encounterMethods = encounters?.methods || [];
-  const hasEncounterCapture = encounterMethods.some((method) => method.kind === "capture");
-  const documentedMethods = (documented?.methods || []).filter((method) => (
-    method.kind !== "capture" || !hasEncounterCapture
+  const evolutionMethods = evolutions?.methods || [];
+  const internalAcquisitionKinds = new Set(encounterMethods.map((method) => method.kind));
+  const hasScriptedCapture = encounterMethods.some((method) => (
+    method.kind === "capture" && method.source === "Événements internes de Pokémon Z v2.12 FR"
   ));
-  const methods = [...encounterMethods, ...documentedMethods];
+  const hasDefinitiveInternalAcquisition = hasScriptedCapture
+    || internalAcquisitionKinds.has("gift")
+    || internalAcquisitionKinds.has("special");
+  const hasEncounterCapture = internalAcquisitionKinds.has("capture")
+    || internalAcquisitionKinds.has("gift")
+    || internalAcquisitionKinds.has("special");
+  const hasInternalEvolution = evolutionMethods.some((method) => method.kind === "evolution");
+  const documentedMethods = (documented?.methods || []).filter((method) => (
+    method.confidence !== "official-master-document"
+    && (method.kind !== "capture" || !hasEncounterCapture)
+    && (method.kind !== "evolution" || !hasInternalEvolution)
+    && !(["trade", "gift", "fossil", "special"].includes(method.kind) && internalAcquisitionKinds.has(method.kind))
+    && !(hasDefinitiveInternalAcquisition && ["capture", "gift", "special"].includes(method.kind))
+    && !(internalAcquisitionKinds.has("special") && method.kind === "trade")
+    && !(hasScriptedCapture && method.kind === "fossil")
+  ));
+  const methods = [...encounterMethods, ...evolutionMethods, ...documentedMethods];
   const seen = new Set();
   return {
-    ...(documented || encounters),
+    ...(documented || encounters || evolutions),
     methods: methods.filter((method) => {
       const key = `${method.kind || "special"}|${normalize(method.text || "")}`;
       if (seen.has(key)) return false;
@@ -3856,7 +3880,7 @@ function renderPokemonInfoPanel(data) {
   const acquisitionMarkup = renderAcquisitionGuide(data);
   const evolutionMarkup = renderEvolutionLookup(data.evolution, data.reforged);
   if (!acquisitionMarkup && !evolutionMarkup) {
-    return `<div class="pokemon-info-empty">Aucune evolution ou localisation connue.</div>`;
+    return `<div class="pokemon-info-empty">Aucune évolution ou localisation connue.</div>`;
   }
   return `
     ${acquisitionMarkup}
@@ -3881,13 +3905,13 @@ function renderAcquisitionGuide(data) {
 function renderAcquisitionMethods(methods, versionLabel, translateLocations) {
   if (!methods.length) return "";
   const labels = {
-    capture: "Capture",
-    trade: "Echange PNJ",
-    evolution: "Evolution",
+    capture: "Capture sauvage",
+    trade: "Échange PNJ",
+    evolution: "Évolution",
     breeding: "Reproduction",
     fossil: "Fossile",
     gift: "Don",
-    special: "Special"
+    special: "Spécial"
   };
   return `
     <div class="pokemon-info-section pokemon-acquisition-guide">
@@ -3898,7 +3922,7 @@ function renderAcquisitionMethods(methods, versionLabel, translateLocations) {
       <div class="pokemon-acquisition-methods">
         ${methods.map((method) => {
           const location = translateLocations
-            ? translatePokemonZLocationText(method.text || "")
+            ? translatePokemonZLocationText(cleanPokemonZMethodText(method.text || "", method.kind))
             : { text: method.text || "", pending: false };
           const methodText = translateLocations
             ? renderPokemonZPokemonLinks(location.text)
@@ -3915,44 +3939,114 @@ function renderAcquisitionMethods(methods, versionLabel, translateLocations) {
   `;
 }
 
-function renderPokemonZPokemonLinks(text) {
+function cleanPokemonZMethodText(text, kind) {
+  let cleaned = String(text || "")
+    .replace(/^How to obtain:\s*/giu, "")
+    .replace(/^Obtain its fossil\b/giu, "Obtenir son fossile")
+    .replace(/^Revive (?:its )?fossil\b/giu, "Faire revivre son fossile")
+    .replace(/^Breed\s+/giu, "Faire reproduire ")
+    .replace(/^Egg depuis\s+/giu, "Obtenu par reproduction de ")
+    .replace(/^Disponible through Obtenu par reproduction de\s+/giu, "Obtenu par reproduction de ")
+    .replace(/^Visit\s+/giu, "Visiter ")
+    .replace(/^Diving\b/giu, "Plongée")
+    .replace(/\bby breeding\b/giu, "par reproduction")
+    .replace(/\bwith Ditto\b/giu, "avec Métamorph")
+    .replace(/\bafter returning\b/giu, "après avoir rendu")
+    .replace(/\bafter defeating\b/giu, "après avoir vaincu")
+    .replace(/\bafter completing\b/giu, "après avoir terminé")
+    .replace(/\bcan only be obtained\b/giu, "peut uniquement être obtenu")
+    .replace(/\bonce per save\b/giu, "une seule fois par sauvegarde")
+    .replace(/\bempty party slot\b/giu, "une place libre dans l’équipe")
+    .replace(/\bLower Floor\b/giu, "étage inférieur")
+    .replace(/\btop-right\b/giu, "en haut à droite")
+    .replace(/\bPart\s*(\d+)\b/giu, "partie $1")
+    .replace(/\bsee Legendaries\s*&\s*Locations\b/giu, "voir la section des Pokémon légendaires")
+    .replace(/\bcemetery event\b/giu, "événement du cimetière")
+    .replace(/\bbehind the\b/giu, "derrière la")
+    .replace(/\bto Isidora\b/giu, "à Isidora")
+    .replace(/\bexchange it\b/giu, "l’échanger")
+    .replace(/\bTrade for\b/giu, "Échanger contre")
+    .replace(/\bTrade\b/giu, "Échanger")
+    .replace(/\bExchange\b/giu, "Échanger")
+    .replace(/\bGift\b/giu, "Don")
+    .replace(/\bObtain(?:ed|able)?\b/giu, "Obtenir")
+    .replace(/\bEvolve\b/giu, "Faire évoluer")
+    .replace(/\busing\b/giu, "avec")
+    .replace(/\bduring\b/giu, "pendant")
+    .replace(/\bfrom\b/giu, "depuis")
+    .replace(/\bwith\b/giu, "avec")
+    .replace(/\band\b/giu, "et")
+    .replace(/\bor\b/giu, "ou")
+    .replace(/\bin\b/giu, "dans")
+    .replace(/\bon\b/giu, "sur")
+    .replace(/\bat\b/giu, "à")
+    .replace(/\bthe\b/giu, "")
+    .replace(/\s+([,.;:)])/g, "$1")
+    .replace(/([(])\s+/g, "$1")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (kind === "trade") {
+    cleaned = cleaned.replace(/^Échanger (.+?) à (.+)$/u, "Donner $1 à un PNJ — $2");
+  }
+  return cleaned;
+}
+
+let pokemonZGuideNameIndex = null;
+
+function getPokemonZGuideNameIndex() {
+  if (pokemonZGuideNameIndex) return pokemonZGuideNameIndex;
   const sourceEntries = typeof POKEMON_Z_GUIDE_POKEMON_NAMES !== "undefined"
     ? POKEMON_Z_GUIDE_POKEMON_NAMES
     : (typeof POKEMON_Z_TRADE_POKEMON !== "undefined" ? POKEMON_Z_TRADE_POKEMON : []);
-  if (!sourceEntries.length) return escapeHtml(text);
-  let tokenized = String(text || "");
-  const entries = [...sourceEntries]
-    .sort((left, right) => right.source.length - left.source.length);
-  for (const entry of entries) {
-    const pokemon = POKEMON_Z_V212.find((item) => item.nationalId === entry.nationalId);
+  const pokemonByNationalId = new Map(
+    POKEMON_Z_V212.map((pokemon) => [pokemon.nationalId, pokemon])
+  );
+  const pokemonByAlias = new Map();
+
+  for (const entry of sourceEntries) {
+    const pokemon = pokemonByNationalId.get(entry.nationalId);
     if (!pokemon) continue;
-    const escapedName = entry.source.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const pattern = new RegExp(`(?<![\\p{L}\\p{N}])${escapedName}(?![\\p{L}\\p{N}])`, "giu");
-    tokenized = tokenized.replace(pattern, `__POKEMON_${entry.nationalId}__`);
+    for (const alias of [entry.source, pokemon.name]) {
+      if (!alias) continue;
+      const normalizedAlias = alias.toLocaleLowerCase("fr-FR");
+      if (!pokemonByAlias.has(normalizedAlias)) {
+        pokemonByAlias.set(normalizedAlias, pokemon);
+      }
+    }
   }
+
+  const alternatives = [...pokemonByAlias.keys()]
+    .sort((left, right) => right.length - left.length)
+    .map((name) => name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  const matcher = alternatives.length
+    ? new RegExp(`(?<![\\p{L}\\p{N}])(?:${alternatives.join("|")})(?![\\p{L}\\p{N}])`, "giu")
+    : null;
+  pokemonZGuideNameIndex = { matcher, pokemonByAlias, pokemonByNationalId };
+  return pokemonZGuideNameIndex;
+}
+
+function renderPokemonZPokemonLinks(text) {
+  const { matcher, pokemonByAlias, pokemonByNationalId } = getPokemonZGuideNameIndex();
+  if (!matcher) return escapeHtml(text);
+  const tokenized = String(text || "").replace(matcher, (name) => {
+    const pokemon = pokemonByAlias.get(name.toLocaleLowerCase("fr-FR"));
+    return pokemon ? `__POKEMON_${pokemon.nationalId}__` : name;
+  });
   return escapeHtml(tokenized).replace(/__POKEMON_(\d+)__/g, (_, rawId) => {
     const nationalId = Number(rawId);
-    const pokemon = POKEMON_Z_V212.find((item) => item.nationalId === nationalId);
+    const pokemon = pokemonByNationalId.get(nationalId);
     if (!pokemon) return "";
     return `<button class="pokemon-trade-link" type="button" data-trade-pokemon-id="${nationalId}" aria-label="Voir la fiche de ${escapeHtml(pokemon.name)}">${escapeHtml(pokemon.name)}</button>`;
   });
 }
 
 function localizePokemonZPokemonNames(text) {
-  const sourceEntries = typeof POKEMON_Z_GUIDE_POKEMON_NAMES !== "undefined"
-    ? POKEMON_Z_GUIDE_POKEMON_NAMES
-    : (typeof POKEMON_Z_TRADE_POKEMON !== "undefined" ? POKEMON_Z_TRADE_POKEMON : []);
-  let translated = String(text || "");
-  for (const entry of [...sourceEntries].sort((left, right) => right.source.length - left.source.length)) {
-    const pokemon = POKEMON_Z_V212.find((item) => item.nationalId === entry.nationalId);
-    if (!pokemon) continue;
-    const escapedName = entry.source.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    translated = translated.replace(
-      new RegExp(`(?<![\\p{L}\\p{N}])${escapedName}(?![\\p{L}\\p{N}])`, "giu"),
-      pokemon.name
-    );
-  }
-  return translated;
+  const { matcher, pokemonByAlias } = getPokemonZGuideNameIndex();
+  if (!matcher) return String(text || "");
+  return String(text || "").replace(matcher, (name) => {
+    const pokemon = pokemonByAlias.get(name.toLocaleLowerCase("fr-FR"));
+    return pokemon?.name || name;
+  });
 }
 
 function bindPokemonTradeLinks(container) {
