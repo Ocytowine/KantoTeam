@@ -3565,6 +3565,32 @@ body.sprite-viewer-open {
   gap: 9px;
 }
 
+.pokemon-learnset-action {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 3px;
+}
+
+.pokemon-learnset-action .small-button {
+  min-height: 36px;
+  border-color: rgba(197, 139, 8, 0.46);
+  background: var(--ui-accent-wash);
+  color: var(--accent-strong);
+  font-weight: 900;
+}
+
+.pokemon-learnset-action .small-button > span {
+  display: inline-grid;
+  place-items: center;
+  min-width: 29px;
+  min-height: 24px;
+  margin-right: 5px;
+  border-radius: 7px;
+  color: #fff;
+  background: linear-gradient(145deg, #c69216, #8f6100);
+  font-size: 0.68rem;
+}
+
 .name-type-logos {
   display: inline-flex;
   flex-wrap: wrap;
@@ -6464,6 +6490,48 @@ body[data-game-theme="reforged"] .game-version-logo.reforged {
   font-size: 0.84rem;
 }
 
+.pokemon-z-wiki-machine-filters {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(185, 128, 11, 0.26);
+  border-radius: 16px;
+  background: rgba(255, 250, 238, 0.72);
+}
+
+.wiki-machine-select-filters {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.wiki-machine-select-filters label {
+  display: grid;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.wiki-machine-select-filters select {
+  width: 100%;
+  min-height: 40px;
+  padding: 7px 30px 7px 10px;
+  border: 1px solid rgba(185, 128, 11, 0.32);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--ink);
+}
+
+.wiki-machine-filter-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
 .pokemon-z-wiki-machine-list,
 .pokemon-z-wiki-result-group,
 .pokemon-z-wiki-leader-list {
@@ -6494,6 +6562,193 @@ body[data-game-theme="reforged"] .game-version-logo.reforged {
   border-radius: 17px;
   padding: 16px;
   background: var(--ui-card-overlay);
+}
+
+.wiki-progressive-hints {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.wiki-progressive-hints details {
+  border: 1px solid rgba(185, 128, 11, 0.24);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.7);
+  overflow: hidden;
+}
+
+.wiki-progressive-hints summary {
+  padding: 10px 12px;
+  cursor: pointer;
+  color: var(--ink);
+  font-size: 0.86rem;
+  font-weight: 900;
+}
+
+.wiki-progressive-hints details > p,
+.wiki-progressive-hints details > div {
+  margin: 0;
+  padding: 0 12px 12px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.wiki-counter-types {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+}
+
+.wiki-counter-types > span:not(.type-badge) {
+  margin-right: 7px;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.wiki-progression-list,
+.wiki-tip-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.wiki-progression-card,
+.wiki-quest-card,
+.wiki-recipe-card,
+.wiki-tip-card,
+.wiki-achievement-card,
+.wiki-minigame-grid article {
+  border: 1px solid rgba(185, 128, 11, 0.28);
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 9px 22px rgba(91, 63, 16, 0.06);
+}
+
+.wiki-progression-card {
+  padding: 16px;
+}
+
+.wiki-progression-card > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.wiki-progression-card h3,
+.wiki-progression-card p,
+.wiki-quest-card h3,
+.wiki-quest-card p,
+.wiki-recipe-card h3,
+.wiki-tip-card p,
+.wiki-achievement-card h3,
+.wiki-achievement-card p,
+.wiki-minigame-grid h3,
+.wiki-minigame-grid p {
+  margin: 0;
+}
+
+.wiki-copy-button {
+  margin-top: 12px;
+}
+
+.wiki-quest-grid,
+.wiki-recipe-grid,
+.wiki-achievement-grid,
+.wiki-minigame-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.wiki-quest-card,
+.wiki-tip-card,
+.wiki-achievement-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+}
+
+.wiki-entry-number,
+.wiki-achievement-card > span {
+  display: grid;
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid rgba(209, 143, 0, 0.38);
+  border-radius: 10px;
+  background: rgba(255, 245, 218, 0.9);
+  color: #9b6500;
+  font-size: 0.78rem;
+  font-weight: 950;
+}
+
+.wiki-quest-card h3,
+.wiki-recipe-card h3,
+.wiki-achievement-card h3,
+.wiki-minigame-grid h3 {
+  font-size: 0.96rem;
+}
+
+.wiki-quest-card > div > p:last-child,
+.wiki-tip-card > div > p:last-child,
+.wiki-achievement-card p,
+.wiki-minigame-grid p {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.48;
+}
+
+.wiki-recipe-card {
+  padding: 14px;
+}
+
+.wiki-recipe-card header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wiki-recipe-card ul {
+  display: grid;
+  gap: 6px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wiki-recipe-card li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 9px;
+  border-radius: 9px;
+  background: rgba(248, 237, 207, 0.55);
+  color: var(--muted);
+}
+
+.wiki-recipe-card li strong {
+  color: #9b6500;
+}
+
+.wiki-achievements-section,
+.wiki-minigames-section {
+  margin-top: 28px;
+}
+
+.wiki-achievement-card,
+.wiki-minigame-grid article {
+  box-shadow: none;
+}
+
+.wiki-minigame-grid article {
+  padding: 14px;
 }
 
 .pokemon-z-wiki-machine-card {
@@ -6587,6 +6842,271 @@ body[data-game-theme="reforged"] .game-version-logo.reforged {
 .wiki-source-unconfirmed {
   border: 1px dashed var(--line);
   border-radius: 10px !important;
+}
+
+.wiki-source-alternative {
+  border: 1px solid rgba(42, 124, 157, 0.24);
+  background: rgba(222, 244, 250, 0.72) !important;
+}
+
+.wiki-source-field {
+  width: 100%;
+  border-radius: 10px !important;
+  background: rgba(244, 236, 210, 0.72) !important;
+}
+
+.wiki-pokemon-learnset-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border: 1px solid rgba(185, 128, 11, 0.3);
+  border-radius: 18px;
+  padding: 18px;
+  background: linear-gradient(135deg, rgba(255, 247, 223, 0.94), rgba(255, 255, 255, 0.78));
+}
+
+.wiki-pokemon-learnset-hero h3,
+.wiki-pokemon-learnset-hero p,
+.wiki-learnset-move-card h4,
+.wiki-learnset-move-card p {
+  margin: 0;
+}
+
+.wiki-pokemon-learnset-hero h3 {
+  margin: 4px 0 9px;
+  font-size: 1.45rem;
+}
+
+.wiki-pokemon-learnset-note {
+  margin: 10px 2px 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.wiki-pokemon-learnset-note.centered {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.pokemon-z-wiki-panel.pokemon-learnset-view .pokemon-z-wiki-toolbar,
+.pokemon-z-wiki-panel.pokemon-learnset-view .pokemon-z-wiki-intro {
+  display: none;
+}
+
+.wiki-pokemon-move-navigation {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.wiki-pokemon-move-navigation.sticky {
+  position: sticky;
+  z-index: 35;
+  top: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 12px 0 0;
+  border: 1px solid rgba(185, 128, 11, 0.24);
+  border-radius: 15px;
+  padding: 8px;
+  background: rgba(255, 252, 243, 0.94);
+  box-shadow: 0 8px 24px rgba(91, 63, 16, 0.12);
+  backdrop-filter: blur(12px);
+}
+
+.wiki-pokemon-move-choice {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: 2px 10px;
+  min-width: 0;
+  border: 1px solid rgba(185, 128, 11, 0.3);
+  border-radius: 13px;
+  padding: 10px;
+  color: var(--ink);
+  background: var(--ui-card-overlay);
+  text-align: left;
+  cursor: pointer;
+}
+
+.wiki-pokemon-move-choice:hover,
+.wiki-pokemon-move-choice:focus-visible {
+  border-color: var(--accent);
+  background: var(--ui-accent-wash);
+}
+
+.wiki-pokemon-move-choice > span {
+  display: grid;
+  grid-row: 1 / span 2;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  color: #fff;
+  background: linear-gradient(145deg, #c69216, #8f6100);
+  font-size: 0.72rem;
+  font-weight: 950;
+}
+
+.wiki-pokemon-move-choice.return > span {
+  background: linear-gradient(145deg, #718093, #4e5968);
+  font-size: 1.1rem;
+}
+
+.wiki-pokemon-move-choice strong,
+.wiki-pokemon-move-choice small {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wiki-pokemon-move-choice small {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.wiki-learnset-section {
+  margin-top: 26px;
+}
+
+.wiki-learnset-list {
+  display: grid;
+  gap: 10px;
+}
+
+.wiki-learnset-list.compact-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 255px), 1fr));
+  align-items: start;
+}
+
+.wiki-learnset-move-card {
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--ui-card-overlay);
+  overflow: hidden;
+}
+
+.wiki-learnset-card-toggle {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  border: 0;
+  padding: 9px;
+  color: var(--ink);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.wiki-learnset-card-toggle:hover,
+.wiki-learnset-card-toggle:focus-visible {
+  background: var(--ui-accent-wash);
+}
+
+.wiki-learnset-card-toggle .wiki-machine-code {
+  min-width: 45px;
+  min-height: 36px;
+  border-radius: 9px;
+  padding: 5px;
+  font-size: 0.68rem;
+}
+
+.wiki-learnset-card-name {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.wiki-learnset-card-name strong,
+.wiki-learnset-card-name small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wiki-learnset-card-name small {
+  color: var(--muted);
+  font-size: 0.69rem;
+}
+
+.wiki-learnset-chevron {
+  color: var(--muted);
+  font-size: 1rem;
+  transition: transform 160ms ease;
+}
+
+.wiki-learnset-move-card.expanded .wiki-learnset-chevron {
+  transform: rotate(180deg);
+}
+
+.wiki-learnset-details {
+  display: grid;
+  gap: 9px;
+  border-top: 1px solid var(--line);
+  padding: 10px;
+}
+
+.wiki-learnset-details[hidden] {
+  display: none;
+}
+
+.wiki-learnset-details > p {
+  margin: 0;
+  color: var(--ui-text-detail);
+  font-size: 0.8rem;
+  line-height: 1.42;
+}
+
+.wiki-learnset-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px;
+}
+
+.wiki-learnset-tags > span:not(.type-badge) {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.wiki-learnset-level {
+  display: grid;
+  place-items: center;
+  width: 45px;
+  min-height: 36px;
+  border: 1px solid rgba(185, 128, 11, 0.34);
+  border-radius: 9px;
+  color: var(--accent-strong);
+  background: var(--ui-accent-wash);
+  font-size: 0.9rem;
+  font-weight: 950;
+}
+
+.wiki-learnset-level small {
+  color: var(--muted);
+  font-size: 0.62rem;
+  font-weight: 800;
+}
+
+.wiki-learnset-level.evolution {
+  line-height: 1;
+  font-size: 0.72rem;
+}
+
+.wiki-learnset-source {
+  color: var(--ui-text-detail);
+  line-height: 1.45;
+}
+
+.wiki-learnset-source {
+  color: var(--muted);
+  font-size: 0.77rem;
 }
 
 .wiki-compatibility-toggle,
@@ -6757,6 +7277,9 @@ body[data-game-theme="reforged"] .game-version-logo.reforged {
 }
 
 @media (max-width: 920px) {
+  .wiki-machine-select-filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .pokemon-z-wiki-toolbar {
     grid-template-columns: 1fr;
     align-items: stretch;
@@ -6768,6 +7291,25 @@ body[data-game-theme="reforged"] .game-version-logo.reforged {
 }
 
 @media (max-width: 640px) {
+  .wiki-machine-select-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .wiki-machine-filter-summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .wiki-quest-grid,
+  .wiki-recipe-grid,
+  .wiki-achievement-grid,
+  .wiki-minigame-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wiki-progression-card > header {
+    flex-direction: column;
+  }
   .pokemon-z-wiki-home-grid,
   .pokemon-z-wiki-mechanics-grid,
   .wiki-leader-team {
@@ -6809,5 +7351,40 @@ body[data-game-theme="reforged"] .game-version-logo.reforged {
     width: 100%;
     border-radius: 10px;
     flex-direction: column;
+  }
+
+  .wiki-pokemon-learnset-hero {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .wiki-pokemon-move-navigation.initial {
+    grid-template-columns: 1fr;
+  }
+
+  .wiki-pokemon-move-navigation.sticky .wiki-pokemon-move-choice {
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 2px 7px;
+    padding: 7px;
+  }
+
+  .wiki-pokemon-move-navigation.sticky .wiki-pokemon-move-choice > span {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    font-size: 0.62rem;
+  }
+
+  .wiki-learnset-move-card {
+    grid-template-columns: 1fr;
+  }
+
+  .wiki-learnset-move-card .wiki-machine-stats {
+    justify-content: stretch;
+  }
+
+  .wiki-learnset-move-card .wiki-machine-stats span {
+    flex: 1 1 0;
+    min-width: 0;
   }
 }

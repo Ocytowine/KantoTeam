@@ -27861,7 +27861,19 @@ const POKEMON_Z_WIKI_DATA = {
         767,
         768
       ],
-      "sources": []
+      "sources": [],
+      "relatedMachines": [
+        {
+          "code": "CT57",
+          "sources": [
+            {
+              "method": "Objet à ramasser",
+              "location": "Bois-en-Tronc"
+            }
+          ]
+        }
+      ],
+      "fieldUse": "Utilisable sur le terrain après 1 victoire majeure."
     },
     {
       "id": 384,
@@ -27996,7 +28008,19 @@ const POKEMON_Z_WIKI_DATA = {
         887,
         899
       ],
-      "sources": []
+      "sources": [],
+      "relatedMachines": [
+        {
+          "code": "CT28",
+          "sources": [
+            {
+              "method": "Objet à ramasser",
+              "location": "Forteresse de Fort-Vanitas"
+            }
+          ]
+        }
+      ],
+      "fieldUse": "Utilisable en extérieur après 1 victoire majeure, hors accompagnement scénarisé."
     },
     {
       "id": 385,
@@ -28239,7 +28263,19 @@ const POKEMON_Z_WIKI_DATA = {
         963,
         986
       ],
-      "sources": []
+      "sources": [],
+      "relatedMachines": [
+        {
+          "code": "CT15",
+          "sources": [
+            {
+              "method": "Objet à ramasser",
+              "location": "Relifac-le-Haut"
+            }
+          ]
+        }
+      ],
+      "fieldUse": "La Monture Surf est remise à Relifac-le-Haut avec la CT15 ; son usage demande 5 victoires majeures."
     },
     {
       "id": 386,
@@ -28663,7 +28699,19 @@ const POKEMON_Z_WIKI_DATA = {
         886,
         887
       ],
-      "sources": []
+      "sources": [],
+      "relatedMachines": [
+        {
+          "code": "CT108",
+          "sources": [
+            {
+              "method": "Objet à ramasser",
+              "location": "Château Drazat"
+            }
+          ]
+        }
+      ],
+      "fieldUse": "Utilisable sur le terrain après 1 victoire majeure."
     },
     {
       "id": 387,
@@ -28678,7 +28726,9 @@ const POKEMON_Z_WIKI_DATA = {
       "accuracy": 100,
       "pp": 15,
       "compatibleSpeciesIds": [],
-      "sources": []
+      "sources": [],
+      "relatedMachines": [],
+      "fieldUse": "Utilisable sur les cascades après 8 victoires majeures par un Pokémon qui connaît la capacité."
     },
     {
       "id": 388,
@@ -28693,7 +28743,9 @@ const POKEMON_Z_WIKI_DATA = {
       "accuracy": 100,
       "pp": 10,
       "compatibleSpeciesIds": [],
-      "sources": []
+      "sources": [],
+      "relatedMachines": [],
+      "fieldUse": "Utilisable dans les zones d’eau profonde après 7 victoires majeures par un Pokémon qui connaît la capacité."
     }
   ],
   "leaders": [
@@ -29900,6 +29952,1451 @@ const POKEMON_Z_WIKI_DATA = {
         "Plongée : 7",
         "Cascade : 8"
       ]
+    }
+  ],
+  "progressionGuides": [
+    {
+      "id": "quiz-bordevin",
+      "title": "Les trois questions du savant",
+      "location": "Bordevin — Maison",
+      "kind": "Énigme",
+      "reward": "Mouchoir Soie",
+      "hints": [
+        "Les réponses concernent l’apparence ou l’évolution de trois Pokémon bien connus.",
+        "Comptez les yeux de Smogogo, pensez au poisson qui devient un monstre marin, puis à un Pokémon qui perd sa queue en évoluant.",
+        "Réponses dans l’ordre : 4, Magicarpe, Kadabra."
+      ]
+    },
+    {
+      "id": "urano-spa",
+      "title": "Les quatre énigmes d’Urano",
+      "location": "En-Scène",
+      "kind": "Énigme et combat",
+      "reward": "Trésor d’Urano et pierre liée à une forme de Kanto",
+      "hints": [
+        "Chaque réponse se trouve parmi les éléments ou personnages présents dans l’établissement thermal.",
+        "Cherchez successivement quelque chose qui reflète, qui rapetisse avec l’âge, qui vit pour faire rire, puis une créature en écailles toujours dans l’eau.",
+        "Interagissez dans cet ordre avec le reflet, les bougies, le clown puis les poissons. Retournez voir Urano entre les étapes et préparez-vous à un combat final."
+      ]
+    },
+    {
+      "id": "jardin-boyard",
+      "title": "Les quatre énigmes du Roi",
+      "location": "Jardin Boyard",
+      "kind": "Énigmes et combat",
+      "reward": "Perruque Royale et succès « C’est mon dernier mot »",
+      "hints": [
+        "Chaque devinette se résout directement dans le Jardin : observez les étoiles, les quatre panneaux, Pikachu et la statue du Roi.",
+        "La première réponse brille la nuit ; la deuxième est le nombre 8 ; la troisième est Donphan ; pour la dernière, la réponse se trouve devant vous.",
+        "Ramassez les 5 étoiles. Réglez ensuite les quatre panneaux pour que leur somme fasse 8. Poussez Pikachu jusqu’à la zone de Donphan. Enfin, interrogez 7 fois le Roi des Énigmes puis remportez son combat."
+      ]
+    },
+    {
+      "id": "quiz-cris-pokemon",
+      "title": "Reconnaître les cris de Pokémon",
+      "location": "Maison d’Auffrac-les-Congères",
+      "kind": "Mini-jeu sonore",
+      "reward": "Charminite et Sorcilencite",
+      "hints": [
+        "Trois cris sont joués, dans l’ordre des régions Kanto, Johto puis Hoenn.",
+        "Les bonnes réponses sont un Pokémon insectoïde de Kanto, un Pokémon aquatique bleu de Johto et un Pokémon annonciateur de catastrophes de Hoenn.",
+        "Réponses dans l’ordre : Parasect, Axoloto, Absol."
+      ]
+    },
+    {
+      "id": "arena-route",
+      "title": "Préparer un combat de chef",
+      "location": "Toutes les forteresses",
+      "kind": "Conseil de progression",
+      "reward": "Progression et nouveau plafond de niveau",
+      "hints": [
+        "Consultez d’abord la spécialité du chef et le plafond actuel sans dévoiler son équipe.",
+        "Ouvrez le conseil tactique de sa fiche pour connaître les types offensifs qui couvrent le plus de membres.",
+        "La composition complète révèle ensuite les objets, capacités, IV et variantes éventuelles."
+      ]
+    }
+  ],
+  "quests": [
+    {
+      "number": 1,
+      "switchId": 299,
+      "title": "La tour mystérieuse",
+      "location": "Bourg Canvas",
+      "objective": "Examiner la mystérieuse tour fermée de Bourg Canvas."
+    },
+    {
+      "number": 2,
+      "switchId": 298,
+      "title": "Une monture Gogoat",
+      "location": "Route 2",
+      "objective": "Apporter une Clé Mercurielle au fermier de la Route 2 en échange d’une Monture Gogoat."
+    },
+    {
+      "number": 3,
+      "switchId": 119,
+      "title": "Mission des Mousquetaires I",
+      "location": "Grotte Navarre",
+      "objective": "Neutraliser le malfaiteur signalé par les Mousquetaires dans la Grotte Navarre."
+    },
+    {
+      "number": 4,
+      "switchId": 121,
+      "title": "Mission des Mousquetaires II",
+      "location": "Grotte Inondée",
+      "objective": "Neutraliser le malfaiteur signalé dans la Grotte Inondée."
+    },
+    {
+      "number": 5,
+      "switchId": 123,
+      "title": "Mission des Mousquetaires III",
+      "location": "Catacombes septentrionales",
+      "objective": "Neutraliser le malfaiteur caché dans les Catacombes septentrionales."
+    },
+    {
+      "number": 6,
+      "switchId": 276,
+      "title": "Mission des Mousquetaires IV",
+      "location": "Vieux Vanitas",
+      "objective": "Neutraliser le malfaiteur signalé à Vieux Vanitas."
+    },
+    {
+      "number": 7,
+      "switchId": 125,
+      "title": "Un endroit où s’installer",
+      "location": "Route 3",
+      "objective": "Indiquer au marchand de la Route 3 un lieu où il pourrait installer son commerce."
+    },
+    {
+      "number": 8,
+      "switchId": 128,
+      "title": "Le spectre du fossoyeur",
+      "location": "Route 6",
+      "objective": "Aider le fossoyeur de la Route 6 à chasser un Spectrum."
+    },
+    {
+      "number": 9,
+      "switchId": 300,
+      "title": "Trois Pokétoxines",
+      "location": "Marais Impie",
+      "objective": "Rapporter trois Pokétoxines à la sorcière du Marais Impie."
+    },
+    {
+      "number": 10,
+      "switchId": 301,
+      "title": "Le condensateur perdu",
+      "location": "Ancien Atelier",
+      "objective": "Récupérer dans l’Ancien Atelier le condensateur demandé par un chercheur de l’Académie d’Essience."
+    },
+    {
+      "number": 11,
+      "switchId": 302,
+      "title": "Le mouchoir égaré",
+      "location": "Château Lanto",
+      "objective": "Retrouver au Château Lanto le mouchoir perdu par une dame de la Route 8."
+    },
+    {
+      "number": 12,
+      "switchId": 306,
+      "title": "La porte de Chez Gourmelet",
+      "location": "Chez Gourmelet",
+      "objective": "Trouver comment ouvrir la mystérieuse porte de Chez Gourmelet."
+    },
+    {
+      "number": 13,
+      "switchId": 307,
+      "title": "La Chambre druidique",
+      "location": "Chambre druidique",
+      "objective": "Trouver comment ouvrir la mystérieuse porte de la Chambre druidique."
+    },
+    {
+      "number": 14,
+      "switchId": 308,
+      "title": "Le restaurant de Justine",
+      "location": "Chez Gourmelet",
+      "objective": "Aider Justine à ouvrir son restaurant Chez Gourmelet."
+    },
+    {
+      "number": 15,
+      "switchId": 304,
+      "title": "Les mots de la cloche",
+      "location": "Autel de Prospérité",
+      "objective": "Utiliser les mots magiques qui font réagir la cloche de l’Autel de Prospérité."
+    },
+    {
+      "number": 16,
+      "switchId": 305,
+      "title": "La traversée du Passeur",
+      "location": "Roche-sur-Gliffe",
+      "objective": "Rejoindre le Passeur à Roche-sur-Gliffe avec une Pièce d’Or."
+    },
+    {
+      "number": 17,
+      "switchId": 253,
+      "title": "Deux livres recherchés",
+      "location": "Route 20",
+      "objective": "Retrouver les deux livres précis recherchés par un monsieur de la Route 20."
+    },
+    {
+      "number": 18,
+      "switchId": 389,
+      "title": "L’épée perdue",
+      "location": "Route 11",
+      "objective": "Retrouver l’épée égarée par le chevalier de la Route 11."
+    },
+    {
+      "number": 19,
+      "switchId": 390,
+      "title": "L’enfant de Vieux Vanitas",
+      "location": "Vieux Vanitas",
+      "objective": "Rétablir l’ordre à Vieux Vanitas afin de libérer l’enfant pris au piège."
+    },
+    {
+      "number": 20,
+      "switchId": 391,
+      "title": "Un remède introuvable",
+      "location": "Vieux Vanitas",
+      "objective": "Chercher dans les rivières du sud de la région un remède pour le Pokémon malade."
+    },
+    {
+      "number": 21,
+      "switchId": 392,
+      "title": "Le voleur du Jardin",
+      "location": "Jardin Vanitas",
+      "objective": "Attirer le Pokémon voleur du Jardin Vanitas avec les baies appropriées."
+    },
+    {
+      "number": 22,
+      "switchId": 393,
+      "title": "La main verte",
+      "location": "Jardin Vanitas",
+      "objective": "Prouver votre talent au cultivateur du Jardin Vanitas en faisant pousser des baies."
+    },
+    {
+      "number": 23,
+      "switchId": 394,
+      "title": "L’homme en noir",
+      "location": "Catacombes d’Illumis",
+      "objective": "Retrouver l’individu vêtu de noir qui demande de l’aide dans les Catacombes d’Illumis."
+    },
+    {
+      "number": 24,
+      "switchId": 395,
+      "title": "La porte des Catacombes",
+      "location": "Catacombes d’Illumis",
+      "objective": "Trouver comment ouvrir la mystérieuse porte des Catacombes d’Illumis."
+    },
+    {
+      "number": 25,
+      "switchId": 396,
+      "title": "La porte de Votre-Gentilhomme",
+      "location": "Votre-Gentilhomme d’Illumis",
+      "objective": "Trouver comment ouvrir la mystérieuse porte de Votre-Gentilhomme d’Illumis."
+    },
+    {
+      "number": 26,
+      "switchId": 494,
+      "title": "La porte de l’Usine",
+      "location": "Usine de Poké Balls",
+      "objective": "Trouver comment ouvrir la mystérieuse porte de l’Usine de Poké Balls."
+    },
+    {
+      "number": 27,
+      "switchId": 545,
+      "title": "La Forge scellée",
+      "location": "Forge Millénaire",
+      "objective": "Trouver comment ouvrir la porte de la Forge Millénaire."
+    },
+    {
+      "number": 28,
+      "switchId": 639,
+      "title": "L’entrepôt de la Prison",
+      "location": "Saint-Héchaînes",
+      "objective": "Ouvrir la porte scellée d’un entrepôt de la prison de Saint-Héchaînes."
+    },
+    {
+      "number": 29,
+      "switchId": 640,
+      "title": "La porte de la Route 15",
+      "location": "Route 15",
+      "objective": "Trouver comment ouvrir la mystérieuse porte de la Route 15."
+    },
+    {
+      "number": 30,
+      "switchId": 641,
+      "title": "La porte de Mozheim",
+      "location": "Mozheim",
+      "objective": "Trouver comment ouvrir la mystérieuse porte de Mozheim."
+    },
+    {
+      "number": 31,
+      "switchId": 649,
+      "title": "Le fugitif Dandelio",
+      "location": "Saint-Héchaînes",
+      "objective": "Aider Dandelio, prisonnier évadé caché près de Saint-Héchaînes."
+    },
+    {
+      "number": 32,
+      "switchId": 650,
+      "title": "Urgence à la Tour",
+      "location": "Asile d’Hache-Âme",
+      "objective": "Porter secours à la patiente de l’Asile d’Hache-Âme."
+    },
+    {
+      "number": 33,
+      "switchId": 651,
+      "title": "La peintre disparue",
+      "location": "Grotte Coda",
+      "objective": "Retrouver la peintre partie chercher son Pokémon dans la Grotte Coda."
+    },
+    {
+      "number": 34,
+      "switchId": 652,
+      "title": "Condamné à tort",
+      "location": "Mozheim",
+      "objective": "Empêcher l’exécution injuste d’un monsieur à Mozheim."
+    },
+    {
+      "number": 35,
+      "switchId": 653,
+      "title": "La porte secrète",
+      "location": "Asile d’Hache-Âme",
+      "objective": "Utiliser la clé obtenue pour ouvrir la porte secrète de l’Asile d’Hache-Âme."
+    },
+    {
+      "number": 36,
+      "switchId": 654,
+      "title": "Un fantôme à domicile",
+      "location": "Romant-sous-Bois",
+      "objective": "Chasser le fantôme entré dans la maison d’un habitant de Romant-sous-Bois."
+    },
+    {
+      "number": 37,
+      "switchId": 655,
+      "title": "La carte au trésor",
+      "location": "Île lointaine",
+      "objective": "Explorer une île reculée avec le vieux pirate en utilisant la Carte au Trésor."
+    },
+    {
+      "number": 38,
+      "switchId": 657,
+      "title": "Les invitations thermales",
+      "location": "Mozheim",
+      "objective": "Utiliser les Invitations thermales pour accéder à l’En-Scène depuis Mozheim."
+    },
+    {
+      "number": 39,
+      "switchId": 686,
+      "title": "Besoin d’aide à la gare",
+      "location": "Gare d’Illumis",
+      "objective": "Parler à la dame qui semble avoir besoin d’aide dans la Gare d’Illumis."
+    },
+    {
+      "number": 40,
+      "switchId": 696,
+      "title": "Une demande à Des-Rires",
+      "location": "Des-Rires",
+      "objective": "Parler à la demoiselle qui semble avoir besoin d’aide à Des-Rires."
+    },
+    {
+      "number": 41,
+      "switchId": 745,
+      "title": "La porte mercurielle",
+      "location": "Tour Maîtrise",
+      "objective": "Ouvrir la porte mercurielle située à l’intérieur de la Tour Maîtrise."
+    },
+    {
+      "number": 42,
+      "switchId": 695,
+      "title": "La clé de la gare",
+      "location": "Gare d’Illumis",
+      "objective": "Retrouver, non loin de la gare, la clé de sa porte fermée."
+    },
+    {
+      "number": 43,
+      "switchId": 690,
+      "title": "La requête du moine",
+      "location": "Bateau Échoué",
+      "objective": "Retrouver le moine ivre près du Bateau Échoué et répondre à sa demande."
+    },
+    {
+      "number": 44,
+      "switchId": 310,
+      "title": "La porte de la Forteresse",
+      "location": "Forteresse de Fort-Vanitas",
+      "objective": "Ouvrir la porte mercurielle à l’intérieur de la Forteresse de Fort-Vanitas."
+    },
+    {
+      "number": 45,
+      "switchId": 828,
+      "title": "L’ancienne recrue Azoth",
+      "location": "Route 16",
+      "objective": "Aider l’ancienne recrue de la Team Azoth sur la Route 16."
+    }
+  ],
+  "recipes": [
+    {
+      "number": 1,
+      "result": "Poké Ball maison",
+      "ingredients": [
+        {
+          "item": "Galet",
+          "quantity": 1
+        },
+        {
+          "item": "Baie Pêcha",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "result": "Charme Normal",
+      "ingredients": [
+        {
+          "item": "Belle Fourrure",
+          "quantity": 1
+        },
+        {
+          "item": "Bois",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "result": "Charme Vol",
+      "ingredients": [
+        {
+          "item": "Plume Douce",
+          "quantity": 1
+        },
+        {
+          "item": "Bois",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "result": "Poudre Explosive",
+      "ingredients": [
+        {
+          "item": "Braise",
+          "quantity": 1
+        },
+        {
+          "item": "Poudre Luminescente",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "result": "Super Ball maison",
+      "ingredients": [
+        {
+          "item": "Galet",
+          "quantity": 1
+        },
+        {
+          "item": "Baie Oran",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "result": "Charme Insecte",
+      "ingredients": [
+        {
+          "item": "Rosée du Matin",
+          "quantity": 1
+        },
+        {
+          "item": "Bois",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "result": "Charme Poison",
+      "ingredients": [
+        {
+          "item": "Pokétoxine",
+          "quantity": 1
+        },
+        {
+          "item": "Bois",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "result": "Charme Eau",
+      "ingredients": [
+        {
+          "item": "Eau",
+          "quantity": 1
+        },
+        {
+          "item": "Bois",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "result": "Charme Feu",
+      "ingredients": [
+        {
+          "item": "Braise",
+          "quantity": 1
+        },
+        {
+          "item": "Bois",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "result": "Charme Plante",
+      "ingredients": [
+        {
+          "item": "Mousse Suave",
+          "quantity": 1
+        },
+        {
+          "item": "Bois",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "result": "Frhachile",
+      "ingredients": [
+        {
+          "item": "Bois",
+          "quantity": 1
+        },
+        {
+          "item": "Copeaux de Fer",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "result": "Clé Magique",
+      "ingredients": [
+        {
+          "item": "Poudre d'Os",
+          "quantity": 1
+        },
+        {
+          "item": "Matière Sinistre",
+          "quantity": 1
+        },
+        {
+          "item": "Ectoplasme",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "result": "Charme Ténèbres",
+      "ingredients": [
+        {
+          "item": "Matière Sinistre",
+          "quantity": 1
+        },
+        {
+          "item": "Bois",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "result": "Charme Glace",
+      "ingredients": [
+        {
+          "item": "Glaçons",
+          "quantity": 1
+        },
+        {
+          "item": "Bois",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "result": "Herbe Rappel",
+      "ingredients": [
+        {
+          "item": "Mousse Suave",
+          "quantity": 1
+        },
+        {
+          "item": "Fibre Élastique",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "result": "Charme Sol",
+      "ingredients": [
+        {
+          "item": "Gravier Sec",
+          "quantity": 1
+        },
+        {
+          "item": "Bois",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "result": "Charme Psy",
+      "ingredients": [
+        {
+          "item": "Fluide Onirique",
+          "quantity": 1
+        },
+        {
+          "item": "Bois",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "result": "Hyper Ball maison",
+      "ingredients": [
+        {
+          "item": "Galet",
+          "quantity": 1
+        },
+        {
+          "item": "Baie Sitrus",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "result": "Charme Électrik",
+      "ingredients": [
+        {
+          "item": "Poudre Luminescente",
+          "quantity": 1
+        },
+        {
+          "item": "Bois",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "result": "Charme Combat",
+      "ingredients": [
+        {
+          "item": "Fibre Élastique",
+          "quantity": 1
+        },
+        {
+          "item": "Bois",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "result": "Superbe Pierre Plante",
+      "ingredients": [
+        {
+          "item": "Minerai Étrange",
+          "quantity": 1
+        },
+        {
+          "item": "Mousse Suave",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "result": "Superbe Pierre Feu",
+      "ingredients": [
+        {
+          "item": "Minerai Étrange",
+          "quantity": 1
+        },
+        {
+          "item": "Braise",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "result": "Superbe Pierre Eau",
+      "ingredients": [
+        {
+          "item": "Minerai Étrange",
+          "quantity": 1
+        },
+        {
+          "item": "Eau",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 24,
+      "result": "Superbe Pierre Foudre",
+      "ingredients": [
+        {
+          "item": "Minerai Étrange",
+          "quantity": 1
+        },
+        {
+          "item": "Poudre Luminescente",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 25,
+      "result": "Superbe Pierre Lune",
+      "ingredients": [
+        {
+          "item": "Minerai Étrange",
+          "quantity": 1
+        },
+        {
+          "item": "Fluide Onirique",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 26,
+      "result": "Superbe Pierre Aube",
+      "ingredients": [
+        {
+          "item": "Minerai Étrange",
+          "quantity": 1
+        },
+        {
+          "item": "Rosée du Matin",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 27,
+      "result": "Superbe Pierre Eclat",
+      "ingredients": [
+        {
+          "item": "Minerai Étrange",
+          "quantity": 1
+        },
+        {
+          "item": "Sucre Féerique",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 28,
+      "result": "Superbe Pierre Nuit",
+      "ingredients": [
+        {
+          "item": "Minerai Étrange",
+          "quantity": 1
+        },
+        {
+          "item": "Matière Sinistre",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 29,
+      "result": "Superbe Pierre Soleil",
+      "ingredients": [
+        {
+          "item": "Minerai Étrange",
+          "quantity": 1
+        },
+        {
+          "item": "Gravier Sec",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 30,
+      "result": "Charme Roche",
+      "ingredients": [
+        {
+          "item": "Minerai Étrange",
+          "quantity": 1
+        },
+        {
+          "item": "Bois",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 31,
+      "result": "Charme Fée",
+      "ingredients": [
+        {
+          "item": "Sucre Féerique",
+          "quantity": 1
+        },
+        {
+          "item": "Bois",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 32,
+      "result": "Injection PV Plus",
+      "ingredients": [
+        {
+          "item": "Sucre Féerique",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 33,
+      "result": "Injection Protéine",
+      "ingredients": [
+        {
+          "item": "Fibre Élastique",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 34,
+      "result": "Injection Fer",
+      "ingredients": [
+        {
+          "item": "Copeaux de Fer",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 35,
+      "result": "Injection Calcium",
+      "ingredients": [
+        {
+          "item": "Fluide Onirique",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 36,
+      "result": "Injection Zinc",
+      "ingredients": [
+        {
+          "item": "Glaçons",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 37,
+      "result": "Injection Carbone",
+      "ingredients": [
+        {
+          "item": "Plume Douce",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 38,
+      "result": "Charme Spectre",
+      "ingredients": [
+        {
+          "item": "Ectoplasme",
+          "quantity": 1
+        },
+        {
+          "item": "Bois",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 39,
+      "result": "Charme Acier",
+      "ingredients": [
+        {
+          "item": "Copeaux de Fer",
+          "quantity": 1
+        },
+        {
+          "item": "Bois",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 40,
+      "result": "Pilule PV",
+      "ingredients": [
+        {
+          "item": "Gravier Sec",
+          "quantity": 1
+        },
+        {
+          "item": "Sucre Féerique",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 41,
+      "result": "Pilule Attaque",
+      "ingredients": [
+        {
+          "item": "Gravier Sec",
+          "quantity": 1
+        },
+        {
+          "item": "Fibre Élastique",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 42,
+      "result": "Pilule Défense",
+      "ingredients": [
+        {
+          "item": "Gravier Sec",
+          "quantity": 1
+        },
+        {
+          "item": "Copeaux de Fer",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 43,
+      "result": "Charme Dragon",
+      "ingredients": [
+        {
+          "item": "Écaille Draconique",
+          "quantity": 1
+        },
+        {
+          "item": "Bois",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 44,
+      "result": "PP Max",
+      "ingredients": [
+        {
+          "item": "Eau",
+          "quantity": 1
+        },
+        {
+          "item": "Belle Fourrure",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 45,
+      "result": "Pilule Att. Spéciale",
+      "ingredients": [
+        {
+          "item": "Gravier Sec",
+          "quantity": 1
+        },
+        {
+          "item": "Rosée du Matin",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 46,
+      "result": "Pilule Déf. Spéciale",
+      "ingredients": [
+        {
+          "item": "Gravier Sec",
+          "quantity": 1
+        },
+        {
+          "item": "Fluide Onirique",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 47,
+      "result": "Pilule Vitesse",
+      "ingredients": [
+        {
+          "item": "Gravier Sec",
+          "quantity": 1
+        },
+        {
+          "item": "Plume Douce",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 48,
+      "result": "Master Ball",
+      "ingredients": [
+        {
+          "item": "Baie Sitrus",
+          "quantity": 3
+        },
+        {
+          "item": "Galet",
+          "quantity": 1
+        },
+        {
+          "item": "Écaille Draconique",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 49,
+      "result": "Potion Brillante",
+      "ingredients": [
+        {
+          "item": "Poudre Luminescente",
+          "quantity": 1
+        },
+        {
+          "item": "Rosée du Matin",
+          "quantity": 1
+        },
+        {
+          "item": "Écaille Draconique",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "number": 50,
+      "result": "Embryon M",
+      "ingredients": [
+        {
+          "item": "Poudre d'Os",
+          "quantity": 3
+        },
+        {
+          "item": "Fluide Onirique",
+          "quantity": 3
+        },
+        {
+          "item": "Morceau d'ADN",
+          "quantity": 1
+        }
+      ]
+    }
+  ],
+  "achievements": [
+    {
+      "number": 1,
+      "title": "Premier sang",
+      "description": "Vaincre Annelotte."
+    },
+    {
+      "number": 2,
+      "title": "Coup de théâtre",
+      "description": "Vaincre Cid."
+    },
+    {
+      "number": 3,
+      "title": "F3",
+      "description": "Vaincre F3."
+    },
+    {
+      "number": 4,
+      "title": "Hors-d'oeuvre",
+      "description": "Vaincre Justine."
+    },
+    {
+      "number": 5,
+      "title": "Redescendre sur terre",
+      "description": "Vaincre Loto."
+    },
+    {
+      "number": 6,
+      "title": "Six sur six",
+      "description": "Vaincre Belladonne."
+    },
+    {
+      "number": 7,
+      "title": "Fureur royale",
+      "description": "Vaincre le Mélancholique."
+    },
+    {
+      "number": 8,
+      "title": "Problèmes mentaux",
+      "description": "Vaincre Arthur."
+    },
+    {
+      "number": 9,
+      "title": "Au bûcher!",
+      "description": "Vaincre Jeanne."
+    },
+    {
+      "number": 10,
+      "title": "Dur comme fer",
+      "description": "Vaincre Stephaïstos."
+    },
+    {
+      "number": 11,
+      "title": "Briser la glace",
+      "description": "Vaincre Elsarotchka."
+    },
+    {
+      "number": 12,
+      "title": "Le rideau tombe",
+      "description": "Vaincre Esternelle."
+    },
+    {
+      "number": 13,
+      "title": "Faire mouche",
+      "description": "Vaincre Myrtin."
+    },
+    {
+      "number": 14,
+      "title": "Grand final",
+      "description": "Détruire l'Arme Suprême."
+    },
+    {
+      "number": 15,
+      "title": "C'est mon dernier mot",
+      "description": "Résoudre les énigmes du Jardin Boyard."
+    },
+    {
+      "number": 16,
+      "title": "Au fond des choses",
+      "description": "Atteindre les profondeurs des Catacombes d'Illumis."
+    },
+    {
+      "number": 17,
+      "title": "Mon précieux",
+      "description": "Trouver le trésor de l'Île de la Torterra."
+    },
+    {
+      "number": 18,
+      "title": "Repos bien mérité",
+      "description": "Passez la nuit à l'En-Scène."
+    },
+    {
+      "number": 19,
+      "title": "Capsule Corp",
+      "description": "Trouver au moins 100 CT et examiner l'une des statues de la Nouvelle Réunion."
+    },
+    {
+      "number": 20,
+      "title": "Disciple d'Olivier",
+      "description": "Obtenir au moins 46 recettes et examiner l'une des statues de la Nouvelle Réunion."
+    },
+    {
+      "number": 21,
+      "title": "Mâle alpha",
+      "description": "Battre les 18 Pokémon alpha et examiner l'une des statues de la Nouvelle Réunion."
+    },
+    {
+      "number": 22,
+      "title": "Aux petits soins",
+      "description": "Trouver les 4 améliorations du Pokékit. (5 utilisations au total)"
+    },
+    {
+      "number": 23,
+      "title": "Petit à petit",
+      "description": "Repeupler la Nouvelle Réunion d'au moins 15 personnes et examiner l'une de ses statues."
+    },
+    {
+      "number": 24,
+      "title": "Pas cap",
+      "description": "Capturer au moins 250 Pokémon et examiner l'une des statues de la Nouvelle Réunion."
+    },
+    {
+      "number": 25,
+      "title": "Cap sur l'horizon!",
+      "description": "Capturer au moins 500 Pokémon et examiner l'une des statues de la Nouvelle Réunion."
+    },
+    {
+      "number": 26,
+      "title": "C'est un cap, que dis-je...",
+      "description": "Capturer au moins 750 Pokémon et examiner l'une des statues de la Nouvelle Réunion."
+    },
+    {
+      "number": 27,
+      "title": "Tant à se dire",
+      "description": "Battre le sonneur d'Illumis."
+    }
+  ],
+  "trainerTips": [
+    {
+      "number": 1,
+      "location": "Bourg Canvas",
+      "text": "La sauvegarde se trouve dans le dossier des parties sauvegardées de votre compte utilisateur."
+    },
+    {
+      "number": 2,
+      "location": "Route 1",
+      "text": "La méthode d’évolution d’un Pokémon capturé peut être consultée dans le Pokédex."
+    },
+    {
+      "number": 3,
+      "location": "Route 1",
+      "text": "De nombreux Pokémon considérés comme faibles ont reçu un rééquilibrage de leurs statistiques."
+    },
+    {
+      "number": 4,
+      "location": "Route 2",
+      "text": "Les mises à jour futures de Pokémon Z sont conçues pour conserver votre sauvegarde."
+    },
+    {
+      "number": 5,
+      "location": "Navarroc",
+      "text": "Si certains Pokémon n’apparaissent pas en combat, le chargement de leurs sprites animés rencontre probablement un problème."
+    },
+    {
+      "number": 6,
+      "location": "Route 3",
+      "text": "Sur Android, garder un Pokémon suiveur peut réduire les ralentissements lors du passage dans les hautes herbes."
+    },
+    {
+      "number": 7,
+      "location": "Route 4",
+      "text": "Le cycle jour/nuit suit l’heure de l’ordinateur, même lorsqu’il n’est pas visible à l’écran."
+    },
+    {
+      "number": 8,
+      "location": "Route 4",
+      "text": "Les étoiles de l’écran des statistiques représentent les IV, c’est-à-dire le potentiel du Pokémon dans chaque statistique."
+    },
+    {
+      "number": 9,
+      "location": "Route 6",
+      "text": "La Lentille de la Vérité peut servir dans plusieurs autres endroits de Kalos."
+    },
+    {
+      "number": 10,
+      "location": "Marais Impie",
+      "text": "Avec Querelleur, les capacités Normal et Combat peuvent toucher les Pokémon Spectre."
+    },
+    {
+      "number": 11,
+      "location": "Route 2",
+      "text": "Tous les Pokémon de la série sont annoncés comme obtenables dans Pokémon Z."
+    },
+    {
+      "number": 12,
+      "location": "Route 5",
+      "text": "Les objets cachés peuvent se trouver très près des chemins visibles."
+    },
+    {
+      "number": 13,
+      "location": "Route 5",
+      "text": "Marcher avec un Pokémon suiveur augmente son bonheur."
+    },
+    {
+      "number": 14,
+      "location": "Route 7",
+      "text": "Un Repousse ne bloque pas les Pokémon sauvages dont le niveau dépasse celui du premier membre de l’équipe."
+    },
+    {
+      "number": 15,
+      "location": "Route 7",
+      "text": "Les Pokémon Plante sont immunisés contre les capacités de poudres et de spores."
+    },
+    {
+      "number": 16,
+      "location": "Route 7",
+      "text": "Les objets liés aux Capsules permettent d’exploiter davantage le potentiel de vos Pokémon."
+    },
+    {
+      "number": 17,
+      "location": "Route 10",
+      "text": "Sous Champ Herbu, les Pokémon au sol subissent deux fois moins de dégâts des capacités Sol."
+    },
+    {
+      "number": 18,
+      "location": "Route 10",
+      "text": "Sous Champ Brumeux, les Pokémon au sol subissent deux fois moins de dégâts des capacités Dragon."
+    },
+    {
+      "number": 19,
+      "location": "Route 9",
+      "text": "La Poudre d’Os est un matériau d’alchimie précieux, souvent présent dans les catacombes et lieux hostiles."
+    },
+    {
+      "number": 20,
+      "location": "Route 9",
+      "text": "Doux Parfum permet d’attirer les Pokémon sauvages sans se déplacer."
+    },
+    {
+      "number": 21,
+      "location": "Colline Tumultueuse",
+      "text": "Œil Composé et Fouille augmentent les chances que les Pokémon sauvages portent un objet."
+    },
+    {
+      "number": 22,
+      "location": "Route 8",
+      "text": "Lumiattirance a été modifiée : elle réduit désormais la Précision adverse."
+    },
+    {
+      "number": 23,
+      "location": "Route 8",
+      "text": "Les Repousses échouent si le premier Pokémon est moins haut niveau que les Pokémon sauvages."
+    },
+    {
+      "number": 24,
+      "location": "Roche-sur-Gliffe",
+      "text": "Une Monture Gogoat permet d’escalader les parois rocheuses."
+    },
+    {
+      "number": 25,
+      "location": "Route 11",
+      "text": "Certaines capacités possèdent une efficacité spéciale, comme Finsecte ou Lyophilisation."
+    },
+    {
+      "number": 26,
+      "location": "Route 11",
+      "text": "Le panneau du Centre Pokémon brille lorsqu’une mission connue est encore en attente."
+    },
+    {
+      "number": 27,
+      "location": "Route 9",
+      "text": "Pour Évoli, il peut être intéressant d’attendre l’obtention d’un objet d’évolution particulièrement noble."
+    },
+    {
+      "number": 28,
+      "location": "Route 12",
+      "text": "Après avoir obtenu une Monture Surf, revisitez les zones déjà parcourues pour atteindre de nouveaux recoins."
+    },
+    {
+      "number": 29,
+      "location": "Route 15",
+      "text": "Les Pokémon Plante ne sont pas affectés par les poudres et les spores."
+    },
+    {
+      "number": 30,
+      "location": "Caverne Gelée",
+      "text": "Dans Pokémon Z, le gel agit comme une brûlure appliquée à l’Attaque Spéciale."
+    },
+    {
+      "number": 31,
+      "location": "Route 17",
+      "text": "Gardez des objets chauds dans l’inventaire pour résister au froid de la Grotte Gelée."
+    },
+    {
+      "number": 32,
+      "location": "Route 14",
+      "text": "Pour Méga-Évoluer, équipez la Méga-Gemme correspondante puis utilisez la touche Z assignée pendant le combat."
+    },
+    {
+      "number": 33,
+      "location": "La Frescale",
+      "text": "Sous la pluie, certaines capacités comme Fatal-Foudre et Vent Violent ne ratent jamais."
+    },
+    {
+      "number": 34,
+      "location": "Route 18",
+      "text": "Blizzard ne rate jamais lorsqu’il neige en combat."
+    },
+    {
+      "number": 35,
+      "location": "Route 18",
+      "text": "La neige augmente la Défense des Pokémon Glace."
+    },
+    {
+      "number": 36,
+      "location": "Route 20",
+      "text": "Vaincre les 18 Pokémon Alpha de la région débloque une récompense de grande valeur."
+    },
+    {
+      "number": 37,
+      "location": "Flusselles",
+      "text": "Vous pouvez changer de Méga-Évolution selon les besoins de votre équipe."
+    },
+    {
+      "number": 38,
+      "location": "Route 19",
+      "text": "Réunir toutes les pages d’Alchimie débloque des objets particulièrement puissants."
+    },
+    {
+      "number": 39,
+      "location": "Route 22",
+      "text": "Hémorragie, le Périscope et une capacité à haut taux de critique permettent d’atteindre 100 % de chances d’infliger cet état."
+    }
+  ],
+  "minigames": [
+    {
+      "title": "Machine à sous",
+      "summary": "Mini-jeu de casino à rouleaux, avec mises et gains en jetons."
+    },
+    {
+      "title": "Voltorb Flip",
+      "summary": "Jeu de grille où les indices de ligne et de colonne permettent d’éviter les Voltorbe."
+    },
+    {
+      "title": "Loterie",
+      "summary": "Tirage fondé sur la correspondance entre le numéro gagnant et les identifiants de vos Pokémon."
+    },
+    {
+      "title": "Triple Triad",
+      "summary": "Jeu de cartes tactique où les valeurs des côtés servent à capturer les cartes adverses."
+    },
+    {
+      "title": "Extraction minière",
+      "summary": "Utilisez les outils avec mesure pour découvrir les objets avant l’effondrement de la paroi."
+    },
+    {
+      "title": "Puzzles de dalles",
+      "summary": "Reconstituez l’image en déplaçant ou retournant les pièces selon la variante proposée."
+    },
+    {
+      "title": "Duel",
+      "summary": "Mini-jeu d’affrontement distinct des combats Pokémon classiques."
+    },
+    {
+      "title": "Blackjack",
+      "summary": "À Saint-Héchaînes, approchez-vous de 21 sans le dépasser ; l’As peut valoir 1 ou 13. Une victoire rapporte une Baie Meloc."
+    },
+    {
+      "title": "Quiz des cris",
+      "summary": "À Auffrac-les-Congères, reconnaissez Parasect, Axoloto puis Absol pour recevoir une Charminite et une Sorcilencite."
     }
   ]
 };

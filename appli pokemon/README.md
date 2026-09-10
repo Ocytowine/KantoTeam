@@ -71,7 +71,7 @@ Le decodeur Ruby Marshal local prend aussi en charge l'extraction des scripts RG
 node scripts/extract-rgss-scripts.js "C:\chemin\vers\Pokemon Z\Data\Scripts.rxdata" "C:\dossier\de\sortie"
 ```
 
-Le mini-wiki de Pokemon Z est charge uniquement lors de son ouverture. Il regroupe les 108 CT, les 6 CS, leurs compatibilites et lieux d'obtention detectes, les equipes des 12 chefs, les plafonds de niveau et les principales mecaniques. Pour le regenerer depuis les donnees compilees :
+Le mini-wiki de Pokemon Z est charge uniquement lors de son ouverture. Il regroupe les 108 CT, les 6 CS, leurs compatibilites et lieux d'obtention detectes, les equipes des 12 chefs, les plafonds de niveau, les aides progressives, 45 missions, 50 recettes, 27 succes, 39 astuces uniques, les mini-jeux et les principales mecaniques. Depuis la fiche detaillee d'un membre de l'equipe Z, un bouton ouvre aussi ses CT/CS compatibles et ses capacites apprises par niveau. Les 1 018 listes d'apprentissage sont conservees dans un second fichier charge uniquement a la demande. Pour regenerer ces deux jeux de donnees depuis les fichiers compiles :
 
 ```powershell
 node scripts/build-pokemon-z-wiki.js "C:\chemin\vers\Pokemon Z\Data"
