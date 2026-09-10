@@ -53,6 +53,12 @@
           <button class="icon-nav-button" id="open-pokemon-search" type="button" aria-label="Recherche Pokemon">
             <img src="assets/recherche.png" data-theme-asset="assets/recherche.png" alt="" aria-hidden="true">
           </button>
+          <button class="icon-nav-button wiki-nav-button hidden" id="open-pokemon-z-wiki" type="button" aria-label="Guide de Pokémon Z">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11a2 2 0 0 1 2 2v15a2 2 0 0 0-2-2H6.5A2.5 2.5 0 0 0 4 20.5v-15Z"></path>
+              <path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H13v17a2 2 0 0 1 2-2h2.5a2.5 2.5 0 0 1 2.5 2.5v-15Z"></path>
+            </svg>
+          </button>
           <button class="icon-nav-button hidden" id="open-shared-teams" type="button" aria-label="Equipes partagees">
             <img src="assets/share-pokeball.png" data-theme-asset="assets/share-pokeball.png" alt="" aria-hidden="true">
           </button>
@@ -138,6 +144,32 @@
             </div>
           </div>
           <div class="team-list" id="pokemon-search-results"></div>
+        </section>
+
+        <section class="panel pokemon-z-wiki-panel hidden" id="pokemon-z-wiki-panel" aria-labelledby="pokemon-z-wiki-title">
+          <div class="panel-heading pokemon-z-wiki-heading">
+            <div>
+              <p class="eyebrow">Guide de la version 2.12</p>
+              <h2 id="pokemon-z-wiki-title">Wiki Pokémon Z</h2>
+            </div>
+            <span class="pill" id="pokemon-z-wiki-count">Données du jeu</span>
+          </div>
+          <p class="pokemon-z-wiki-intro">Des informations extraites directement des fichiers du jeu, reformulées et organisées pour accompagner ta progression.</p>
+          <div class="pokemon-z-wiki-toolbar">
+            <label class="field pokemon-z-wiki-search">
+              <span>Rechercher dans le guide</span>
+              <input id="pokemon-z-wiki-query" type="search" placeholder="CT, capacité, chef, mécanique…">
+            </label>
+            <nav class="pokemon-z-wiki-tabs" id="pokemon-z-wiki-tabs" aria-label="Rubriques du wiki">
+              <button type="button" data-wiki-category="overview">Accueil</button>
+              <button type="button" data-wiki-category="machines">CT / CS</button>
+              <button type="button" data-wiki-category="leaders">Chefs</button>
+              <button type="button" data-wiki-category="mechanics">Mécaniques</button>
+            </nav>
+          </div>
+          <div class="pokemon-z-wiki-content" id="pokemon-z-wiki-content" aria-live="polite">
+            <div class="empty-state">Chargement du guide…</div>
+          </div>
         </section>
 
         <section class="panel type-helper-panel hidden" id="type-helper-panel" aria-labelledby="type-helper-title">

@@ -71,10 +71,17 @@ Le decodeur Ruby Marshal local prend aussi en charge l'extraction des scripts RG
 node scripts/extract-rgss-scripts.js "C:\chemin\vers\Pokemon Z\Data\Scripts.rxdata" "C:\dossier\de\sortie"
 ```
 
+Le mini-wiki de Pokemon Z est charge uniquement lors de son ouverture. Il regroupe les 108 CT, les 6 CS, leurs compatibilites et lieux d'obtention detectes, les equipes des 12 chefs, les plafonds de niveau et les principales mecaniques. Pour le regenerer depuis les donnees compilees :
+
+```powershell
+node scripts/build-pokemon-z-wiki.js "C:\chemin\vers\Pokemon Z\Data"
+```
+
 Verifier ensuite les invariants du guide :
 
 ```powershell
 node tests/pokemon-z-guide-data.test.js
+node tests/pokemon-z-wiki-data.test.js
 ```
 
 Les statistiques de base et la classification locale des Pokemon legendaires/fabuleux sont embarquees et peuvent etre regenerees depuis les donnees PokeAPI :
