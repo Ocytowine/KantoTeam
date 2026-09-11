@@ -7053,6 +7053,46 @@ body[data-game-theme="reforged"] .game-version-logo.reforged {
   line-height: 1.48;
 }
 
+.wiki-item-measured-effect {
+  display: grid;
+  gap: 5px;
+  padding: 10px 11px;
+  border: 1px solid rgba(45, 127, 91, 0.24);
+  border-radius: 10px;
+  background: rgba(226, 247, 235, 0.72);
+}
+
+.wiki-item-measured-effect > span {
+  color: #267457;
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.wiki-item-measured-effect > strong {
+  color: var(--text);
+  font-size: 0.88rem;
+}
+
+.wiki-item-measured-effect ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--ui-text-detail);
+  font-size: 0.76rem;
+  line-height: 1.42;
+}
+
+.wiki-item-description-label {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--muted);
+  font-size: 0.64rem;
+  font-weight: 850;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
 .wiki-item-details-button {
   justify-self: start;
 }
@@ -7460,6 +7500,83 @@ body[data-game-theme="reforged"] .game-version-logo.reforged {
   color: var(--ui-text-detail);
   font-size: 0.8rem;
   line-height: 1.42;
+}
+
+.wiki-move-mechanics {
+  display: grid;
+  gap: 7px;
+  padding: 10px;
+  border: 1px solid rgba(45, 127, 91, 0.24);
+  border-radius: 10px;
+  background: rgba(226, 247, 235, 0.68);
+}
+
+.wiki-move-mechanics > p {
+  margin: 0;
+  color: #267457;
+}
+
+.wiki-move-mechanics-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.wiki-move-mechanics-facts > span {
+  display: grid;
+  gap: 1px;
+  padding: 5px 7px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.64);
+}
+
+.wiki-move-mechanics-facts small {
+  color: var(--muted);
+  font-size: 0.62rem;
+}
+
+.wiki-move-mechanics-facts strong {
+  color: var(--text);
+  font-size: 0.75rem;
+}
+
+.wiki-move-mechanics ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--ui-text-detail);
+  font-size: 0.76rem;
+  line-height: 1.42;
+}
+
+.wiki-move-stage-help {
+  color: var(--muted);
+  font-size: 0.7rem;
+  line-height: 1.4;
+}
+
+.wiki-move-traits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.wiki-move-traits span {
+  padding: 3px 6px;
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.72);
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.wiki-move-description-label {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--muted);
+  font-size: 0.63rem;
+  font-weight: 850;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .wiki-learnset-tags {

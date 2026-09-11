@@ -154,6 +154,160 @@ function decodeWordArray(value) {
   return result;
 }
 
+const MOVE_TARGET_LABELS = {
+  0x00: "Une cible autre que le lanceur",
+  0x01: "Aucune cible directe",
+  0x02: "Un adversaire aléatoire",
+  0x04: "Tous les adversaires",
+  0x08: "Tous les Pokémon sauf le lanceur",
+  0x10: "Le lanceur",
+  0x20: "Le camp du lanceur",
+  0x40: "Les deux camps",
+  0x80: "Le camp adverse",
+  0x100: "Le partenaire",
+  0x200: "Le lanceur ou son partenaire",
+  0x400: "Un adversaire choisi",
+  0x800: "L'adversaire placé en face"
+};
+
+const MOVE_FLAG_LABELS = [
+  [0x001, "Contact"], [0x002, "Bloquée par Abri/Détection"],
+  [0x004, "Renvoyée par Reflet Magik"], [0x008, "Volable par Saisie"],
+  [0x010, "Copiable par Mimique"], [0x020, "Compatible avec Roche Royale"],
+  [0x040, "Dégèle le lanceur"], [0x080, "Taux critique élevé"],
+  [0x100, "Morsure"], [0x200, "Poing"], [0x400, "Sonore"],
+  [0x800, "Poudre"], [0x1000, "Aura/impulsion"], [0x2000, "Bombe/projectile"]
+];
+
+const MOVE_FUNCTION_NOTES = {
+  0x06A: ["Inflige exactement 20 PV de dégâts."],
+  0x06B: ["Inflige exactement 40 PV de dégâts."],
+  0x06C: ["Retire la moitié des PV actuels de la cible."],
+  0x06D: ["Dégâts fixes égaux au niveau du lanceur."],
+  0x06E: ["Ramène les PV de la cible au niveau de ceux du lanceur ; échoue si la cible en a autant ou moins."],
+  0x070: ["Met K.O. en un coup ; échoue si la cible est d'un niveau supérieur au lanceur."],
+  0x071: ["Renvoie le double des derniers dégâts physiques reçus ; échoue sans attaque physique admissible."],
+  0x072: ["Renvoie le double des derniers dégâts spéciaux reçus ; échoue sans attaque spéciale admissible."],
+  0x073: ["Renvoie 1,5 fois les derniers dégâts reçus ; le lanceur doit avoir été touché durant ce tour."],
+  0x07B: ["Puissance doublée si la cible est empoisonnée."],
+  0x07D: ["Puissance doublée contre une cible endormie, qui est ensuite réveillée."],
+  0x07E: ["Puissance doublée si le lanceur est empoisonné, paralysé ou brûlé."],
+  0x07F: ["Puissance doublée si la cible subit une altération de statut."],
+  0x080: ["Puissance doublée si la cible possède au plus la moitié de ses PV."],
+  0x081: ["Puissance doublée si le lanceur a été touché par la cible durant ce tour."],
+  0x082: ["Puissance doublée si la cible a déjà subi des dégâts durant ce tour."],
+  0x083: ["Puissance doublée si un allié a déjà utilisé cette capacité durant le tour."],
+  0x084: ["Puissance doublée si le lanceur agit après la cible."],
+  0x085: ["Puissance doublée si un allié a été mis K.O. au tour précédent."],
+  0x086: ["Puissance doublée si le lanceur ne tient aucun objet."],
+  0x087: ["Sous une météo active, la puissance est doublée et le type s'adapte à la météo."],
+  0x088: ["Puissance doublée contre une cible qui tente d'être remplacée."],
+  0x08B: ["Puissance maximale 150, réduite proportionnellement aux PV perdus par le lanceur."],
+  0x08C: ["Puissance maximale 120, réduite proportionnellement aux PV perdus par la cible."],
+  0x08D: ["Puissance de 1 à 150 selon le rapport de Vitesse : plus le lanceur est lent face à la cible, plus l'attaque est forte."],
+  0x08E: ["Puissance de base 20, puis +20 pour chaque niveau positif de statistique du lanceur."],
+  0x08F: ["Puissance de base 60, puis +20 par niveau positif de statistique de la cible, avec un maximum de 200."],
+  0x091: ["La puissance double à chaque utilisation consécutive réussie, dans la limite prévue par le script."],
+  0x095: ["Puissance tirée aléatoirement par paliers d'Ampleur, de 10 à 150."],
+  0x097: ["Plus les PP restants sont faibles, plus la puissance augmente : de 40 à 200."],
+  0x098: ["Puissance de 20 à 200 : elle augmente lorsque les PV du lanceur diminuent."],
+  0x099: ["Puissance de 60 à 150 selon l'avantage de Vitesse du lanceur sur la cible."],
+  0x09A: ["Puissance de 20 à 120 selon le poids de la cible."],
+  0x09B: ["Puissance de 40 à 120 selon l'avantage de poids du lanceur sur la cible."],
+  0x0BD: ["Frappe exactement 2 fois."],
+  0x0BE: ["Frappe exactement 2 fois ; chaque impact applique les règles de l'effet associé."],
+  0x0BF: ["Frappe exactement 3 fois."],
+  0x0C0: ["Frappe de 2 à 5 fois ; le nombre peut être modifié par certains talents."],
+  0x0C2: ["Après une utilisation réussie, le lanceur doit se recharger au tour suivant."],
+  0x0D5: ["Restaure 50 % des PV maximum du lanceur."],
+  0x0D6: ["Restaure 50 % des PV maximum et retire temporairement le type Vol du lanceur jusqu'à la fin du tour."],
+  0x0D7: ["Restaure 50 % des PV maximum du bénéficiaire à la fin du tour suivant."],
+  0x0D8: ["Restaure normalement 50 % des PV max, 2/3 sous le soleil et 1/4 sous une météo défavorable."],
+  0x0D9: ["Restaure tous les PV et soigne les statuts, puis endort le lanceur pendant 2 tours."],
+  0x0DA: ["Régénère 1/16 des PV maximum à la fin de chaque tour."],
+  0x0DB: ["Régénère 1/16 des PV maximum par tour, mais empêche le remplacement du lanceur."],
+  0x0DC: ["Draine 1/8 des PV maximum de la cible à chaque tour."],
+  0x0DD: ["Rend au lanceur 50 % des dégâts effectivement infligés."],
+  0x0DE: ["Ne fonctionne que sur une cible endormie et rend 50 % des dégâts infligés."],
+  0x0DF: ["Rend 50 % de ses PV maximum à la cible."],
+  0x0E1: ["Inflige un nombre de dégâts égal aux PV actuels du lanceur, puis met celui-ci K.O."],
+  0x0E5: ["Tous les Pokémon affectés tombent K.O. après 3 tours s'ils restent en combat."],
+  0x0E8: ["Permet de survivre à 1 PV ; les utilisations protectrices successives réduisent ses chances de réussite."],
+  0x0E9: ["Ne peut jamais faire descendre la cible sous 1 PV."],
+  0x0FA: ["Le lanceur subit un recul égal à 1/4 des dégâts infligés."],
+  0x0FB: ["Le lanceur subit un recul égal à 1/3 des dégâts infligés."],
+  0x0FC: ["Le lanceur subit un recul égal à 1/2 des dégâts infligés."],
+  0x0A1: ["Protège le camp du lanceur des coups critiques pendant 5 tours."],
+  0x0A2: ["Divise les dégâts physiques reçus par le camp pendant 5 tours, ou 8 avec Lumargile."],
+  0x0A3: ["Divise les dégâts spéciaux reçus par le camp pendant 5 tours, ou 8 avec Lumargile."],
+  0x0AA: ["Bloque les attaques visant le lanceur pendant ce tour ; la probabilité est divisée par 2 à chaque protection consécutive."],
+  0x0FF: ["Installe le soleil pendant 5 tours, ou 8 si le lanceur tient une Roche Chaude."],
+  0x100: ["Installe la pluie pendant 5 tours, ou 8 si le lanceur tient une Roche Humide."],
+  0x101: ["Installe la tempête de sable pendant 5 tours, ou 8 si le lanceur tient une Roche Lisse."],
+  0x102: ["Installe la grêle pendant 5 tours, ou 8 si le lanceur tient une Roche Glace."],
+  0x103: ["Pose jusqu'à 3 couches de Picots dans le camp adverse."],
+  0x104: ["Pose jusqu'à 2 couches de Pics Toxik dans le camp adverse."],
+  0x105: ["Pose une couche de Piège de Roc dans le camp adverse."],
+  0x10C: ["Sacrifie 25 % des PV maximum du lanceur pour créer un clone."],
+  0x112: ["Stocke jusqu'à 3 charges et augmente Défense et Défense Spéciale d'un niveau par charge."],
+  0x114: ["Consomme les charges stockées et restaure 25 %, 50 % ou 100 % des PV max pour 1, 2 ou 3 charges."],
+  0x118: ["La gravité agit pendant 5 tours, retire 2 niveaux d'Esquive lors du calcul de précision et ramène les Pokémon au sol."],
+  0x11F: ["Inverse l'ordre de Vitesse pendant 5 tours ; priorité exceptionnellement basse."],
+  0x153: ["Pose une Toile Gluante dans le camp adverse et baisse la Vitesse des entrants au sol d'un niveau."]
+};
+
+const MOVE_STAT_STAGE_NOTES = {
+  0x01C: "+1 niveau d'Attaque au lanceur", 0x01D: "+1 niveau de Défense au lanceur",
+  0x01F: "+1 niveau de Vitesse au lanceur", 0x020: "+1 niveau d'Attaque Spéciale au lanceur",
+  0x021: "+1 niveau de Défense Spéciale et doublement de la prochaine capacité Électrik du lanceur",
+  0x022: "+1 niveau d'Esquive au lanceur", 0x024: "+1 niveau d'Attaque et de Défense au lanceur",
+  0x025: "+1 niveau d'Attaque, de Défense et de Précision au lanceur", 0x026: "+1 niveau d'Attaque et de Vitesse au lanceur",
+  0x027: "+1 niveau d'Attaque et d'Attaque Spéciale au lanceur", 0x029: "+1 niveau d'Attaque et de Précision au lanceur",
+  0x02A: "+1 niveau de Défense et de Défense Spéciale au lanceur", 0x02B: "+1 niveau d'Attaque Spéciale, Défense Spéciale et Vitesse au lanceur",
+  0x02C: "+1 niveau d'Attaque Spéciale et de Défense Spéciale au lanceur", 0x02D: "+1 niveau dans les cinq statistiques de combat au lanceur",
+  0x02E: "+2 niveaux d'Attaque au lanceur", 0x02F: "+2 niveaux de Défense au lanceur",
+  0x030: "+2 niveaux de Vitesse au lanceur", 0x031: "+2 niveaux de Vitesse au lanceur et poids divisé par deux",
+  0x032: "+2 niveaux d'Attaque Spéciale au lanceur", 0x033: "+2 niveaux de Défense Spéciale au lanceur",
+  0x034: "+2 niveaux d'Esquive au lanceur", 0x036: "+1 niveau d'Attaque et +2 niveaux de Vitesse au lanceur",
+  0x035: "+2 niveaux d'Attaque, d'Attaque Spéciale et de Vitesse, mais -1 niveau dans les deux Défenses",
+  0x037: "+2 niveaux dans une statistique choisie aléatoirement", 0x038: "+3 niveaux de Défense au lanceur", 0x039: "+3 niveaux d'Attaque Spéciale au lanceur",
+  0x03A: "Attaque portée au maximum (+6) en échange de la moitié des PV maximum",
+  0x03B: "-1 niveau d'Attaque et de Défense au lanceur", 0x03C: "-1 niveau de Défense et de Défense Spéciale au lanceur",
+  0x03D: "-1 niveau de Défense, Défense Spéciale et Vitesse au lanceur",
+  0x03E: "-1 niveau de Vitesse au lanceur", 0x03F: "-2 niveaux d'Attaque Spéciale au lanceur",
+  0x040: "+1 niveau d'Attaque Spéciale à la cible, puis confusion", 0x041: "+2 niveaux d'Attaque à la cible, puis confusion",
+  0x042: "-1 niveau d'Attaque à la cible", 0x043: "-1 niveau de Défense à la cible",
+  0x044: "-1 niveau de Vitesse à la cible", 0x045: "-1 niveau d'Attaque Spéciale à la cible",
+  0x046: "-1 niveau de Défense Spéciale à la cible", 0x047: "-1 niveau de Précision à la cible",
+  0x048: "-1 niveau d'Esquive à la cible", 0x04A: "-1 niveau d'Attaque et de Défense à la cible",
+  0x04B: "-2 niveaux d'Attaque à la cible", 0x04C: "-2 niveaux de Défense à la cible",
+  0x04D: "-2 niveaux de Vitesse à la cible", 0x04E: "-2 niveaux d'Attaque Spéciale à la cible",
+  0x04F: "-2 niveaux de Défense Spéciale à la cible"
+};
+
+function buildMoveMechanics(moveData, offset) {
+  const functionCode = moveData.readUInt16LE(offset);
+  const power = moveData[offset + 2];
+  const accuracy = moveData[offset + 5];
+  const effectChance = moveData[offset + 7];
+  const targetCode = moveData.readUInt16LE(offset + 8);
+  const priority = moveData.readInt8(offset + 10);
+  const flags = moveData.readUInt16LE(offset + 11);
+  const notes = [...(MOVE_FUNCTION_NOTES[functionCode] || [])];
+  if (MOVE_STAT_STAGE_NOTES[functionCode]) notes.unshift(MOVE_STAT_STAGE_NOTES[functionCode]);
+  if (functionCode === 0x070) notes.push(`Chance de réussite : ${accuracy} % + la différence de niveau en faveur du lanceur.`);
+  if (accuracy === 0) notes.push("Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie.");
+  const damagingOnlyFlags = new Set([0x001, 0x020, 0x080, 0x100, 0x200, 0x1000, 0x2000]);
+  return {
+    functionCode: functionCode.toString(16).toUpperCase().padStart(3, "0"),
+    effectChance: effectChance > 0 && power > 0 ? effectChance : null,
+    priority,
+    target: MOVE_TARGET_LABELS[targetCode] || `Cible interne 0x${targetCode.toString(16).toUpperCase()}`,
+    traits: MOVE_FLAG_LABELS.filter(([mask]) => (flags & mask) !== 0 && (power > 0 || !damagingOnlyFlags.has(mask))).map(([, label]) => label),
+    notes
+  };
+}
+
 function buildMoveDex(messages) {
   const moveData = readData("moves.dat");
   const moveRecordSize = 14;
@@ -172,7 +326,8 @@ function buildMoveDex(messages) {
       power: rawPower === 1 ? null : rawPower,
       ...(rawPower === 1 ? { variablePower: true } : {}),
       accuracy: moveData[offset + 5],
-      pp: moveData[offset + 6]
+      pp: moveData[offset + 6],
+      mechanics: buildMoveMechanics(moveData, offset)
     };
   }
   return moves;
@@ -251,26 +406,115 @@ function buildPokemonAbilities(messages) {
   return abilities;
 }
 
-function buildItems(messages) {
+const TRAINING_ITEM_STATS = {
+  HPUP: "PV",
+  PROTEIN: "Attaque",
+  IRON: "Défense",
+  CALCIUM: "Attaque Spéciale",
+  ZINC: "Défense Spéciale",
+  CARBOS: "Vitesse",
+  SUPERHPUP: "PV",
+  SUPERPROTEIN: "Attaque",
+  SUPERIRON: "Défense",
+  SUPERCALCIUM: "Attaque Spéciale",
+  SUPERZINC: "Défense Spéciale",
+  SUPERCARBOS: "Vitesse",
+  HEALTHWING: "PV",
+  MUSCLEWING: "Attaque",
+  RESISTWING: "Défense",
+  GENIUSWING: "Attaque Spéciale",
+  CLEVERWING: "Défense Spéciale",
+  SWIFTWING: "Vitesse",
+  SCapsula: "PV",
+  ACapsula: "Attaque",
+  DCapsula: "Défense",
+  AECapsula: "Attaque Spéciale",
+  DECapsula: "Défense Spéciale",
+  VCapsula: "Vitesse"
+};
+
+function buildMeasuredStatEffect(symbol) {
+  const stat = TRAINING_ITEM_STATS[symbol];
+  if (/^(?:HPUP|PROTEIN|IRON|CALCIUM|ZINC|CARBOS)$/.test(symbol)) {
+    return {
+      metric: "EV",
+      headline: `+10 EV en ${stat} par utilisation`,
+      details: [
+        "L'objet cesse d'agir à 250 EV dans cette statistique.",
+        "Limites du jeu : 252 EV par statistique et 510 EV au total.",
+        "Ce ne sont pas 10 points directs : 4 EV valent environ 1 point de statistique au niveau 100, avant les arrondis et la nature."
+      ]
+    };
+  }
+  if (/^SUPER(?:HPUP|PROTEIN|IRON|CALCIUM|ZINC|CARBOS)$/.test(symbol)) {
+    return {
+      metric: "EV",
+      headline: `+20 EV en ${stat} par utilisation`,
+      details: [
+        "L'injection cesse d'agir à 250 EV dans cette statistique.",
+        "Limites du jeu : 252 EV par statistique et 510 EV au total.",
+        "Ce ne sont pas 20 points directs : les EV sont convertis selon le niveau du Pokémon."
+      ]
+    };
+  }
+  if (/^(?:HEALTH|MUSCLE|RESIST|GENIUS|CLEVER|SWIFT)WING$/.test(symbol)) {
+    return {
+      metric: "EV",
+      headline: `+1 EV en ${stat} par utilisation`,
+      details: [
+        "Contrairement aux vitamines et injections, la plume peut atteindre la limite réelle de 252 EV dans cette statistique.",
+        "Limite cumulée : 510 EV sur l'ensemble des six statistiques."
+      ]
+    };
+  }
+  if (/^(?:S|A|D|AE|DE|V)Capsula$/.test(symbol)) {
+    return {
+      metric: "IV",
+      headline: `+7 IV en ${stat} par utilisation`,
+      details: [
+        "Plafond : 31 IV dans cette statistique ; le dernier gain est réduit si nécessaire.",
+        "La description française annonce +10 IV, mais le script exécuté n'en ajoute que 7."
+      ]
+    };
+  }
+  if (symbol === "CHAPADORADA") {
+    return {
+      metric: "IV",
+      headline: "+7 IV dans chacune des six statistiques",
+      details: [
+        "Chaque statistique progresse séparément jusqu'au plafond de 31 IV.",
+        "La description française annonce +10 IV, mais le script exécuté appelle six fois un gain de 7 IV."
+      ]
+    };
+  }
+  return null;
+}
+
+function buildItems(messages, constants) {
   const pocketNames = [
     "Inconnus", "Objets", "Médicaments", "Poké Balls", "CT / CS",
     "Ingrédients", "Méga-Gemmes", "Objets de combat", "Objets rares"
   ];
-  return loadSerialRecords("items.dat").map((record) => ({
-    id: record[0],
-    name: text(messages[7]?.[record[0]]) || text(record[1]) || `Objet n°${record[0]}`,
-    pluralName: text(messages[8]?.[record[0]]) || text(record[2]),
-    description: text(messages[9]?.[record[0]]) || text(record[5]) || "Description indisponible.",
-    pocket: pocketNames[record[3]] || `Poche ${record[3]}`,
-    price: Number(record[4]) || 0,
-    fieldUse: Number(record[6]) || 0,
-    battleUse: Number(record[7]) || 0,
-    itemType: Number(record[8]) || 0,
-    machineMoveId: Number(record[9]) || 0
-  }));
+  const symbolsById = new Map([...(constants.PBItems || new Map())].map(([symbol, id]) => [id, symbol]));
+  return loadSerialRecords("items.dat").map((record) => {
+    const measuredEffect = buildMeasuredStatEffect(symbolsById.get(record[0]) || "");
+    return {
+      id: record[0],
+      name: text(messages[7]?.[record[0]]) || text(record[1]) || `Objet n°${record[0]}`,
+      pluralName: text(messages[8]?.[record[0]]) || text(record[2]),
+      description: text(messages[9]?.[record[0]]) || text(record[5]) || "Description indisponible.",
+      pocket: pocketNames[record[3]] || `Poche ${record[3]}`,
+      price: Number(record[4]) || 0,
+      fieldUse: Number(record[6]) || 0,
+      battleUse: Number(record[7]) || 0,
+      itemType: Number(record[8]) || 0,
+      machineMoveId: Number(record[9]) || 0,
+      ...(measuredEffect ? { measuredEffect } : {})
+    };
+  });
 }
 
-function buildMachines(messages, constants, mapInfos) {
+function buildMachines(messages, constants, mapInfos, moveDex) {
   const itemRecords = loadSerialRecords("items.dat");
   const compatibility = loadRubyMarshal(readData("tm.dat"));
   const mapNames = messages[21] || [];
@@ -282,6 +526,7 @@ function buildMachines(messages, constants, mapInfos) {
   const machines = machineRecords.map((record) => {
     const moveId = record[9];
     const offset = moveId * moveRecordSize;
+    const move = moveDex[moveId];
     const category = moveData[offset + 4];
     const rawPower = moveData[offset + 2];
     return {
@@ -297,6 +542,7 @@ function buildMachines(messages, constants, mapInfos) {
       ...(rawPower === 1 ? { variablePower: true } : {}),
       accuracy: moveData[offset + 5],
       pp: moveData[offset + 6],
+      mechanics: move?.mechanics || buildMoveMechanics(moveData, offset),
       compatibleSpeciesIds: [...new Set(decodeWordArray(compatibility[moveId]))],
       sources: sources.get(record[0]) || []
     };
@@ -747,7 +993,7 @@ const wiki = {
   version: "Pokémon Z v2.12 FR",
   generatedFrom: "Données internes compilées du jeu",
   levelCaps: [17, 27, 36, 42, 50, 56, 70, 75, 80, 85, 94, 100],
-  machines: buildMachines(messages, constants, mapInfos),
+  machines: buildMachines(messages, constants, mapInfos, moveDex),
   leaders,
   notableTrainers: buildNotableTrainers(messages),
   alchemyPages: buildAlchemyPages(messages, mapInfos),
@@ -755,7 +1001,7 @@ const wiki = {
   mechanics,
   progressionGuides,
   quests: buildQuests(),
-  items: buildItems(messages),
+  items: buildItems(messages, constants),
   recipes: buildRecipes(messages, constants, scripts),
   achievements: buildAchievements(messages, scripts),
   trainerTips,

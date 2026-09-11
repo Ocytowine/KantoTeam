@@ -1413,7 +1413,8 @@ function pokemonZWikiMachineSearchText(machine) {
     .join(" ");
   return [
     machine.code, machine.kind, machine.move, machine.type, machine.category,
-    machine.description, pokemonNames,
+    machine.description, machine.mechanics?.target, ...(machine.mechanics?.notes || []),
+    ...(machine.mechanics?.traits || []), pokemonNames,
     ...machine.sources.flatMap((source) => [source.method, source.location])
   ].join(" ");
 }
@@ -1502,9 +1503,26 @@ function renderPokemonZWikiAdventure(wiki) {
 function pokemonZWikiMoveStats(move) {
   return `
     <span><small>Puissance</small><strong>${move.variablePower ? "??" : move.power || "—"}</strong></span>
-    <span><small>Précision</small><strong>${move.accuracy ? `${move.accuracy} %` : "—"}</strong></span>
+    <span><small>Précision</small><strong>${move.accuracy ? `${move.accuracy} %` : "Sans test"}</strong></span>
     <span><small>PP</small><strong>${move.pp || "—"}</strong></span>
   `;
+}
+
+function renderPokemonZMoveMechanics(move) {
+  const mechanics = move.mechanics;
+  if (!mechanics) return "";
+  const priority = mechanics.priority > 0 ? `+${mechanics.priority}` : String(mechanics.priority);
+  return `<section class="wiki-move-mechanics">
+    <p class="eyebrow">Valeurs réelles du jeu</p>
+    <div class="wiki-move-mechanics-facts">
+      <span><small>Priorité</small><strong>${priority}</strong></span>
+      <span><small>Cible</small><strong>${escapeHtml(mechanics.target)}</strong></span>
+      ${mechanics.effectChance ? `<span><small>Chance secondaire</small><strong>${mechanics.effectChance} %</strong></span>` : ""}
+    </div>
+    ${mechanics.notes.length ? `<ul>${mechanics.notes.map((note) => `<li>${escapeHtml(note)}</li>`).join("")}</ul>` : ""}
+    ${mechanics.notes.some((note) => /niveau(?:x)? d'/i.test(note)) ? `<small class="wiki-move-stage-help">Repère : pour l'Attaque, les Défenses, l'Attaque Spéciale et la Vitesse, +1 niveau = ×1,5, +2 = ×2 ; -1 ≈ ×0,67 et -2 = ×0,5.</small>` : ""}
+    ${mechanics.traits.length ? `<div class="wiki-move-traits">${mechanics.traits.map((trait) => `<span>${escapeHtml(trait)}</span>`).join("")}</div>` : ""}
+  </section>`;
 }
 
 function renderPokemonZLearnsetMachine(machine) {
@@ -1521,7 +1539,8 @@ function renderPokemonZLearnsetMachine(machine) {
       <div class="wiki-learnset-details" hidden>
         <div class="wiki-learnset-tags">${pokemonZWikiTypeBadge(machine.type)}<span>${escapeHtml(machine.category)}</span></div>
         <div class="wiki-machine-stats">${pokemonZWikiMoveStats(machine)}</div>
-        <p>${escapeHtml(machine.description)}</p>
+        ${renderPokemonZMoveMechanics(machine)}
+        <p><span class="wiki-move-description-label">Description du jeu</span>${escapeHtml(machine.description)}</p>
         <small class="wiki-learnset-source">${acquisition.length ? `Obtention : ${escapeHtml(acquisition.join(" · "))}` : "Objet non distribué directement dans les données de cette version."}</small>
       </div>
     </article>
@@ -1542,7 +1561,8 @@ function renderPokemonZNaturalMove(entry, move) {
       <div class="wiki-learnset-details" hidden>
         <div class="wiki-learnset-tags">${pokemonZWikiTypeBadge(move.type)}<span>${escapeHtml(move.category)}</span></div>
         <div class="wiki-machine-stats">${pokemonZWikiMoveStats(move)}</div>
-        <p>${escapeHtml(move.description)}</p>
+        ${renderPokemonZMoveMechanics(move)}
+        <p><span class="wiki-move-description-label">Description du jeu</span>${escapeHtml(move.description)}</p>
       </div>
     </article>
   `;
@@ -1788,12 +1808,9 @@ function renderPokemonZWikiMachineCard(machine) {
       </button>
       <div class="wiki-learnset-details" ${expanded ? "" : "hidden"}>
         <div class="wiki-learnset-tags">${pokemonZWikiTypeBadge(machine.type)}<span>${escapeHtml(machine.category)}</span></div>
-        <div class="wiki-machine-stats">
-          <span><small>Puissance</small><strong>${machine.variablePower ? "??" : machine.power || "—"}</strong></span>
-          <span><small>Précision</small><strong>${machine.accuracy ? `${machine.accuracy} %` : "—"}</strong></span>
-          <span><small>PP</small><strong>${machine.pp}</strong></span>
-        </div>
-        <p>${escapeHtml(machine.description)}</p>
+        <div class="wiki-machine-stats">${pokemonZWikiMoveStats(machine)}</div>
+        ${renderPokemonZMoveMechanics(machine)}
+        <p><span class="wiki-move-description-label">Description du jeu</span>${escapeHtml(machine.description)}</p>
         <ul class="wiki-machine-sources">${sourceHtml}</ul>
         <button class="small-button wiki-compatibility-toggle" type="button" data-wiki-machine-compatibility="${machine.id}" aria-expanded="${expanded}">
           ${expanded ? "Masquer" : "Voir"} les Pokémon compatibles (${machine.compatibleSpeciesIds.length})
@@ -2113,7 +2130,8 @@ function renderPokemonZWikiItems(wiki) {
     const effectMatches = pokemonZWikiItemFilters.effect === "all" || item.heldProfile.goals.has(pokemonZWikiItemFilters.effect);
     const typeMatches = pokemonZWikiItemFilters.type === "all" || item.heldProfile.types.includes(pokemonZWikiItemFilters.type);
     return usageMatches && effectMatches && typeMatches && pokemonZWikiMatches([
-      item.name, item.category, item.rarity, item.description, ...item.heldProfile.labels, ...item.heldProfile.types
+      item.name, item.category, item.rarity, item.description, item.measuredEffect?.headline,
+      ...(item.measuredEffect?.details || []), ...item.heldProfile.labels, ...item.heldProfile.types
     ].join(" "), query);
   });
   const categories = [...new Set(items.map((item) => item.category))];
@@ -2145,7 +2163,12 @@ function renderPokemonZWikiItemCard(item) {
     ${item.heldProfile?.labels.length ? `<div class="wiki-item-effect-tags">${item.heldProfile.labels.map((label) => `<span>${escapeHtml(label)}</span>`).join("")}${item.heldProfile.types.map((type) => typeLogoOnly(type)).join("")}</div>` : ""}
     <button class="small-button wiki-item-details-button" type="button" data-wiki-item-entry aria-expanded="false">Détails</button>
     <div class="wiki-item-details" hidden>
-      <p>${escapeHtml(item.description)}</p>
+      ${item.measuredEffect ? `<div class="wiki-item-measured-effect">
+        <span>Effet réel · ${escapeHtml(item.measuredEffect.metric)}</span>
+        <strong>${escapeHtml(item.measuredEffect.headline)}</strong>
+        <ul>${item.measuredEffect.details.map((detail) => `<li>${escapeHtml(detail)}</li>`).join("")}</ul>
+      </div>` : ""}
+      <p>${item.measuredEffect ? `<span class="wiki-item-description-label">Description du jeu</span>` : ""}${escapeHtml(item.description)}</p>
       <div class="wiki-item-meta">
         ${item.price > 0 ? `<span>Prix de base : ${item.price.toLocaleString("fr-FR")} ₽</span>` : `<span>Pas de prix standard</span>`}
         ${item.resultRecipes.size ? `<span>Objet fabriqué · recette ${[...item.resultRecipes].join(", ")}</span>` : ""}

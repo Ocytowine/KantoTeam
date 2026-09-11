@@ -140,6 +140,11 @@
     doc.querySelector('[data-wiki-category="items"]').click();
     doc.querySelector("[data-wiki-toggle-full-items]").click();
     assert(doc.querySelectorAll("#pokemon-z-wiki-content .wiki-item-card").length === 792, "Le catalogue complet hors CT/CS n'est pas accessible");
+    const calciumCard = Array.from(doc.querySelectorAll("#pokemon-z-wiki-content .wiki-item-card"))
+      .find((card) => card.querySelector("h3")?.textContent === "Calcium");
+    assert(calciumCard, "La fiche du Calcium est absente");
+    calciumCard.querySelector("[data-wiki-item-entry]").click();
+    assert(calciumCard.querySelector(".wiki-item-measured-effect")?.textContent.includes("+10 EV en Attaque Spéciale"), "L'effet chiffre du Calcium n'est pas affiche");
     const heldUsageFilter = doc.querySelector('[data-wiki-item-filter="usage"]');
     heldUsageFilter.value = "held";
     heldUsageFilter.dispatchEvent(new win.Event("change", { bubbles: true }));

@@ -29,6 +29,17 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 110,
       "accuracy": 70,
       "pp": 5,
+      "mechanics": {
+        "functionCode": "00D",
+        "effectChance": 10,
+        "priority": 0,
+        "target": "Tous les adversaires",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1013,
         7,
@@ -289,6 +300,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 80,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "000",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1005,
         999,
@@ -389,6 +413,18 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 80,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "122",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1012,
         1004,
@@ -540,6 +576,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 0,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "02C",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Le lanceur",
+        "traits": [
+          "Volable par Saisie"
+        ],
+        "notes": [
+          "+1 niveau d'Attaque Spéciale et de Défense Spéciale au lanceur",
+          "Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie."
+        ]
+      },
       "compatibleSpeciesIds": [
         1013,
         1004,
@@ -754,6 +803,20 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 65,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "07B",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "Puissance doublée si la cible est empoisonnée."
+        ]
+      },
       "compatibleSpeciesIds": [
         1004,
         999,
@@ -907,6 +970,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 80,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "00F",
+        "effectChance": 30,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1014,
         1005,
@@ -1089,6 +1165,17 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 0,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "102",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Le camp du lanceur",
+        "traits": [],
+        "notes": [
+          "Installe la grêle pendant 5 tours, ou 8 si le lanceur tient une Roche Glace.",
+          "Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie."
+        ]
+      },
       "compatibleSpeciesIds": [
         7,
         8,
@@ -1274,6 +1361,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 0,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "024",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Le lanceur",
+        "traits": [
+          "Volable par Saisie"
+        ],
+        "notes": [
+          "+1 niveau d'Attaque et de Défense au lanceur",
+          "Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie."
+        ]
+      },
       "compatibleSpeciesIds": [
         1009,
         998,
@@ -1424,6 +1524,21 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 85,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "043",
+        "effectChance": 20,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "-1 niveau de Défense à la cible"
+        ]
+      },
       "compatibleSpeciesIds": [
         1013,
         9,
@@ -1518,6 +1633,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 0,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "105",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Le camp adverse",
+        "traits": [
+          "Renvoyée par Reflet Magik"
+        ],
+        "notes": [
+          "Pose une couche de Piège de Roc dans le camp adverse.",
+          "Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie."
+        ]
+      },
       "compatibleSpeciesIds": [
         27,
         28,
@@ -1695,6 +1823,17 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 0,
       "pp": 5,
+      "mechanics": {
+        "functionCode": "0FF",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Le camp du lanceur",
+        "traits": [],
+        "notes": [
+          "Installe le soleil pendant 5 tours, ou 8 si le lanceur tient une Roche Chaude.",
+          "Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie."
+        ]
+      },
       "compatibleSpeciesIds": [
         1004,
         999,
@@ -2275,6 +2414,18 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 100,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "0BA",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Renvoyée par Reflet Magik",
+          "Copiable par Mimique"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1014,
         1009,
@@ -2591,6 +2742,17 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 90,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "00C",
+        "effectChance": 10,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1013,
         400,
@@ -2881,6 +3043,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 110,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "0DE",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique"
+        ],
+        "notes": [
+          "Ne fonctionne que sur une cible endormie et rend 50 % des dégâts infligés."
+        ]
+      },
       "compatibleSpeciesIds": [
         1011,
         1012,
@@ -3089,6 +3264,18 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 90,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "075",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Tous les Pokémon sauf le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1013,
         1005,
@@ -3337,6 +3524,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 0,
       "pp": 30,
+      "mechanics": {
+        "functionCode": "0A3",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Les deux camps",
+        "traits": [
+          "Volable par Saisie"
+        ],
+        "notes": [
+          "Divise les dégâts spéciaux reçus par le camp pendant 5 tours, ou 8 avec Lumargile.",
+          "Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie."
+        ]
+      },
       "compatibleSpeciesIds": [
         997,
         860,
@@ -3615,6 +3815,17 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 0,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "0AA",
+        "effectChance": null,
+        "priority": 4,
+        "target": "Le lanceur",
+        "traits": [],
+        "notes": [
+          "Bloque les attaques visant le lanceur pendant ce tour ; la probabilité est divisée par 2 à chaque protection consécutive.",
+          "Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie."
+        ]
+      },
       "compatibleSpeciesIds": [
         1014,
         1013,
@@ -4591,6 +4802,17 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 0,
       "pp": 5,
+      "mechanics": {
+        "functionCode": "100",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Le camp du lanceur",
+        "traits": [],
+        "notes": [
+          "Installe la pluie pendant 5 tours, ou 8 si le lanceur tient une Roche Humide.",
+          "Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie."
+        ]
+      },
       "compatibleSpeciesIds": [
         1013,
         7,
@@ -5180,6 +5402,21 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 50,
       "accuracy": 100,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "01F",
+        "effectChance": 100,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "+1 niveau de Vitesse au lanceur"
+        ]
+      },
       "compatibleSpeciesIds": [
         1009,
         999,
@@ -5455,6 +5692,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 70,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "00A",
+        "effectChance": 30,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale",
+          "Dégèle le lanceur"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1013,
         906,
@@ -5621,6 +5871,18 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 75,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "013",
+        "effectChance": 10,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1004,
         1005,
@@ -5880,6 +6142,18 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 140,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "0C4",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1004,
         1005,
@@ -6184,6 +6458,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 60,
       "accuracy": 95,
       "pp": 25,
+      "mechanics": {
+        "functionCode": "906",
+        "effectChance": 30,
+        "priority": 0,
+        "target": "Tous les adversaires",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale",
+          "Taux critique élevé"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         6,
         12,
@@ -6313,6 +6600,17 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 90,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "007",
+        "effectChance": 10,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1005,
         997,
@@ -6576,6 +6874,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 80,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "000",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale",
+          "Bombe/projectile"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1004,
         999,
@@ -6743,6 +7054,18 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 100,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "076",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Tous les Pokémon sauf le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1014,
         1005,
@@ -7059,6 +7382,19 @@ const POKEMON_Z_WIKI_DATA = {
       "variablePower": true,
       "accuracy": 100,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "089",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1014,
         1013,
@@ -8045,6 +8381,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 90,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "0C9",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         6,
         12,
@@ -8185,6 +8534,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 90,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "046",
+        "effectChance": 10,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique"
+        ],
+        "notes": [
+          "-1 niveau de Défense Spéciale à la cible"
+        ]
+      },
       "compatibleSpeciesIds": [
         1013,
         495,
@@ -8417,6 +8779,20 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 80,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "046",
+        "effectChance": 20,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Bombe/projectile"
+        ],
+        "notes": [
+          "-1 niveau de Défense Spéciale à la cible"
+        ]
+      },
       "compatibleSpeciesIds": [
         1013,
         1009,
@@ -8759,6 +9135,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 75,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "10A",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1014,
         1009,
@@ -9105,6 +9494,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 90,
       "accuracy": 90,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "000",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         7,
         8,
@@ -9336,6 +9738,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 0,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "0A2",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Les deux camps",
+        "traits": [
+          "Volable par Saisie"
+        ],
+        "notes": [
+          "Divise les dégâts physiques reçus par le camp pendant 5 tours, ou 8 avec Lumargile.",
+          "Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie."
+        ]
+      },
       "compatibleSpeciesIds": [
         860,
         861,
@@ -9543,6 +9958,18 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 80,
       "accuracy": 100,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "000",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         549,
         525,
@@ -9600,6 +10027,21 @@ const POKEMON_Z_WIKI_DATA = {
       "variablePower": true,
       "accuracy": 100,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "09A",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "Puissance de 20 à 120 selon le poids de la cible."
+        ]
+      },
       "compatibleSpeciesIds": [
         1009,
         55,
@@ -9773,6 +10215,18 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 90,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "005",
+        "effectChance": 30,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Bombe/projectile"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1013,
         1004,
@@ -9961,6 +10415,17 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 0,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "101",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Le camp du lanceur",
+        "traits": [],
+        "notes": [
+          "Installe la tempête de sable pendant 5 tours, ou 8 si le lanceur tient une Roche Lisse.",
+          "Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie."
+        ]
+      },
       "compatibleSpeciesIds": [
         1014,
         27,
@@ -10176,6 +10641,17 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 110,
       "accuracy": 85,
       "pp": 5,
+      "mechanics": {
+        "functionCode": "00A",
+        "effectChance": 10,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1004,
         1005,
@@ -10378,6 +10854,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 60,
       "accuracy": 95,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "044",
+        "effectChance": 100,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique"
+        ],
+        "notes": [
+          "-1 niveau de Vitesse à la cible"
+        ]
+      },
       "compatibleSpeciesIds": [
         1014,
         1009,
@@ -10784,6 +11273,21 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 60,
       "accuracy": 0,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "0A5",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie."
+        ]
+      },
       "compatibleSpeciesIds": [
         1014,
         1009,
@@ -11145,6 +11649,20 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 75,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "00A",
+        "effectChance": 10,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale",
+          "Poing"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1014,
         1009,
@@ -11333,6 +11851,20 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 70,
       "accuracy": 100,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "07E",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique"
+        ],
+        "notes": [
+          "Puissance doublée si le lanceur est empoisonné, paralysé ou brûlé."
+        ]
+      },
       "compatibleSpeciesIds": [
         1014,
         1009,
@@ -12118,6 +12650,21 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 50,
       "accuracy": 100,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "01F",
+        "effectChance": 100,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "+1 niveau de Vitesse au lanceur"
+        ]
+      },
       "compatibleSpeciesIds": [
         1014,
         1009,
@@ -12230,6 +12777,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 0,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "0D9",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Le lanceur",
+        "traits": [
+          "Volable par Saisie"
+        ],
+        "notes": [
+          "Restaure tous les PV et soigne les statuts, puis endort le lanceur pendant 2 tours.",
+          "Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie."
+        ]
+      },
       "compatibleSpeciesIds": [
         1014,
         1013,
@@ -13195,6 +13755,18 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 60,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "0F1",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1014,
         1009,
@@ -13613,6 +14185,20 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 75,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "007",
+        "effectChance": 10,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale",
+          "Poing"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1014,
         1009,
@@ -13835,6 +14421,20 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 75,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "00C",
+        "effectChance": 10,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale",
+          "Poing"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1009,
         998,
@@ -14042,6 +14642,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 90,
       "accuracy": 90,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "00F",
+        "effectChance": 20,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         998,
         7,
@@ -14294,6 +14907,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 60,
       "accuracy": 100,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "013",
+        "effectChance": 20,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale",
+          "Aura/impulsion"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1013,
         7,
@@ -14555,6 +15181,20 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 120,
       "accuracy": 75,
       "pp": 5,
+      "mechanics": {
+        "functionCode": "046",
+        "effectChance": 10,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Bombe/projectile"
+        ],
+        "notes": [
+          "-1 niveau de Défense Spéciale à la cible"
+        ]
+      },
       "compatibleSpeciesIds": [
         1013,
         1005,
@@ -14787,6 +15427,20 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 90,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "046",
+        "effectChance": 10,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Bombe/projectile"
+        ],
+        "notes": [
+          "-1 niveau de Défense Spéciale à la cible"
+        ]
+      },
       "compatibleSpeciesIds": [
         983,
         1004,
@@ -15036,6 +15690,21 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 40,
       "accuracy": 100,
       "pp": 40,
+      "mechanics": {
+        "functionCode": "0E9",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "Ne peut jamais faire descendre la cible sous 1 PV."
+        ]
+      },
       "compatibleSpeciesIds": [
         1014,
         1009,
@@ -15155,6 +15824,20 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 50,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "042",
+        "effectChance": 100,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "-1 niveau d'Attaque à la cible"
+        ]
+      },
       "compatibleSpeciesIds": [
         1013,
         997,
@@ -15330,6 +16013,20 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 110,
       "accuracy": 85,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "043",
+        "effectChance": 30,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique"
+        ],
+        "notes": [
+          "-1 niveau de Défense à la cible"
+        ]
+      },
       "compatibleSpeciesIds": [
         1014,
         1009,
@@ -15648,6 +16345,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 60,
       "accuracy": 95,
       "pp": 30,
+      "mechanics": {
+        "functionCode": "906",
+        "effectChance": 70,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         923,
         924,
@@ -15972,6 +16682,17 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 90,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "00A",
+        "effectChance": 10,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1005,
         999,
@@ -16197,6 +16918,17 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 60,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "0F5",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Tous les adversaires",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         4,
         5,
@@ -16403,6 +17135,21 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 70,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "01D",
+        "effectChance": 30,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "+1 niveau de Défense au lanceur"
+        ]
+      },
       "compatibleSpeciesIds": [
         6,
         16,
@@ -16523,6 +17270,18 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 85,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "00A",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Renvoyée par Reflet Magik",
+          "Copiable par Mimique"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1004,
         4,
@@ -16673,6 +17432,21 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 55,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "086",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "Puissance doublée si le lanceur ne tient aucun objet."
+        ]
+      },
       "compatibleSpeciesIds": [
         12,
         15,
@@ -16803,6 +17577,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 75,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "0DD",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique"
+        ],
+        "notes": [
+          "Rend au lanceur 50 % des dégâts effectivement infligés."
+        ]
+      },
       "compatibleSpeciesIds": [
         1004,
         999,
@@ -17016,6 +17803,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 85,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "000",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale",
+          "Aura/impulsion"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1005,
         999,
@@ -17143,6 +17943,20 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 70,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "000",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale",
+          "Taux critique élevé"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1009,
         653,
@@ -17360,6 +18174,21 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 50,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "084",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "Puissance doublée si le lanceur agit après la cible."
+        ]
+      },
       "compatibleSpeciesIds": [
         1014,
         1013,
@@ -17660,6 +18489,21 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 40,
       "accuracy": 90,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "0BD",
+        "effectChance": 100,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "Frappe exactement 2 fois."
+        ]
+      },
       "compatibleSpeciesIds": [
         6,
         12,
@@ -17740,6 +18584,21 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 90,
       "accuracy": 90,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "042",
+        "effectChance": 10,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "-1 niveau d'Attaque à la cible"
+        ]
+      },
       "compatibleSpeciesIds": [
         1009,
         998,
@@ -17863,6 +18722,20 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 65,
       "accuracy": 0,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "0A5",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie."
+        ]
+      },
       "compatibleSpeciesIds": [
         1005,
         19,
@@ -18145,6 +19018,18 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 90,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "000",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Tous les adversaires",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Sonore"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         997,
         17,
@@ -18309,6 +19194,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 100,
       "accuracy": 80,
       "pp": 5,
+      "mechanics": {
+        "functionCode": "000",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale",
+          "Taux critique élevé"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1014,
         998,
@@ -18538,6 +19436,18 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 70,
       "accuracy": 100,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "0EE",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         25,
         26,
@@ -18625,6 +19535,18 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 90,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "007",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Renvoyée par Reflet Magik",
+          "Copiable par Mimique"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         19,
         20,
@@ -18865,6 +19787,22 @@ const POKEMON_Z_WIKI_DATA = {
       "variablePower": true,
       "accuracy": 100,
       "pp": 5,
+      "mechanics": {
+        "functionCode": "08D",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale",
+          "Bombe/projectile"
+        ],
+        "notes": [
+          "Puissance de 1 à 150 selon le rapport de Vitesse : plus le lanceur est lent face à la cible, plus l'attaque est forte."
+        ]
+      },
       "compatibleSpeciesIds": [
         998,
         7,
@@ -18985,6 +19923,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 0,
       "pp": 30,
+      "mechanics": {
+        "functionCode": "02E",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Le lanceur",
+        "traits": [
+          "Volable par Saisie"
+        ],
+        "notes": [
+          "+2 niveaux d'Attaque au lanceur",
+          "Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie."
+        ]
+      },
       "compatibleSpeciesIds": [
         1009,
         1,
@@ -19219,6 +20170,17 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 110,
       "accuracy": 70,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "008",
+        "effectChance": 30,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1005,
         19,
@@ -19421,6 +20383,18 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 80,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "000",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Tous les adversaires",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1013,
         996,
@@ -19595,6 +20569,20 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 60,
       "accuracy": 100,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "044",
+        "effectChance": 100,
+        "priority": 0,
+        "target": "Tous les Pokémon sauf le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "-1 niveau de Vitesse à la cible"
+        ]
+      },
       "compatibleSpeciesIds": [
         1014,
         1009,
@@ -19951,6 +20939,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 0,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "032",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Le lanceur",
+        "traits": [
+          "Volable par Saisie"
+        ],
+        "notes": [
+          "+2 niveaux d'Attaque Spéciale au lanceur",
+          "Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie."
+        ]
+      },
       "compatibleSpeciesIds": [
         1004,
         996,
@@ -20035,6 +21036,17 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 80,
       "accuracy": 95,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "000",
+        "effectChance": 30,
+        "priority": 0,
+        "target": "Tous les adversaires",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1014,
         1009,
@@ -20418,6 +21430,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 80,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "906",
+        "effectChance": 20,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1009,
         15,
@@ -20553,6 +21578,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 120,
       "accuracy": 85,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "906",
+        "effectChance": 20,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         863,
         865,
@@ -20580,6 +21618,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 0,
       "pp": 30,
+      "mechanics": {
+        "functionCode": "027",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Le lanceur",
+        "traits": [
+          "Volable par Saisie"
+        ],
+        "notes": [
+          "+1 niveau d'Attaque et d'Attaque Spéciale au lanceur",
+          "Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie."
+        ]
+      },
       "compatibleSpeciesIds": [
         1014,
         1013,
@@ -21551,6 +22602,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 80,
       "accuracy": 100,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "005",
+        "effectChance": 30,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1014,
         1009,
@@ -21774,6 +22838,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 55,
       "accuracy": 95,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "044",
+        "effectChance": 100,
+        "priority": 0,
+        "target": "Tous les adversaires",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique"
+        ],
+        "notes": [
+          "-1 niveau de Vitesse à la cible"
+        ]
+      },
       "compatibleSpeciesIds": [
         656,
         657,
@@ -21979,6 +23056,21 @@ const POKEMON_Z_WIKI_DATA = {
       "variablePower": true,
       "accuracy": 100,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "09A",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "Puissance de 20 à 120 selon le poids de la cible."
+        ]
+      },
       "compatibleSpeciesIds": [
         1004,
         999,
@@ -22282,6 +23374,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 80,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "00F",
+        "effectChance": 20,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale",
+          "Aura/impulsion"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1013,
         1009,
@@ -22482,6 +23587,20 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 90,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "046",
+        "effectChance": 10,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "-1 niveau de Défense Spéciale à la cible"
+        ]
+      },
       "compatibleSpeciesIds": [
         1004,
         1005,
@@ -22650,6 +23769,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 70,
       "accuracy": 100,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "0EE",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1009,
         12,
@@ -22864,6 +23996,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 0,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "10C",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Le lanceur",
+        "traits": [
+          "Volable par Saisie"
+        ],
+        "notes": [
+          "Sacrifie 25 % des PV maximum du lanceur pour créer un clone.",
+          "Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie."
+        ]
+      },
       "compatibleSpeciesIds": [
         1014,
         1013,
@@ -23782,6 +24927,21 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 80,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "046",
+        "effectChance": 10,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale",
+          "Aura/impulsion"
+        ],
+        "notes": [
+          "-1 niveau de Défense Spéciale à la cible"
+        ]
+      },
       "compatibleSpeciesIds": [
         983,
         1005,
@@ -23897,6 +25057,17 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 95,
       "accuracy": 90,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "00A",
+        "effectChance": 10,
+        "priority": 0,
+        "target": "Tous les adversaires",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         4,
         5,
@@ -24044,6 +25215,21 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 90,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "0FA",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "Le lanceur subit un recul égal à 1/4 des dégâts infligés."
+        ]
+      },
       "compatibleSpeciesIds": [
         998,
         19,
@@ -24180,6 +25366,20 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 50,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "043",
+        "effectChance": 50,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique"
+        ],
+        "notes": [
+          "-1 niveau de Défense à la cible"
+        ]
+      },
       "compatibleSpeciesIds": [
         1014,
         1009,
@@ -24718,6 +25918,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 85,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "10A",
+        "effectChance": 100,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Morsure"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         376,
         23,
@@ -24794,6 +26007,22 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 75,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "0DD",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale",
+          "Poing"
+        ],
+        "notes": [
+          "Rend au lanceur 50 % des dégâts effectivement infligés."
+        ]
+      },
       "compatibleSpeciesIds": [
         739,
         740,
@@ -24913,6 +26142,17 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 70,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "00A",
+        "effectChance": 30,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1014,
         5,
@@ -25008,6 +26248,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 0,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "104",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Le camp adverse",
+        "traits": [
+          "Renvoyée par Reflet Magik"
+        ],
+        "notes": [
+          "Pose jusqu'à 2 couches de Pics Toxik dans le camp adverse.",
+          "Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie."
+        ]
+      },
       "compatibleSpeciesIds": [
         30,
         31,
@@ -25080,6 +26333,21 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 20,
       "accuracy": 90,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "0BF",
+        "effectChance": 100,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "Frappe exactement 3 fois."
+        ]
+      },
       "compatibleSpeciesIds": [
         28,
         53,
@@ -25141,6 +26409,20 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 130,
       "accuracy": 90,
       "pp": 5,
+      "mechanics": {
+        "functionCode": "03F",
+        "effectChance": 100,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "-2 niveaux d'Attaque Spéciale au lanceur"
+        ]
+      },
       "compatibleSpeciesIds": [
         1005,
         999,
@@ -25210,6 +26492,21 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 50,
       "accuracy": 100,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "044",
+        "effectChance": 100,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "-1 niveau de Vitesse à la cible"
+        ]
+      },
       "compatibleSpeciesIds": [
         1013,
         1,
@@ -25367,6 +26664,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 70,
       "accuracy": 100,
       "pp": 20,
+      "mechanics": {
+        "functionCode": "0EE",
+        "effectChance": 100,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1013,
         9,
@@ -25460,6 +26770,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 80,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "240",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1013,
         27,
@@ -25527,6 +26850,21 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 55,
       "accuracy": 95,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "045",
+        "effectChance": 100,
+        "priority": 0,
+        "target": "Tous les adversaires",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale",
+          "Sonore"
+        ],
+        "notes": [
+          "-1 niveau d'Attaque Spéciale à la cible"
+        ]
+      },
       "compatibleSpeciesIds": [
         1013,
         1004,
@@ -25642,6 +26980,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 0,
       "pp": 5,
+      "mechanics": {
+        "functionCode": "0D6",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Le lanceur",
+        "traits": [
+          "Volable par Saisie"
+        ],
+        "notes": [
+          "Restaure 50 % des PV maximum et retire temporairement le type Vol du lanceur jusqu'à la fin du tour.",
+          "Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie."
+        ]
+      },
       "compatibleSpeciesIds": [
         6,
         12,
@@ -25769,6 +27120,20 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 120,
       "accuracy": 100,
       "pp": 5,
+      "mechanics": {
+        "functionCode": "03B",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique"
+        ],
+        "notes": [
+          "-1 niveau d'Attaque et de Défense au lanceur"
+        ]
+      },
       "compatibleSpeciesIds": [
         1014,
         998,
@@ -25944,6 +27309,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 0,
       "accuracy": 0,
       "pp": 5,
+      "mechanics": {
+        "functionCode": "11F",
+        "effectChance": null,
+        "priority": -7,
+        "target": "Le camp du lanceur",
+        "traits": [
+          "Copiable par Mimique"
+        ],
+        "notes": [
+          "Inverse l'ordre de Vitesse pendant 5 tours ; priorité exceptionnellement basse.",
+          "Aucun test de précision ; la capacité peut toutefois échouer si sa condition propre n'est pas remplie."
+        ]
+      },
       "compatibleSpeciesIds": [
         63,
         64,
@@ -26074,6 +27452,21 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 100,
       "accuracy": 100,
       "pp": 5,
+      "mechanics": {
+        "functionCode": "03C",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "-1 niveau de Défense et de Défense Spéciale au lanceur"
+        ]
+      },
       "compatibleSpeciesIds": [
         1014,
         1009,
@@ -26503,6 +27896,18 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 70,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "090",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1014,
         1013,
@@ -27479,6 +28884,20 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 75,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "045",
+        "effectChance": 100,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "-1 niveau d'Attaque Spéciale à la cible"
+        ]
+      },
       "compatibleSpeciesIds": [
         5,
         6,
@@ -27560,6 +28979,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 60,
       "accuracy": 95,
       "pp": 30,
+      "mechanics": {
+        "functionCode": "906",
+        "effectChance": 70,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         923,
         924,
@@ -27891,6 +29323,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 90,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "0C9",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         6,
         12,
@@ -28038,6 +29483,18 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 90,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "075",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Tous les Pokémon sauf le lanceur",
+        "traits": [
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [
         1013,
         1005,
@@ -28293,6 +29750,21 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 100,
       "accuracy": 100,
       "pp": 5,
+      "mechanics": {
+        "functionCode": "03C",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": [
+          "-1 niveau de Défense et de Défense Spéciale au lanceur"
+        ]
+      },
       "compatibleSpeciesIds": [
         1014,
         1009,
@@ -28729,6 +30201,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 80,
       "accuracy": 100,
       "pp": 15,
+      "mechanics": {
+        "functionCode": "00F",
+        "effectChance": 20,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [],
       "sources": [],
       "relatedMachines": [],
@@ -28746,6 +30231,19 @@ const POKEMON_Z_WIKI_DATA = {
       "power": 90,
       "accuracy": 100,
       "pp": 10,
+      "mechanics": {
+        "functionCode": "0CB",
+        "effectChance": null,
+        "priority": 0,
+        "target": "Une cible autre que le lanceur",
+        "traits": [
+          "Contact",
+          "Bloquée par Abri/Détection",
+          "Copiable par Mimique",
+          "Compatible avec Roche Royale"
+        ],
+        "notes": []
+      },
       "compatibleSpeciesIds": [],
       "sources": [],
       "relatedMachines": [],
@@ -38498,7 +39996,16 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "EV",
+        "headline": "+10 EV en PV par utilisation",
+        "details": [
+          "L'objet cesse d'agir à 250 EV dans cette statistique.",
+          "Limites du jeu : 252 EV par statistique et 510 EV au total.",
+          "Ce ne sont pas 10 points directs : 4 EV valent environ 1 point de statistique au niveau 100, avant les arrondis et la nature."
+        ]
+      }
     },
     {
       "id": 252,
@@ -38510,7 +40017,16 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "EV",
+        "headline": "+10 EV en Attaque par utilisation",
+        "details": [
+          "L'objet cesse d'agir à 250 EV dans cette statistique.",
+          "Limites du jeu : 252 EV par statistique et 510 EV au total.",
+          "Ce ne sont pas 10 points directs : 4 EV valent environ 1 point de statistique au niveau 100, avant les arrondis et la nature."
+        ]
+      }
     },
     {
       "id": 253,
@@ -38522,7 +40038,16 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "EV",
+        "headline": "+10 EV en Défense par utilisation",
+        "details": [
+          "L'objet cesse d'agir à 250 EV dans cette statistique.",
+          "Limites du jeu : 252 EV par statistique et 510 EV au total.",
+          "Ce ne sont pas 10 points directs : 4 EV valent environ 1 point de statistique au niveau 100, avant les arrondis et la nature."
+        ]
+      }
     },
     {
       "id": 254,
@@ -38534,7 +40059,16 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "EV",
+        "headline": "+10 EV en Attaque Spéciale par utilisation",
+        "details": [
+          "L'objet cesse d'agir à 250 EV dans cette statistique.",
+          "Limites du jeu : 252 EV par statistique et 510 EV au total.",
+          "Ce ne sont pas 10 points directs : 4 EV valent environ 1 point de statistique au niveau 100, avant les arrondis et la nature."
+        ]
+      }
     },
     {
       "id": 255,
@@ -38546,7 +40080,16 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "EV",
+        "headline": "+10 EV en Défense Spéciale par utilisation",
+        "details": [
+          "L'objet cesse d'agir à 250 EV dans cette statistique.",
+          "Limites du jeu : 252 EV par statistique et 510 EV au total.",
+          "Ce ne sont pas 10 points directs : 4 EV valent environ 1 point de statistique au niveau 100, avant les arrondis et la nature."
+        ]
+      }
     },
     {
       "id": 256,
@@ -38558,7 +40101,16 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "EV",
+        "headline": "+10 EV en Vitesse par utilisation",
+        "details": [
+          "L'objet cesse d'agir à 250 EV dans cette statistique.",
+          "Limites du jeu : 252 EV par statistique et 510 EV au total.",
+          "Ce ne sont pas 10 points directs : 4 EV valent environ 1 point de statistique au niveau 100, avant les arrondis et la nature."
+        ]
+      }
     },
     {
       "id": 257,
@@ -38570,7 +40122,15 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "EV",
+        "headline": "+1 EV en PV par utilisation",
+        "details": [
+          "Contrairement aux vitamines et injections, la plume peut atteindre la limite réelle de 252 EV dans cette statistique.",
+          "Limite cumulée : 510 EV sur l'ensemble des six statistiques."
+        ]
+      }
     },
     {
       "id": 258,
@@ -38582,7 +40142,15 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "EV",
+        "headline": "+1 EV en Attaque par utilisation",
+        "details": [
+          "Contrairement aux vitamines et injections, la plume peut atteindre la limite réelle de 252 EV dans cette statistique.",
+          "Limite cumulée : 510 EV sur l'ensemble des six statistiques."
+        ]
+      }
     },
     {
       "id": 259,
@@ -38594,7 +40162,15 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "EV",
+        "headline": "+1 EV en Défense par utilisation",
+        "details": [
+          "Contrairement aux vitamines et injections, la plume peut atteindre la limite réelle de 252 EV dans cette statistique.",
+          "Limite cumulée : 510 EV sur l'ensemble des six statistiques."
+        ]
+      }
     },
     {
       "id": 260,
@@ -38606,7 +40182,15 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "EV",
+        "headline": "+1 EV en Attaque Spéciale par utilisation",
+        "details": [
+          "Contrairement aux vitamines et injections, la plume peut atteindre la limite réelle de 252 EV dans cette statistique.",
+          "Limite cumulée : 510 EV sur l'ensemble des six statistiques."
+        ]
+      }
     },
     {
       "id": 261,
@@ -38618,7 +40202,15 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "EV",
+        "headline": "+1 EV en Défense Spéciale par utilisation",
+        "details": [
+          "Contrairement aux vitamines et injections, la plume peut atteindre la limite réelle de 252 EV dans cette statistique.",
+          "Limite cumulée : 510 EV sur l'ensemble des six statistiques."
+        ]
+      }
     },
     {
       "id": 262,
@@ -38630,7 +40222,15 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "EV",
+        "headline": "+1 EV en Vitesse par utilisation",
+        "details": [
+          "Contrairement aux vitamines et injections, la plume peut atteindre la limite réelle de 252 EV dans cette statistique.",
+          "Limite cumulée : 510 EV sur l'ensemble des six statistiques."
+        ]
+      }
     },
     {
       "id": 263,
@@ -42182,7 +43782,15 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "IV",
+        "headline": "+7 IV en PV par utilisation",
+        "details": [
+          "Plafond : 31 IV dans cette statistique ; le dernier gain est réduit si nécessaire.",
+          "La description française annonce +10 IV, mais le script exécuté n'en ajoute que 7."
+        ]
+      }
     },
     {
       "id": 543,
@@ -42194,7 +43802,15 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "IV",
+        "headline": "+7 IV en Attaque par utilisation",
+        "details": [
+          "Plafond : 31 IV dans cette statistique ; le dernier gain est réduit si nécessaire.",
+          "La description française annonce +10 IV, mais le script exécuté n'en ajoute que 7."
+        ]
+      }
     },
     {
       "id": 544,
@@ -42206,7 +43822,15 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "IV",
+        "headline": "+7 IV en Défense par utilisation",
+        "details": [
+          "Plafond : 31 IV dans cette statistique ; le dernier gain est réduit si nécessaire.",
+          "La description française annonce +10 IV, mais le script exécuté n'en ajoute que 7."
+        ]
+      }
     },
     {
       "id": 545,
@@ -42218,7 +43842,15 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "IV",
+        "headline": "+7 IV en Attaque Spéciale par utilisation",
+        "details": [
+          "Plafond : 31 IV dans cette statistique ; le dernier gain est réduit si nécessaire.",
+          "La description française annonce +10 IV, mais le script exécuté n'en ajoute que 7."
+        ]
+      }
     },
     {
       "id": 546,
@@ -42230,7 +43862,15 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "IV",
+        "headline": "+7 IV en Défense Spéciale par utilisation",
+        "details": [
+          "Plafond : 31 IV dans cette statistique ; le dernier gain est réduit si nécessaire.",
+          "La description française annonce +10 IV, mais le script exécuté n'en ajoute que 7."
+        ]
+      }
     },
     {
       "id": 547,
@@ -42242,7 +43882,15 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "IV",
+        "headline": "+7 IV en Vitesse par utilisation",
+        "details": [
+          "Plafond : 31 IV dans cette statistique ; le dernier gain est réduit si nécessaire.",
+          "La description française annonce +10 IV, mais le script exécuté n'en ajoute que 7."
+        ]
+      }
     },
     {
       "id": 548,
@@ -44546,7 +46194,16 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "EV",
+        "headline": "+20 EV en PV par utilisation",
+        "details": [
+          "L'injection cesse d'agir à 250 EV dans cette statistique.",
+          "Limites du jeu : 252 EV par statistique et 510 EV au total.",
+          "Ce ne sont pas 20 points directs : les EV sont convertis selon le niveau du Pokémon."
+        ]
+      }
     },
     {
       "id": 796,
@@ -44558,7 +46215,16 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "EV",
+        "headline": "+20 EV en Attaque par utilisation",
+        "details": [
+          "L'injection cesse d'agir à 250 EV dans cette statistique.",
+          "Limites du jeu : 252 EV par statistique et 510 EV au total.",
+          "Ce ne sont pas 20 points directs : les EV sont convertis selon le niveau du Pokémon."
+        ]
+      }
     },
     {
       "id": 797,
@@ -44570,7 +46236,16 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "EV",
+        "headline": "+20 EV en Défense par utilisation",
+        "details": [
+          "L'injection cesse d'agir à 250 EV dans cette statistique.",
+          "Limites du jeu : 252 EV par statistique et 510 EV au total.",
+          "Ce ne sont pas 20 points directs : les EV sont convertis selon le niveau du Pokémon."
+        ]
+      }
     },
     {
       "id": 798,
@@ -44582,7 +46257,16 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "EV",
+        "headline": "+20 EV en Attaque Spéciale par utilisation",
+        "details": [
+          "L'injection cesse d'agir à 250 EV dans cette statistique.",
+          "Limites du jeu : 252 EV par statistique et 510 EV au total.",
+          "Ce ne sont pas 20 points directs : les EV sont convertis selon le niveau du Pokémon."
+        ]
+      }
     },
     {
       "id": 799,
@@ -44594,7 +46278,16 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "EV",
+        "headline": "+20 EV en Défense Spéciale par utilisation",
+        "details": [
+          "L'injection cesse d'agir à 250 EV dans cette statistique.",
+          "Limites du jeu : 252 EV par statistique et 510 EV au total.",
+          "Ce ne sont pas 20 points directs : les EV sont convertis selon le niveau du Pokémon."
+        ]
+      }
     },
     {
       "id": 800,
@@ -44606,7 +46299,16 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "EV",
+        "headline": "+20 EV en Vitesse par utilisation",
+        "details": [
+          "L'injection cesse d'agir à 250 EV dans cette statistique.",
+          "Limites du jeu : 252 EV par statistique et 510 EV au total.",
+          "Ce ne sont pas 20 points directs : les EV sont convertis selon le niveau du Pokémon."
+        ]
+      }
     },
     {
       "id": 801,
@@ -44642,7 +46344,15 @@ const POKEMON_Z_WIKI_DATA = {
       "fieldUse": 1,
       "battleUse": 0,
       "itemType": 0,
-      "machineMoveId": 0
+      "machineMoveId": 0,
+      "measuredEffect": {
+        "metric": "IV",
+        "headline": "+7 IV dans chacune des six statistiques",
+        "details": [
+          "Chaque statistique progresse séparément jusqu'au plafond de 31 IV.",
+          "La description française annonce +10 IV, mais le script exécuté appelle six fois un gain de 7 IV."
+        ]
+      }
     },
     {
       "id": 804,
