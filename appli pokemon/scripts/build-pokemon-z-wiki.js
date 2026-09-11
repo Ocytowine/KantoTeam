@@ -202,6 +202,74 @@ function buildNaturalLearnsets(moveDex) {
   return learnsets;
 }
 
+function buildPokemonStats() {
+  const dexData = readData("dexdata.dat");
+  const recordSize = 76;
+  const stats = {};
+  for (let speciesId = 1; speciesId <= Math.floor(dexData.length / recordSize); speciesId += 1) {
+    const offset = (speciesId - 1) * recordSize + 10;
+    stats[speciesId] = {
+      hp: dexData[offset],
+      attack: dexData[offset + 1],
+      defense: dexData[offset + 2],
+      speed: dexData[offset + 3],
+      specialAttack: dexData[offset + 4],
+      specialDefense: dexData[offset + 5]
+    };
+  }
+  return stats;
+}
+
+function buildPokemonAbilities(messages) {
+  const dexData = readData("dexdata.dat");
+  const recordSize = 76;
+  const abilities = {};
+  for (let speciesId = 1; speciesId <= Math.floor(dexData.length / recordSize); speciesId += 1) {
+    const recordOffset = (speciesId - 1) * recordSize;
+    const slots = [
+      { id: dexData.readUInt16LE(recordOffset + 2), hidden: false, slot: 1 },
+      { id: dexData.readUInt16LE(recordOffset + 4), hidden: false, slot: 2 },
+      { id: dexData.readUInt16LE(recordOffset + 40), hidden: true, slot: 3 },
+      { id: dexData.readUInt16LE(recordOffset + 42), hidden: true, slot: 4 },
+      { id: dexData.readUInt16LE(recordOffset + 44), hidden: true, slot: 5 },
+      { id: dexData.readUInt16LE(recordOffset + 46), hidden: true, slot: 6 }
+    ];
+    const seen = new Set();
+    abilities[speciesId] = slots.filter(({ id }) => {
+      if (!id || seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    }).map(({ id, hidden, slot }) => ({
+      id,
+      key: `pokemon-z-ability-${id}`,
+      name: text(messages[10]?.[id]) || `Talent n°${id}`,
+      description: text(messages[11]?.[id]) || "Description indisponible.",
+      hidden,
+      slot
+    }));
+  }
+  return abilities;
+}
+
+function buildItems(messages) {
+  const pocketNames = [
+    "Inconnus", "Objets", "Médicaments", "Poké Balls", "CT / CS",
+    "Ingrédients", "Méga-Gemmes", "Objets de combat", "Objets rares"
+  ];
+  return loadSerialRecords("items.dat").map((record) => ({
+    id: record[0],
+    name: text(messages[7]?.[record[0]]) || text(record[1]) || `Objet n°${record[0]}`,
+    pluralName: text(messages[8]?.[record[0]]) || text(record[2]),
+    description: text(messages[9]?.[record[0]]) || text(record[5]) || "Description indisponible.",
+    pocket: pocketNames[record[3]] || `Poche ${record[3]}`,
+    price: Number(record[4]) || 0,
+    fieldUse: Number(record[6]) || 0,
+    battleUse: Number(record[7]) || 0,
+    itemType: Number(record[8]) || 0,
+    machineMoveId: Number(record[9]) || 0
+  }));
+}
+
 function buildMachines(messages, constants, mapInfos) {
   const itemRecords = loadSerialRecords("items.dat");
   const compatibility = loadRubyMarshal(readData("tm.dat"));
@@ -687,6 +755,7 @@ const wiki = {
   mechanics,
   progressionGuides,
   quests: buildQuests(),
+  items: buildItems(messages),
   recipes: buildRecipes(messages, constants, scripts),
   achievements: buildAchievements(messages, scripts),
   trainerTips,
@@ -697,4 +766,6 @@ const outputPath = path.resolve(__dirname, "../src/pokemon-z-wiki-data.js");
 fs.writeFileSync(outputPath, `// Généré depuis les fichiers de Pokémon Z v2.12 FR.\nconst POKEMON_Z_WIKI_DATA = ${JSON.stringify(wiki, null, 2)};\n`, "utf8");
 const learnsetOutputPath = path.resolve(__dirname, "../src/pokemon-z-learnset-data.js");
 fs.writeFileSync(learnsetOutputPath, `// Généré depuis attacksRS.dat et moves.dat de Pokémon Z v2.12 FR.\nconst POKEMON_Z_LEARNSET_DATA = ${JSON.stringify(learnsetData)};\n`, "utf8");
-console.log(`Generated ${wiki.machines.length} machines, ${wiki.leaders.length} leaders, ${wiki.quests.length} quests, ${wiki.recipes.length} recipes and ${wiki.trainerTips.length} tips.`);
+const statsOutputPath = path.resolve(__dirname, "../src/pokemon-z-stats-data.js");
+fs.writeFileSync(statsOutputPath, `// Généré depuis dexdata.dat et french.dat de Pokémon Z v2.12 FR.\nconst POKEMON_Z_V212_STATS = ${JSON.stringify(buildPokemonStats())};\nconst POKEMON_Z_V212_ABILITIES = ${JSON.stringify(buildPokemonAbilities(messages))};\n`, "utf8");
+console.log(`Generated ${wiki.machines.length} machines, ${wiki.items.length} items, ${wiki.leaders.length} leaders, ${wiki.quests.length} quests, ${wiki.recipes.length} recipes and ${wiki.trainerTips.length} tips.`);

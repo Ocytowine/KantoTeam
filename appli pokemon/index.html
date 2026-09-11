@@ -45,22 +45,19 @@
         <div class="header-actions">
           <button class="ghost-button hidden" id="back-to-slots" type="button">Retour aux equipes</button>
           <button class="icon-nav-button" id="open-type-helper" type="button" aria-label="Guide des types">
-            <img src="assets/Logo-aide-type.png" data-theme-asset="assets/Logo-aide-type.png" alt="" aria-hidden="true">
+            <img src="assets/Logo-aide-type.webp" data-theme-asset="assets/Logo-aide-type.webp" alt="" aria-hidden="true">
           </button>
           <button class="icon-nav-button" id="manage-saved-pokemon" type="button" aria-label="Pokemon sauvegardes">
-            <img src="assets/Logo-sauvegarde.png" data-theme-asset="assets/Logo-sauvegarde.png" alt="" aria-hidden="true">
+            <img src="assets/Logo-sauvegarde.webp" data-theme-asset="assets/Logo-sauvegarde.webp" alt="" aria-hidden="true">
           </button>
           <button class="icon-nav-button" id="open-pokemon-search" type="button" aria-label="Recherche Pokemon">
-            <img src="assets/recherche.png" data-theme-asset="assets/recherche.png" alt="" aria-hidden="true">
+            <img src="assets/recherche.webp" data-theme-asset="assets/recherche.webp" alt="" aria-hidden="true">
           </button>
           <button class="icon-nav-button wiki-nav-button hidden" id="open-pokemon-z-wiki" type="button" aria-label="Guide de Pokémon Z">
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11a2 2 0 0 1 2 2v15a2 2 0 0 0-2-2H6.5A2.5 2.5 0 0 0 4 20.5v-15Z"></path>
-              <path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H13v17a2 2 0 0 1 2-2h2.5a2.5 2.5 0 0 1 2.5 2.5v-15Z"></path>
-            </svg>
+            <img class="pokemon-z-guide-nav-logo" src="assets/Guide_z.webp" alt="" aria-hidden="true" loading="lazy" decoding="async">
           </button>
           <button class="icon-nav-button hidden" id="open-shared-teams" type="button" aria-label="Equipes partagees">
-            <img src="assets/share-pokeball.png" data-theme-asset="assets/share-pokeball.png" alt="" aria-hidden="true">
+            <img src="assets/share-pokeball.webp" data-theme-asset="assets/share-pokeball.webp" alt="" aria-hidden="true">
           </button>
         </div>
       </header>
@@ -82,7 +79,7 @@
         <section class="panel saved-manager-panel hidden" id="saved-manager-panel" aria-labelledby="saved-manager-title">
           <div class="panel-heading">
             <div class="panel-title-with-icon">
-              <img class="panel-title-icon" src="assets/Logo-sauvegarde.png" data-theme-asset="assets/Logo-sauvegarde.png" alt="" aria-hidden="true">
+              <img class="panel-title-icon" src="assets/Logo-sauvegarde.webp" data-theme-asset="assets/Logo-sauvegarde.webp" alt="" aria-hidden="true">
               <div>
               <p class="eyebrow">Bibliotheque</p>
               <h2 id="saved-manager-title">Pokemon sauvegardes</h2>
@@ -96,7 +93,7 @@
         <section class="panel shared-teams-panel hidden" id="shared-teams-panel" aria-labelledby="shared-teams-title">
           <div class="panel-heading">
             <div class="panel-title-with-icon">
-              <img class="panel-title-icon" src="assets/share-pokeball.png" data-theme-asset="assets/share-pokeball.png" alt="" aria-hidden="true">
+              <img class="panel-title-icon" src="assets/share-pokeball.webp" data-theme-asset="assets/share-pokeball.webp" alt="" aria-hidden="true">
               <div>
                 <p class="eyebrow">Partage</p>
                 <h2 id="shared-teams-title">Equipes partagees</h2>
@@ -110,7 +107,7 @@
         <section class="panel pokemon-search-panel hidden" id="pokemon-search-panel" aria-labelledby="pokemon-search-title">
           <div class="panel-heading">
             <div class="panel-title-with-icon">
-              <img class="panel-title-icon" src="assets/recherche.png" data-theme-asset="assets/recherche.png" alt="" aria-hidden="true">
+              <img class="panel-title-icon" src="assets/recherche.webp" data-theme-asset="assets/recherche.webp" alt="" aria-hidden="true">
               <div>
                 <p class="eyebrow">Recherche</p>
                 <h2 id="pokemon-search-title">Recherche Pokemon</h2>
@@ -167,6 +164,7 @@
               <button type="button" data-wiki-category="leaders">Chefs</button>
               <button type="button" data-wiki-category="progression">Énigmes</button>
               <button type="button" data-wiki-category="quests">Missions</button>
+              <button type="button" data-wiki-category="items">Objets</button>
               <button type="button" data-wiki-category="crafting">Alchimie</button>
               <button type="button" data-wiki-category="tips">Astuces</button>
               <button type="button" data-wiki-category="mechanics">Mécaniques</button>
@@ -180,7 +178,7 @@
         <section class="panel type-helper-panel hidden" id="type-helper-panel" aria-labelledby="type-helper-title">
           <div class="panel-heading">
             <div class="panel-title-with-icon">
-              <img class="panel-title-icon" src="assets/Logo-aide-type.png" data-theme-asset="assets/Logo-aide-type.png" alt="" aria-hidden="true">
+              <img class="panel-title-icon" src="assets/Logo-aide-type.webp" data-theme-asset="assets/Logo-aide-type.webp" alt="" aria-hidden="true">
               <div>
                 <p class="eyebrow">Guide des types</p>
                 <h2 id="type-helper-title">Assistant types</h2>
@@ -312,7 +310,7 @@
           </div>
           <div class="share-actions hidden" id="share-actions" aria-label="Partager l'equipe">
             <button class="share-icon-button" id="share-menu-toggle" type="button" aria-label="Partager" aria-expanded="false">
-              <img src="assets/share-pokeball.png" data-theme-asset="assets/share-pokeball.png" alt="" aria-hidden="true">
+              <img src="assets/share-pokeball.webp" data-theme-asset="assets/share-pokeball.webp" alt="" aria-hidden="true">
             </button>
             <div class="share-menu hidden" id="share-menu">
               <button class="small-button" id="share-team" type="button">Partager</button>
@@ -570,6 +568,7 @@
     </main>
 
     <div class="team-modal-overlay hidden" id="pokemon-edit-modal"></div>
+    <div class="team-modal-overlay hidden" id="pokemon-ability-modal"></div>
     <div class="team-modal-overlay hidden" id="versus-shared-modal"></div>
     <div class="team-modal-overlay hidden" id="versus-insight-modal"></div>
     <div class="team-modal-overlay pokemon-trade-modal-overlay hidden" id="pokemon-trade-modal"></div>
@@ -581,6 +580,7 @@
     <script src="src/pokemon-z-guide-data.js"></script>
     <script src="src/pokemon-z-v212-encounter-data.js"></script>
     <script src="src/pokemon-z-location-data.js"></script>
+    <script src="src/pokemon-z-stats-data.js"></script>
     <script src="src/official-pokemon-stats.js"></script>
     <script src="src/official-pokemon-classification.js"></script>
     <script src="src/sprite-data.js"></script>

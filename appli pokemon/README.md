@@ -10,7 +10,7 @@ Pour les fiches Pokémon Z, les rencontres, les rencontres fixes, les dons, les 
 
 Les méthodes d'obtention issues des pages du guide complètent les données internes. Les échanges PNJ sont lus dans les événements du jeu afin de conserver le bon sens de l'échange, le lieu et le niveau du Pokémon reçu.
 
-Les sprites sont optionnels. Lorsqu'une connexion est disponible, le bouton `Afficher les sprites` charge uniquement les images des Pokemon presents dans les equipes via PokéAPI. Hors ligne, le bouton et les images restent masques sans avertissement.
+Les sprites et les talents officiels sont complétés via PokéAPI lorsqu'une connexion est disponible. Dans les cartes, un bouton discret ouvre la liste des talents, leurs explications françaises et l'indication des talents cachés. Pour un Pokémon enregistré ou présent dans une équipe modifiable, le talent réellement possédé peut être verrouillé sur cet exemplaire et reste mémorisé. Les formes ou Fakemon sans identifiant national restent signalés comme non documentés plutôt que de recevoir une information inventée.
 
 ## Lancer le site
 
@@ -71,7 +71,7 @@ Le decodeur Ruby Marshal local prend aussi en charge l'extraction des scripts RG
 node scripts/extract-rgss-scripts.js "C:\chemin\vers\Pokemon Z\Data\Scripts.rxdata" "C:\dossier\de\sortie"
 ```
 
-Le mini-wiki de Pokemon Z est charge uniquement lors de son ouverture. Il regroupe les 108 CT, les 6 CS, leurs compatibilites et lieux d'obtention detectes, les equipes des 12 chefs, les plafonds de niveau, les aides progressives, 45 missions, 50 recettes, 27 succes, 39 astuces uniques, les mini-jeux et les principales mecaniques. Depuis la fiche detaillee d'un membre de l'equipe Z, un bouton ouvre aussi ses CT/CS compatibles et ses capacites apprises par niveau. Les 1 018 listes d'apprentissage sont conservees dans un second fichier charge uniquement a la demande. Pour regenerer ces deux jeux de donnees depuis les fichiers compiles :
+Le mini-wiki de Pokemon Z est chargé uniquement lors de son ouverture. Il regroupe les 108 CT, les 6 CS, leurs compatibilités et lieux d'obtention détectés, les 906 objets avec leur description française, les équipes des 12 chefs, les plafonds de niveau, les aides progressives, 45 missions, 50 recettes, 27 succès, 39 astuces uniques, les mini-jeux et les principales mécaniques. L'alchimie et l'index des objets suivent la checklist anti-spoiler : les trois recettes de départ sont visibles, puis chaque page cochée révèle uniquement la recette suivante et les objets qui lui sont associés. Un bouton averti permet de consulter volontairement le catalogue complet, hors CT/CS déjà classées dans leur propre section. Ce catalogue peut filtrer les objets à tenir par effet recherché et par type concerné. Les chefs et leurs équipes sont eux aussi limités au palier anti-spoiler calculé depuis les badges et le niveau enregistrés. Les fiches de combat expliquent aussi clairement le STAB, les multiplicateurs de type, les catégories Physique/Spéciale, l'endurance, la vitesse et les statuts. Depuis la fiche détaillée d'un membre de l'équipe Z, un bouton ouvre aussi ses CT/CS compatibles et ses capacités apprises par niveau. Les 1 018 listes d'apprentissage sont conservées dans un second fichier chargé uniquement à la demande. Pour régénérer ces données depuis les fichiers compilés :
 
 ```powershell
 node scripts/build-pokemon-z-wiki.js "C:\chemin\vers\Pokemon Z\Data"
@@ -84,7 +84,7 @@ node tests/pokemon-z-guide-data.test.js
 node tests/pokemon-z-wiki-data.test.js
 ```
 
-Les statistiques de base et la classification locale des Pokemon legendaires/fabuleux sont embarquees et peuvent etre regenerees depuis les donnees PokeAPI :
+Les 1 018 profils de statistiques et leurs talents propres à Pokémon Z sont extraits de `dexdata.dat` et `french.dat` par la commande précédente. Ils sont prioritaires pour les fiches, les scores d'efficacité et la fenêtre de sélection du talent, y compris pour les Fakemon. Les données officielles restent un repli pour les autres banques. Leur fichier peut être régénéré depuis PokeAPI avec :
 
 ```powershell
 node scripts/build-official-pokemon-stats.js

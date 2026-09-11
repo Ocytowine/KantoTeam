@@ -39,6 +39,7 @@ let pokemonZProgress = loadPokemonZProgress();
 let pokemonZAlchemyCollected = loadPokemonZAlchemyCollected();
 let gameSwitchTransitioning = false;
 let pokemonEditContext = null;
+let pokemonAbilityModalContext = null;
 let pokemonEditEvolution = { status: "idle", items: [] };
 let tradePokemonModal = null;
 let teamSettingsOpen = false;
@@ -72,6 +73,8 @@ let pokemonZWikiMachineFilters = {
   availability: "all"
 };
 let pokemonZWikiExpandedMachineId = null;
+let pokemonZWikiShowFullItems = false;
+let pokemonZWikiItemFilters = { usage: "all", effect: "all", type: "all" };
 let pokemonZWikiSelectedSpeciesId = null;
 let pokemonZWikiPokemonMoveMode = null;
 let pokemonZProgressEditing = false;
@@ -91,6 +94,8 @@ const pokemonZCatalogBySpeciesId = new Map(POKEMON_Z_V212.map((pokemon) => [Numb
 const mobileVersusMedia = window.matchMedia("(max-width: 920px)");
 const spriteUrls = new Map();
 const largeSpriteUrls = new Map();
+const pokemonAbilitiesById = new Map();
+const abilityDetailsByUrl = new Map();
 const pokemonInfoCache = new Map();
 const themedAssetAvailability = new Map();
 const SPRITE_NAME_ALIASES = {
@@ -187,6 +192,7 @@ const el = {
   versusInsightModal: document.querySelector("#versus-insight-modal"),
   versusApplyModal: document.querySelector("#versus-apply-modal"),
   pokemonEditModal: document.querySelector("#pokemon-edit-modal"),
+  pokemonAbilityModal: document.querySelector("#pokemon-ability-modal"),
   pokemonTradeModal: document.querySelector("#pokemon-trade-modal"),
   simulationEnemies: document.querySelector("#simulation-enemies"),
   simulationEnemyEditor: document.querySelector("#simulation-enemy-editor"),
@@ -355,11 +361,49 @@ function bindEvents() {
       card.querySelector(".wiki-learnset-details")?.toggleAttribute("hidden", !expanded);
       return;
     }
+    const machineEntryButton = event.target.closest("[data-wiki-machine-entry]");
+    if (machineEntryButton) {
+      const card = machineEntryButton.closest(".pokemon-z-wiki-machine-card");
+      if (!card) return;
+      const expanded = card.classList.toggle("expanded");
+      machineEntryButton.setAttribute("aria-expanded", String(expanded));
+      card.querySelector(".wiki-learnset-details")?.toggleAttribute("hidden", !expanded);
+      return;
+    }
     const categoryButton = event.target.closest("[data-wiki-open-category]");
     if (categoryButton) {
       pokemonZWikiCategory = categoryButton.dataset.wikiOpenCategory;
       pokemonZWikiQuery = "";
       el.pokemonZWikiQuery.value = "";
+      renderPokemonZWiki();
+      return;
+    }
+    const itemRecipesButton = event.target.closest("[data-wiki-item-recipes]");
+    if (itemRecipesButton) {
+      pokemonZWikiCategory = "crafting";
+      pokemonZWikiQuery = decodeURIComponent(itemRecipesButton.dataset.wikiItemRecipes || "");
+      el.pokemonZWikiQuery.value = pokemonZWikiQuery;
+      renderPokemonZWiki();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    const itemDetailsButton = event.target.closest("[data-wiki-item-entry]");
+    if (itemDetailsButton) {
+      const card = itemDetailsButton.closest(".wiki-item-card");
+      if (!card) return;
+      const expanded = card.classList.toggle("expanded");
+      itemDetailsButton.setAttribute("aria-expanded", String(expanded));
+      card.querySelector(".wiki-item-details")?.toggleAttribute("hidden", !expanded);
+      return;
+    }
+    if (event.target.closest("[data-wiki-toggle-full-items]")) {
+      pokemonZWikiShowFullItems = !pokemonZWikiShowFullItems;
+      if (!pokemonZWikiShowFullItems) pokemonZWikiItemFilters = { usage: "all", effect: "all", type: "all" };
+      renderPokemonZWiki();
+      return;
+    }
+    if (event.target.closest("[data-wiki-reset-item-filters]")) {
+      pokemonZWikiItemFilters = { usage: "all", effect: "all", type: "all" };
       renderPokemonZWiki();
       return;
     }
@@ -411,9 +455,16 @@ function bindEvents() {
       renderPokemonZWiki();
       return;
     }
-    const filter = event.target.closest("[data-wiki-machine-filter]");
-    if (!filter) return;
-    pokemonZWikiMachineFilters[filter.dataset.wikiMachineFilter] = filter.value;
+    const itemFilter = event.target.closest("[data-wiki-item-filter]");
+    if (itemFilter) {
+      pokemonZWikiItemFilters[itemFilter.dataset.wikiItemFilter] = itemFilter.value;
+      if (Object.values(pokemonZWikiItemFilters).some((value) => value !== "all")) pokemonZWikiShowFullItems = true;
+      renderPokemonZWiki();
+      return;
+    }
+    const machineFilter = event.target.closest("[data-wiki-machine-filter]");
+    if (!machineFilter) return;
+    pokemonZWikiMachineFilters[machineFilter.dataset.wikiMachineFilter] = machineFilter.value;
     pokemonZWikiExpandedMachineId = null;
     renderPokemonZWiki();
   });
@@ -509,6 +560,10 @@ function bindEvents() {
       closeTradePokemonModal();
       return;
     }
+    if (pokemonAbilityModalContext) {
+      closePokemonAbilityModal();
+      return;
+    }
     if (pokemonEditContext) closePokemonEditModal();
     if (versusSharedModalOpen) closeVersusSharedModal();
     if (versusInsightModal) closeVersusInsightModal();
@@ -520,6 +575,8 @@ function bindEvents() {
     spritesEnabled = false;
     spriteUrls.clear();
     largeSpriteUrls.clear();
+    pokemonAbilitiesById.clear();
+    abilityDetailsByUrl.clear();
     renderAll();
   });
   el.compositionToAnalysis.addEventListener("click", () => openView("analysis"));
@@ -1052,7 +1109,7 @@ async function preloadPokemonZThemeAssets() {
   const themedImages = Array.from(document.querySelectorAll("img[data-theme-asset]"));
   const bases = themedImages.map((image) => image.dataset.themeAsset).filter(Boolean);
   const fallbacks = themedImages.map((image) => image.dataset.themeFallback).filter(Boolean);
-  bases.push("assets/favicon.png", "assets/share-pokeball.png");
+  bases.push("assets/favicon.png", "assets/share-pokeball.webp");
   await Promise.allSettled([
     ...[...new Set(bases)].flatMap((base) => [themedAssetExists(base), themedAssetExists(pokemonZAssetPath(base))]),
     ...[...new Set(fallbacks)].flatMap((fallback) => [themedAssetExists(fallback), themedAssetExists(pokemonZAssetPath(fallback))])
@@ -1384,6 +1441,7 @@ function renderPokemonZWiki() {
   else if (pokemonZWikiCategory === "leaders") renderPokemonZWikiLeaders(wiki);
   else if (pokemonZWikiCategory === "progression") renderPokemonZWikiProgression(wiki);
   else if (pokemonZWikiCategory === "quests") renderPokemonZWikiQuests(wiki);
+  else if (pokemonZWikiCategory === "items") renderPokemonZWikiItems(wiki);
   else if (pokemonZWikiCategory === "crafting") renderPokemonZWikiCrafting(wiki);
   else if (pokemonZWikiCategory === "tips") renderPokemonZWikiTips(wiki);
   else if (pokemonZWikiCategory === "mechanics") renderPokemonZWikiMechanics(wiki);
@@ -1563,20 +1621,24 @@ function renderPokemonZWikiPokemonMoves(wiki) {
 function renderPokemonZWikiOverview(wiki) {
   const query = pokemonZWikiQuery.trim();
   if (query) {
+    const unlockedRecipes = getPokemonZUnlockedRecipes(wiki);
     const machines = wiki.machines.filter((machine) => pokemonZWikiMatches(pokemonZWikiMachineSearchText(machine), query));
-    const leaders = wiki.leaders.filter((leader) => pokemonZWikiMatches([
+    const leaders = getPokemonZVisibleLeaders(wiki).filter((leader) => pokemonZWikiMatches([
       leader.name, leader.specialty, leader.location,
       ...leader.variants.flatMap((variant) => variant.team.flatMap((pokemon) => [pokemon.name, pokemon.item, ...pokemon.moves]))
     ].join(" "), query));
-    const mechanics = wiki.mechanics.filter((mechanic) => pokemonZWikiMatches([
+    const mechanics = getPokemonZWikiMechanics(wiki).filter((mechanic) => pokemonZWikiMatches([
       mechanic.title, mechanic.summary, ...mechanic.details
     ].join(" "), query));
     const progression = wiki.progressionGuides.filter((guide) => pokemonZWikiMatches([guide.title, guide.location, guide.kind, guide.reward, ...guide.hints].join(" "), query));
     const quests = wiki.quests.filter((quest) => pokemonZWikiMatches([quest.title, quest.location, quest.objective].join(" "), query));
-    const recipes = wiki.recipes.filter((recipe) => pokemonZWikiMatches([recipe.result, ...recipe.ingredients.map((ingredient) => ingredient.item)].join(" "), query));
+    const recipes = unlockedRecipes.filter((recipe) => pokemonZWikiMatches([recipe.result, ...recipe.ingredients.map((ingredient) => ingredient.item)].join(" "), query));
+    const items = getPokemonZWikiItems(wiki, unlockedRecipes).filter((item) => pokemonZWikiMatches([
+      item.name, item.category, item.rarity, item.description
+    ].join(" "), query));
     const tips = wiki.trainerTips.filter((tip) => pokemonZWikiMatches([tip.location, tip.text].join(" "), query));
     const achievements = wiki.achievements.filter((achievement) => pokemonZWikiMatches([achievement.title, achievement.description].join(" "), query));
-    const total = machines.length + leaders.length + mechanics.length + progression.length + quests.length + recipes.length + tips.length + achievements.length;
+    const total = machines.length + leaders.length + mechanics.length + progression.length + quests.length + recipes.length + items.length + tips.length + achievements.length;
     el.pokemonZWikiCount.textContent = `${total} résultat${total > 1 ? "s" : ""}`;
     if (!total) {
       el.pokemonZWikiContent.innerHTML = `<div class="empty-state">Aucun résultat pour « ${escapeHtml(query)} ».</div>`;
@@ -1587,6 +1649,7 @@ function renderPokemonZWikiOverview(wiki) {
       ${leaders.length ? `<section class="pokemon-z-wiki-result-group"><h3>Chefs <span>${leaders.length}</span></h3>${leaders.map(renderPokemonZWikiLeaderCard).join("")}</section>` : ""}
       ${progression.length ? `<section class="pokemon-z-wiki-result-group"><h3>Énigmes <span>${progression.length}</span></h3>${progression.map(renderPokemonZWikiProgressionCard).join("")}</section>` : ""}
       ${quests.length ? `<section class="pokemon-z-wiki-result-group"><h3>Missions <span>${quests.length}</span></h3>${quests.slice(0, 12).map(renderPokemonZWikiQuestCard).join("")}</section>` : ""}
+      ${items.length ? `<section class="pokemon-z-wiki-result-group"><h3>Objets <span>${items.length}</span></h3><div class="wiki-item-grid">${items.slice(0, 12).map(renderPokemonZWikiItemCard).join("")}</div></section>` : ""}
       ${recipes.length ? `<section class="pokemon-z-wiki-result-group"><h3>Alchimie <span>${recipes.length}</span></h3>${recipes.slice(0, 12).map(renderPokemonZWikiRecipeCard).join("")}</section>` : ""}
       ${tips.length ? `<section class="pokemon-z-wiki-result-group"><h3>Astuces <span>${tips.length}</span></h3>${tips.slice(0, 12).map(renderPokemonZWikiTipCard).join("")}</section>` : ""}
       ${achievements.length ? `<section class="pokemon-z-wiki-result-group"><h3>Succès <span>${achievements.length}</span></h3>${achievements.slice(0, 12).map(renderPokemonZWikiAchievementCard).join("")}</section>` : ""}
@@ -1596,6 +1659,8 @@ function renderPokemonZWikiOverview(wiki) {
     return;
   }
   el.pokemonZWikiCount.textContent = "Données du jeu";
+  const unlockedRecipeCount = getPokemonZUnlockedRecipes(wiki).length;
+  const visibleLeaderCount = getPokemonZVisibleLeaders(wiki).length;
   const capLabels = ["Départ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11+"];
   el.pokemonZWikiContent.innerHTML = `
     <div class="pokemon-z-wiki-home-grid">
@@ -1606,7 +1671,7 @@ function renderPokemonZWikiOverview(wiki) {
         <span class="wiki-home-icon">CT</span><strong>CT et CS</strong><small>${wiki.machines.filter((entry) => entry.kind === "CT").length} CT · ${wiki.machines.filter((entry) => entry.kind === "CS").length} CS</small>
       </button>
       <button class="pokemon-z-wiki-home-card" type="button" data-wiki-open-category="leaders">
-        <span class="wiki-home-icon">12</span><strong>Chefs et équipes</strong><small>Compositions, objets et capacités</small>
+        <span class="wiki-home-icon">${pokemonZProgress ? visibleLeaderCount : "?"}</span><strong>Chefs et équipes</strong><small>Révélés selon ta progression</small>
       </button>
       <button class="pokemon-z-wiki-home-card" type="button" data-wiki-open-category="mechanics">
         <span class="wiki-home-icon">i</span><strong>Mécaniques</strong><small>EV, IV, bonheur, niveaux et plus</small>
@@ -1618,7 +1683,10 @@ function renderPokemonZWikiOverview(wiki) {
         <span class="wiki-home-icon">${wiki.quests.length}</span><strong>Missions</strong><small>Objectifs du tableau de missions</small>
       </button>
       <button class="pokemon-z-wiki-home-card" type="button" data-wiki-open-category="crafting">
-        <span class="wiki-home-icon">${wiki.recipes.length}</span><strong>Alchimie</strong><small>Recettes et ingrédients exacts</small>
+        <span class="wiki-home-icon">${unlockedRecipeCount}</span><strong>Alchimie</strong><small>${unlockedRecipeCount}/${wiki.recipes.length} recettes découvertes</small>
+      </button>
+      <button class="pokemon-z-wiki-home-card" type="button" data-wiki-open-category="items">
+        <span class="wiki-home-icon">Obj.</span><strong>Objets et raretés</strong><small>Poké Balls, objets rares et composants d’alchimie</small>
       </button>
       <button class="pokemon-z-wiki-home-card" type="button" data-wiki-open-category="tips">
         <span class="wiki-home-icon">${wiki.trainerTips.length}</span><strong>Astuces</strong><small>Conseils du jeu et mini-jeux</small>
@@ -1709,36 +1777,56 @@ function renderPokemonZWikiMachineCard(machine) {
       : `<span class="slot-meta">Aucun Pokémon compatible déclaré dans la table des machines.</span>`}</div>`
     : "";
   return `
-    <article class="pokemon-z-wiki-machine-card" data-wiki-machine-id="${machine.id}">
-      <div class="wiki-machine-heading">
+    <article class="pokemon-z-wiki-machine-card wiki-learnset-move-card ${expanded ? "expanded" : ""}" data-wiki-machine-id="${machine.id}" data-machine-type="${escapeHtml(machine.type)}" data-machine-category="${escapeHtml(machine.category)}">
+      <button class="wiki-learnset-card-toggle" type="button" data-wiki-machine-entry="${machine.id}" aria-expanded="${expanded}">
         <span class="wiki-machine-code ${machine.kind.toLowerCase()}">${escapeHtml(machine.code)}</span>
-        <div><h3>${escapeHtml(machine.move)}</h3><div class="mini-line">${pokemonZWikiTypeBadge(machine.type)}<span class="slot-meta">${escapeHtml(machine.category)}</span></div></div>
-      </div>
-      <div class="wiki-machine-stats">
-        <span><small>Puissance</small><strong>${machine.variablePower ? "??" : machine.power || "—"}</strong></span>
-        <span><small>Précision</small><strong>${machine.accuracy ? `${machine.accuracy} %` : "—"}</strong></span>
-        <span><small>PP</small><strong>${machine.pp}</strong></span>
-      </div>
-      <p>${escapeHtml(machine.description)}</p>
-      <ul class="wiki-machine-sources">${sourceHtml}</ul>
-      <button class="small-button wiki-compatibility-toggle" type="button" data-wiki-machine-compatibility="${machine.id}" aria-expanded="${expanded}">
-        ${expanded ? "Masquer" : "Voir"} les Pokémon compatibles (${machine.compatibleSpeciesIds.length})
+        <span class="wiki-learnset-card-name">
+          <strong>${escapeHtml(machine.move)}</strong>
+          <small class="wiki-learnset-compact-meta">${typeLogoOnly(pokemonZWikiAppType(machine.type))}<span>${machine.variablePower ? "Puis. ??" : machine.category === "Statut" ? "Statut" : `Puis. ${machine.power}`}</span></small>
+        </span>
+        <span class="wiki-learnset-chevron" aria-hidden="true">⌄</span>
       </button>
-      ${compatibleHtml}
+      <div class="wiki-learnset-details" ${expanded ? "" : "hidden"}>
+        <div class="wiki-learnset-tags">${pokemonZWikiTypeBadge(machine.type)}<span>${escapeHtml(machine.category)}</span></div>
+        <div class="wiki-machine-stats">
+          <span><small>Puissance</small><strong>${machine.variablePower ? "??" : machine.power || "—"}</strong></span>
+          <span><small>Précision</small><strong>${machine.accuracy ? `${machine.accuracy} %` : "—"}</strong></span>
+          <span><small>PP</small><strong>${machine.pp}</strong></span>
+        </div>
+        <p>${escapeHtml(machine.description)}</p>
+        <ul class="wiki-machine-sources">${sourceHtml}</ul>
+        <button class="small-button wiki-compatibility-toggle" type="button" data-wiki-machine-compatibility="${machine.id}" aria-expanded="${expanded}">
+          ${expanded ? "Masquer" : "Voir"} les Pokémon compatibles (${machine.compatibleSpeciesIds.length})
+        </button>
+        ${compatibleHtml}
+      </div>
     </article>
   `;
 }
 
 function renderPokemonZWikiLeaders(wiki) {
+  if (!pokemonZProgress || pokemonZProgressEditing) {
+    renderPokemonZProgressQuestionnaire();
+    return;
+  }
   const query = pokemonZWikiQuery.trim();
-  const leaders = wiki.leaders.filter((leader) => pokemonZWikiMatches([
+  const leaders = getPokemonZVisibleLeaders(wiki).filter((leader) => pokemonZWikiMatches([
     leader.name, leader.specialty, leader.location,
     ...leader.variants.flatMap((variant) => variant.team.flatMap((pokemon) => [pokemon.name, pokemon.item, ...pokemon.moves]))
   ].join(" "), query));
   el.pokemonZWikiCount.textContent = `${leaders.length} chef${leaders.length > 1 ? "s" : ""}`;
-  el.pokemonZWikiContent.innerHTML = leaders.length
-    ? `<div class="pokemon-z-wiki-leader-list">${leaders.map(renderPokemonZWikiLeaderCard).join("")}</div>`
-    : `<div class="empty-state">Aucun chef ne correspond à la recherche.</div>`;
+  el.pokemonZWikiContent.innerHTML = `
+    <div class="wiki-progress-profile"><div><p class="eyebrow">Protection anti-spoiler</p><strong>${pokemonZProgress.badges} badge${pokemonZProgress.badges > 1 ? "s" : ""} · niveau ${pokemonZProgress.level}</strong></div><button class="small-button" type="button" data-edit-pokemon-z-progress>Modifier</button></div>
+    ${leaders.length
+      ? `<div class="pokemon-z-wiki-leader-list">${leaders.map(renderPokemonZWikiLeaderCard).join("")}</div>`
+      : `<div class="empty-state">Aucun chef n’est encore révélé à ce palier, ou aucun ne correspond à la recherche.</div>`}
+  `;
+}
+
+function getPokemonZVisibleLeaders(wiki) {
+  if (!pokemonZProgress) return [];
+  const stage = pokemonZEffectiveProgressStage();
+  return wiki.leaders.filter((leader) => leader.order <= stage);
 }
 
 function renderPokemonZWikiLeaderCard(leader) {
@@ -1833,19 +1921,239 @@ function renderPokemonZWikiQuestCard(quest) {
 
 function renderPokemonZWikiCrafting(wiki) {
   const query = pokemonZWikiQuery.trim();
-  const recipes = wiki.recipes.filter((recipe) => pokemonZWikiMatches([
+  const unlockedRecipes = getPokemonZUnlockedRecipes(wiki);
+  const recipes = unlockedRecipes.filter((recipe) => pokemonZWikiMatches([
     recipe.result, ...recipe.ingredients.map((ingredient) => ingredient.item)
   ].join(" "), query));
-  el.pokemonZWikiCount.textContent = `${recipes.length} recette${recipes.length > 1 ? "s" : ""}`;
+  const hiddenCount = wiki.recipes.length - unlockedRecipes.length;
+  el.pokemonZWikiCount.textContent = `${unlockedRecipes.length}/${wiki.recipes.length} recettes`;
   el.pokemonZWikiContent.innerHTML = `
-    <div class="pokemon-z-wiki-section-heading"><div><p class="eyebrow">Alchimie Pokémon</p><h3>Recettes de fabrication</h3></div><span>Résultats et quantités extraits du script</span></div>
+    <div class="pokemon-z-wiki-section-heading"><div><p class="eyebrow">Alchimie Pokémon</p><h3>Recettes découvertes</h3></div><span>${unlockedRecipes.length} débloquée${unlockedRecipes.length > 1 ? "s" : ""}</span></div>
+    ${renderPokemonZAlchemySpoilerNotice(wiki, hiddenCount)}
     <div class="wiki-recipe-grid">${recipes.length ? recipes.map(renderPokemonZWikiRecipeCard).join("") : `<div class="empty-state">Aucune recette ne correspond à la recherche.</div>`}</div>
   `;
 }
 
+function getPokemonZUnlockedRecipeCount(wiki) {
+  const validPageIds = new Set((wiki.alchemyPages || []).map((page) => page.id));
+  const collectedCount = [...pokemonZAlchemyCollected].filter((id) => validPageIds.has(id)).length;
+  return Math.min(wiki.recipes.length, 3 + collectedCount);
+}
+
+function getPokemonZUnlockedRecipes(wiki) {
+  const unlockedCount = getPokemonZUnlockedRecipeCount(wiki);
+  return wiki.recipes.filter((recipe) => recipe.number <= unlockedCount);
+}
+
+function renderPokemonZAlchemySpoilerNotice(wiki, hiddenCount = wiki.recipes.length - getPokemonZUnlockedRecipeCount(wiki)) {
+  if (hiddenCount <= 0) {
+    return `<div class="wiki-spoiler-notice complete"><span aria-hidden="true">✓</span><div><strong>Livre d’alchimie complet</strong><small>Toutes les recettes et tous leurs objets sont visibles.</small></div></div>`;
+  }
+  return `<div class="wiki-spoiler-notice"><span aria-hidden="true">🔒</span><div><strong>${hiddenCount} recette${hiddenCount > 1 ? "s" : ""} encore masquée${hiddenCount > 1 ? "s" : ""}</strong><small>Leurs noms, objets et ingrédients ne seront révélés qu’après avoir coché les pages trouvées.</small></div><button class="small-button" type="button" data-wiki-open-category="adventure">Mettre à jour mes pages</button></div>`;
+}
+
 function renderPokemonZWikiRecipeCard(recipe) {
-  const recipeText = `${recipe.result} : ${recipe.ingredients.map((ingredient) => `${ingredient.quantity} × ${ingredient.item}`).join(", ")}`;
-  return `<article class="wiki-recipe-card"><header><span class="wiki-entry-number">${recipe.number}</span><h3>${escapeHtml(recipe.result)}</h3></header><ul>${recipe.ingredients.map((ingredient) => `<li><strong>${ingredient.quantity}×</strong><span>${escapeHtml(ingredient.item)}</span></li>`).join("")}</ul><button class="small-button wiki-copy-button" type="button" data-wiki-copy-text="${escapeHtml(encodeURIComponent(recipeText))}">Copier</button></article>`;
+  return `<details class="wiki-recipe-card">
+    <summary>
+      <span class="wiki-entry-number">${recipe.number}</span>
+      <span class="wiki-recipe-heading"><strong>${escapeHtml(recipe.result)}</strong><small>${recipe.ingredients.length} ingrédient${recipe.ingredients.length > 1 ? "s" : ""} · afficher la recette</small></span>
+      <span class="wiki-learnset-chevron" aria-hidden="true">⌄</span>
+    </summary>
+    <ul>${recipe.ingredients.map((ingredient) => `<li><strong>${ingredient.quantity}×</strong><span><b>${escapeHtml(ingredient.item)}</b><small>${escapeHtml(pokemonZWikiItemDescription(ingredient.item, "ingredient"))}</small></span></li>`).join("")}</ul>
+  </details>`;
+}
+
+const pokemonZWikiIngredientDescriptions = {
+  "Galet": "Petit minéral servant de base à plusieurs fabrications.",
+  "Baie Pêcha": "Baie douce utilisée comme composant naturel d’alchimie.",
+  "Belle Fourrure": "Matériau souple d’origine Pokémon, utile aux recettes légères.",
+  "Bois": "Composant végétal courant utilisé comme structure ou combustible.",
+  "Plume Douce": "Plume légère recherchée dans les fabrications liées à l’air.",
+  "Braise": "Source de chaleur concentrée pour les préparations liées au feu.",
+  "Poudre Luminescente": "Poudre brillante entrant dans les recettes lumineuses ou rares.",
+  "Baie Oran": "Baie très répandue servant de base à plusieurs préparations.",
+  "Rosée du Matin": "Composant frais et délicat récolté au début de la journée.",
+  "Pokétoxine": "Substance toxique réservée aux recettes demandant un composant Poison.",
+  "Eau": "Base liquide indispensable à de nombreuses préparations.",
+  "Mousse Suave": "Matière végétale douce utilisée comme liant d’alchimie.",
+  "Copeaux de Fer": "Fragments métalliques employés dans les objets solides ou techniques.",
+  "Poudre d'Os": "Composant minéral organique utilisé dans certaines recettes obscures.",
+  "Matière Sinistre": "Substance chargée d’une énergie inquiétante.",
+  "Ectoplasme": "Résidu spectral utilisé dans les fabrications liées aux esprits.",
+  "Glaçons": "Composant froid destiné aux préparations de glace.",
+  "Fibre Élastique": "Matière résistante et souple utile aux mécanismes de capture.",
+  "Gravier Sec": "Agrégat minéral employé dans les recettes terrestres.",
+  "Fluide Onirique": "Liquide étrange associé au sommeil et à l’énergie psychique.",
+  "Baie Sitrus": "Baie nourrissante utilisée dans des préparations avancées.",
+  "Minerai Étrange": "Minerai peu commun dont les propriétés servent aux objets rares.",
+  "Sucre Féerique": "Cristaux sucrés imprégnés d’une énergie féerique.",
+  "Écaille Draconique": "Écaille chargée d’une énergie liée aux Pokémon Dragon.",
+  "Morceau d'ADN": "Échantillon biologique extrêmement rare destiné à une recette exceptionnelle."
+};
+
+function pokemonZWikiItemCategory(name, role = "result") {
+  if (/ball/i.test(name)) return "Poké Balls";
+  if (/^Charme\b/i.test(name)) return "Charmes";
+  if (/^Superbe Pierre\b/i.test(name)) return "Pierres d’évolution";
+  if (/^(Injection|Pilule)\b|^PP Max$/i.test(name)) return "Améliorations";
+  if (/^(Clé Magique|Embryon M|Frhachile|Potion Brillante|Herbe Rappel|Poudre Explosive)$/i.test(name)) return "Objets rares";
+  return role === "ingredient" ? "Composants" : "Objets rares";
+}
+
+function pokemonZWikiItemRarity(name, category, role) {
+  if (/^(Master Ball|Clé Magique|Embryon M|Morceau d'ADN|Minerai Étrange|Potion Brillante)$/i.test(name)) return "Exceptionnel";
+  if (category === "Objets rares" || category === "Méga-Gemmes" || /^Superbe Pierre\b/i.test(name)) return "Rare";
+  if (role === "ingredient") return "Composant";
+  if (role === "result") return "Fabricable";
+  return "Standard";
+}
+
+function pokemonZWikiItemDescription(name, role = "result") {
+  const exactItem = getPokemonZWikiData()?.items?.find((item) => item.name === name);
+  if (exactItem?.description) return exactItem.description;
+  if (pokemonZWikiIngredientDescriptions[name]) return pokemonZWikiIngredientDescriptions[name];
+  if (/^Poké Ball maison$/i.test(name)) return "Ball artisanale obtenue par alchimie pour tenter de capturer un Pokémon.";
+  if (/^(Super|Hyper) Ball maison$/i.test(name)) return "Ball artisanale améliorée, destinée aux captures plus difficiles.";
+  if (/^Master Ball$/i.test(name)) return "Poké Ball exceptionnellement rare conçue pour assurer une capture.";
+  if (/^Charme\s+/i.test(name)) return `Charme d’alchimie associé au type ${name.replace(/^Charme\s+/i, "")}.`;
+  if (/^Superbe Pierre\s+/i.test(name)) return `Pierre d’évolution améliorée associée à ${name.replace(/^Superbe Pierre\s+/i, "")}.`;
+  if (/^Injection\s+/i.test(name)) return `Préparation d’alchimie liée à l’amélioration de ${name.replace(/^Injection\s+/i, "")}.`;
+  if (/^Pilule\s+/i.test(name)) return `Objet d’alchimie lié à la statistique ${name.replace(/^Pilule\s+/i, "")}.`;
+  if (/^PP Max$/i.test(name)) return "Objet rare servant à augmenter au maximum les PP d’une capacité.";
+  if (/^Herbe Rappel$/i.test(name)) return "Préparation végétale rare associée au rappel d’un Pokémon hors combat.";
+  if (/^Poudre Explosive$/i.test(name)) return "Poudre instable fabriquée par alchimie et utilisée dans une recette spécialisée.";
+  return role === "ingredient"
+    ? "Composant utilisé dans les recettes d’alchimie de Pokémon Z."
+    : "Objet obtenu par alchimie dans Pokémon Z ; sa fiche renvoie vers la recette documentée.";
+}
+
+function getPokemonZWikiItems(wiki, sourceRecipes = wiki.recipes, includeFullCatalog = pokemonZWikiShowFullItems) {
+  const recipeLinks = new Map();
+  const addRecipeLink = (name, role, recipeNumber) => {
+    if (!recipeLinks.has(name)) recipeLinks.set(name, { resultRecipes: new Set(), ingredientRecipes: new Set() });
+    recipeLinks.get(name)[role === "result" ? "resultRecipes" : "ingredientRecipes"].add(recipeNumber);
+  };
+  wiki.recipes.forEach((recipe) => {
+    addRecipeLink(recipe.result, "result", recipe.number);
+    recipe.ingredients.forEach((ingredient) => addRecipeLink(ingredient.item, "ingredient", recipe.number));
+  });
+  const discoveredNames = new Set();
+  sourceRecipes.forEach((recipe) => {
+    discoveredNames.add(recipe.result);
+    recipe.ingredients.forEach((ingredient) => discoveredNames.add(ingredient.item));
+  });
+  const catalog = wiki.items?.length
+    ? wiki.items.filter((item) => item.pocket !== "CT / CS")
+    : [...recipeLinks.keys()].map((name, index) => ({ id: `recipe-${index}`, name }));
+  const categoryOrder = ["Poké Balls", "Médicaments", "Objets", "Ingrédients", "Méga-Gemmes", "Objets de combat", "Objets rares"];
+  return catalog.filter((item) => includeFullCatalog || discoveredNames.has(item.name)).map((item) => {
+    const links = recipeLinks.get(item.name) || { resultRecipes: new Set(), ingredientRecipes: new Set() };
+    const primaryRole = links.resultRecipes.size ? "result" : links.ingredientRecipes.size ? "ingredient" : "catalog";
+    const category = item.pocket || pokemonZWikiItemCategory(item.name, primaryRole);
+    return {
+      ...item,
+      ...links,
+      category,
+      rarity: pokemonZWikiItemRarity(item.name, category, primaryRole),
+      description: item.description || pokemonZWikiItemDescription(item.name, primaryRole)
+    };
+  }).sort((left, right) => {
+    const categoryDifference = categoryOrder.indexOf(left.category) - categoryOrder.indexOf(right.category);
+    return categoryDifference || left.name.localeCompare(right.name, "fr");
+  });
+}
+
+function pokemonZHeldItemProfile(item) {
+  const description = normalize(`${item.name} ${item.description}`);
+  const held = item.pocket === "Méga-Gemmes" || /(?:objet a tenir|utilisee? ou tenue|\btenue\b|\btenu par\b|peut etre tenu|mega evoluer)/.test(description);
+  const types = KANTO_TYPES.filter((type) => description.includes(normalize(type)));
+  const goals = new Set();
+  if (/(?:augment|amplifi).*puissance.*type/.test(description)) goals.add("type-offense");
+  if (/(?:affaiblit.*attaque|diminue.*degats|protege.*capacites).*type/.test(description)) goals.add("type-defense");
+  if (/attaque speciale|capacites speciales/.test(description)) goals.add("specialAttack");
+  if (/defense speciale|les defenses/.test(description)) goals.add("specialDefense");
+  if (/(?:augmente|monte|progresser).*attaque(?! speciale)|capacites physiques|bracelet macho/.test(description)) goals.add("attack");
+  if (/(?:augmente|monte|progresser).*defense(?! speciale)|les defenses|encaisse|mis ko|degats subis/.test(description)) goals.add("defense");
+  if (/(?:augmente|monte|progresser).*vitesse|frapper en priorite|attaquer en premier/.test(description)) goals.add("speed");
+  if (/restaur|recuper|regagne|pv max|augmente les pv/.test(description)) goals.add("hp");
+  if (/critique/.test(description)) goals.add("critical");
+  if (/precision/.test(description)) goals.add("accuracy");
+  if (/statut|paralys|poison|brulur|confusion|endormi|degele|alteration/.test(description)) goals.add("status");
+  if (/mega evoluer/.test(description)) goals.add("mega");
+  if (held && !goals.size) goals.add("utility");
+  const labels = [];
+  const goalLabels = {
+    "type-offense": "Puissance de type",
+    "type-defense": "Protection de type",
+    attack: "Attaque / physique",
+    specialAttack: "Attaque Spéciale",
+    defense: "Défense / survie",
+    specialDefense: "Défense Spéciale",
+    speed: "Vitesse / priorité",
+    hp: "PV / soin",
+    critical: "Coups critiques",
+    accuracy: "Précision",
+    status: "Statuts",
+    mega: "Méga-évolution",
+    utility: "Utilitaire"
+  };
+  goals.forEach((goal) => labels.push(goalLabels[goal]));
+  return { held, types, goals, labels };
+}
+
+function pokemonZWikiItemFilterSelect(key, label, selected, options) {
+  return `<label><span>${escapeHtml(label)}</span><select data-wiki-item-filter="${key}">${options.map(([value, text]) => `<option value="${escapeHtml(value)}" ${selected === value ? "selected" : ""}>${escapeHtml(text)}</option>`).join("")}</select></label>`;
+}
+
+function renderPokemonZWikiItems(wiki) {
+  const query = pokemonZWikiQuery.trim();
+  const unlockedRecipes = getPokemonZUnlockedRecipes(wiki);
+  const items = getPokemonZWikiItems(wiki, unlockedRecipes).map((item) => ({ ...item, heldProfile: pokemonZHeldItemProfile(item) })).filter((item) => {
+    const usageMatches = pokemonZWikiItemFilters.usage === "all" || item.heldProfile.held;
+    const effectMatches = pokemonZWikiItemFilters.effect === "all" || item.heldProfile.goals.has(pokemonZWikiItemFilters.effect);
+    const typeMatches = pokemonZWikiItemFilters.type === "all" || item.heldProfile.types.includes(pokemonZWikiItemFilters.type);
+    return usageMatches && effectMatches && typeMatches && pokemonZWikiMatches([
+      item.name, item.category, item.rarity, item.description, ...item.heldProfile.labels, ...item.heldProfile.types
+    ].join(" "), query);
+  });
+  const categories = [...new Set(items.map((item) => item.category))];
+  const hiddenCount = wiki.recipes.length - unlockedRecipes.length;
+  const activeFilterCount = Object.values(pokemonZWikiItemFilters).filter((value) => value !== "all").length;
+  const typeOptions = KANTO_TYPES.map((type) => [type, ({ Electrik: "Électrik", Tenebres: "Ténèbres", Fee: "Fée" }[type] || type)]);
+  el.pokemonZWikiCount.textContent = `${items.length} objet${items.length > 1 ? "s" : ""}`;
+  el.pokemonZWikiContent.innerHTML = `
+    <div class="pokemon-z-wiki-section-heading"><div><p class="eyebrow">Inventaire ${pokemonZWikiShowFullItems ? "complet" : "sans spoiler"}</p><h3>${pokemonZWikiShowFullItems ? "Tous les objets de la version" : "Objets et composants découverts"}</h3></div><button class="small-button" type="button" data-wiki-toggle-full-items>${pokemonZWikiShowFullItems ? "Revenir au mode sans spoiler" : "Afficher tout (peut révéler des objets)"}</button></div>
+    <p class="pokemon-z-wiki-source-note">Noms, poches, prix et descriptions proviennent directement des fichiers français de Pokémon Z v2.12. Les CT et CS restent dans leur section dédiée.</p>
+    ${renderPokemonZAlchemySpoilerNotice(wiki, hiddenCount)}
+    <div class="wiki-item-filters">
+      ${pokemonZWikiItemFilterSelect("usage", "Usage", pokemonZWikiItemFilters.usage, [["all", "Tous les objets"], ["held", "Objets à tenir"]])}
+      ${pokemonZWikiItemFilterSelect("effect", "Bonus recherché", pokemonZWikiItemFilters.effect, [["all", "Tous les effets"], ["type-offense", "Puissance d’un type"], ["type-defense", "Protection contre un type"], ["attack", "Attaque / physique"], ["specialAttack", "Attaque Spéciale"], ["defense", "Défense / survie"], ["specialDefense", "Défense Spéciale"], ["speed", "Vitesse / priorité"], ["hp", "PV / soin"], ["critical", "Coups critiques"], ["accuracy", "Précision"], ["status", "Statuts"], ["mega", "Méga-évolution"], ["utility", "Utilitaire"]])}
+      ${pokemonZWikiItemFilterSelect("type", "Type concerné", pokemonZWikiItemFilters.type, [["all", "Tous les types"], ...typeOptions])}
+      ${activeFilterCount ? `<button class="small-button" type="button" data-wiki-reset-item-filters>Réinitialiser</button>` : ""}
+    </div>
+    ${categories.length ? categories.map((category) => {
+      const categoryItems = items.filter((item) => item.category === category);
+      return `<section class="wiki-item-section"><div class="pokemon-z-wiki-section-heading"><h3>${escapeHtml(category)}</h3><span>${categoryItems.length}</span></div><div class="wiki-item-grid">${categoryItems.map(renderPokemonZWikiItemCard).join("")}</div></section>`;
+    }).join("") : `<div class="empty-state">Aucun objet ne correspond à la recherche.</div>`}
+  `;
+}
+
+function renderPokemonZWikiItemCard(item) {
+  const relatedRecipeCount = new Set([...item.resultRecipes, ...item.ingredientRecipes]).size;
+  return `<article class="wiki-item-card">
+    <header><div><p class="eyebrow">${escapeHtml(item.category)}${item.heldProfile?.held ? " · Objet tenu" : ""}</p><h3>${escapeHtml(item.name)}</h3></div><span class="wiki-item-rarity ${item.rarity === "Exceptionnel" ? "exceptional" : ""}">${escapeHtml(item.rarity)}</span></header>
+    ${item.heldProfile?.labels.length ? `<div class="wiki-item-effect-tags">${item.heldProfile.labels.map((label) => `<span>${escapeHtml(label)}</span>`).join("")}${item.heldProfile.types.map((type) => typeLogoOnly(type)).join("")}</div>` : ""}
+    <button class="small-button wiki-item-details-button" type="button" data-wiki-item-entry aria-expanded="false">Détails</button>
+    <div class="wiki-item-details" hidden>
+      <p>${escapeHtml(item.description)}</p>
+      <div class="wiki-item-meta">
+        ${item.price > 0 ? `<span>Prix de base : ${item.price.toLocaleString("fr-FR")} ₽</span>` : `<span>Pas de prix standard</span>`}
+        ${item.resultRecipes.size ? `<span>Objet fabriqué · recette ${[...item.resultRecipes].join(", ")}</span>` : ""}
+        ${item.ingredientRecipes.size ? `<span>Utilisé dans ${item.ingredientRecipes.size} recette${item.ingredientRecipes.size > 1 ? "s" : ""}</span>` : ""}
+      </div>
+      ${relatedRecipeCount ? `<button class="small-button" type="button" data-wiki-item-recipes="${escapeHtml(encodeURIComponent(item.name))}">Voir ${relatedRecipeCount > 1 ? "les recettes" : "la recette"}</button>` : ""}
+    </div>
+  </article>`;
 }
 
 function renderPokemonZWikiTips(wiki) {
@@ -1870,7 +2178,7 @@ function renderPokemonZWikiAchievementCard(achievement) {
 
 function renderPokemonZWikiMechanics(wiki) {
   const query = pokemonZWikiQuery.trim();
-  const mechanics = wiki.mechanics.filter((mechanic) => pokemonZWikiMatches([
+  const mechanics = getPokemonZWikiMechanics(wiki).filter((mechanic) => pokemonZWikiMatches([
     mechanic.title, mechanic.summary, ...mechanic.details
   ].join(" "), query));
   el.pokemonZWikiCount.textContent = `${mechanics.length} fiche${mechanics.length > 1 ? "s" : ""}`;
@@ -1910,7 +2218,7 @@ async function syncPokemonSprites(pokemon) {
   if (!navigator.onLine) return;
   const list = Array.isArray(pokemon) ? pokemon : [pokemon];
   const ids = Array.from(new Set(list.map(getPokemonNationalId).filter(Boolean)))
-    .filter((id) => !spriteUrls.has(id) || !largeSpriteUrls.has(id));
+    .filter((id) => !spriteUrls.has(id) || !largeSpriteUrls.has(id) || !pokemonAbilitiesById.has(id));
   await Promise.allSettled(ids.map(async (id) => {
     try {
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
@@ -1922,11 +2230,115 @@ async function syncPokemonSprites(pokemon) {
         || sprite;
       if (sprite) spriteUrls.set(id, sprite);
       if (largeSprite) largeSpriteUrls.set(id, largeSprite);
+      const abilities = await Promise.all((data.abilities || []).map(async (entry) => ({
+        ...(await fetchPokemonAbilityDetails(entry.ability)),
+        hidden: Boolean(entry.is_hidden),
+        slot: entry.slot
+      })));
+      pokemonAbilitiesById.set(id, abilities.filter((ability) => ability.name));
     } catch {
       // Une image indisponible reste simplement masquee.
+      pokemonAbilitiesById.set(id, []);
     }
   }));
   spritesEnabled = navigator.onLine && spriteUrls.size > 0;
+}
+
+function getPokemonZEducationalMechanics() {
+  return [
+    {
+      title: "D’où viennent les dégâts ?",
+      summary: "La puissance de la capacité donne le point de départ ; le niveau et les statistiques des deux Pokémon donnent l’échelle.",
+      details: [
+        "Une attaque Physique compare l’Attaque de l’attaquant à la Défense de la cible.",
+        "Une attaque Spéciale compare l’Attaque Spéciale à la Défense Spéciale.",
+        "Une capacité de Statut n’inflige normalement pas de dégâts directs : elle modifie le terrain, un statut ou des statistiques.",
+        "Le bonus de type, l’efficacité, les coups critiques et une petite variation aléatoire ajustent ensuite le résultat."
+      ]
+    },
+    {
+      title: "Type de l’attaque et bonus STAB",
+      summary: "C’est le type de la capacité choisie — pas seulement celui du Pokémon — qui détermine son efficacité sur la cible.",
+      details: [
+        "Si le Pokémon partage le type de la capacité, il reçoit le bonus STAB : cette attaque frappe plus fort.",
+        "Une capacité d’un autre type reste utile pour la couverture, mais ne profite pas de ce bonus.",
+        "La puissance brute ne suffit donc pas : une attaque un peu moins puissante avec STAB et un bon avantage de type peut être préférable."
+      ]
+    },
+    {
+      title: "Lire les multiplicateurs de type",
+      summary: "Super efficace signifie dégâts augmentés, résistance signifie dégâts réduits et immunité signifie aucun dégât.",
+      details: [
+        "Sur un Pokémon à deux types, on combine les deux relations : deux avantages donnent ×4 et deux résistances donnent ×0,25.",
+        "Un avantage et une résistance s’annulent : l’attaque revient à des dégâts normaux (×1).",
+        "Une immunité l’emporte sur le reste : même avec un avantage sur l’autre type, le résultat reste ×0."
+      ]
+    },
+    {
+      title: "Vitesse, priorité et précision",
+      summary: "Frapper fort ne sert pas toujours si l’adversaire agit avant ou si la capacité rate.",
+      details: [
+        "En général, le Pokémon ayant la meilleure Vitesse agit en premier.",
+        "Les capacités prioritaires passent avant les attaques ordinaires, même avec moins de Vitesse.",
+        "La précision indique la fiabilité d’une capacité : une grosse puissance accompagnée d’une faible précision est un pari."
+      ]
+    },
+    {
+      title: "PV, défenses et endurance réelle",
+      summary: "Les PV et les deux défenses travaillent ensemble : une seule très bonne statistique ne protège pas de tout.",
+      details: [
+        "Beaucoup de PV rendent chaque point de Défense et de Défense Spéciale plus utile.",
+        "Une équipe équilibrée doit pouvoir encaisser des attaques Physiques et Spéciales.",
+        "Les résistances et immunités peuvent compenser des statistiques moyennes, mais une faiblesse ×4 reste très dangereuse."
+      ]
+    },
+    {
+      title: "Statuts et changements de statistiques",
+      summary: "Paralysie, brûlure, poison et bonus de statistiques peuvent retourner un combat sans infliger immédiatement de gros dégâts.",
+      details: [
+        "La brûlure use la cible et réduit fortement l’efficacité des attaques Physiques dans les règles habituelles.",
+        "La paralysie gêne l’action et réduit la Vitesse ; le poison use progressivement les PV.",
+        "Augmenter ses statistiques ou réduire celles de l’adversaire se cumule sur plusieurs tours, mais disparaît généralement au changement de Pokémon."
+      ]
+    }
+  ];
+}
+
+function getPokemonZWikiMechanics(wiki) {
+  const combined = [...getPokemonZEducationalMechanics(), ...(wiki.mechanics || [])];
+  return combined.filter((mechanic, index) => combined.findIndex((entry) => entry.title === mechanic.title) === index);
+}
+
+async function fetchPokemonAbilityDetails(ability) {
+  if (!ability?.url) return { key: ability?.name || "unknown", name: formatApiLabel(ability?.name || "Talent inconnu"), description: "Description indisponible." };
+  if (!abilityDetailsByUrl.has(ability.url)) {
+    abilityDetailsByUrl.set(ability.url, fetch(ability.url).then(async (response) => {
+      if (!response.ok) throw new Error("Talent indisponible");
+      const data = await response.json();
+      const frenchName = data.names?.find((entry) => entry.language?.name === "fr")?.name;
+      const frenchEffect = data.effect_entries?.find((entry) => entry.language?.name === "fr")?.short_effect;
+      const frenchFlavor = [...(data.flavor_text_entries || [])].reverse()
+        .find((entry) => entry.language?.name === "fr")?.flavor_text;
+      return {
+        key: data.name || ability.name,
+        name: frenchName || formatApiLabel(data.name || ability.name),
+        description: cleanPokeApiText(frenchEffect || frenchFlavor || "Description française indisponible.")
+      };
+    }).catch(() => ({ key: ability.name, name: formatApiLabel(ability.name), description: "Description française indisponible." })));
+  }
+  return abilityDetailsByUrl.get(ability.url);
+}
+
+function formatApiLabel(value) {
+  return String(value || "").split("-").map((word) => word ? word[0].toUpperCase() + word.slice(1) : "").join(" ");
+}
+
+function cleanPokeApiText(value) {
+  return String(value || "")
+    .replace(/\[([^\]]+)]\{[^}]+}/g, "$1")
+    .replace(/[\n\f\r]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function getPokemonNationalId(pokemon) {
@@ -2366,6 +2778,9 @@ function addCurrentPokemon() {
   if (getActiveGameKey() === "pokemon-z") teamMember.pokemonZId = pokemon.pokemonZId || pokemon.id;
   if (Number.isInteger(getPokemonNationalId(savedPokemon || pokemon))) {
     teamMember.nationalId = getPokemonNationalId(savedPokemon || pokemon);
+  }
+  if ((savedPokemon || pokemon).selectedAbility) {
+    teamMember.selectedAbility = structuredClone((savedPokemon || pokemon).selectedAbility);
   }
   draftTeam.pokemon.push(teamMember);
 
@@ -2939,7 +3354,7 @@ function getTeamAddSourcePokemon(source) {
 function needsSpriteSync(pokemonList) {
   return pokemonList.some((pokemon) => {
     const id = getPokemonNationalId(pokemon);
-    return id && !spriteUrls.has(id);
+    return id && (!spriteUrls.has(id) || !pokemonAbilitiesById.has(id));
   });
 }
 
@@ -3845,7 +4260,7 @@ function renderSharedTeamsManager() {
     card.innerHTML = `
       <div class="shared-team-header">
         <div class="shared-team-title">
-          <img src="assets/share-pokeball.png" data-theme-asset="assets/share-pokeball.png" alt="" aria-hidden="true">
+          <img src="assets/share-pokeball.webp" data-theme-asset="assets/share-pokeball.webp" alt="" aria-hidden="true">
           <div>
           <p class="eyebrow">Liste ${index + 1}</p>
           <h3>${escapeHtml(team.savedName || team.name)}</h3>
@@ -4083,6 +4498,13 @@ function renderPokemonCard(pokemon, options = {}) {
   const pokemonZSpeciesId = showPokemonZLearnset && getActiveGameKey() === "pokemon-z"
     ? pokemonZSpeciesIdFromPokemon(pokemon)
     : null;
+  const abilityPersistence = savedId
+    ? { mode: "saved", target: savedId }
+    : editable && pokemon.instanceId
+      ? { mode: "team", target: pokemon.instanceId }
+      : removable && pokemon.instanceId
+        ? { mode: "draft", target: pokemon.instanceId }
+        : null;
   const actions = [
     favoriteSelectable ? `<button class="icon-action-button favorite-action ${favorite ? "active" : ""}" type="button" data-set-team-favorite="${pokemon.instanceId}" aria-label="${favorite ? "Retirer" : "Définir"} ${escapeHtml(pokemon.name)} comme Pokémon préféré" aria-pressed="${favorite}" title="${favorite ? "Pokémon préféré" : "Définir comme préféré"}">${heartIconSvg()}</button>` : "",
     savedId ? `<button class="icon-action-button" type="button" data-edit-saved-pokemon="${savedId}" aria-label="Editer ${escapeHtml(pokemon.name)}" title="Editer">${actionIconSvg("edit")}</button>` : "",
@@ -4115,7 +4537,10 @@ function renderPokemonCard(pokemon, options = {}) {
       ${actions ? `<div class="card-actions">${actions}</div>` : ""}
     </div>
     <div class="pokemon-card-body stacked ${compact ? "compact-body" : ""}">
-      ${pokemonZSpeciesId ? `<div class="pokemon-learnset-action"><button class="small-button" type="button" data-open-pokemon-z-learnset="${pokemonZSpeciesId}" aria-label="Voir les CT, CS et attaques par niveau de ${escapeHtml(pokemon.name)}"><span aria-hidden="true">CT</span> Capacités</button></div>` : ""}
+      <div class="pokemon-reference-actions">
+        ${pokemonZSpeciesId ? `<button class="small-button" type="button" data-open-pokemon-z-learnset="${pokemonZSpeciesId}" aria-label="Voir les CT, CS et attaques par niveau de ${escapeHtml(pokemon.name)}"><span aria-hidden="true">CT</span> Capacités</button>` : ""}
+        ${renderPokemonAbilityButton(pokemon, abilityPersistence)}
+      </div>
       <div class="mini-line summary-line weakness-line"><span class="slot-meta">Faiblesses</span>${renderMultiplierList(weaknesses)}</div>
       <div class="mini-line summary-line resistance-line"><span class="slot-meta">Resistances</span>${renderMultiplierList(resistances)}</div>
       <div class="mini-line summary-line immunity-line"><span class="slot-meta">Immunites</span>${renderMultiplierList(immunities)}</div>
@@ -4126,7 +4551,42 @@ function renderPokemonCard(pokemon, options = {}) {
   `;
 }
 
+function renderPokemonAbilityButton(pokemon, persistence = null) {
+  const nationalId = getPokemonNationalId(pokemon);
+  const pokemonZSpeciesId = getActiveGameKey() === "pokemon-z" || isPokemonZPokemon(pokemon)
+    ? pokemonZSpeciesIdFromPokemon(pokemon)
+    : null;
+  const selected = normalizeSelectedAbility(pokemon.selectedAbility);
+  const stateLabel = !nationalId && !pokemonZSpeciesId
+    ? "Talents non documentés pour cette variante"
+    : selected ? `Talent en jeu : ${selected.name || selected.key}` : `Voir les talents possibles de ${pokemon.name}`;
+  return `<button class="small-button pokemon-ability-button ${selected ? "locked" : ""}" type="button"
+    data-open-pokemon-abilities
+    data-pokemon-ability-id="${nationalId || ""}"
+    data-pokemon-ability-z-id="${pokemonZSpeciesId || ""}"
+    data-pokemon-ability-name="${escapeHtml(pokemon.name)}"
+    data-pokemon-ability-mode="${persistence?.mode || ""}"
+    data-pokemon-ability-target="${escapeHtml(persistence?.target || "")}"
+    data-pokemon-ability-selected-key="${escapeHtml(selected?.key || "")}"
+    data-pokemon-ability-selected-name="${escapeHtml(selected?.name || "")}"
+    aria-label="${escapeHtml(stateLabel)}" title="${escapeHtml(stateLabel)}"><span aria-hidden="true">${selected ? "✓" : "T"}</span> Talents</button>`;
+}
+
+function normalizeSelectedAbility(value) {
+  if (!value) return null;
+  if (typeof value === "string") return { key: value, name: value, hidden: false };
+  if (!value.key && !value.name) return null;
+  return { key: value.key || value.name, name: value.name || value.key, hidden: Boolean(value.hidden) };
+}
+
 function getPokemonBaseStats(pokemon) {
+  const pokemonZSpeciesId = getActiveGameKey() === "pokemon-z" || isPokemonZPokemon(pokemon)
+    ? pokemonZSpeciesIdFromPokemon(pokemon)
+    : null;
+  if (pokemonZSpeciesId && typeof POKEMON_Z_V212_STATS !== "undefined") {
+    const versionStats = POKEMON_Z_V212_STATS[pokemonZSpeciesId];
+    if (versionStats) return versionStats;
+  }
   if (typeof OFFICIAL_POKEMON_STATS === "undefined") return null;
   const nationalId = getPokemonNationalId(pokemon);
   return nationalId ? OFFICIAL_POKEMON_STATS[nationalId] || null : null;
@@ -4535,6 +4995,129 @@ function bindPokemonCardToggles(container) {
       void openPokemonZLearnset(button.dataset.openPokemonZLearnset);
     });
   });
+  container.querySelectorAll("[data-open-pokemon-abilities]").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.stopPropagation();
+      void openPokemonAbilityModal(button);
+    });
+  });
+}
+
+async function openPokemonAbilityModal(button) {
+  const nationalId = Number(button.dataset.pokemonAbilityId) || null;
+  const pokemonZSpeciesId = Number(button.dataset.pokemonAbilityZId) || null;
+  pokemonAbilityModalContext = {
+    nationalId,
+    pokemonZSpeciesId,
+    name: button.dataset.pokemonAbilityName || "Pokémon",
+    mode: button.dataset.pokemonAbilityMode || "",
+    target: button.dataset.pokemonAbilityTarget || "",
+    selectedAbility: normalizeSelectedAbility(button.dataset.pokemonAbilitySelectedKey
+      ? { key: button.dataset.pokemonAbilitySelectedKey, name: button.dataset.pokemonAbilitySelectedName }
+      : null)
+  };
+  renderPokemonAbilityModal();
+  if (pokemonZSpeciesId || !nationalId || pokemonAbilitiesById.has(nationalId)) return;
+  await syncPokemonSprites({ nationalId, name: pokemonAbilityModalContext.name });
+  if (pokemonAbilityModalContext?.nationalId === nationalId) renderPokemonAbilityModal();
+}
+
+function closePokemonAbilityModal() {
+  pokemonAbilityModalContext = null;
+  el.pokemonAbilityModal.classList.add("hidden");
+  el.pokemonAbilityModal.innerHTML = "";
+  document.body.classList.remove("modal-open");
+}
+
+function renderPokemonAbilityModal() {
+  const context = pokemonAbilityModalContext;
+  if (!context) return;
+  const abilities = getPokemonAbilityOptions(context);
+  const canSelect = Boolean(context.mode && context.target);
+  const hasAbilityReference = Boolean(context.pokemonZSpeciesId || context.nationalId);
+  const obsoleteSelection = context.selectedAbility && Array.isArray(abilities)
+    && !abilities.some((ability) => pokemonAbilityMatchesSelection(ability, context.selectedAbility));
+  el.pokemonAbilityModal.classList.remove("hidden");
+  document.body.classList.add("modal-open");
+  el.pokemonAbilityModal.innerHTML = `
+    <div class="team-modal pokemon-ability-modal-card" role="dialog" aria-modal="true" aria-labelledby="pokemon-ability-title">
+      <div class="pokemon-ability-modal-heading">
+        <div>
+          <p class="eyebrow">Talents obtenables</p>
+          <h2 id="pokemon-ability-title">${escapeHtml(context.name)}</h2>
+        </div>
+        <button class="modal-close-button" type="button" data-close-pokemon-ability aria-label="Fermer">&times;</button>
+      </div>
+      ${canSelect
+        ? `<p class="pokemon-ability-modal-note">Verrouille le talent que possède cet exemplaire dans ta partie. Tu pourras le remplacer ou le déverrouiller ici.</p>`
+        : `<p class="pokemon-ability-modal-note">Consultation uniquement : ajoute ce Pokémon à une équipe ou à ta bibliothèque pour mémoriser son talent.</p>`}
+      ${obsoleteSelection ? `<p class="pokemon-ability-modal-note">Le talent précédemment mémorisé (« ${escapeHtml(context.selectedAbility.name)} ») n’existe pas dans les données de cette version. Choisis le talent réellement présent dans ta partie pour le remplacer.</p>` : ""}
+      <div class="pokemon-ability-modal-list">
+        ${!hasAbilityReference
+          ? `<div class="empty-state">Les talents de cette forme ou de ce Fakemon ne sont pas documentés.</div>`
+          : abilities === undefined
+            ? `<div class="pokemon-ability-modal-loading"><span></span><p>Chargement des talents…</p></div>`
+            : abilities.length
+              ? [...abilities].sort((left, right) => left.slot - right.slot).map((ability) => {
+                const selected = pokemonAbilityMatchesSelection(ability, context.selectedAbility);
+                return `<article class="pokemon-ability-modal-entry ${selected ? "selected" : ""}">
+                  <div class="pokemon-ability-modal-entry-heading"><div><strong>${escapeHtml(ability.name)}</strong>${ability.hidden ? `<span>Talent caché</span>` : ""}</div>${selected ? `<span class="pokemon-ability-current">Talent en jeu</span>` : ""}</div>
+                  <p>${escapeHtml(ability.description)}</p>
+                  ${canSelect ? `<button class="small-button pokemon-ability-lock" type="button" data-lock-pokemon-ability="${escapeHtml(ability.key)}" aria-pressed="${selected}">${selected ? "Déverrouiller" : "Verrouiller ce talent"}</button>` : ""}
+                </article>`;
+              }).join("")
+              : `<div class="empty-state">Aucun talent disponible pour ce Pokémon.</div>`}
+      </div>
+    </div>
+  `;
+  el.pokemonAbilityModal.querySelector("[data-close-pokemon-ability]")?.addEventListener("click", closePokemonAbilityModal);
+  el.pokemonAbilityModal.onclick = (event) => {
+    if (event.target === el.pokemonAbilityModal) closePokemonAbilityModal();
+  };
+  el.pokemonAbilityModal.querySelectorAll("[data-lock-pokemon-ability]").forEach((button) => {
+    button.addEventListener("click", () => selectPokemonAbility(button.dataset.lockPokemonAbility));
+  });
+}
+
+function getPokemonAbilityOptions(context) {
+  if (context?.pokemonZSpeciesId && typeof POKEMON_Z_V212_ABILITIES !== "undefined") {
+    return POKEMON_Z_V212_ABILITIES[context.pokemonZSpeciesId] || [];
+  }
+  return context?.nationalId ? pokemonAbilitiesById.get(context.nationalId) : null;
+}
+
+function pokemonAbilityMatchesSelection(ability, selectedAbility) {
+  if (!ability || !selectedAbility) return false;
+  return ability.key === selectedAbility.key || normalize(ability.name) === normalize(selectedAbility.name);
+}
+
+function selectPokemonAbility(key) {
+  const context = pokemonAbilityModalContext;
+  const abilities = getPokemonAbilityOptions(context) || [];
+  const ability = abilities.find((entry) => entry.key === key);
+  if (!context || !ability || !context.mode || !context.target) return;
+  const selectedAbility = pokemonAbilityMatchesSelection(ability, context.selectedAbility)
+    ? null
+    : { key: ability.key, name: ability.name, hidden: Boolean(ability.hidden) };
+  const applySelection = (pokemon) => {
+    if (!pokemon) return;
+    if (selectedAbility) pokemon.selectedAbility = { ...selectedAbility };
+    else delete pokemon.selectedAbility;
+  };
+
+  if (context.mode === "saved") {
+    applySelection(state.customPokemon.find((pokemon) => String(pokemon.id) === String(context.target)));
+    saveState();
+  } else if (context.mode === "team") {
+    applySelection(draftTeam.pokemon.find((pokemon) => String(pokemon.instanceId) === String(context.target)));
+    persistDraftTeam();
+  } else if (context.mode === "draft") {
+    applySelection(draftTeam.pokemon.find((pokemon) => String(pokemon.instanceId) === String(context.target)));
+  }
+
+  context.selectedAbility = selectedAbility;
+  renderAll();
+  renderPokemonAbilityModal();
 }
 
 async function togglePokemonInfoPanel(button) {
@@ -5986,7 +6569,7 @@ function renderVersusSharedLoader() {
   }
   el.versusSharedLoader.innerHTML = `
     <button class="versus-shared-trigger" type="button" data-open-versus-shared>
-      <span class="versus-shared-icon"><img src="assets/share-pokeball.png" data-theme-asset="assets/share-pokeball.png" alt="" aria-hidden="true"></span>
+      <span class="versus-shared-icon"><img src="assets/share-pokeball.webp" data-theme-asset="assets/share-pokeball.webp" alt="" aria-hidden="true"></span>
       <span>Utiliser une equipe partagee</span>
     </button>
   `;
@@ -6009,7 +6592,7 @@ function renderVersusSharedModal() {
     <div class="team-modal versus-shared-modal-card" role="dialog" aria-modal="true" aria-labelledby="versus-shared-title">
       <div class="pokemon-editor-heading">
         <div class="pokemon-editor-identity">
-          <span class="versus-shared-icon"><img src="assets/share-pokeball.png" data-theme-asset="assets/share-pokeball.png" alt="" aria-hidden="true"></span>
+          <span class="versus-shared-icon"><img src="assets/share-pokeball.webp" data-theme-asset="assets/share-pokeball.webp" alt="" aria-hidden="true"></span>
           <div>
             <p class="eyebrow">Versus</p>
             <h2 id="versus-shared-title">Equipe partagee</h2>
@@ -6546,7 +7129,7 @@ async function shareActiveTeam() {
 
 async function getShareLogoFile() {
   try {
-    const basePath = "assets/share-pokeball.png";
+    const basePath = "assets/share-pokeball.webp";
     const pokemonZPath = pokemonZAssetPath(basePath);
     const assetPath = getActiveGameKey() === "pokemon-z" && await themedAssetExists(pokemonZPath)
       ? pokemonZPath
