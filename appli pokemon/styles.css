@@ -371,6 +371,19 @@ button {
   text-align: center;
 }
 
+.app-brand-meta {
+  display: flex;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.app-brand-meta .eyebrow {
+  min-width: 0;
+  margin: 0;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -446,13 +459,64 @@ body[data-game-theme="pokemon-z"] .app-title img {
 }
 
 .account-button {
+  position: relative;
+  display: inline-flex;
   min-width: 96px;
-  min-height: 38px;
+  max-width: 170px;
+  min-height: 26px;
+  flex: 0 1 auto;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(154, 163, 178, 0.3);
+  border-radius: 999px;
+  padding: 4px 22px;
+  overflow: hidden;
+  color: var(--muted);
+  background: rgba(15, 18, 24, 0.46);
+  font-size: 0.7rem;
+  font-weight: 750;
+  line-height: 1;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0.82;
+  transition: border-color 160ms ease, color 160ms ease, opacity 160ms ease, background 160ms ease;
+}
+
+.account-button::before {
+  position: absolute;
+  left: 9px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #89919f;
+  content: "";
+}
+
+.account-button:hover,
+.account-button:focus-visible {
+  opacity: 1;
 }
 
 .account-button.connected {
   border-color: rgba(52, 190, 121, 0.58);
   color: #8de8b8;
+}
+
+.account-button.connected::before {
+  background: #34be79;
+  box-shadow: 0 0 7px rgba(52, 190, 121, 0.55);
+}
+
+.account-button.offline {
+  border-color: rgba(154, 163, 178, 0.24);
+  color: var(--muted);
+}
+
+.account-button.offline::before {
+  background: #89919f;
+  box-shadow: none;
 }
 
 .wiki-nav-button {
@@ -1165,6 +1229,20 @@ body.modal-open {
   color: #ffb4b4;
 }
 
+.cloud-conflict-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.cloud-conflict-actions > span {
+  flex: 1 1 180px;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
 .account-message.import-prompt {
   border-color: rgba(244, 200, 74, 0.46);
   color: var(--text);
@@ -1207,7 +1285,8 @@ body.modal-open {
 
 @media (max-width: 620px) {
   .account-button {
-    min-width: 0;
+    min-width: 92px;
+    max-width: 140px;
   }
 
   .cloud-team-heading {
@@ -5652,6 +5731,15 @@ body[data-game-theme="pokemon-z"] .pokemon-insight-toggle[aria-expanded="true"] 
   .app-header {
     align-items: center;
     text-align: center;
+  }
+
+  .app-brand-meta {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .app-brand-meta .account-button {
+    max-width: min(180px, 100%);
   }
 
   .app-title {

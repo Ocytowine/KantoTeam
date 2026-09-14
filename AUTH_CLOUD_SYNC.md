@@ -34,9 +34,11 @@ Les mots de passe sont derives avec PBKDF2-HMAC-SHA-512, un sel aleatoire indivi
 
 Le bouton `Connexion` ouvre une modale avec deux onglets : connexion et création de compte. Une fois connecté, il affiche le pseudo et donne accès aux équipes privées du compte.
 
-`Synchroniser mes équipes locales` copie les équipes des deux jeux vers D1. La clé `(user_id, local_id)` rend les envois répétés idempotents. Cette action ne supprime ni ne remplace aucune sauvegarde locale. Une équipe cloud peut être recopiée vers un slot libre ; si les trois slots du jeu sont occupés, l'utilisateur choisit et confirme le remplacement local. La suppression cloud ne touche jamais la copie locale.
+`Synchroniser mes équipes locales` effectue la première liaison des équipes des deux jeux avec D1. Après cette liaison, les modifications sont envoyées automatiquement après 1,5 seconde d'inactivité. L'application vérifie uniquement les métadonnées de révision toutes les 60 secondes lorsqu'elle est visible, au retour au premier plan et au retour de la connexion. Le JSON complet n'est téléchargé que lorsqu'une révision a changé.
 
-La synchronisation est volontairement manuelle dans cette phase : cela évite qu'une connexion ou un appareil ancien écrase silencieusement une sauvegarde plus récente.
+Chaque équipe possède une révision entière générée par le serveur. Une écriture doit fournir `expectedRevision` et D1 ne l'accepte que si cette valeur correspond encore à la révision courante. Une modification concurrente renvoie `409 Conflict` avec la dernière version ; l'interface permet alors d'utiliser le cloud, l'appareil courant ou de garder les deux copies. La suppression cloud utilise la même protection et ne touche jamais la copie locale.
+
+Une empreinte SHA-256 de la dernière équipe synchronisée permet de distinguer une modification locale d'une mise à jour distante sans dépendre de l'horloge des appareils. Les onglets d'un même navigateur se mettent aussi à jour avec l'événement `storage`.
 
 ## Endpoints
 
@@ -45,9 +47,11 @@ La synchronisation est volontairement manuelle dans cette phase : cela évite qu
 - `POST /api/auth/logout`
 - `GET /api/auth/me`
 - `GET /api/teams`
-- `POST /api/teams` — `{ "localId", "team" }`, creation/import idempotent
-- `PUT /api/teams/:id` — `{ "localId", "team" }`
-- `DELETE /api/teams/:id`
+- `GET /api/teams/versions` — métadonnées légères sans `team_data`
+- `GET /api/teams/:id`
+- `POST /api/teams` — `{ "localId", "team" }`, création sans écrasement
+- `PUT /api/teams/:id` — `{ "localId", "team", "expectedRevision" }`
+- `DELETE /api/teams/:id` — `{ "expectedRevision" }`
 
 Le proprietaire est toujours deduit de la session. Un `user_id` du navigateur n'est jamais accepte. Les mutations refusent les origines differentes et les requetes marquees `cross-site`.
 
@@ -84,7 +88,6 @@ Aucun secret applicatif n'est requis dans cette phase. Ne jamais committer `.dev
 ## Suite prevue
 
 - ajouter une limitation des tentatives de connexion avant mise en production ;
-- définir une stratégie de conflits avant d'activer éventuellement la synchronisation automatique ;
 - tester les parcours multi-utilisateur et conserver les tests du partage existant ;
 - appliquer la migration distante apres configuration de l'UUID reel.
 
@@ -99,4 +102,6 @@ Aucun secret applicatif n'est requis dans cette phase. Ne jamais committer `.dev
 - [x] sauvegarde locale existante preservee
 - [x] interface d'authentification
 - [x] import local guide et idempotent dans l'interface
+- [x] revisions atomiques et detection des conflits multi-appareils
+- [x] synchronisation automatique differee et verification legere en arriere-plan
 - [x] validation distante et deploiement

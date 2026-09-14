@@ -4,6 +4,9 @@ const LEGACY_BACKUP_KEY = "kantoTeamState:legacy:v1";
 const POKEMON_Z_PROGRESS_KEY = "kantoTeam:pokemonZProgress:v1";
 const POKEMON_Z_ALCHEMY_KEY = "kantoTeam:pokemonZAlchemy:v1";
 const CLOUD_API_BASE = "/api";
+const CLOUD_SYNC_STORAGE_PREFIX = "kantoTeamCloudSync:v1";
+const CLOUD_SYNC_INTERVAL_MS = 60_000;
+const CLOUD_SYNC_DEBOUNCE_MS = 1_500;
 const GAME_KEYS = ["reforged", "pokemon-z"];
 const POKEMON_STAT_DEFINITIONS = [
   { key: "hp", short: "PV", label: "Points de vie" },
@@ -117,10 +120,15 @@ let spritesEnabled = false;
 let spritesLoading = false;
 let accountModalOpen = false;
 let accountMode = "login";
+let cloudSyncTimer = null;
+let cloudSyncRunning = false;
+let applyingCloudUpdate = false;
 let authState = {
   status: "loading",
   user: null,
   cloudTeams: [],
+  conflicts: [],
+  syncStatus: "",
   busy: false,
   message: "",
   error: ""
@@ -296,6 +304,7 @@ function init() {
   startIntro();
   void syncAppSprites(sharedTeam?.pokemon || []).then(renderAll);
   void restoreCloudSession();
+  startCloudSyncMonitoring();
 }
 
 function startIntro() {
@@ -324,6 +333,7 @@ async function restoreCloudSession() {
     authState.user = result.user;
     authState.error = "";
     await loadCloudTeams(false);
+    scheduleCloudSync(0);
   } catch (error) {
     authState.status = error.status === 401 ? "anonymous" : "offline";
     authState.user = null;
@@ -340,9 +350,14 @@ function canUseCloudApi() {
 function renderAccountControl() {
   if (!el.accountButton) return;
   const authenticated = Boolean(authState.user);
-  el.accountButton.textContent = authenticated ? authState.user.username : "Connexion";
+  const offline = authState.status === "offline" || !canUseCloudApi();
+  el.accountButton.textContent = offline ? "Hors connexion" : authenticated ? authState.user.username : "Connexion";
   el.accountButton.classList.toggle("connected", authenticated);
-  el.accountButton.setAttribute("aria-label", authenticated ? `Ouvrir le compte de ${authState.user.username}` : "Se connecter");
+  el.accountButton.classList.toggle("offline", offline);
+  el.accountButton.classList.toggle("hidden", state.activeView !== "slots" || Boolean(sharedTeam));
+  el.accountButton.setAttribute("aria-label", offline
+    ? "Cloud hors connexion"
+    : authenticated ? `Ouvrir le compte de ${authState.user.username}` : "Se connecter");
 }
 
 function openAccountModal() {
@@ -429,8 +444,10 @@ function renderCloudAccount() {
             <button class="primary-button" type="button" data-cloud-import ${authState.busy || !navigator.onLine ? "disabled" : ""}>${authState.busy ? "Synchronisation..." : "Synchroniser mes équipes locales"}</button>
           </div>
         ` : `<p class="account-message">Aucune équipe locale à synchroniser sur cet appareil.</p>`}
+        ${authState.syncStatus ? `<p class="account-message" role="status">${escapeHtml(authState.syncStatus)}</p>` : ""}
         ${authState.message ? `<p class="account-message" role="status">${escapeHtml(authState.message)}</p>` : ""}
         ${authState.error ? `<p class="account-message error" role="alert">${escapeHtml(authState.error)}</p>` : ""}
+        ${renderCloudConflicts()}
         <div class="cloud-team-heading">
           <div>
             <p class="eyebrow">D1 · privé</p>
@@ -458,7 +475,7 @@ function renderCloudTeamList() {
         <div class="cloud-team-heading">
           <div>
             <h3>${escapeHtml(entry.name)}</h3>
-            <span class="cloud-team-meta">${escapeHtml(preferredSourceLabel(entry.gameVersion))} · ${pokemonCount}/6 Pokémon · ${escapeHtml(formatCloudDate(entry.updatedAt))}</span>
+            <span class="cloud-team-meta">${escapeHtml(preferredSourceLabel(entry.gameVersion))} · ${pokemonCount}/6 Pokémon · révision ${Number(entry.revision) || 1} · ${escapeHtml(formatCloudDate(entry.updatedAt))}</span>
           </div>
           <div class="cloud-team-actions">
             <button class="small-button" type="button" data-cloud-copy="${escapeHtml(entry.id)}">Copier sur cet appareil</button>
@@ -468,6 +485,23 @@ function renderCloudTeamList() {
       </article>
     `;
   }).join("");
+}
+
+function renderCloudConflicts() {
+  if (!authState.conflicts.length) return "";
+  return `
+    <section class="account-message error" aria-label="Conflits de synchronisation">
+      <strong>${authState.conflicts.length} conflit${authState.conflicts.length > 1 ? "s" : ""} de synchronisation</strong>
+      ${authState.conflicts.map((conflict) => `
+        <div class="cloud-conflict-actions">
+          <span>${escapeHtml(conflict.localTeam.name || conflict.cloudTeam.name || "Équipe")}</span>
+          <button class="small-button" type="button" data-conflict-remote="${escapeHtml(conflict.localId)}">Utiliser le cloud</button>
+          <button class="small-button" type="button" data-conflict-local="${escapeHtml(conflict.localId)}">Utiliser cet appareil</button>
+          <button class="small-button" type="button" data-conflict-copy="${escapeHtml(conflict.localId)}">Garder les deux</button>
+        </div>
+      `).join("")}
+    </section>
+  `;
 }
 
 async function handleAccountSubmit(event) {
@@ -495,6 +529,7 @@ async function handleAccountSubmit(event) {
     authState.status = "authenticated";
     authState.message = "Connexion réussie.";
     await loadCloudTeams(false);
+    scheduleCloudSync(0);
     renderAccountControl();
   } catch (error) {
     authState.error = error.message;
@@ -520,9 +555,15 @@ function handleAccountModalClick(event) {
   if (event.target.closest("[data-cloud-refresh]")) void loadCloudTeams();
   if (event.target.closest("[data-cloud-import]")) void importLocalTeamsToCloud();
   const copyId = event.target.closest("[data-cloud-copy]")?.dataset.cloudCopy;
-  if (copyId) copyCloudTeamToLocal(copyId);
+  if (copyId) void copyCloudTeamToLocal(copyId);
   const deleteId = event.target.closest("[data-cloud-delete]")?.dataset.cloudDelete;
   if (deleteId) void deleteCloudTeam(deleteId);
+  const useRemote = event.target.closest("[data-conflict-remote]")?.dataset.conflictRemote;
+  if (useRemote) void resolveCloudConflict(useRemote, "remote");
+  const useLocal = event.target.closest("[data-conflict-local]")?.dataset.conflictLocal;
+  if (useLocal) void resolveCloudConflict(useLocal, "local");
+  const keepBoth = event.target.closest("[data-conflict-copy]")?.dataset.conflictCopy;
+  if (keepBoth) void resolveCloudConflict(keepBoth, "copy");
 }
 
 async function logoutCloudAccount() {
@@ -531,7 +572,7 @@ async function logoutCloudAccount() {
   renderAccountModal();
   try {
     await cloudApi("/auth/logout", { method: "POST" });
-    authState = { status: "anonymous", user: null, cloudTeams: [], busy: false, message: "", error: "" };
+    authState = { status: "anonymous", user: null, cloudTeams: [], conflicts: [], syncStatus: "", busy: false, message: "", error: "" };
     accountMode = "login";
     renderAccountControl();
   } catch (error) {
@@ -578,6 +619,272 @@ function getLocalTeamsForCloud() {
   });
 }
 
+function cloudSyncStorageKey() {
+  return authState.user ? `${CLOUD_SYNC_STORAGE_PREFIX}:${authState.user.id}` : "";
+}
+
+function loadCloudSyncMetadata() {
+  const key = cloudSyncStorageKey();
+  if (!key) return {};
+  try {
+    const value = JSON.parse(localStorage.getItem(key));
+    return value && typeof value === "object" && !Array.isArray(value) ? value : {};
+  } catch {
+    return {};
+  }
+}
+
+function saveCloudSyncMetadata(metadata) {
+  const key = cloudSyncStorageKey();
+  if (!key) return;
+  try { localStorage.setItem(key, JSON.stringify(metadata)); } catch { /* Le cloud reste utilisable sans ce cache. */ }
+}
+
+function canonicalJson(value) {
+  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(",")}]`;
+  if (value && typeof value === "object") {
+    return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${canonicalJson(value[key])}`).join(",")}}`;
+  }
+  return JSON.stringify(value);
+}
+
+async function teamFingerprint(team) {
+  const bytes = new TextEncoder().encode(canonicalJson(team));
+  if (crypto.subtle?.digest) {
+    const digest = await crypto.subtle.digest("SHA-256", bytes);
+    return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+  }
+  let hash = 2166136261;
+  bytes.forEach((byte) => { hash = Math.imul(hash ^ byte, 16777619); });
+  return `fallback-${bytes.length}-${(hash >>> 0).toString(16)}`;
+}
+
+async function rememberCloudVersion(localId, cloudTeam) {
+  if (!localId || !cloudTeam) return;
+  const metadata = loadCloudSyncMetadata();
+  metadata[localId] = {
+    cloudId: cloudTeam.id,
+    revision: Number(cloudTeam.revision) || 1,
+    hash: await teamFingerprint(cloudTeam.team),
+    updatedAt: cloudTeam.updatedAt
+  };
+  saveCloudSyncMetadata(metadata);
+  clearCloudConflict(localId);
+}
+
+function forgetCloudVersion(localId) {
+  if (!localId) return;
+  const metadata = loadCloudSyncMetadata();
+  delete metadata[localId];
+  saveCloudSyncMetadata(metadata);
+  clearCloudConflict(localId);
+}
+
+function rememberCloudTeam(cloudTeam) {
+  const index = authState.cloudTeams.findIndex((entry) => entry.id === cloudTeam.id);
+  if (index >= 0) authState.cloudTeams[index] = cloudTeam;
+  else authState.cloudTeams.push(cloudTeam);
+}
+
+function clearCloudConflict(localId) {
+  authState.conflicts = authState.conflicts.filter((entry) => entry.localId !== localId);
+}
+
+function recordCloudConflict(local, cloudTeam) {
+  clearCloudConflict(local.localId);
+  authState.conflicts.push({
+    localId: local.localId,
+    localTeam: structuredClone(local.team),
+    cloudTeam
+  });
+  rememberCloudTeam(cloudTeam);
+}
+
+async function fetchCloudTeam(version) {
+  const cached = authState.cloudTeams.find((entry) => entry.id === version.id && Number(entry.revision) === Number(version.revision));
+  if (cached?.team) return cached;
+  const result = await cloudApi(`/teams/${encodeURIComponent(version.id)}`);
+  rememberCloudTeam(result.team);
+  return result.team;
+}
+
+function replaceLocalTeam(localId, cloudTeam) {
+  const local = getLocalTeamsForCloud().find((entry) => entry.localId === localId);
+  if (!local) return false;
+  const copy = normalizeStoredTeam(structuredClone(cloudTeam.team));
+  copy.preferredSource = local.game;
+  appState.games[local.game].teams[local.slot] = copy;
+  if (appState.activeGame === local.game) {
+    state = appState.games[local.game];
+    if (state.selectedSlot === local.slot) {
+      draftTeam = structuredClone(copy);
+      el.teamName.value = draftTeam.name || "";
+    }
+  }
+  applyingCloudUpdate = true;
+  saveState();
+  applyingCloudUpdate = false;
+  renderAll();
+  return true;
+}
+
+async function synchronizeCloudTeams({ allowCreate = false } = {}) {
+  if (!authState.user || !canUseCloudApi() || cloudSyncRunning || (authState.busy && !allowCreate)) return;
+  cloudSyncRunning = true;
+  authState.syncStatus = "Vérification des versions cloud…";
+  if (accountModalOpen) renderAccountModal();
+  try {
+    const result = await cloudApi("/teams/versions");
+    const versions = Array.isArray(result.teams) ? result.teams : [];
+    const versionByLocalId = new Map(versions.map((entry) => [entry.localId, entry]));
+    const metadata = loadCloudSyncMetadata();
+
+    for (const local of getLocalTeamsForCloud()) {
+      const version = versionByLocalId.get(local.localId);
+      const known = metadata[local.localId];
+      if (!version) {
+        if (!allowCreate) continue;
+        try {
+          const created = await cloudApi("/teams", {
+            method: "POST",
+            body: { localId: local.localId, team: local.team }
+          });
+          rememberCloudTeam(created.team);
+          await rememberCloudVersion(local.localId, created.team);
+        } catch (error) {
+          if (error.status === 409 && error.payload?.team) recordCloudConflict(local, error.payload.team);
+          else throw error;
+        }
+        continue;
+      }
+
+      if (!known || known.cloudId !== version.id) {
+        const cloudTeam = await fetchCloudTeam(version);
+        if (await teamFingerprint(local.team) === await teamFingerprint(cloudTeam.team)) {
+          await rememberCloudVersion(local.localId, cloudTeam);
+        } else {
+          recordCloudConflict(local, cloudTeam);
+        }
+        continue;
+      }
+
+      const localHash = await teamFingerprint(local.team);
+      const localChanged = localHash !== known.hash;
+      const remoteChanged = Number(version.revision) !== Number(known.revision);
+      if (remoteChanged) {
+        const cloudTeam = await fetchCloudTeam(version);
+        const cloudHash = await teamFingerprint(cloudTeam.team);
+        if (localChanged && localHash !== cloudHash) {
+          recordCloudConflict(local, cloudTeam);
+        } else {
+          await rememberCloudVersion(local.localId, cloudTeam);
+          if (localHash !== cloudHash) replaceLocalTeam(local.localId, cloudTeam);
+        }
+        continue;
+      }
+
+      if (localChanged) {
+        try {
+          const updated = await cloudApi(`/teams/${encodeURIComponent(version.id)}`, {
+            method: "PUT",
+            body: { localId: local.localId, team: local.team, expectedRevision: known.revision }
+          });
+          rememberCloudTeam(updated.team);
+          await rememberCloudVersion(local.localId, updated.team);
+        } catch (error) {
+          if (error.status === 409 && error.payload?.team) recordCloudConflict(local, error.payload.team);
+          else throw error;
+        }
+      } else {
+        clearCloudConflict(local.localId);
+      }
+    }
+    authState.syncStatus = authState.conflicts.length
+      ? "Synchronisation suspendue pour les équipes en conflit."
+      : `À jour · vérifié à ${new Intl.DateTimeFormat("fr-FR", { timeStyle: "short" }).format(new Date())}`;
+  } catch (error) {
+    if (error.status === 401) {
+      authState.user = null;
+      authState.status = "anonymous";
+      authState.cloudTeams = [];
+      renderAccountControl();
+    } else {
+      authState.syncStatus = "La vérification automatique reprendra dès que le cloud sera disponible.";
+    }
+  } finally {
+    cloudSyncRunning = false;
+    if (accountModalOpen) renderAccountModal();
+  }
+}
+
+function scheduleCloudSync(delay = CLOUD_SYNC_DEBOUNCE_MS) {
+  if (!authState.user || applyingCloudUpdate) return;
+  window.clearTimeout(cloudSyncTimer);
+  cloudSyncTimer = window.setTimeout(() => void synchronizeCloudTeams(), delay);
+}
+
+function startCloudSyncMonitoring() {
+  window.setInterval(() => {
+    if (document.visibilityState === "visible") scheduleCloudSync(0);
+  }, CLOUD_SYNC_INTERVAL_MS);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") scheduleCloudSync(0);
+  });
+}
+
+async function resolveCloudConflict(localId, choice) {
+  const conflictEntry = authState.conflicts.find((entry) => entry.localId === localId);
+  const local = getLocalTeamsForCloud().find((entry) => entry.localId === localId);
+  if (!conflictEntry || !local || authState.busy) return;
+  authState.busy = true;
+  authState.error = "";
+  renderAccountModal();
+  try {
+    if (choice === "remote") {
+      await rememberCloudVersion(localId, conflictEntry.cloudTeam);
+      replaceLocalTeam(localId, conflictEntry.cloudTeam);
+    } else if (choice === "local") {
+      const updated = await cloudApi(`/teams/${encodeURIComponent(conflictEntry.cloudTeam.id)}`, {
+        method: "PUT",
+        body: {
+          localId,
+          team: local.team,
+          expectedRevision: conflictEntry.cloudTeam.revision
+        }
+      });
+      rememberCloudTeam(updated.team);
+      await rememberCloudVersion(localId, updated.team);
+    } else if (choice === "copy") {
+      const copy = structuredClone(local.team);
+      copy.id = `team-${Date.now()}-${local.slot}`;
+      copy.name = `${copy.name || "Équipe"} (copie)`.slice(0, 32);
+      copy.updatedAt = new Date().toISOString();
+      const nextLocalId = `${local.game}:${copy.id}`;
+      appState.games[local.game].teams[local.slot] = copy;
+      if (appState.activeGame === local.game) {
+        state = appState.games[local.game];
+        draftTeam = structuredClone(copy);
+      }
+      const created = await cloudApi("/teams", { method: "POST", body: { localId: nextLocalId, team: copy } });
+      forgetCloudVersion(localId);
+      rememberCloudTeam(created.team);
+      await rememberCloudVersion(nextLocalId, created.team);
+      applyingCloudUpdate = true;
+      saveState();
+      applyingCloudUpdate = false;
+      renderAll();
+    }
+    clearCloudConflict(localId);
+    authState.message = "Conflit résolu sans écrasement silencieux.";
+  } catch (error) {
+    if (error.status === 409 && error.payload?.team) recordCloudConflict(local, error.payload.team);
+    authState.error = error.message;
+  } finally {
+    authState.busy = false;
+    renderAccountModal();
+  }
+}
+
 async function importLocalTeamsToCloud() {
   const localTeams = getLocalTeamsForCloud();
   if (!localTeams.length || authState.busy) return;
@@ -586,15 +893,11 @@ async function importLocalTeamsToCloud() {
   authState.message = "";
   renderAccountModal();
   try {
-    for (const local of localTeams) {
-      await cloudApi("/teams", {
-        method: "POST",
-        body: { localId: local.localId, team: local.team }
-      });
-    }
-    authState.message = `${localTeams.length} équipe${localTeams.length > 1 ? "s" : ""} synchronisée${localTeams.length > 1 ? "s" : ""}. Les copies locales sont conservées.`;
-    const result = await cloudApi("/teams");
-    authState.cloudTeams = Array.isArray(result.teams) ? result.teams : [];
+    await synchronizeCloudTeams({ allowCreate: true });
+    authState.message = authState.conflicts.length
+      ? "Synchronisation terminée avec des conflits à résoudre. Aucune version n’a été écrasée."
+      : `${localTeams.length} équipe${localTeams.length > 1 ? "s" : ""} synchronisée${localTeams.length > 1 ? "s" : ""}. Les mises à jour suivantes seront automatiques.`;
+    await loadCloudTeams(false);
   } catch (error) {
     authState.error = `Synchronisation interrompue : ${error.message}`;
   } finally {
@@ -603,7 +906,7 @@ async function importLocalTeamsToCloud() {
   }
 }
 
-function copyCloudTeamToLocal(id) {
+async function copyCloudTeamToLocal(id) {
   const cloudTeam = authState.cloudTeams.find((entry) => entry.id === id);
   if (!cloudTeam?.team) return;
   const game = GAME_KEYS.includes(cloudTeam.gameVersion) ? cloudTeam.gameVersion : normalizeTeamSource(cloudTeam.team.preferredSource);
@@ -625,6 +928,7 @@ function copyCloudTeamToLocal(id) {
   state.activeView = "slots";
   sharedTeam = null;
   draftTeam = structuredClone(localCopy);
+  await rememberCloudVersion(`${game}:${localCopy.id}`, cloudTeam);
   saveState();
   authState.message = `${cloudTeam.name} a été copiée dans le slot ${slot + 1}.`;
   renderAll();
@@ -638,11 +942,20 @@ async function deleteCloudTeam(id) {
   authState.error = "";
   renderAccountModal();
   try {
-    await cloudApi(`/teams/${encodeURIComponent(id)}`, { method: "DELETE" });
+    await cloudApi(`/teams/${encodeURIComponent(id)}`, {
+      method: "DELETE",
+      body: { expectedRevision: cloudTeam.revision }
+    });
     authState.cloudTeams = authState.cloudTeams.filter((entry) => entry.id !== id);
+    forgetCloudVersion(cloudTeam.localId);
     authState.message = "Équipe supprimée du cloud. Les sauvegardes locales sont intactes.";
   } catch (error) {
-    authState.error = error.message;
+    if (error.status === 409 && error.payload?.team) {
+      rememberCloudTeam(error.payload.team);
+      authState.error = "Cette équipe a changé sur un autre appareil. La liste a été actualisée avant toute suppression.";
+    } else {
+      authState.error = error.message;
+    }
   } finally {
     authState.busy = false;
     renderAccountModal();
@@ -669,14 +982,15 @@ async function cloudApi(path, options = {}) {
   if (response.status !== 204) {
     try { payload = await response.json(); } catch { payload = null; }
   }
-  if (!response.ok) throw new CloudApiError(payload?.error || "Le serveur cloud a rencontré une erreur.", response.status);
+  if (!response.ok) throw new CloudApiError(payload?.error || "Le serveur cloud a rencontré une erreur.", response.status, payload);
   return payload;
 }
 
 class CloudApiError extends Error {
-  constructor(message, status) {
+  constructor(message, status, payload = null) {
     super(message);
     this.status = status;
+    this.payload = payload;
   }
 }
 
@@ -966,6 +1280,7 @@ function bindEvents() {
   window.addEventListener("online", () => {
     void syncAppSprites().then(renderAll);
     if (authState.status === "offline") void restoreCloudSession();
+    else scheduleCloudSync(0);
   });
   window.addEventListener("offline", () => {
     spritesEnabled = false;
@@ -974,6 +1289,23 @@ function bindEvents() {
     pokemonAbilitiesById.clear();
     abilityDetailsByUrl.clear();
     renderAll();
+  });
+  window.addEventListener("storage", (event) => {
+    if (event.key !== STORAGE_KEY || !event.newValue || sharedTeam) return;
+    try {
+      const stored = JSON.parse(event.newValue);
+      if (stored?.schemaVersion !== 2 || !stored.games) return;
+      appState = normalizeAppState(stored);
+      state = appState.games[appState.activeGame];
+      draftTeam = state.teams[state.selectedSlot]
+        ? structuredClone(state.teams[state.selectedSlot])
+        : createEmptyTeam(state.selectedSlot);
+      el.teamName.value = draftTeam.name || "";
+      renderAll();
+      scheduleCloudSync();
+    } catch {
+      // Une ecriture incomplete provenant d'un autre onglet est ignoree.
+    }
   });
   el.compositionToAnalysis.addEventListener("click", () => openView("analysis"));
   el.teamSettingsToggle.addEventListener("click", toggleTeamSettings);
@@ -1154,6 +1486,7 @@ function normalizeStoredSharedTeam(team) {
 function saveState() {
   appState.games[appState.activeGame] = state;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+  scheduleCloudSync();
 }
 
 function getActiveGameKey() {
@@ -3453,6 +3786,7 @@ function addPokemonToTeamReserve(savedId) {
   team.reservePokemonIds = Array.isArray(team.reservePokemonIds) ? team.reservePokemonIds : [];
   if (!state.customPokemon.some((pokemon) => String(pokemon.id) === String(savedId))) return;
   if (!team.reservePokemonIds.some((id) => String(id) === String(savedId))) team.reservePokemonIds.push(savedId);
+  team.updatedAt = new Date().toISOString();
   state.teams[state.selectedSlot] = team;
   draftTeam = structuredClone(team);
   saveState();
@@ -3463,6 +3797,7 @@ function removePokemonFromTeamReserve(savedId) {
   const team = state.teams[state.selectedSlot];
   if (!team) return;
   team.reservePokemonIds = (team.reservePokemonIds || []).filter((id) => String(id) !== String(savedId));
+  team.updatedAt = new Date().toISOString();
   state.teams[state.selectedSlot] = team;
   draftTeam = structuredClone(team);
   saveState();
@@ -4660,6 +4995,7 @@ function removePokemonFromCurrentTeam(instanceId) {
   if (!team) return;
   team.pokemon = team.pokemon.filter((pokemon) => pokemon.instanceId !== instanceId);
   if (team.favoritePokemonInstanceId === instanceId) team.favoritePokemonInstanceId = null;
+  team.updatedAt = new Date().toISOString();
   state.teams[state.selectedSlot] = team;
   draftTeam = structuredClone(team);
   saveState();
@@ -7673,8 +8009,10 @@ function updatePokemonEverywhere(sourceId, updates) {
 
   state.teams = state.teams.map((team) => {
     if (!team) return team;
+    const changed = team.pokemon.some((pokemon) => sameSource(pokemon.sourceId));
     return {
       ...team,
+      updatedAt: changed ? new Date().toISOString() : team.updatedAt,
       pokemon: team.pokemon.map((pokemon) => (
         sameSource(pokemon.sourceId)
           ? {

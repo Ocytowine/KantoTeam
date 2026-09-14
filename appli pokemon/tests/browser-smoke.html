@@ -39,6 +39,8 @@
     const doc = frame.contentDocument;
     const accountButton = doc.querySelector("#account-button");
     assert(accountButton, "Le bouton de connexion cloud est absent");
+    assert(accountButton.textContent.trim() === "Hors connexion", "Le badge cloud hors connexion n'est pas explicite");
+    assert(win.getComputedStyle(accountButton).justifyContent === "center", "Le pseudo du compte n'est pas centre dans son badge");
     accountButton.click();
     await wait();
     assert(doc.querySelector("#account-modal:not(.hidden) [data-account-form='login']"), "La modale de connexion ne s'ouvre pas");
@@ -389,6 +391,7 @@
     assert(new Set(haloDelays).size === 3, "Les animations des trois slots ne sont pas desynchronisees");
     doc.querySelector("#open-pokemon-search").click();
     assert(doc.querySelector("#game-version-switch").classList.contains("hidden"), "Le switch reste visible hors de la selection d'equipe");
+    assert(doc.querySelector("#account-button").classList.contains("hidden"), "Le badge du compte reste visible hors de la selection d'equipe");
     const query = doc.querySelector("#pokemon-search-query");
     const searchTypeOne = doc.querySelector("#pokemon-search-type-one");
     const statSort = doc.querySelector("#pokemon-search-stat-sort");

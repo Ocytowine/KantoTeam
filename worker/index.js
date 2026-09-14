@@ -24,9 +24,11 @@ export default {
       if (route === "POST /api/auth/logout") return logout(request, env);
       if (route === "GET /api/auth/me") return me(request, env);
       if (route === "GET /api/teams") return listTeams(request, env);
+      if (route === "GET /api/teams/versions") return listTeamVersions(request, env);
       if (route === "POST /api/teams") return createTeam(request, env);
 
       const teamMatch = url.pathname.match(/^\/api\/teams\/([0-9a-f-]{36})$/i);
+      if (teamMatch && request.method === "GET") return getTeam(request, env, teamMatch[1]);
       if (teamMatch && request.method === "PUT") return updateTeam(request, env, teamMatch[1]);
       if (teamMatch && request.method === "DELETE") return deleteTeam(request, env, teamMatch[1]);
       return json({ error: "Route introuvable." }, 404);
@@ -100,10 +102,31 @@ async function listTeams(request, env) {
   const user = await requireUser(request, env);
   if (!user) return unauthorized();
   const result = await env.DB.prepare(
-    `SELECT id, local_id, name, game_version, team_data, created_at, updated_at
+    `SELECT id, local_id, name, game_version, team_data, created_at, updated_at, revision
      FROM teams WHERE user_id = ? ORDER BY updated_at DESC`
   ).bind(user.id).all();
   return json({ teams: (result.results || []).map(serializeTeam) });
+}
+
+async function listTeamVersions(request, env) {
+  const user = await requireUser(request, env);
+  if (!user) return unauthorized();
+  const result = await env.DB.prepare(
+    `SELECT id, local_id, name, game_version, updated_at, revision
+     FROM teams WHERE user_id = ? ORDER BY updated_at DESC`
+  ).bind(user.id).all();
+  return json({ teams: (result.results || []).map(serializeTeamVersion) });
+}
+
+async function getTeam(request, env, id) {
+  const user = await requireUser(request, env);
+  if (!user) return unauthorized();
+  const row = await env.DB.prepare(
+    `SELECT id, local_id, name, game_version, team_data, created_at, updated_at, revision
+     FROM teams WHERE id = ? AND user_id = ?`
+  ).bind(id, user.id).first();
+  if (!row) return json({ error: "Equipe introuvable." }, 404);
+  return json({ team: serializeTeam(row) });
 }
 
 async function createTeam(request, env) {
@@ -113,17 +136,18 @@ async function createTeam(request, env) {
   if (validated.error) return json({ error: validated.error }, 400);
   const now = new Date().toISOString();
   const id = crypto.randomUUID();
-  const row = await env.DB.prepare(
-    `INSERT INTO teams (id, user_id, local_id, name, game_version, team_data, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-     ON CONFLICT(user_id, local_id) DO UPDATE SET
-       name = excluded.name,
-       game_version = excluded.game_version,
-       team_data = excluded.team_data,
-       updated_at = excluded.updated_at
-     RETURNING id, local_id, name, game_version, team_data, created_at, updated_at`
-  ).bind(id, user.id, validated.localId, validated.team.name, validated.team.preferredSource, validated.json, now, now).first();
-  return json({ team: serializeTeam(row) }, row.id === id ? 201 : 200);
+  try {
+    const row = await env.DB.prepare(
+      `INSERT INTO teams (id, user_id, local_id, name, game_version, team_data, created_at, updated_at, revision)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)
+       RETURNING id, local_id, name, game_version, team_data, created_at, updated_at, revision`
+    ).bind(id, user.id, validated.localId, validated.team.name, validated.team.preferredSource, validated.json, now, now).first();
+    return json({ team: serializeTeam(row) }, 201);
+  } catch (error) {
+    if (!isUniqueConstraint(error)) throw error;
+    const current = await findTeamByLocalId(env, user.id, validated.localId);
+    return conflict(current);
+  }
 }
 
 async function updateTeam(request, env, id) {
@@ -131,21 +155,60 @@ async function updateTeam(request, env, id) {
   if (!user) return unauthorized();
   const validated = await validatedTeamBody(request);
   if (validated.error) return json({ error: validated.error }, 400);
+  const expectedRevision = validated.expectedRevision;
+  if (!Number.isInteger(expectedRevision) || expectedRevision < 1) {
+    return json({ error: "Revision attendue invalide." }, 400);
+  }
   const row = await env.DB.prepare(
-    `UPDATE teams SET local_id = ?, name = ?, game_version = ?, team_data = ?, updated_at = ?
-     WHERE id = ? AND user_id = ?
-     RETURNING id, local_id, name, game_version, team_data, created_at, updated_at`
-  ).bind(validated.localId, validated.team.name, validated.team.preferredSource, validated.json, new Date().toISOString(), id, user.id).first();
-  if (!row) return json({ error: "Equipe introuvable." }, 404);
+    `UPDATE teams
+     SET local_id = ?, name = ?, game_version = ?, team_data = ?, updated_at = ?, revision = revision + 1
+     WHERE id = ? AND user_id = ? AND revision = ?
+     RETURNING id, local_id, name, game_version, team_data, created_at, updated_at, revision`
+  ).bind(validated.localId, validated.team.name, validated.team.preferredSource, validated.json, new Date().toISOString(), id, user.id, expectedRevision).first();
+  if (!row) {
+    const current = await findTeamById(env, user.id, id);
+    return current ? conflict(current) : json({ error: "Equipe introuvable." }, 404);
+  }
   return json({ team: serializeTeam(row) });
 }
 
 async function deleteTeam(request, env, id) {
   const user = await requireUser(request, env);
   if (!user) return unauthorized();
-  const result = await env.DB.prepare("DELETE FROM teams WHERE id = ? AND user_id = ?").bind(id, user.id).run();
-  if (!result.meta?.changes) return json({ error: "Equipe introuvable." }, 404);
+  const body = await readJson(request);
+  const expectedRevision = Number(body?.expectedRevision);
+  if (!Number.isInteger(expectedRevision) || expectedRevision < 1) {
+    return json({ error: "Revision attendue invalide." }, 400);
+  }
+  const result = await env.DB.prepare(
+    "DELETE FROM teams WHERE id = ? AND user_id = ? AND revision = ?"
+  ).bind(id, user.id, expectedRevision).run();
+  if (!result.meta?.changes) {
+    const current = await findTeamById(env, user.id, id);
+    return current ? conflict(current) : json({ error: "Equipe introuvable." }, 404);
+  }
   return new Response(null, { status: 204 });
+}
+
+async function findTeamById(env, userId, id) {
+  return env.DB.prepare(
+    `SELECT id, local_id, name, game_version, team_data, created_at, updated_at, revision
+     FROM teams WHERE id = ? AND user_id = ?`
+  ).bind(id, userId).first();
+}
+
+async function findTeamByLocalId(env, userId, localId) {
+  return env.DB.prepare(
+    `SELECT id, local_id, name, game_version, team_data, created_at, updated_at, revision
+     FROM teams WHERE user_id = ? AND local_id = ?`
+  ).bind(userId, localId).first();
+}
+
+function conflict(row) {
+  return json({
+    error: "Cette equipe a ete modifiee sur un autre appareil.",
+    team: row ? serializeTeam(row) : null
+  }, 409);
 }
 
 async function createSessionResponse(env, request, user, status = 200) {
@@ -185,7 +248,7 @@ async function validatedTeamBody(request) {
   const normalizedTeam = { ...team, name, preferredSource: team.preferredSource };
   const data = JSON.stringify(normalizedTeam);
   if (new TextEncoder().encode(data).byteLength > MAX_JSON_BYTES) return { error: "Equipe trop volumineuse." };
-  return { team: normalizedTeam, localId, json: data };
+  return { team: normalizedTeam, localId, json: data, expectedRevision: Number(body?.expectedRevision) };
 }
 
 function validateCredentials(body, registering) {
@@ -212,7 +275,19 @@ function serializeTeam(row) {
     gameVersion: row.game_version,
     team: JSON.parse(row.team_data),
     createdAt: row.created_at,
-    updatedAt: row.updated_at
+    updatedAt: row.updated_at,
+    revision: Number(row.revision)
+  };
+}
+
+function serializeTeamVersion(row) {
+  return {
+    id: row.id,
+    localId: row.local_id,
+    name: row.name,
+    gameVersion: row.game_version,
+    updatedAt: row.updated_at,
+    revision: Number(row.revision)
   };
 }
 
