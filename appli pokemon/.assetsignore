@@ -1,0 +1,6 @@
+.assetsignore
+README.md
+concept.md
+docs/**
+scripts/**
+tests/**

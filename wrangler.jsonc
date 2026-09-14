@@ -1,0 +1,22 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kantobuildteam",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-09-14",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "appli pokemon",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "kanto-build-team",
+      "database_id": "2a9d7c39-c7fa-43ef-8ba4-c77b192b5288",
+      "migrations_dir": "migrations"
+    }
+  ]
+}

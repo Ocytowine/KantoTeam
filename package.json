@@ -1,0 +1,14 @@
+{
+  "name": "kantoteam",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:migrate:local": "wrangler d1 migrations apply kanto-build-team --local",
+    "db:migrate:remote": "wrangler d1 migrations apply kanto-build-team --remote",
+    "test": "node --test tests/*.test.js && node \"appli pokemon/tests/pokemon-z-guide-data.test.js\" && node \"appli pokemon/tests/pokemon-z-wiki-data.test.js\""
+  },
+  "devDependencies": {
+    "wrangler": "4.131.2"
+  }
+}

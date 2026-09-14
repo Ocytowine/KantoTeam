@@ -37,6 +37,14 @@
     await wait();
 
     const doc = frame.contentDocument;
+    const accountButton = doc.querySelector("#account-button");
+    assert(accountButton, "Le bouton de connexion cloud est absent");
+    accountButton.click();
+    await wait();
+    assert(doc.querySelector("#account-modal:not(.hidden) [data-account-form='login']"), "La modale de connexion ne s'ouvre pas");
+    assert(doc.querySelector("#account-modal").textContent.includes("sauvegardes locales restent accessibles"), "Le mode hors connexion cloud n'est pas explique");
+    doc.querySelector("#account-modal [data-account-close]").click();
+    assert(doc.querySelector("#account-modal").classList.contains("hidden"), "La modale de connexion ne se ferme pas");
     assert(doc.querySelectorAll("#team-slots .slot-card").length === 3, "Reforged doit afficher 3 slots");
     const emptyTeamPokeball = doc.querySelector("#team-slots img[data-theme-asset='assets/add-team-pokeball.png']");
     assert(emptyTeamPokeball, "L'icone add-team-pokeball n'est pas affectee au slot libre");
