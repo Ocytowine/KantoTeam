@@ -445,7 +445,6 @@ body[data-game-theme="pokemon-z"] .app-title img {
   transition: transform 160ms ease;
 }
 
-<<<<<<< HEAD
 .account-button {
   min-width: 96px;
   min-height: 38px;
@@ -456,15 +455,6 @@ body[data-game-theme="pokemon-z"] .app-title img {
   color: #8de8b8;
 }
 
-.wiki-nav-button svg {
-  width: 29px;
-  height: 29px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-=======
 .wiki-nav-button {
   --feature-rgb: 231, 178, 36;
 }
@@ -477,7 +467,6 @@ body[data-game-theme="pokemon-z"] .app-title img {
   filter:
     drop-shadow(0 5px 8px rgba(104, 67, 0, 0.32))
     drop-shadow(0 0 8px rgba(255, 202, 54, 0.2));
->>>>>>> 87560d0f185e28d8a85fec3ed14cc4aa67f5eb4d
 }
 
 .icon-nav-button::after {
@@ -1113,7 +1102,6 @@ body.modal-open {
   width: min(620px, 100%);
 }
 
-<<<<<<< HEAD
 .account-modal-card {
   width: min(620px, 100%);
 }
@@ -1229,7 +1217,8 @@ body.modal-open {
   .cloud-team-actions {
     flex-wrap: wrap;
   }
-=======
+}
+
 .pokemon-ability-modal-card {
   width: min(560px, 100%);
 }
@@ -1344,7 +1333,6 @@ body.modal-open {
 
 @keyframes ability-loading-spin {
   to { transform: rotate(360deg); }
->>>>>>> 87560d0f185e28d8a85fec3ed14cc4aa67f5eb4d
 }
 
 .pokemon-editor-heading,

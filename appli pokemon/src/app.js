@@ -384,7 +384,7 @@ function renderAuthForm() {
         <button class="small-button" type="button" role="tab" data-account-mode="login" aria-selected="${!registering}">Connexion</button>
         <button class="small-button" type="button" role="tab" data-account-mode="register" aria-selected="${registering}">Créer un compte</button>
       </div>
-      ${offline ? `<p class="account-message">Le cloud est indisponible hors connexion. Tes équipes locales restent accessibles.</p>` : ""}
+      ${offline ? `<p class="account-message">Le cloud est indisponible hors connexion. Tes sauvegardes locales restent accessibles.</p>` : ""}
       ${authState.error ? `<p class="account-message error" role="alert">${escapeHtml(authState.error)}</p>` : ""}
       <form class="account-form" data-account-form="${accountMode}">
         <label class="field">
