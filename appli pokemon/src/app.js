@@ -739,7 +739,14 @@ function replaceLocalTeam(localId, cloudTeam) {
   saveState();
   applyingCloudUpdate = false;
   renderAll();
+  refreshSyncedTeamSprites(copy);
   return true;
+}
+
+function refreshSyncedTeamSprites(team) {
+  const pokemon = Array.isArray(team?.pokemon) ? team.pokemon.filter(Boolean) : [];
+  if (!pokemon.length || !navigator.onLine) return;
+  void syncPokemonSprites(pokemon).then(renderAll);
 }
 
 async function synchronizeCloudTeams({ allowCreate = true, importRemote = true, recreateMissing = false, userInitiated = false } = {}) {
@@ -828,6 +835,7 @@ async function synchronizeCloudTeams({ allowCreate = true, importRemote = true, 
 
     let importedRemote = 0;
     let waitingRemote = 0;
+    const importedPokemon = [];
     if (importRemote) {
       const localIds = new Set(getLocalTeamsForCloud().map((entry) => entry.localId));
       const latestMetadata = loadCloudSyncMetadata();
@@ -856,6 +864,7 @@ async function synchronizeCloudTeams({ allowCreate = true, importRemote = true, 
         gameState.teams[slot] = copy;
         localIds.add(version.localId);
         await rememberCloudVersion(version.localId, cloudTeam);
+        importedPokemon.push(...copy.pokemon.filter(Boolean));
         importedRemote += 1;
       }
       if (importedRemote) {
@@ -863,6 +872,7 @@ async function synchronizeCloudTeams({ allowCreate = true, importRemote = true, 
         saveState();
         applyingCloudUpdate = false;
         renderAll();
+        if (importedPokemon.length) void syncPokemonSprites(importedPokemon).then(renderAll);
       }
     }
 
@@ -1006,6 +1016,7 @@ async function copyCloudTeamToLocal(id) {
   saveState();
   authState.message = `${cloudTeam.name} a été copiée dans le slot ${slot + 1}.`;
   renderAll();
+  refreshSyncedTeamSprites(localCopy);
   renderAccountModal();
 }
 
