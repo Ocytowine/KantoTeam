@@ -14,6 +14,8 @@ const root = path.resolve(__dirname, "..");
 const wiki = readConstant(path.join(root, "src/pokemon-z-wiki-data.js"), "POKEMON_Z_WIKI_DATA");
 const learnsetData = readConstant(path.join(root, "src/pokemon-z-learnset-data.js"), "POKEMON_Z_LEARNSET_DATA");
 const catalog = readConstant(path.join(root, "src/pokemon-z-data.js"), "POKEMON_Z_V212");
+const pokemonZStats = readConstant(path.join(root, "src/pokemon-z-stats-data.js"), "POKEMON_Z_V212_STATS");
+const pokemonZAbilities = readConstant(path.join(root, "src/pokemon-z-stats-data.js"), "POKEMON_Z_V212_ABILITIES");
 const catalogSpeciesIds = new Set(catalog.map((pokemon) => Number(pokemon.id.replace("pokemon-z-", ""))));
 
 assert.strictEqual(wiki.machines.length, 114, "Le wiki doit contenir 108 CT et 6 CS.");
@@ -27,6 +29,13 @@ assert.strictEqual(wiki.machines.filter((machine) => machine.kind === "CS" && ma
 assert(wiki.machines.filter((machine) => machine.kind === "CS").every((machine) => machine.fieldUse), "Une CS ne decrit pas son usage sur le terrain.");
 assert.strictEqual(Object.keys(learnsetData.naturalLearnsets).length, 1018, "Les listes d'apprentissage des 1 018 especes internes sont incompletes.");
 assert(Object.keys(learnsetData.moves).length >= 700, "Le dictionnaire des capacites du jeu est incomplet.");
+const moveByName = (name) => Object.values(learnsetData.moves).find((move) => move.name === name);
+assert(Object.values(learnsetData.moves).every((move) => move.mechanics?.functionCode && move.mechanics.target && Array.isArray(move.mechanics.traits) && Array.isArray(move.mechanics.notes)), "Une capacite ne possede pas ses valeurs internes detaillees.");
+assert.strictEqual(moveByName("Tonnerre").mechanics.effectChance, 10, "La probabilite de paralysie de Tonnerre est incorrecte.");
+assert(moveByName("Danse Lames").mechanics.notes.some((note) => note.includes("+2 niveaux d'Attaque")), "Danse Lames ne precise pas son augmentation reelle.");
+assert(moveByName("Gyroballe").mechanics.notes.some((note) => note.includes("150") && note.includes("Vitesse")), "La plage de puissance de Gyroballe est absente.");
+assert(moveByName("Soin").mechanics.notes.some((note) => note.includes("50 %")), "La quantite restauree par Soin est absente.");
+assert.strictEqual(moveByName("Abri").mechanics.priority, 4, "La priorite interne d'Abri est incorrecte.");
 
 for (const [speciesId, learnset] of Object.entries(learnsetData.naturalLearnsets)) {
   assert(catalogSpeciesIds.has(Number(speciesId)), `La liste d'apprentissage ${speciesId} ne correspond a aucun Pokemon Z.`);
@@ -42,6 +51,7 @@ for (const machine of wiki.machines) {
   assert.strictEqual(new Set(machine.compatibleSpeciesIds).size, machine.compatibleSpeciesIds.length, `${machine.code} contient des Pokemon compatibles en double.`);
   assert(machine.compatibleSpeciesIds.every((id) => catalogSpeciesIds.has(id)), `${machine.code} reference un Pokemon absent du catalogue Z.`);
   assert(machine.move && machine.description && machine.type && machine.category, `${machine.code} contient une fiche incomplete.`);
+  assert(machine.mechanics?.functionCode && machine.mechanics.target, `${machine.code} ne reprend pas les conditions internes de sa capacite.`);
 }
 
 assert.strictEqual(wiki.leaders.length, 12, "Le parcours doit contenir 12 chefs.");
@@ -76,6 +86,22 @@ assert.strictEqual(new Set(wiki.quests.map((quest) => quest.switchId)).size, 45,
 assert(wiki.quests.every((quest) => quest.title && quest.location && quest.objective), "Une mission est incomplete.");
 assert.strictEqual(wiki.recipes.length, 50, "Le livre d'alchimie doit contenir 50 recettes.");
 assert(wiki.recipes.every((recipe) => recipe.result && recipe.ingredients.length >= 1), "Une recette est incomplete.");
+assert.strictEqual(wiki.items.length, 906, "Le catalogue d'objets interne est incomplet.");
+assert(wiki.items.every((item) => item.name && item.description && item.pocket), "Une fiche d'objet est incomplete.");
+assert.strictEqual(wiki.items.filter((item) => item.pocket === "Poké Balls").length, 28, "La liste des Poké Balls est incomplete.");
+const itemByName = (name) => wiki.items.find((item) => item.name === name);
+assert.strictEqual(itemByName("Calcium").measuredEffect?.headline, "+10 EV en Attaque Spéciale par utilisation", "L'effet reel du Calcium n'est pas chiffre.");
+assert.strictEqual(itemByName("Plume Esprit").measuredEffect?.headline, "+1 EV en Attaque Spéciale par utilisation", "L'effet reel de la Plume Esprit n'est pas chiffre.");
+assert.strictEqual(itemByName("Injection Calcium").measuredEffect?.headline, "+20 EV en Attaque Spéciale par utilisation", "L'effet reel de l'Injection Calcium n'est pas chiffre.");
+assert.strictEqual(itemByName("Pilule Att. Spéciale").measuredEffect?.headline, "+7 IV en Attaque Spéciale par utilisation", "La valeur executee par les Pilules doit primer sur leur description incorrecte.");
+assert.strictEqual(itemByName("Pilule Radiante").measuredEffect?.headline, "+7 IV dans chacune des six statistiques", "L'effet reel de la Pilule Radiante n'est pas chiffre.");
+assert.strictEqual(Object.keys(pokemonZStats).length, 1018, "Les statistiques de Pokémon Z sont incomplètes.");
+assert.deepStrictEqual(Array.from(Object.values(pokemonZStats[1])), [50, 49, 49, 45, 65, 65], "Les statistiques de Bulbizarre ne proviennent pas de Pokémon Z.");
+assert.strictEqual(Object.keys(pokemonZAbilities).length, 1018, "Les talents de Pokémon Z sont incomplets.");
+assert(Object.values(pokemonZAbilities).every((abilities) => abilities.length), "Un Pokémon Z ne possède aucun talent documenté.");
+assert.deepStrictEqual(Array.from(pokemonZAbilities[25], (ability) => ability.name), ["Toxitouche", "Point Poison"], "Les talents spécifiques de Pikachu sont incorrects.");
+assert(pokemonZAbilities[15].some((ability) => ability.name === "Vrille de là!" && ability.hidden), "Le talent caché propre à Dardargnan est absent.");
+assert.strictEqual(pokemonZAbilities[1018][0].name, "Aura Dorée", "Le talent du Fakemon Auretosk est absent.");
 assert.strictEqual(wiki.achievements.length, 27, "La liste des succes doit contenir 27 entrees.");
 assert.strictEqual(wiki.trainerTips.length, 39, "Les astuces de dresseur uniques sont incompletes.");
 assert.strictEqual(wiki.minigames.length, 9, "La liste des mini-jeux detectes est incomplete.");
