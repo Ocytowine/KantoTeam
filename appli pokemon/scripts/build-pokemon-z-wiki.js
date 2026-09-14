@@ -490,6 +490,159 @@ function buildMeasuredStatEffect(symbol) {
   return null;
 }
 
+const HELD_TYPE_BOOSTS = {
+  SILKSCARF: "Normal", BLACKBELT: "Combat", SHARPBEAK: "Vol", POISONBARB: "Poison",
+  SOFTSAND: "Sol", HARDSTONE: "Roche", SILVERPOWDER: "Insecte", SPELLTAG: "Spectre",
+  METALCOAT: "Acier", CHARCOAL: "Feu", MYSTICWATER: "Eau", MIRACLESEED: "Plante",
+  MAGNET: "Électrik", TWISTEDSPOON: "Psy", NEVERMELTICE: "Glace", DRAGONFANG: "Dragon",
+  Tela: "Fée", BLACKGLASSES: "Ténèbres", ROCKINCENSE: "Roche", ROSEINCENSE: "Plante",
+  SEAINCENSE: "Eau", WAVEINCENSE: "Eau", ODDINCENSE: "Psy"
+};
+
+const HELD_TYPE_PLATES = {
+  FISTPLATE: "Combat", SKYPLATE: "Vol", TOXICPLATE: "Poison", EARTHPLATE: "Sol",
+  STONEPLATE: "Roche", INSECTPLATE: "Insecte", SPOOKYPLATE: "Spectre", IRONPLATE: "Acier",
+  FLAMEPLATE: "Feu", SPLASHPLATE: "Eau", MEADOWPLATE: "Plante", ZAPPLATE: "Électrik",
+  MINDPLATE: "Psy", ICICLEPLATE: "Glace", DRACOPLATE: "Dragon", DREADPLATE: "Ténèbres",
+  TABLANEUTRA: "Normal", PIXIEPLATE: "Fée"
+};
+
+const HELD_TYPE_GEMS = {
+  NORMALGEM: "Normal", FIGHTINGGEM: "Combat", FLYINGGEM: "Vol", POISONGEM: "Poison",
+  GROUNDGEM: "Sol", ROCKGEM: "Roche", BUGGEM: "Insecte", GHOSTGEM: "Spectre",
+  STEELGEM: "Acier", FIREGEM: "Feu", WATERGEM: "Eau", GRASSGEM: "Plante",
+  ELECTRICGEM: "Électrik", PSYCHICGEM: "Psy", ICEGEM: "Glace", DRAGONGEM: "Dragon",
+  DARKGEM: "Ténèbres", FAIRYGEM: "Fée"
+};
+
+const heldEffect = (headline, details, metric = "Combat") => ({ metric, headline, details });
+
+function buildMeasuredHeldEffect(symbol) {
+  if (HELD_TYPE_BOOSTS[symbol]) return heldEffect(`Dégâts ${HELD_TYPE_BOOSTS[symbol]} ×1,20`, ["Bonus permanent tant que l'objet fonctionne et que la capacité est du type indiqué."], "Dégâts");
+  if (HELD_TYPE_PLATES[symbol]) return heldEffect(`Dégâts ${HELD_TYPE_PLATES[symbol]} ×1,25`, ["Bonus permanent tant que la plaque est tenue et que la capacité est du type indiqué."], "Dégâts");
+  if (HELD_TYPE_GEMS[symbol]) return heldEffect(`Dégâts ${HELD_TYPE_GEMS[symbol]} ×1,30 une fois`, ["Le joyau est consommé lors d'une capacité offensive du type correspondant.", "La version utilise les mécaniques modernes : le multiplicateur exécuté est ×1,30, et non ×1,50."], "Dégâts");
+
+  const fixed = {
+    AIRBALLOON: heldEffect("Immunité aux capacités Sol jusqu'au premier coup reçu", ["Le ballon éclate après une capacité offensive qui touche le porteur."], "Immunité"),
+    BRIGHTPOWDER: heldEffect("Précision adverse ÷1,10 (environ −9,1 %)", ["Le multiplicateur s'applique aux capacités qui effectuent un test de précision."], "Précision"),
+    LAXINCENSE: heldEffect("Précision adverse ÷1,10 (environ −9,1 %)", ["Effet identique à la Poudre Claire dans le script de combat."], "Précision"),
+    EVIOLITE: heldEffect("Défense et Défense Spéciale ×1,50", ["Actif seulement si l'espèce du porteur possède encore au moins une évolution."], "Défenses"),
+    FLOATSTONE: heldEffect("Poids ÷2 et Vitesse ×1,25", ["Le bonus de Vitesse est bien présent dans cette version, mais absent de la description française."], "Poids et Vitesse"),
+    DESTINYKNOT: heldEffect("Transmet l'attirance à son auteur", ["Hors combat, si l'un des parents le tient à la Pension, 5 IV parentaux sont transmis à l'œuf au lieu de 3."], "Condition"),
+    ROCKYHELMET: heldEffect("Retire 1/6 des PV max de l'attaquant", ["Se déclenche après une capacité de contact ; Garde Magik empêche ces dégâts."], "Dégâts indirects"),
+    EJECTBUTTON: heldEffect("Remplacement forcé du porteur après avoir subi des dégâts", ["Objet consommé ; ne s'active que si un autre Pokémon de l'équipe peut entrer."], "Remplacement"),
+    REDCARD: heldEffect("Force l'attaquant à être remplacé après avoir infligé des dégâts", ["Objet consommé ; l'effet exige une cible de remplacement admissible."], "Remplacement"),
+    SHEDSHELL: heldEffect("Garantit la possibilité de remplacer le porteur", ["Ignore les effets qui empêchent normalement la fuite ou le remplacement."], "Remplacement"),
+    SMOKEBALL: heldEffect("Fuite garantie contre un Pokémon sauvage", ["N'agit pas comme un remplacement prioritaire dans un combat de Dresseur."], "Fuite"),
+    LUCKYEGG: heldEffect("Expérience gagnée ×1,50", ["Le résultat est arrondi à l'entier inférieur."], "Expérience"),
+    EXPSHARE: heldEffect("Reçoit une part d'expérience sans combattre", ["Le partage exact dépend du nombre de participants et de porteurs actifs dans le calcul d'expérience."], "Expérience"),
+    AMULETCOIN: heldEffect("Argent gagné ×2", ["Le porteur doit avoir participé au combat."], "Récompense"),
+    LUCKINCENSE: heldEffect("Argent gagné ×2", ["Effet identique à la Pièce Rune ; le porteur doit avoir participé."], "Récompense"),
+    SOOTHEBELL: heldEffect("Gains positifs d'amitié ×1,50", ["Le gain est arrondi à l'entier inférieur ; les pertes d'amitié ne sont pas amplifiées."], "Amitié"),
+    CLEANSETAG: heldEffect("Réduit les rencontres sauvages si le porteur ouvre l'équipe", ["N'a aucun effet sur les statistiques de combat."], "Rencontres"),
+    CHOICEBAND: heldEffect("Attaque physique ×1,50", ["Verrouille le porteur sur la première capacité choisie jusqu'à son remplacement ou la perte de l'objet."], "Attaque"),
+    CHOICESPECS: heldEffect("Attaque Spéciale ×1,50", ["Verrouille le porteur sur la première capacité choisie jusqu'à son remplacement ou la perte de l'objet."], "Attaque"),
+    CHOICESCARF: heldEffect("Vitesse ×1,50", ["Verrouille le porteur sur la première capacité choisie jusqu'à son remplacement ou la perte de l'objet."], "Vitesse"),
+    HEATROCK: heldEffect("Soleil : 8 tours au lieu de 5", ["Actif lorsque le porteur déclenche la météo."], "Durée"),
+    DAMPROCK: heldEffect("Pluie : 8 tours au lieu de 5", ["Actif lorsque le porteur déclenche la météo."], "Durée"),
+    SMOOTHROCK: heldEffect("Tempête de sable : 8 tours au lieu de 5", ["Actif lorsque le porteur déclenche la météo."], "Durée"),
+    ICYROCK: heldEffect("Grêle : 8 tours au lieu de 5", ["Actif lorsque le porteur déclenche la météo."], "Durée"),
+    LIGHTCLAY: heldEffect("Murs défensifs : 8 tours au lieu de 5", ["Concerne notamment Protection et Mur Lumière lancés par le porteur."], "Durée"),
+    GRIPCLAW: heldEffect("Pièges persistants fixés à 7 tours", ["Concerne notamment Ligotage, Étreinte et les capacités utilisant le même effet interne."], "Durée"),
+    BINDINGBAND: heldEffect("Dégâts de piège : 1/6 des PV max par tour", ["Sans cet objet, le script moderne retire 1/8 des PV max par tour."], "Dégâts indirects"),
+    BIGROOT: heldEffect("PV drainés ×1,30", ["Augmente les soins reçus par les capacités de drain et les effets similaires, après calcul de leur valeur normale."], "Soin"),
+    BLACKSLUDGE: heldEffect("Poison : +1/16 PV max/tour ; autres types : −1/8", ["Le soin est bloqué par Anti-Soin ; Garde Magik empêche les dégâts infligés aux non-Poison."], "PV par tour"),
+    LEFTOVERS: heldEffect("Restaure 1/16 des PV max par tour", ["Le soin a lieu en fin de tour et ne fonctionne pas sous Anti-Soin."], "PV par tour"),
+    SHELLBELL: heldEffect("Restaure 1/5 des dégâts infligés", ["Valeur propre à cette version : le script utilise 20 %, après le total des dégâts du tour.", "Le soin est bloqué par Anti-Soin."], "Soin"),
+    MENTALHERB: heldEffect("Supprime une restriction mentale puis est consommée", ["Soigne l'attirance, Provoc, Encore, Tourmente, Entrave ou Anti-Soin dès que l'un de ces effets est détecté."], "Statut"),
+    WHITEHERB: heldEffect("Ramène tous les niveaux négatifs à 0", ["Concerne Attaque, Défense, Vitesse, statistiques spéciales, Précision et Esquive ; objet consommé."], "Statistiques"),
+    POWERHERB: heldEffect("Supprime le tour de charge une fois", ["L'objet est consommé par une capacité possédant normalement un premier tour de préparation."], "Charge"),
+    ABSORBBULB: heldEffect("+1 niveau d'Attaque Spéciale après une attaque Eau", ["Objet consommé seulement si le porteur est touché et que son Attaque Spéciale peut encore monter."], "Statistique"),
+    CELLBATTERY: heldEffect("+1 niveau d'Attaque après une attaque Électrik", ["Objet consommé seulement si le porteur est touché et que son Attaque peut encore monter."], "Statistique"),
+    LIFEORB: heldEffect("Dégâts ×1,30 ; recul de 1/10 des PV max", ["Le recul suit chaque attaque ayant bénéficié de l'effet ; Garde Magik l'annule."], "Dégâts"),
+    EXPERTBELT: heldEffect("Dégâts super efficaces ×1,20", ["Le bonus ne s'applique qu'après confirmation d'une efficacité supérieure à ×1."], "Dégâts"),
+    METRONOME: heldEffect("+20 % par répétition, jusqu'à ×2", ["Progression : ×1,20, ×1,40, ×1,60, ×1,80 puis ×2 ; changer de capacité réinitialise le compteur."], "Dégâts"),
+    MUSCLEBAND: heldEffect("Dégâts physiques ×1,10", ["S'applique à toutes les capacités classées physiques."], "Dégâts"),
+    WISEGLASSES: heldEffect("Dégâts spéciaux ×1,10", ["S'applique à toutes les capacités classées spéciales."], "Dégâts"),
+    RAZORCLAW: heldEffect("Taux critique : +1 niveau", ["Se cumule avec les autres augmentations, jusqu'au plafond interne."], "Critique"),
+    SCOPELENS: heldEffect("Taux critique : +1 niveau", ["Effet identique à la Griffe Rasoir en combat."], "Critique"),
+    WIDELENS: heldEffect("Précision des capacités ×1,10", ["Multiplie la précision calculée ; ne donne pas 10 points fixes."], "Précision"),
+    ZOOMLENS: heldEffect("Précision des capacités ×1,20", ["Actif si la cible a déjà agi ce tour ou n'a pas choisi de capacité."], "Précision"),
+    KINGSROCK: heldEffect("10 % de chances d'apeurer", ["Seulement pour une capacité offensive compatible qui ne possède pas déjà sa propre chance d'apeurer."], "Effet secondaire"),
+    RAZORFANG: heldEffect("10 % de chances d'apeurer", ["Effet identique à la Roche Royale en combat."], "Effet secondaire"),
+    QUICKCLAW: heldEffect("20 % de chances d'agir en premier", ["Ne change pas la priorité de la capacité ; départage l'ordre dans sa tranche de priorité."], "Ordre d'action"),
+    LAGGINGTAIL: heldEffect("Fait agir après les autres dans la même priorité", ["Anomalie supplémentaire : le script lui attribue aussi par erreur ×2 en Attaque physique pour Osselait/Ossatueur."], "Ordre d'action"),
+    FULLINCENSE: heldEffect("Fait agir après les autres dans la même priorité", ["Ne modifie pas directement la statistique de Vitesse."], "Ordre d'action"),
+    FOCUSBAND: heldEffect("10 % de chances de survivre à 1 PV", ["Se teste lorsqu'une attaque devrait mettre le porteur K.O."], "Survie"),
+    FOCUSSASH: heldEffect("Survit à 1 PV si ses PV étaient au maximum", ["Objet consommé après activation ; une attaque multi-coups peut ensuite achever le porteur."], "Survie"),
+    FLAMEORB: heldEffect("Brûle le porteur en fin de tour", ["S'active si le porteur n'a pas déjà un statut et peut être brûlé."], "Statut"),
+    TOXICORB: heldEffect("Empoisonne gravement le porteur en fin de tour", ["S'active si le porteur n'a pas déjà un statut et peut être empoisonné."], "Statut"),
+    STICKYBARB: heldEffect("Retire 1/8 des PV max par tour", ["Après un contact, l'objet est transféré à l'attaquant si celui-ci ne tient rien."], "PV par tour"),
+    IRONBALL: heldEffect("Vitesse ÷2 et Défense physique ×1,25", ["Le porteur est ramené au sol et perd ses immunités aux capacités Sol.", "Le bonus défensif est spécifique à cette version et absent de la description."], "Vitesse et Défense"),
+    RINGTARGET: heldEffect("Supprime les immunités dues au type du porteur", ["N'annule pas les immunités provenant d'un talent ou d'un autre mécanisme."], "Types"),
+    MACHOBRACE: heldEffect("Vitesse ÷2 ; EV gagnés ×2", ["La pénalité de Vitesse ne modifie pas la statistique enregistrée."], "EV et Vitesse"),
+    POWERWEIGHT: heldEffect("Vitesse ÷2 ; +8 EV PV par gain d'EV", ["Le bonus s'ajoute aux EV normalement reçus."], "EV et Vitesse"),
+    POWERBRACER: heldEffect("Vitesse ÷2 ; +8 EV Attaque par gain d'EV", ["Le bonus s'ajoute aux EV normalement reçus."], "EV et Vitesse"),
+    POWERBELT: heldEffect("Vitesse ÷2 ; +8 EV Défense par gain d'EV", ["Le bonus s'ajoute aux EV normalement reçus."], "EV et Vitesse"),
+    POWERLENS: heldEffect("Vitesse ÷2 ; +8 EV Attaque Spéciale par gain d'EV", ["Le bonus s'ajoute aux EV normalement reçus."], "EV et Vitesse"),
+    POWERBAND: heldEffect("Vitesse ÷2 ; +8 EV Défense Spéciale par gain d'EV", ["Le bonus s'ajoute aux EV normalement reçus."], "EV et Vitesse"),
+    POWERANKLET: heldEffect("Vitesse ÷2 ; +8 EV Vitesse par gain d'EV", ["Le bonus s'ajoute aux EV normalement reçus."], "EV et Vitesse"),
+    LIGHTBALL: heldEffect("Pikachu : Attaque et Attaque Spéciale ×1,75", ["Raichu reçoit aussi ×1,50 dans cette version ; aucun effet sur les autres espèces."], "Attaque"),
+    LUCKYPUNCH: heldEffect("Leveinard : taux critique +2 niveaux", ["Aucun effet de combat sur les autres espèces."], "Critique"),
+    METALPOWDER: heldEffect("Métamorph non transformé : Défense ×1,50", ["Le bonus cesse après Transformation."], "Défense"),
+    QUICKPOWDER: heldEffect("Métamorph non transformé : Vitesse ×2", ["Le bonus cesse après Transformation."], "Vitesse"),
+    THICKCLUB: heldEffect("Aucun multiplicateur trouvé sous Masse Os", ["Attention : dans le script exécuté, le ×2 d'Attaque d'Osselait/Ossatueur est associé par erreur à Ralentiqueue, pas à Masse Os."], "Anomalie du jeu"),
+    SOULDEW: heldEffect("Latias/Latios : Attaque Spéciale et Défense Spéciale ×1,50", ["Désactivé si la règle interne « souldewclause » est active."], "Statistiques"),
+    DEEPSEATOOTH: heldEffect("Coquiperl : Attaque Spéciale ×2", ["Aucun effet sur les autres espèces."], "Attaque"),
+    DEEPSEASCALE: heldEffect("Coquiperl : Défense physique ×2", ["Le script vérifie les attaques physiques, malgré la description annonçant la Défense Spéciale."], "Défense"),
+    ADAMANTORB: heldEffect("Dialga : dégâts Dragon et Acier ×1,20", ["Aucun effet offensif sur les autres espèces."], "Dégâts"),
+    LUSTROUSORB: heldEffect("Palkia : dégâts Dragon et Eau ×1,20", ["Aucun effet offensif sur les autres espèces."], "Dégâts"),
+    GRISEOUSORB: heldEffect("Giratina : dégâts Dragon et Spectre ×1,20", ["Aucun effet offensif sur les autres espèces."], "Dégâts"),
+    ASSAULTVEST: heldEffect("Défense Spéciale ×1,50", ["Empêche de sélectionner toute capacité de statut."], "Défense"),
+    WEAKNESSPOLICY: heldEffect("+2 niveaux d'Attaque et d'Attaque Spéciale", ["Objet consommé après avoir subi une capacité super efficace, si au moins une des deux statistiques peut monter."], "Statistiques"),
+    SUPEREVIOLITE: heldEffect("Attaque, défenses et Vitesse ×1,50", ["Actif uniquement si le Pokémon peut encore évoluer deux fois ; empêche également l'évolution.", "Le texte « toutes les statistiques » correspond ici aux multiplicateurs réellement présents dans les calculs de combat."], "Statistiques"),
+    COVERTCLOAK: heldEffect("Bloque les effets secondaires des capacités", ["Empêche notamment les altérations ou baisses déclenchées comme effet additionnel d'une attaque."], "Protection"),
+    PUNCHINGGLOVE: heldEffect("Capacités de poing ×1,15", ["Ces capacités ne sont plus considérées comme faisant contact."], "Dégâts"),
+    CLEARAMULET: heldEffect("Défense et Défense Spéciale ×1,10", ["Empêche aussi les baisses de statistiques causées par l'adversaire."], "Défenses"),
+    ARMAZONDEFAUCES: heldEffect("Capacités de morsure ×1,20 et critique +1 niveau", ["Ajoute aussi 10 % d'apeurement aux attaques compatibles sans effet d'apeurement propre."], "Dégâts et critique"),
+    PUNZASFERA: heldEffect("Inflige une hémorragie au porteur en fin de tour", ["S'active si le porteur n'a aucun autre statut et peut subir l'hémorragie."], "Statut"),
+    NUDILLOPUAS: heldEffect("30 % d'infliger une hémorragie par contact", ["Testé après une attaque de contact réussie si la cible peut subir ce statut."], "Effet secondaire"),
+    CANONDEMANO: heldEffect("Capacités d'aura/impulsion ×1,30", ["S'applique aux capacités marquées comme impulsions dans les données."], "Dégâts"),
+    ESPADAVALIENTE: heldEffect("Capacités tranchantes ×1,30", ["Le multiplicateur passe à ×1,50 si le porteur est Mélokrik."], "Dégâts"),
+    CORAZAASALTO: heldEffect("Défense physique ×1,40", ["Empêche de sélectionner toute capacité de statut."], "Défense"),
+    TABLAESQUI: heldEffect("Castorno : dégâts ×1,30 et Vitesse ×1,50", ["Le script applique le bonus de dégâts à toutes ses capacités offensives, pas uniquement à l'Attaque brute."], "Dégâts et Vitesse"),
+    CASCOPROTECTOR: heldEffect("Annule les dégâts de recul", ["Empêche en contrepartie de sélectionner les capacités de statut."], "Protection"),
+    MASCARACRUEL: heldEffect("Dégâts ×1,30 contre une cible avec un statut", ["Le script accepte poison, brûlure, gel, paralysie, sommeil ou hémorragie.", "La description annonce 25 %, mais la valeur réellement exécutée est 30 %."], "Dégâts"),
+    RAIZANCESTRAL: heldEffect("Les drains rendent 1/4 des PV max", ["Remplace le soin proportionnel aux dégâts par une valeur fixe calculée sur les PV maximum."], "Soin"),
+    LOADEDDICE: heldEffect("Les capacités à 2–5 coups frappent 5 fois", ["Le script force directement le maximum pour cette famille de capacités."], "Multi-coups"),
+    ANILLODESANGRE: heldEffect("Dégâts critiques ×1,40 supplémentaire", ["Le multiplicateur s'ajoute uniquement lorsqu'un coup critique a effectivement été obtenu."], "Critique")
+  };
+  if (fixed[symbol]) return fixed[symbol];
+
+  if (/^(?:FIGY|WIKI|MAGO|AGUAV|IAPAPA)BERRY$/.test(symbol)) return heldEffect("Restaure 1/8 des PV max à 50 % de PV ou moins", ["Objet consommé ; peut rendre confus selon la nature et la saveur de la Baie."], "Soin");
+  if (symbol === "ORANBERRY") return heldEffect("Restaure 10 PV à 50 % de PV ou moins", ["Objet consommé après activation."], "Soin");
+  if (symbol === "SITRUSBERRY") return heldEffect("Restaure 1/4 des PV max à 50 % de PV ou moins", ["Objet consommé après activation."], "Soin");
+  if (symbol === "LEPPABERRY") return heldEffect("Restaure 10 PP à la première capacité épuisée", ["Objet consommé automatiquement lorsqu'une capacité atteint 0 PP."], "PP");
+  const curingBerries = {
+    CHERIBERRY: "la paralysie", CHESTOBERRY: "le sommeil", PECHABERRY: "le poison",
+    RAWSTBERRY: "la brûlure", ASPEARBERRY: "le gel", PERSIMBERRY: "la confusion",
+    LUMBERRY: "n'importe quel statut ou la confusion"
+  };
+  if (curingBerries[symbol]) return heldEffect(`Soigne ${curingBerries[symbol]} une fois`, ["La Baie est consommée automatiquement dès que l'altération correspondante est présente."], "Statut");
+  const berryStats = { LIECHIBERRY: "Attaque", GANLONBERRY: "Défense", SALACBERRY: "Vitesse", PETAYABERRY: "Attaque Spéciale", APICOTBERRY: "Défense Spéciale" };
+  if (berryStats[symbol]) return heldEffect(`+1 niveau de ${berryStats[symbol]} à 25 % de PV ou moins`, ["Le seuil passe à 50 % avec le talent Gloutonnerie ; objet consommé."], "Statistique");
+  if (symbol === "LANSATBERRY") return heldEffect("Taux critique porté à +2 niveaux à 25 % de PV ou moins", ["Le seuil passe à 50 % avec Gloutonnerie ; objet consommé."], "Critique");
+  if (symbol === "STARFBERRY") return heldEffect("+2 niveaux dans une statistique aléatoire à 25 % de PV ou moins", ["Choisit parmi Attaque, Défense, Attaque Spéciale, Défense Spéciale et Vitesse pouvant encore monter."], "Statistique");
+  if (symbol === "MICLEBERRY") return heldEffect("Précision de la prochaine capacité ×1,20", ["S'active à 25 % de PV ou moins, ou 50 % avec Gloutonnerie ; objet consommé."], "Précision");
+  if (symbol === "CUSTAPBERRY") return heldEffect("Permet d'agir en premier une fois", ["S'active à 25 % de PV ou moins, ou 50 % avec Gloutonnerie ; objet consommé."], "Ordre d'action");
+  if (/^(?:OCCA|PASSHO|WACAN|RINDO|YACHE|CHOPLE|KEBIA|SHUCA|COBA|PAYAPA|TANGA|CHARTI|KASIB|HABAN|COLBUR|BABIRI)BERRY$/.test(symbol)) return heldEffect("Dégâts super efficaces du type associé ×0,50", ["La Baie est consommée après avoir réduit une attaque super efficace."], "Résistance");
+  if (symbol === "CHILANBERRY") return heldEffect("Dégâts Normal reçus ×0,50", ["Fonctionne même si l'attaque Normal n'est pas super efficace ; objet consommé."], "Résistance");
+  if (symbol === "ENIGMABERRY") return heldEffect("Restaure 1/4 des PV max après une attaque super efficace", ["Objet consommé après activation."], "Soin");
+  if (symbol === "JABOCABERRY") return heldEffect("Retire 1/8 des PV max d'un attaquant physique", ["S'active après une capacité physique réussie ; Garde Magik empêche les dégâts."], "Dégâts indirects");
+  if (symbol === "ROWAPBERRY") return heldEffect("Retire 1/8 des PV max d'un attaquant spécial", ["S'active après une capacité spéciale réussie ; Garde Magik empêche les dégâts."], "Dégâts indirects");
+  return null;
+}
+
 function buildItems(messages, constants) {
   const pocketNames = [
     "Inconnus", "Objets", "Médicaments", "Poké Balls", "CT / CS",
@@ -497,9 +650,13 @@ function buildItems(messages, constants) {
   ];
   const symbolsById = new Map([...(constants.PBItems || new Map())].map(([symbol, id]) => [id, symbol]));
   return loadSerialRecords("items.dat").map((record) => {
-    const measuredEffect = buildMeasuredStatEffect(symbolsById.get(record[0]) || "");
+    const symbol = symbolsById.get(record[0]) || "";
+    const statEffect = buildMeasuredStatEffect(symbol);
+    const heldItemEffect = buildMeasuredHeldEffect(symbol);
+    const measuredEffect = statEffect || heldItemEffect;
     return {
       id: record[0],
+      symbol,
       name: text(messages[7]?.[record[0]]) || text(record[1]) || `Objet n°${record[0]}`,
       pluralName: text(messages[8]?.[record[0]]) || text(record[2]),
       description: text(messages[9]?.[record[0]]) || text(record[5]) || "Description indisponible.",
@@ -509,6 +666,7 @@ function buildItems(messages, constants) {
       battleUse: Number(record[7]) || 0,
       itemType: Number(record[8]) || 0,
       machineMoveId: Number(record[9]) || 0,
+      ...(heldItemEffect ? { heldItemEffect: true } : {}),
       ...(measuredEffect ? { measuredEffect } : {})
     };
   });

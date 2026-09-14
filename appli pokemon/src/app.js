@@ -2082,7 +2082,7 @@ function getPokemonZWikiItems(wiki, sourceRecipes = wiki.recipes, includeFullCat
 
 function pokemonZHeldItemProfile(item) {
   const description = normalize(`${item.name} ${item.description}`);
-  const held = item.pocket === "Méga-Gemmes" || /(?:objet a tenir|utilisee? ou tenue|\btenue\b|\btenu par\b|peut etre tenu|mega evoluer)/.test(description);
+  const held = Boolean(item.heldItemEffect) || item.pocket === "Méga-Gemmes" || /(?:objet a tenir|a faire tenir|utilisee? ou tenue|\btenue\b|\btenu par\b|peut etre tenu|s'il est porte|destine a .*ameliore|mega evoluer)/.test(description);
   const types = KANTO_TYPES.filter((type) => description.includes(normalize(type)));
   const goals = new Set();
   if (/(?:augment|amplifi).*puissance.*type/.test(description)) goals.add("type-offense");
