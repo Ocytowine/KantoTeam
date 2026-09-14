@@ -445,6 +445,26 @@ body[data-game-theme="pokemon-z"] .app-title img {
   transition: transform 160ms ease;
 }
 
+<<<<<<< HEAD
+.account-button {
+  min-width: 96px;
+  min-height: 38px;
+}
+
+.account-button.connected {
+  border-color: rgba(52, 190, 121, 0.58);
+  color: #8de8b8;
+}
+
+.wiki-nav-button svg {
+  width: 29px;
+  height: 29px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+=======
 .wiki-nav-button {
   --feature-rgb: 231, 178, 36;
 }
@@ -457,6 +477,7 @@ body[data-game-theme="pokemon-z"] .app-title img {
   filter:
     drop-shadow(0 5px 8px rgba(104, 67, 0, 0.32))
     drop-shadow(0 0 8px rgba(255, 202, 54, 0.2));
+>>>>>>> 87560d0f185e28d8a85fec3ed14cc4aa67f5eb4d
 }
 
 .icon-nav-button::after {
@@ -1092,6 +1113,123 @@ body.modal-open {
   width: min(620px, 100%);
 }
 
+<<<<<<< HEAD
+.account-modal-card {
+  width: min(620px, 100%);
+}
+
+.account-modal-heading,
+.account-tabs,
+.account-actions,
+.cloud-team-heading,
+.cloud-team-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.account-modal-heading,
+.cloud-team-heading {
+  justify-content: space-between;
+}
+
+.account-modal-heading {
+  margin-bottom: 16px;
+}
+
+.account-modal-heading h2,
+.cloud-team-heading h3 {
+  margin: 2px 0 0;
+}
+
+.account-tabs {
+  margin-bottom: 16px;
+}
+
+.account-tabs .small-button[aria-selected="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.account-form,
+.account-content,
+.cloud-team-list {
+  display: grid;
+  gap: 14px;
+}
+
+.account-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.account-message {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 10px 12px;
+  color: var(--muted);
+  background: var(--surface-soft);
+}
+
+.account-message.error {
+  border-color: rgba(240, 80, 80, 0.52);
+  color: #ffb4b4;
+}
+
+.account-message.import-prompt {
+  border-color: rgba(244, 200, 74, 0.46);
+  color: var(--text);
+}
+
+.cloud-team-list {
+  margin-top: 4px;
+}
+
+.cloud-team-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  background: rgba(15, 18, 24, 0.42);
+}
+
+.cloud-team-heading {
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cloud-team-heading > div:first-child {
+  min-width: 0;
+}
+
+.cloud-team-heading h3 {
+  overflow-wrap: anywhere;
+}
+
+.cloud-team-actions {
+  flex: 0 0 auto;
+}
+
+.cloud-team-meta {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+@media (max-width: 620px) {
+  .account-button {
+    min-width: 0;
+  }
+
+  .cloud-team-heading {
+    display: grid;
+  }
+
+  .cloud-team-actions {
+    flex-wrap: wrap;
+  }
+=======
 .pokemon-ability-modal-card {
   width: min(560px, 100%);
 }
@@ -1206,6 +1344,7 @@ body.modal-open {
 
 @keyframes ability-loading-spin {
   to { transform: rotate(360deg); }
+>>>>>>> 87560d0f185e28d8a85fec3ed14cc4aa67f5eb4d
 }
 
 .pokemon-editor-heading,

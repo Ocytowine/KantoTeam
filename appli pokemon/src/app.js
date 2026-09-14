@@ -3,6 +3,7 @@ const LEGACY_STORAGE_KEY = "kantoTeamState:v1";
 const LEGACY_BACKUP_KEY = "kantoTeamState:legacy:v1";
 const POKEMON_Z_PROGRESS_KEY = "kantoTeam:pokemonZProgress:v1";
 const POKEMON_Z_ALCHEMY_KEY = "kantoTeam:pokemonZAlchemy:v1";
+const CLOUD_API_BASE = "/api";
 const GAME_KEYS = ["reforged", "pokemon-z"];
 const POKEMON_STAT_DEFINITIONS = [
   { key: "hp", short: "PV", label: "Points de vie" },
@@ -114,6 +115,16 @@ const SPRITE_EXACT_NAME_IDS = {
 };
 let spritesEnabled = false;
 let spritesLoading = false;
+let accountModalOpen = false;
+let accountMode = "login";
+let authState = {
+  status: "loading",
+  user: null,
+  cloudTeams: [],
+  busy: false,
+  message: "",
+  error: ""
+};
 
 const el = {
   intro: document.querySelector("#app-intro"),
@@ -128,6 +139,8 @@ const el = {
   openPokemonSearch: document.querySelector("#open-pokemon-search"),
   openPokemonZWiki: document.querySelector("#open-pokemon-z-wiki"),
   openSharedTeams: document.querySelector("#open-shared-teams"),
+  accountButton: document.querySelector("#account-button"),
+  accountModal: document.querySelector("#account-modal"),
   typeHelperPanel: document.querySelector("#type-helper-panel"),
   typeHelperCount: document.querySelector("#type-helper-count"),
   helperTypeOne: document.querySelector("#helper-type-one"),
@@ -282,6 +295,7 @@ function init() {
   }
   startIntro();
   void syncAppSprites(sharedTeam?.pokemon || []).then(renderAll);
+  void restoreCloudSession();
 }
 
 function startIntro() {
@@ -298,7 +312,384 @@ function startIntro() {
   }, displayDuration);
 }
 
+async function restoreCloudSession() {
+  if (!canUseCloudApi()) {
+    authState.status = "offline";
+    renderAccountControl();
+    return;
+  }
+  try {
+    const result = await cloudApi("/auth/me");
+    authState.status = "authenticated";
+    authState.user = result.user;
+    authState.error = "";
+    await loadCloudTeams(false);
+  } catch (error) {
+    authState.status = error.status === 401 ? "anonymous" : "offline";
+    authState.user = null;
+    authState.cloudTeams = [];
+  }
+  renderAccountControl();
+  if (accountModalOpen) renderAccountModal();
+}
+
+function canUseCloudApi() {
+  return ["http:", "https:"].includes(window.location.protocol) && navigator.onLine;
+}
+
+function renderAccountControl() {
+  if (!el.accountButton) return;
+  const authenticated = Boolean(authState.user);
+  el.accountButton.textContent = authenticated ? authState.user.username : "Connexion";
+  el.accountButton.classList.toggle("connected", authenticated);
+  el.accountButton.setAttribute("aria-label", authenticated ? `Ouvrir le compte de ${authState.user.username}` : "Se connecter");
+}
+
+function openAccountModal() {
+  accountModalOpen = true;
+  authState.message = "";
+  authState.error = "";
+  el.accountModal.classList.remove("hidden");
+  document.body.classList.add("modal-open");
+  renderAccountModal();
+  window.setTimeout(() => el.accountModal.querySelector("input, button")?.focus(), 0);
+}
+
+function closeAccountModal() {
+  accountModalOpen = false;
+  el.accountModal.classList.add("hidden");
+  el.accountModal.innerHTML = "";
+  if (!document.querySelector(".team-modal-overlay:not(.hidden)")) document.body.classList.remove("modal-open");
+  el.accountButton.focus();
+}
+
+function renderAccountModal() {
+  if (!accountModalOpen) return;
+  el.accountModal.innerHTML = authState.user ? renderCloudAccount() : renderAuthForm();
+}
+
+function renderAuthForm() {
+  const registering = accountMode === "register";
+  const offline = authState.status === "offline" || !canUseCloudApi();
+  return `
+    <section class="team-modal account-modal-card" role="dialog" aria-modal="true" aria-labelledby="account-modal-title">
+      <div class="account-modal-heading">
+        <div>
+          <p class="eyebrow">Sauvegarde cloud</p>
+          <h2 id="account-modal-title">${registering ? "Créer un compte" : "Connexion"}</h2>
+        </div>
+        <button class="modal-close-button" type="button" data-account-close aria-label="Fermer">&times;</button>
+      </div>
+      <div class="account-tabs" role="tablist" aria-label="Authentification">
+        <button class="small-button" type="button" role="tab" data-account-mode="login" aria-selected="${!registering}">Connexion</button>
+        <button class="small-button" type="button" role="tab" data-account-mode="register" aria-selected="${registering}">Créer un compte</button>
+      </div>
+      ${offline ? `<p class="account-message">Le cloud est indisponible hors connexion. Tes équipes locales restent accessibles.</p>` : ""}
+      ${authState.error ? `<p class="account-message error" role="alert">${escapeHtml(authState.error)}</p>` : ""}
+      <form class="account-form" data-account-form="${accountMode}">
+        <label class="field">
+          <span>Pseudo</span>
+          <input name="username" type="text" minlength="3" maxlength="24" pattern="[A-Za-z0-9_-]+" autocomplete="username" required ${offline ? "disabled" : ""}>
+        </label>
+        <label class="field">
+          <span>Mot de passe</span>
+          <input name="password" type="password" minlength="8" maxlength="128" autocomplete="${registering ? "new-password" : "current-password"}" required ${offline ? "disabled" : ""}>
+        </label>
+        ${registering ? `
+          <label class="field">
+            <span>Confirmation du mot de passe</span>
+            <input name="passwordConfirmation" type="password" minlength="8" maxlength="128" autocomplete="new-password" required ${offline ? "disabled" : ""}>
+          </label>
+        ` : ""}
+        <div class="account-actions">
+          <button class="primary-button confirm" type="submit" ${offline || authState.busy ? "disabled" : ""}>${authState.busy ? "Patiente..." : registering ? "Créer mon compte" : "Se connecter"}</button>
+        </div>
+      </form>
+    </section>
+  `;
+}
+
+function renderCloudAccount() {
+  const localTeams = getLocalTeamsForCloud();
+  const teamWord = localTeams.length > 1 ? "équipes" : "équipe";
+  return `
+    <section class="team-modal account-modal-card" role="dialog" aria-modal="true" aria-labelledby="account-modal-title">
+      <div class="account-modal-heading">
+        <div>
+          <p class="eyebrow">Compte connecté</p>
+          <h2 id="account-modal-title">${escapeHtml(authState.user.username)}</h2>
+        </div>
+        <button class="modal-close-button" type="button" data-account-close aria-label="Fermer">&times;</button>
+      </div>
+      <div class="account-content">
+        ${localTeams.length ? `
+          <div class="account-message import-prompt">
+            <strong>${localTeams.length} ${teamWord} ${localTeams.length > 1 ? "sont enregistrées" : "est enregistrée"} sur cet appareil.</strong>
+            <p>La synchronisation les copie dans ton compte sans supprimer les sauvegardes locales.</p>
+            <button class="primary-button" type="button" data-cloud-import ${authState.busy || !navigator.onLine ? "disabled" : ""}>${authState.busy ? "Synchronisation..." : "Synchroniser mes équipes locales"}</button>
+          </div>
+        ` : `<p class="account-message">Aucune équipe locale à synchroniser sur cet appareil.</p>`}
+        ${authState.message ? `<p class="account-message" role="status">${escapeHtml(authState.message)}</p>` : ""}
+        ${authState.error ? `<p class="account-message error" role="alert">${escapeHtml(authState.error)}</p>` : ""}
+        <div class="cloud-team-heading">
+          <div>
+            <p class="eyebrow">D1 · privé</p>
+            <h3>Mes équipes cloud</h3>
+          </div>
+          <button class="small-button" type="button" data-cloud-refresh ${authState.busy || !navigator.onLine ? "disabled" : ""}>Actualiser</button>
+        </div>
+        <div class="cloud-team-list">
+          ${renderCloudTeamList()}
+        </div>
+        <div class="account-actions">
+          <button class="small-button danger" type="button" data-account-logout ${authState.busy ? "disabled" : ""}>Déconnexion</button>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderCloudTeamList() {
+  if (!authState.cloudTeams.length) return `<div class="empty-state">Aucune équipe dans le cloud.</div>`;
+  return authState.cloudTeams.map((entry) => {
+    const pokemonCount = Array.isArray(entry.team?.pokemon) ? entry.team.pokemon.length : 0;
+    return `
+      <article class="cloud-team-card">
+        <div class="cloud-team-heading">
+          <div>
+            <h3>${escapeHtml(entry.name)}</h3>
+            <span class="cloud-team-meta">${escapeHtml(preferredSourceLabel(entry.gameVersion))} · ${pokemonCount}/6 Pokémon · ${escapeHtml(formatCloudDate(entry.updatedAt))}</span>
+          </div>
+          <div class="cloud-team-actions">
+            <button class="small-button" type="button" data-cloud-copy="${escapeHtml(entry.id)}">Copier sur cet appareil</button>
+            <button class="icon-action-button danger" type="button" data-cloud-delete="${escapeHtml(entry.id)}" aria-label="Supprimer ${escapeHtml(entry.name)} du cloud" title="Supprimer du cloud">${actionIconSvg("delete")}</button>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+async function handleAccountSubmit(event) {
+  const form = event.target.closest("[data-account-form]");
+  if (!form) return;
+  event.preventDefault();
+  const data = new FormData(form);
+  const username = String(data.get("username") || "").trim();
+  const password = String(data.get("password") || "");
+  if (form.dataset.accountForm === "register" && password !== String(data.get("passwordConfirmation") || "")) {
+    authState.error = "Les deux mots de passe ne correspondent pas.";
+    renderAccountModal();
+    return;
+  }
+
+  authState.busy = true;
+  authState.error = "";
+  renderAccountModal();
+  try {
+    const result = await cloudApi(`/auth/${form.dataset.accountForm}`, {
+      method: "POST",
+      body: { username, password }
+    });
+    authState.user = result.user;
+    authState.status = "authenticated";
+    authState.message = "Connexion réussie.";
+    await loadCloudTeams(false);
+    renderAccountControl();
+  } catch (error) {
+    authState.error = error.message;
+  } finally {
+    authState.busy = false;
+    renderAccountModal();
+  }
+}
+
+function handleAccountModalClick(event) {
+  if (event.target === el.accountModal || event.target.closest("[data-account-close]")) {
+    closeAccountModal();
+    return;
+  }
+  const mode = event.target.closest("[data-account-mode]")?.dataset.accountMode;
+  if (mode) {
+    accountMode = mode;
+    authState.error = "";
+    renderAccountModal();
+    return;
+  }
+  if (event.target.closest("[data-account-logout]")) void logoutCloudAccount();
+  if (event.target.closest("[data-cloud-refresh]")) void loadCloudTeams();
+  if (event.target.closest("[data-cloud-import]")) void importLocalTeamsToCloud();
+  const copyId = event.target.closest("[data-cloud-copy]")?.dataset.cloudCopy;
+  if (copyId) copyCloudTeamToLocal(copyId);
+  const deleteId = event.target.closest("[data-cloud-delete]")?.dataset.cloudDelete;
+  if (deleteId) void deleteCloudTeam(deleteId);
+}
+
+async function logoutCloudAccount() {
+  authState.busy = true;
+  authState.error = "";
+  renderAccountModal();
+  try {
+    await cloudApi("/auth/logout", { method: "POST" });
+    authState = { status: "anonymous", user: null, cloudTeams: [], busy: false, message: "", error: "" };
+    accountMode = "login";
+    renderAccountControl();
+  } catch (error) {
+    authState.busy = false;
+    authState.error = error.message;
+  }
+  renderAccountModal();
+}
+
+async function loadCloudTeams(showLoading = true) {
+  if (!authState.user) return;
+  if (showLoading) {
+    authState.busy = true;
+    authState.error = "";
+    renderAccountModal();
+  }
+  try {
+    const result = await cloudApi("/teams");
+    authState.cloudTeams = Array.isArray(result.teams) ? result.teams : [];
+  } catch (error) {
+    if (error.status === 401) {
+      authState.user = null;
+      authState.status = "anonymous";
+      authState.cloudTeams = [];
+      renderAccountControl();
+    } else {
+      authState.error = error.message;
+    }
+  } finally {
+    authState.busy = false;
+    if (accountModalOpen) renderAccountModal();
+  }
+}
+
+function getLocalTeamsForCloud() {
+  return GAME_KEYS.flatMap((game) => {
+    const gameState = appState.games[game];
+    return gameState.teams.flatMap((team, slot) => team ? [{
+      game,
+      slot,
+      team,
+      localId: `${game}:${team.id}`
+    }] : []);
+  });
+}
+
+async function importLocalTeamsToCloud() {
+  const localTeams = getLocalTeamsForCloud();
+  if (!localTeams.length || authState.busy) return;
+  authState.busy = true;
+  authState.error = "";
+  authState.message = "";
+  renderAccountModal();
+  try {
+    for (const local of localTeams) {
+      await cloudApi("/teams", {
+        method: "POST",
+        body: { localId: local.localId, team: local.team }
+      });
+    }
+    authState.message = `${localTeams.length} équipe${localTeams.length > 1 ? "s" : ""} synchronisée${localTeams.length > 1 ? "s" : ""}. Les copies locales sont conservées.`;
+    const result = await cloudApi("/teams");
+    authState.cloudTeams = Array.isArray(result.teams) ? result.teams : [];
+  } catch (error) {
+    authState.error = `Synchronisation interrompue : ${error.message}`;
+  } finally {
+    authState.busy = false;
+    renderAccountModal();
+  }
+}
+
+function copyCloudTeamToLocal(id) {
+  const cloudTeam = authState.cloudTeams.find((entry) => entry.id === id);
+  if (!cloudTeam?.team) return;
+  const game = GAME_KEYS.includes(cloudTeam.gameVersion) ? cloudTeam.gameVersion : normalizeTeamSource(cloudTeam.team.preferredSource);
+  const targetState = appState.games[game];
+  let slot = targetState.teams.findIndex((team) => !team);
+  if (slot < 0) {
+    const choice = prompt(`Les 3 slots ${preferredSourceLabel(game)} sont occupés. Indique 1, 2 ou 3 pour remplacer une équipe.`);
+    slot = Number(choice) - 1;
+    if (!Number.isInteger(slot) || slot < 0 || slot > 2) return;
+    if (!confirm(`Remplacer l'équipe du slot ${slot + 1} sur cet appareil ?`)) return;
+  }
+
+  const localCopy = normalizeStoredTeam(structuredClone(cloudTeam.team));
+  localCopy.preferredSource = game;
+  targetState.teams[slot] = localCopy;
+  appState.activeGame = game;
+  state = targetState;
+  state.selectedSlot = slot;
+  state.activeView = "slots";
+  sharedTeam = null;
+  draftTeam = structuredClone(localCopy);
+  saveState();
+  authState.message = `${cloudTeam.name} a été copiée dans le slot ${slot + 1}.`;
+  renderAll();
+  renderAccountModal();
+}
+
+async function deleteCloudTeam(id) {
+  const cloudTeam = authState.cloudTeams.find((entry) => entry.id === id);
+  if (!cloudTeam || !confirm(`Supprimer ${cloudTeam.name} du cloud ? La copie locale ne sera pas supprimée.`)) return;
+  authState.busy = true;
+  authState.error = "";
+  renderAccountModal();
+  try {
+    await cloudApi(`/teams/${encodeURIComponent(id)}`, { method: "DELETE" });
+    authState.cloudTeams = authState.cloudTeams.filter((entry) => entry.id !== id);
+    authState.message = "Équipe supprimée du cloud. Les sauvegardes locales sont intactes.";
+  } catch (error) {
+    authState.error = error.message;
+  } finally {
+    authState.busy = false;
+    renderAccountModal();
+  }
+}
+
+async function cloudApi(path, options = {}) {
+  const init = {
+    method: options.method || "GET",
+    credentials: "same-origin",
+    headers: { Accept: "application/json" }
+  };
+  if (options.body !== undefined) {
+    init.headers["Content-Type"] = "application/json";
+    init.body = JSON.stringify(options.body);
+  }
+  let response;
+  try {
+    response = await fetch(`${CLOUD_API_BASE}${path}`, init);
+  } catch {
+    throw new CloudApiError("Cloud indisponible. Tes sauvegardes locales restent accessibles.", 0);
+  }
+  let payload = null;
+  if (response.status !== 204) {
+    try { payload = await response.json(); } catch { payload = null; }
+  }
+  if (!response.ok) throw new CloudApiError(payload?.error || "Le serveur cloud a rencontré une erreur.", response.status);
+  return payload;
+}
+
+class CloudApiError extends Error {
+  constructor(message, status) {
+    super(message);
+    this.status = status;
+  }
+}
+
+function formatCloudDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "date inconnue";
+  return new Intl.DateTimeFormat("fr-FR", { dateStyle: "short", timeStyle: "short" }).format(date);
+}
+
 function bindEvents() {
+  el.accountButton.addEventListener("click", openAccountModal);
+  el.accountModal.addEventListener("click", handleAccountModalClick);
+  el.accountModal.addEventListener("submit", handleAccountSubmit);
   el.gameVersionToggle.addEventListener("click", () => {
     transitionToGame(getActiveGameKey() === "reforged" ? "pokemon-z" : "reforged");
   });
@@ -551,6 +942,10 @@ function bindEvents() {
       return;
     }
     if (event.key !== "Escape") return;
+    if (accountModalOpen) {
+      closeAccountModal();
+      return;
+    }
     if (document.querySelector(".sprite-viewer-overlay")) {
       closePokemonSpriteViewer();
       return;
@@ -570,6 +965,7 @@ function bindEvents() {
   });
   window.addEventListener("online", () => {
     void syncAppSprites().then(renderAll);
+    if (authState.status === "offline") void restoreCloudSession();
   });
   window.addEventListener("offline", () => {
     spritesEnabled = false;
@@ -738,6 +1134,7 @@ function normalizeStoredTeam(team) {
   if (!team) return null;
   return {
     ...team,
+    id: team.id || `team-local-${Date.now()}-${Math.random().toString(16).slice(2)}`,
     pokemon: Array.isArray(team.pokemon) ? team.pokemon : [],
     reservePokemonIds: Array.isArray(team.reservePokemonIds) ? team.reservePokemonIds : []
   };
@@ -1071,6 +1468,7 @@ function renderAll() {
   renderTypeHelper();
   renderPreview();
   renderAnalysis(activeTeam);
+  renderAccountControl();
   syncTypeWheels(document);
   void syncThemedAssets(document);
 }
