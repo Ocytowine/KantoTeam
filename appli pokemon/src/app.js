@@ -495,10 +495,18 @@ function renderCloudConflicts() {
       <strong>${authState.conflicts.length} conflit${authState.conflicts.length > 1 ? "s" : ""} de synchronisation</strong>
       ${authState.conflicts.map((conflict) => `
         <div class="cloud-conflict-actions">
-          <span>${escapeHtml(conflict.localTeam.name || conflict.cloudTeam.name || "Équipe")}</span>
-          <button class="small-button" type="button" data-conflict-remote="${escapeHtml(conflict.localId)}">Utiliser le cloud</button>
-          <button class="small-button" type="button" data-conflict-local="${escapeHtml(conflict.localId)}">Utiliser cet appareil</button>
-          <button class="small-button" type="button" data-conflict-copy="${escapeHtml(conflict.localId)}">Garder les deux</button>
+          <span>${escapeHtml(conflict.localTeam?.name || conflict.cloudTeam?.name || "Équipe")}</span>
+          ${conflict.kind === "local-delete" ? `
+            <button class="small-button" type="button" data-delete-keep-cloud="${escapeHtml(conflict.localId)}">Conserver la nouvelle version</button>
+            <button class="small-button danger" type="button" data-delete-force="${escapeHtml(conflict.localId)}">Supprimer partout</button>
+          ` : conflict.kind === "remote-delete" ? `
+            <button class="small-button danger" type="button" data-delete-accept="${escapeHtml(conflict.localId)}">Accepter la suppression</button>
+            <button class="small-button" type="button" data-delete-restore="${escapeHtml(conflict.localId)}">Restaurer dans le cloud</button>
+          ` : `
+            <button class="small-button" type="button" data-conflict-remote="${escapeHtml(conflict.localId)}">Utiliser le cloud</button>
+            <button class="small-button" type="button" data-conflict-local="${escapeHtml(conflict.localId)}">Utiliser cet appareil</button>
+            <button class="small-button" type="button" data-conflict-copy="${escapeHtml(conflict.localId)}">Garder les deux</button>
+          `}
         </div>
       `).join("")}
     </section>
@@ -565,6 +573,14 @@ function handleAccountModalClick(event) {
   if (useLocal) void resolveCloudConflict(useLocal, "local");
   const keepBoth = event.target.closest("[data-conflict-copy]")?.dataset.conflictCopy;
   if (keepBoth) void resolveCloudConflict(keepBoth, "copy");
+  const keepDeletedCloud = event.target.closest("[data-delete-keep-cloud]")?.dataset.deleteKeepCloud;
+  if (keepDeletedCloud) void resolveCloudDeletionConflict(keepDeletedCloud, "keep-cloud");
+  const forceDelete = event.target.closest("[data-delete-force]")?.dataset.deleteForce;
+  if (forceDelete) void resolveCloudDeletionConflict(forceDelete, "force-delete");
+  const acceptDelete = event.target.closest("[data-delete-accept]")?.dataset.deleteAccept;
+  if (acceptDelete) void resolveCloudDeletionConflict(acceptDelete, "accept-delete");
+  const restoreDelete = event.target.closest("[data-delete-restore]")?.dataset.deleteRestore;
+  if (restoreDelete) void resolveCloudDeletionConflict(restoreDelete, "restore-cloud");
 }
 
 async function logoutCloudAccount() {
