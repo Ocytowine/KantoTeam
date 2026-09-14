@@ -5,7 +5,7 @@ const POKEMON_Z_PROGRESS_KEY = "kantoTeam:pokemonZProgress:v1";
 const POKEMON_Z_ALCHEMY_KEY = "kantoTeam:pokemonZAlchemy:v1";
 const CLOUD_API_BASE = "/api";
 const CLOUD_SYNC_STORAGE_PREFIX = "kantoTeamCloudSync:v1";
-const CLOUD_SYNC_INTERVAL_MS = 60_000;
+const CLOUD_SYNC_INTERVAL_MS = 30_000;
 const CLOUD_SYNC_DEBOUNCE_MS = 1_500;
 const GAME_KEYS = ["reforged", "pokemon-z"];
 const POKEMON_STAT_DEFINITIONS = [
@@ -122,6 +122,7 @@ let accountModalOpen = false;
 let accountMode = "login";
 let cloudSyncTimer = null;
 let cloudSyncRunning = false;
+let cloudSyncQueued = false;
 let applyingCloudUpdate = false;
 let authState = {
   status: "loading",
@@ -680,6 +681,19 @@ function forgetCloudVersion(localId) {
   clearCloudConflict(localId);
 }
 
+function markCloudVersionDeleted(localId, cloudTeam) {
+  if (!localId) return;
+  const metadata = loadCloudSyncMetadata();
+  metadata[localId] = {
+    ...(metadata[localId] || {}),
+    cloudId: cloudTeam?.id || metadata[localId]?.cloudId || null,
+    revision: Number(cloudTeam?.revision || metadata[localId]?.revision) || 1,
+    remoteDeleted: true
+  };
+  saveCloudSyncMetadata(metadata);
+  clearCloudConflict(localId);
+}
+
 function rememberCloudTeam(cloudTeam) {
   const index = authState.cloudTeams.findIndex((entry) => entry.id === cloudTeam.id);
   if (index >= 0) authState.cloudTeams[index] = cloudTeam;
@@ -728,9 +742,18 @@ function replaceLocalTeam(localId, cloudTeam) {
   return true;
 }
 
-async function synchronizeCloudTeams({ allowCreate = false } = {}) {
-  if (!authState.user || !canUseCloudApi() || cloudSyncRunning || (authState.busy && !allowCreate)) return;
+async function synchronizeCloudTeams({ allowCreate = true, importRemote = true, recreateMissing = false, userInitiated = false } = {}) {
+  if (!authState.user || !canUseCloudApi()) return;
+  if (authState.busy && !userInitiated) {
+    scheduleCloudSync();
+    return;
+  }
+  if (cloudSyncRunning) {
+    cloudSyncQueued = true;
+    return;
+  }
   cloudSyncRunning = true;
+  cloudSyncQueued = false;
   authState.syncStatus = "Vérification des versions cloud…";
   if (accountModalOpen) renderAccountModal();
   try {
@@ -743,7 +766,10 @@ async function synchronizeCloudTeams({ allowCreate = false } = {}) {
       const version = versionByLocalId.get(local.localId);
       const known = metadata[local.localId];
       if (!version) {
-        if (!allowCreate) continue;
+        if ((known && !recreateMissing) || !allowCreate) {
+          if (known && !known.remoteDeleted) markCloudVersionDeleted(local.localId, { id: known.cloudId, revision: known.revision });
+          continue;
+        }
         try {
           const created = await cloudApi("/teams", {
             method: "POST",
@@ -799,9 +825,56 @@ async function synchronizeCloudTeams({ allowCreate = false } = {}) {
         clearCloudConflict(local.localId);
       }
     }
-    authState.syncStatus = authState.conflicts.length
-      ? "Synchronisation suspendue pour les équipes en conflit."
-      : `À jour · vérifié à ${new Intl.DateTimeFormat("fr-FR", { timeStyle: "short" }).format(new Date())}`;
+
+    let importedRemote = 0;
+    let waitingRemote = 0;
+    if (importRemote) {
+      const localIds = new Set(getLocalTeamsForCloud().map((entry) => entry.localId));
+      const latestMetadata = loadCloudSyncMetadata();
+      for (const version of versions) {
+        const remembered = latestMetadata[version.localId];
+        if (localIds.has(version.localId)) continue;
+        if (remembered && (!remembered.remoteDeleted || remembered.cloudId === version.id)) continue;
+        const game = GAME_KEYS.includes(version.gameVersion) ? version.gameVersion : null;
+        if (!game) continue;
+        const gameState = appState.games[game];
+        const slot = gameState.teams.findIndex((team, index) => (
+          !team && !(game === appState.activeGame && state.activeView !== "slots" && index === state.selectedSlot)
+        ));
+        const cloudTeam = await fetchCloudTeam(version);
+        if (slot < 0) {
+          waitingRemote += 1;
+          continue;
+        }
+        const copy = normalizeStoredTeam(structuredClone(cloudTeam.team));
+        copy.preferredSource = game;
+        const importedLocalId = `${game}:${copy.id}`;
+        if (importedLocalId !== version.localId) {
+          waitingRemote += 1;
+          continue;
+        }
+        gameState.teams[slot] = copy;
+        localIds.add(version.localId);
+        await rememberCloudVersion(version.localId, cloudTeam);
+        importedRemote += 1;
+      }
+      if (importedRemote) {
+        applyingCloudUpdate = true;
+        saveState();
+        applyingCloudUpdate = false;
+        renderAll();
+      }
+    }
+
+    if (authState.conflicts.length) {
+      authState.syncStatus = "Synchronisation suspendue pour les équipes en conflit.";
+    } else if (waitingRemote) {
+      authState.syncStatus = `${waitingRemote} équipe${waitingRemote > 1 ? "s" : ""} cloud en attente d’un slot libre.`;
+    } else if (importedRemote) {
+      authState.syncStatus = `${importedRemote} nouvelle${importedRemote > 1 ? "s" : ""} équipe${importedRemote > 1 ? "s" : ""} ajoutée${importedRemote > 1 ? "s" : ""} automatiquement.`;
+    } else {
+      authState.syncStatus = `À jour · vérifié à ${new Intl.DateTimeFormat("fr-FR", { timeStyle: "short" }).format(new Date())}`;
+    }
   } catch (error) {
     if (error.status === 401) {
       authState.user = null;
@@ -814,6 +887,7 @@ async function synchronizeCloudTeams({ allowCreate = false } = {}) {
   } finally {
     cloudSyncRunning = false;
     if (accountModalOpen) renderAccountModal();
+    if (cloudSyncQueued) scheduleCloudSync(0);
   }
 }
 
@@ -893,7 +967,7 @@ async function importLocalTeamsToCloud() {
   authState.message = "";
   renderAccountModal();
   try {
-    await synchronizeCloudTeams({ allowCreate: true });
+    await synchronizeCloudTeams({ allowCreate: true, recreateMissing: true, userInitiated: true });
     authState.message = authState.conflicts.length
       ? "Synchronisation terminée avec des conflits à résoudre. Aucune version n’a été écrasée."
       : `${localTeams.length} équipe${localTeams.length > 1 ? "s" : ""} synchronisée${localTeams.length > 1 ? "s" : ""}. Les mises à jour suivantes seront automatiques.`;
@@ -947,7 +1021,7 @@ async function deleteCloudTeam(id) {
       body: { expectedRevision: cloudTeam.revision }
     });
     authState.cloudTeams = authState.cloudTeams.filter((entry) => entry.id !== id);
-    forgetCloudVersion(cloudTeam.localId);
+    markCloudVersionDeleted(cloudTeam.localId, cloudTeam);
     authState.message = "Équipe supprimée du cloud. Les sauvegardes locales sont intactes.";
   } catch (error) {
     if (error.status === 409 && error.payload?.team) {

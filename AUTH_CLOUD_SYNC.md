@@ -34,7 +34,9 @@ Les mots de passe sont derives avec PBKDF2-HMAC-SHA-512, un sel aleatoire indivi
 
 Le bouton `Connexion` ouvre une modale avec deux onglets : connexion et création de compte. Une fois connecté, il affiche le pseudo et donne accès aux équipes privées du compte.
 
-`Synchroniser mes équipes locales` effectue la première liaison des équipes des deux jeux avec D1. Après cette liaison, les modifications sont envoyées automatiquement après 1,5 seconde d'inactivité. L'application vérifie uniquement les métadonnées de révision toutes les 60 secondes lorsqu'elle est visible, au retour au premier plan et au retour de la connexion. Le JSON complet n'est téléchargé que lorsqu'une révision a changé.
+Toute nouvelle équipe locale est créée automatiquement dans D1 après 1,5 seconde d'inactivité. Les modifications suivantes utilisent la même sauvegarde différée. L'application vérifie uniquement les métadonnées de révision toutes les 30 secondes lorsqu'elle est visible, au retour au premier plan et au retour de la connexion. Le JSON complet n'est téléchargé que lorsqu'une révision a changé.
+
+Une équipe créée sur un autre appareil est ajoutée automatiquement au premier slot libre de la bonne version de jeu. Si les trois slots sont occupés, elle reste disponible dans le cloud et l'interface signale qu'un slot doit être libéré. Une suppression cloud est mémorisée localement afin qu'une ancienne copie conservée sur l'appareil ne recrée pas silencieusement l'équipe supprimée.
 
 Chaque équipe possède une révision entière générée par le serveur. Une écriture doit fournir `expectedRevision` et D1 ne l'accepte que si cette valeur correspond encore à la révision courante. Une modification concurrente renvoie `409 Conflict` avec la dernière version ; l'interface permet alors d'utiliser le cloud, l'appareil courant ou de garder les deux copies. La suppression cloud utilise la même protection et ne touche jamais la copie locale.
 
