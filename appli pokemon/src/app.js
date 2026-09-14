@@ -676,14 +676,22 @@ async function teamFingerprint(team) {
   return `fallback-${bytes.length}-${(hash >>> 0).toString(16)}`;
 }
 
-async function rememberCloudVersion(localId, cloudTeam) {
+async function rememberCloudVersion(localId, cloudTeam, { preservePendingDelete = true } = {}) {
   if (!localId || !cloudTeam) return;
   const metadata = loadCloudSyncMetadata();
+  const pendingDeletion = preservePendingDelete && metadata[localId]?.pendingDelete ? {
+    pendingDelete: true,
+    remoteDeleted: false,
+    game: metadata[localId].game,
+    slot: metadata[localId].slot,
+    deletedAt: metadata[localId].deletedAt
+  } : {};
   metadata[localId] = {
     cloudId: cloudTeam.id,
     revision: Number(cloudTeam.revision) || 1,
     hash: await teamFingerprint(cloudTeam.team),
-    updatedAt: cloudTeam.updatedAt
+    updatedAt: cloudTeam.updatedAt,
+    ...pendingDeletion
   };
   saveCloudSyncMetadata(metadata);
   clearCloudConflict(localId);
@@ -704,10 +712,41 @@ function markCloudVersionDeleted(localId, cloudTeam) {
     ...(metadata[localId] || {}),
     cloudId: cloudTeam?.id || metadata[localId]?.cloudId || null,
     revision: Number(cloudTeam?.revision || metadata[localId]?.revision) || 1,
+    pendingDelete: false,
     remoteDeleted: true
   };
   saveCloudSyncMetadata(metadata);
   clearCloudConflict(localId);
+}
+
+async function queueCloudTeamDeletion(local) {
+  if (!authState.user || !local?.localId) return false;
+  const metadata = loadCloudSyncMetadata();
+  let known = metadata[local.localId];
+  const cloudTeam = authState.cloudTeams.find((entry) => entry.localId === local.localId);
+  if (!known && cloudTeam) {
+    known = {
+      cloudId: cloudTeam.id,
+      revision: Number(cloudTeam.revision) || 1,
+      hash: await teamFingerprint(cloudTeam.team),
+      updatedAt: cloudTeam.updatedAt
+    };
+  }
+  if (known?.remoteDeleted) return false;
+  metadata[local.localId] = {
+    ...(known || {}),
+    cloudId: known?.cloudId || cloudTeam?.id || null,
+    revision: Number(known?.revision || cloudTeam?.revision) || 1,
+    hash: known?.hash || await teamFingerprint(local.team),
+    game: local.game,
+    slot: local.slot,
+    pendingDelete: true,
+    remoteDeleted: false,
+    deletedAt: new Date().toISOString()
+  };
+  saveCloudSyncMetadata(metadata);
+  scheduleCloudSync(0);
+  return true;
 }
 
 function rememberCloudTeam(cloudTeam) {
@@ -728,6 +767,84 @@ function recordCloudConflict(local, cloudTeam) {
     cloudTeam
   });
   rememberCloudTeam(cloudTeam);
+}
+
+function recordCloudDeletionConflict(localId, kind, localTeam = null, cloudTeam = null, details = {}) {
+  clearCloudConflict(localId);
+  authState.conflicts.push({
+    localId,
+    kind,
+    localTeam: localTeam ? structuredClone(localTeam) : null,
+    cloudTeam,
+    ...details
+  });
+  if (cloudTeam) rememberCloudTeam(cloudTeam);
+}
+
+function removeLocalCloudTeam(localId, preferredGame = null, preferredSlot = null) {
+  let local = getLocalTeamsForCloud().find((entry) => entry.localId === localId);
+  if (!local && GAME_KEYS.includes(preferredGame) && Number.isInteger(preferredSlot)) {
+    const team = appState.games[preferredGame].teams[preferredSlot];
+    if (team && `${preferredGame}:${team.id}` === localId) {
+      local = { game: preferredGame, slot: preferredSlot, team, localId };
+    }
+  }
+  if (!local) return false;
+  appState.games[local.game].teams[local.slot] = null;
+  if (appState.activeGame === local.game) {
+    state = appState.games[local.game];
+    if (state.selectedSlot === local.slot) {
+      state.activeView = "slots";
+      draftTeam = createEmptyTeam(local.slot);
+      teamSettingsOpen = false;
+      teamAddPanelOpen = false;
+    }
+  }
+  applyingCloudUpdate = true;
+  saveState();
+  applyingCloudUpdate = false;
+  renderAll();
+  return true;
+}
+
+async function flushPendingCloudDeletions(versions) {
+  const versionByLocalId = new Map(versions.map((entry) => [entry.localId, entry]));
+  const metadata = loadCloudSyncMetadata();
+  let deleted = 0;
+  for (const [localId, known] of Object.entries(metadata)) {
+    if (!known?.pendingDelete) continue;
+    const version = versionByLocalId.get(localId);
+    if (!version) {
+      if (!known.cloudId) continue;
+      markCloudVersionDeleted(localId, { id: known.cloudId, revision: known.revision });
+      deleted += 1;
+      continue;
+    }
+    if (version.id !== known.cloudId || Number(version.revision) !== Number(known.revision)) {
+      const cloudTeam = await fetchCloudTeam(version);
+      recordCloudDeletionConflict(localId, "local-delete", null, cloudTeam, { game: known.game, slot: known.slot });
+      continue;
+    }
+    try {
+      await cloudApi(`/teams/${encodeURIComponent(version.id)}`, {
+        method: "DELETE",
+        body: { expectedRevision: known.revision }
+      });
+      authState.cloudTeams = authState.cloudTeams.filter((entry) => entry.id !== version.id);
+      markCloudVersionDeleted(localId, version);
+      deleted += 1;
+    } catch (error) {
+      if (error.status === 409 && error.payload?.team) {
+        recordCloudDeletionConflict(localId, "local-delete", null, error.payload.team, { game: known.game, slot: known.slot });
+      } else if (error.status === 404) {
+        markCloudVersionDeleted(localId, version);
+        deleted += 1;
+      } else {
+        throw error;
+      }
+    }
+  }
+  return deleted;
 }
 
 async function fetchCloudTeam(version) {
@@ -765,7 +882,7 @@ function refreshSyncedTeamSprites(team) {
   void syncPokemonSprites(pokemon).then(renderAll);
 }
 
-async function synchronizeCloudTeams({ allowCreate = true, importRemote = true, recreateMissing = false, userInitiated = false } = {}) {
+async function synchronizeCloudTeams({ allowCreate = true, importRemote = true, userInitiated = false } = {}) {
   if (!authState.user || !canUseCloudApi()) return;
   if (authState.busy && !userInitiated) {
     scheduleCloudSync();
@@ -783,14 +900,28 @@ async function synchronizeCloudTeams({ allowCreate = true, importRemote = true, 
     const result = await cloudApi("/teams/versions");
     const versions = Array.isArray(result.teams) ? result.teams : [];
     const versionByLocalId = new Map(versions.map((entry) => [entry.localId, entry]));
+    const deletedCloud = await flushPendingCloudDeletions(versions);
     const metadata = loadCloudSyncMetadata();
+    let removedRemote = 0;
 
     for (const local of getLocalTeamsForCloud()) {
       const version = versionByLocalId.get(local.localId);
       const known = metadata[local.localId];
       if (!version) {
-        if ((known && !recreateMissing) || !allowCreate) {
-          if (known && !known.remoteDeleted) markCloudVersionDeleted(local.localId, { id: known.cloudId, revision: known.revision });
+        if (known?.pendingDelete || known?.remoteDeleted) continue;
+        if (known) {
+          authState.cloudTeams = authState.cloudTeams.filter((entry) => entry.localId !== local.localId);
+          const localHash = await teamFingerprint(local.team);
+          if (known.hash && localHash === known.hash) {
+            removeLocalCloudTeam(local.localId, local.game, local.slot);
+            markCloudVersionDeleted(local.localId, { id: known.cloudId, revision: known.revision });
+            removedRemote += 1;
+          } else {
+            recordCloudDeletionConflict(local.localId, "remote-delete", local.team, null, { game: local.game, slot: local.slot });
+          }
+          continue;
+        }
+        if (!allowCreate) {
           continue;
         }
         try {
@@ -894,6 +1025,9 @@ async function synchronizeCloudTeams({ allowCreate = true, importRemote = true, 
 
     if (authState.conflicts.length) {
       authState.syncStatus = "Synchronisation suspendue pour les équipes en conflit.";
+    } else if (deletedCloud || removedRemote) {
+      const totalDeleted = deletedCloud + removedRemote;
+      authState.syncStatus = `${totalDeleted} suppression${totalDeleted > 1 ? "s" : ""} synchronisée${totalDeleted > 1 ? "s" : ""}.`;
     } else if (waitingRemote) {
       authState.syncStatus = `${waitingRemote} équipe${waitingRemote > 1 ? "s" : ""} cloud en attente d’un slot libre.`;
     } else if (importedRemote) {
@@ -985,6 +1119,77 @@ async function resolveCloudConflict(localId, choice) {
   }
 }
 
+async function restoreCloudTeamAfterDeletion(conflictEntry) {
+  const cloudTeam = conflictEntry.cloudTeam;
+  const game = GAME_KEYS.includes(cloudTeam?.gameVersion) ? cloudTeam.gameVersion : null;
+  if (!game || !cloudTeam?.team) throw new Error("Version cloud indisponible.");
+  const gameState = appState.games[game];
+  let slot = Number.isInteger(conflictEntry.slot) && !gameState.teams[conflictEntry.slot]
+    ? conflictEntry.slot
+    : gameState.teams.findIndex((team) => !team);
+  if (slot < 0) throw new Error("Libère un slot avant de conserver la version cloud.");
+  const copy = normalizeStoredTeam(structuredClone(cloudTeam.team));
+  copy.preferredSource = game;
+  gameState.teams[slot] = copy;
+  if (appState.activeGame === game) state = gameState;
+  await rememberCloudVersion(conflictEntry.localId, cloudTeam, { preservePendingDelete: false });
+  applyingCloudUpdate = true;
+  saveState();
+  applyingCloudUpdate = false;
+  renderAll();
+  refreshSyncedTeamSprites(copy);
+}
+
+async function resolveCloudDeletionConflict(localId, choice) {
+  const conflictEntry = authState.conflicts.find((entry) => entry.localId === localId);
+  if (!conflictEntry || authState.busy) return;
+  authState.busy = true;
+  authState.error = "";
+  renderAccountModal();
+  let resolved = false;
+  try {
+    if (choice === "keep-cloud" && conflictEntry.kind === "local-delete") {
+      await restoreCloudTeamAfterDeletion(conflictEntry);
+      resolved = true;
+    } else if (choice === "force-delete" && conflictEntry.kind === "local-delete") {
+      await cloudApi(`/teams/${encodeURIComponent(conflictEntry.cloudTeam.id)}`, {
+        method: "DELETE",
+        body: { expectedRevision: conflictEntry.cloudTeam.revision }
+      });
+      authState.cloudTeams = authState.cloudTeams.filter((entry) => entry.id !== conflictEntry.cloudTeam.id);
+      markCloudVersionDeleted(localId, conflictEntry.cloudTeam);
+      resolved = true;
+    } else if (choice === "accept-delete" && conflictEntry.kind === "remote-delete") {
+      removeLocalCloudTeam(localId, conflictEntry.game, conflictEntry.slot);
+      const metadata = loadCloudSyncMetadata()[localId];
+      markCloudVersionDeleted(localId, { id: metadata?.cloudId, revision: metadata?.revision });
+      resolved = true;
+    } else if (choice === "restore-cloud" && conflictEntry.kind === "remote-delete") {
+      const local = getLocalTeamsForCloud().find((entry) => entry.localId === localId);
+      if (!local) throw new Error("La copie locale n’est plus disponible.");
+      const created = await cloudApi("/teams", { method: "POST", body: { localId, team: local.team } });
+      rememberCloudTeam(created.team);
+      await rememberCloudVersion(localId, created.team);
+      resolved = true;
+    }
+    if (resolved) {
+      clearCloudConflict(localId);
+      authState.message = "Conflit de suppression résolu.";
+    }
+  } catch (error) {
+    if (error.status === 409 && error.payload?.team) {
+      recordCloudDeletionConflict(localId, "local-delete", null, error.payload.team, {
+        game: conflictEntry.game,
+        slot: conflictEntry.slot
+      });
+    }
+    authState.error = error.message;
+  } finally {
+    authState.busy = false;
+    renderAccountModal();
+  }
+}
+
 async function importLocalTeamsToCloud() {
   const localTeams = getLocalTeamsForCloud();
   if (!localTeams.length || authState.busy) return;
@@ -993,7 +1198,7 @@ async function importLocalTeamsToCloud() {
   authState.message = "";
   renderAccountModal();
   try {
-    await synchronizeCloudTeams({ allowCreate: true, recreateMissing: true, userInitiated: true });
+    await synchronizeCloudTeams({ allowCreate: true, userInitiated: true });
     authState.message = authState.conflicts.length
       ? "Synchronisation terminée avec des conflits à résoudre. Aucune version n’a été écrasée."
       : `${localTeams.length} équipe${localTeams.length > 1 ? "s" : ""} synchronisée${localTeams.length > 1 ? "s" : ""}. Les mises à jour suivantes seront automatiques.`;
@@ -1038,7 +1243,7 @@ async function copyCloudTeamToLocal(id) {
 
 async function deleteCloudTeam(id) {
   const cloudTeam = authState.cloudTeams.find((entry) => entry.id === id);
-  if (!cloudTeam || !confirm(`Supprimer ${cloudTeam.name} du cloud ? La copie locale ne sera pas supprimée.`)) return;
+  if (!cloudTeam || !confirm(`Supprimer ${cloudTeam.name} du cloud et des appareils synchronisés ?`)) return;
   authState.busy = true;
   authState.error = "";
   renderAccountModal();
@@ -1049,7 +1254,8 @@ async function deleteCloudTeam(id) {
     });
     authState.cloudTeams = authState.cloudTeams.filter((entry) => entry.id !== id);
     markCloudVersionDeleted(cloudTeam.localId, cloudTeam);
-    authState.message = "Équipe supprimée du cloud. Les sauvegardes locales sont intactes.";
+    removeLocalCloudTeam(cloudTeam.localId);
+    authState.message = "Équipe supprimée du cloud et des appareils synchronisés.";
   } catch (error) {
     if (error.status === 409 && error.payload?.team) {
       rememberCloudTeam(error.payload.team);
@@ -1985,6 +2191,21 @@ function getActiveTeam() {
   return sharedTeam || state.teams[state.selectedSlot];
 }
 
+async function deleteTeamFromSlot(slot) {
+  const team = state.teams[slot];
+  if (!team) return;
+  const local = {
+    game: getActiveGameKey(),
+    slot,
+    team,
+    localId: `${getActiveGameKey()}:${team.id}`
+  };
+  await queueCloudTeamDeletion(local);
+  state.activeView = "slots";
+  state.selectedSlot = slot;
+  removeLocalCloudTeam(local.localId, local.game, slot);
+}
+
 function renderSlots() {
   el.slots.innerHTML = "";
   state.teams.forEach((team, index) => {
@@ -2026,12 +2247,7 @@ function renderSlots() {
       const slot = Number(button.dataset.slot);
       if (button.dataset.action === "delete") {
         if (!confirm("Supprimer cette equipe ?")) return;
-        state.teams[slot] = null;
-        state.activeView = "slots";
-        state.selectedSlot = slot;
-        draftTeam = createEmptyTeam(slot);
-        saveState();
-        renderAll();
+        void deleteTeamFromSlot(slot);
         return;
       }
       const actionToView = {
