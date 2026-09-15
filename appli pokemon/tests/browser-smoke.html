@@ -56,6 +56,7 @@
     assert(filledTeamPokeball, "L'icone team-pokeball n'est pas affectee a l'equipe existante");
     assert(filledTeamPokeball.dataset.themeFallback === "assets/pokeball.png", "Le repli de team-pokeball est absent");
     assert(doc.querySelector("#team-slots").textContent.includes("Equipe Reforged"), "Equipe Reforged absente");
+    assert(!win.getPokemonSpriteSources({ id: 25, name: "Pikachu", nationalId: 25, origin: "reforged" }).small.includes("pokemon-z-sprites"), "Les sprites Z contaminent la version Reforged");
     const reforgedSlotButton = doc.querySelector('#team-slots [data-action="analysis"]');
     const reforgedButtonColor = win.getComputedStyle(reforgedSlotButton).color.match(/[\d.]+/g)?.slice(0, 3).map(Number) || [];
     assert(reforgedButtonColor.length === 3 && reforgedButtonColor.reduce((sum, value) => sum + value, 0) / 3 > 180, "Texte sombre sur les boutons de slot Reforged");
@@ -243,6 +244,20 @@
     const learnsetButton = doc.querySelector("#composition-list [data-open-pokemon-z-learnset='1']");
     assert(learnsetButton, "Le bouton des capacites de Bulbizarre est absent de sa fiche detaillee");
     assert(win.pokemonZSpeciesIdFromPokemon({ id: "ancienne-sauvegarde", nationalId: 1, name: "Bulbizarre" }) === 1, "Une ancienne sauvegarde Pokemon Z ne retrouve pas son learnset");
+    const zPikachu = { id: "pokemon-z-25", name: "Pikachu", nationalId: 25, origin: "pokemon-z" };
+    const zFakemon = { id: "pokemon-z-899", name: "Zéphyri", origin: "pokemon-z" };
+    const oldFakemonSave = {
+      customPokemon: [{ id: "saved-fake", pokemonZId: "pokemon-z-899", name: "Cefireon" }],
+      teams: [{ pokemon: [{ sourceId: "saved-fake", name: "Cefireon" }, { pokemonZId: "pokemon-z-899", name: "Mon Zéphyri" }] }],
+      sharedTeams: []
+    };
+    win.translateStoredPokemonZFakemonNames(oldFakemonSave);
+    assert(oldFakemonSave.customPokemon[0].name === "Zéphyri" && oldFakemonSave.teams[0].pokemon[0].name === "Zéphyri", "Les noms fakemon des anciennes sauvegardes ne sont pas corrigés");
+    assert(oldFakemonSave.teams[0].pokemon[1].name === "Mon Zéphyri", "Un surnom personnel a été remplacé par la traduction");
+    assert(Array.from(doc.querySelector("#catalog-select").options).some((option) => option.value === "pokemon-z-899" && option.textContent.includes("Zéphyri")), "Le nom français du fakemon n'est pas affiché");
+    assert(win.getPokemonSpriteSources(zPikachu).small.includes("/025.png"), "Le Pikachu Z conserve son ancien sprite");
+    assert(win.getPokemonSpriteSources(zFakemon).small.includes("/899.png"), "Le fakemon ne reçoit pas son sprite interne");
+    assert(win.renderPokemonSprite(zFakemon).includes("pokemon-z-sprites/899.png"), "Le sprite fakemon n'est pas présent dans la fiche");
     assert(learnsetButton.closest(".pokemon-card-body")?.firstElementChild?.contains(learnsetButton), "Le bouton des capacites n'est pas place en haut du detail");
     const compositionCard = learnsetButton.closest(".pokemon-card");
     assert(win.getComputedStyle(compositionCard.querySelector(".pokemon-card-body")).display === "none", "Les capacites sont visibles avant l'ouverture du detail");
@@ -376,6 +391,21 @@
     assert(mewtwoEfficiencyScore.total >= 75, "Les statistiques exceptionnelles de Mewtwo restent sous-ponderees");
     const mewtwoStatsProfile = win.pokemonStatsProfile({ nationalId: 150, name: "Mewtwo" });
     assert(mewtwoStatsProfile.profile === "Machine de guerre" && mewtwoStatsProfile.level === "Hors catégorie", "Le profil statistique de Mewtwo est sous-evalue");
+    const evoliEvolution = win.buildPokemonZEvolutionData("pokemon-z-133", 133);
+    const evoliNodes = win.getEvolutionChainItems(evoliEvolution.tree);
+    assert(evoliNodes.some((node) => node.catalogId === "pokemon-z-899" && node.name === "Zéphyri" && node.requirement.includes("Plume Zéphyr")), "La nouvelle évolution Z d'Évoli est absente de l'arbre");
+    assert(evoliNodes.some((node) => node.catalogId === "pokemon-z-997" && node.name === "Royali"), "La seconde évolution Z d'Évoli est absente de l'arbre");
+    const mysdibruteEvolution = win.buildPokemonZEvolutionData("pokemon-z-900");
+    assert(mysdibruteEvolution.tree.catalogId === "pokemon-z-303" && mysdibruteEvolution.tree.children[0].catalogId === "pokemon-z-900", "Un fakemon ouvert directement ne retrouve pas son parent original");
+    const stellairocEvolution = win.buildPokemonZEvolutionData("pokemon-z-1012");
+    assert(stellairocEvolution.trees.length === 2, "Les deux parents de Stellairoc ne sont pas représentés");
+    const teamEvolutionPanel = doc.createElement("div");
+    teamEvolutionPanel.innerHTML = win.renderEvolutionLookup(evoliEvolution, false);
+    doc.querySelector("#composition-list .pokemon-card").append(teamEvolutionPanel);
+    win.bindPokemonEvolutionLinks(teamEvolutionPanel);
+    teamEvolutionPanel.querySelector('[data-open-evolution-pokemon="pokemon-z-899"]').click();
+    assert(doc.querySelector("#pokemon-search-panel:not(.hidden)"), "Le clic depuis une carte d'équipe ne bascule pas vers la recherche Pokémon");
+    assert(doc.querySelector("#pokemon-search-query").value === "Zéphyri", "Le Pokémon cliqué depuis l'équipe n'est pas recherché");
     doc.querySelector("#back-to-slots").click();
     await wait();
     assert(doc.querySelector("#team-slots .team-slot-favorite-backdrop img"), "Le sprite prefere n'apparait pas en fond de carte d'equipe");

@@ -3712,6 +3712,41 @@ body.sprite-viewer-open {
   min-width: 0;
 }
 
+.pokemon-evolution-open {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 52px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+
+button.pokemon-evolution-open {
+  cursor: pointer;
+}
+
+button.pokemon-evolution-open:hover,
+button.pokemon-evolution-open:focus-visible {
+  outline: 2px solid rgba(244, 200, 74, 0.55);
+  outline-offset: 3px;
+  background: rgba(244, 200, 74, 0.08);
+}
+
+.pokemon-evolution-open > .pokemon-info-sprite {
+  grid-row: auto;
+}
+
+.pokemon-evolution-open > strong {
+  grid-column: 2;
+}
+
 .pokemon-evolution-card.current {
   border-color: rgba(244, 200, 74, 0.68);
   box-shadow: 0 0 0 2px rgba(244, 200, 74, 0.12);

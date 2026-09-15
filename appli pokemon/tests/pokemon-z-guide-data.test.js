@@ -1,10 +1,12 @@
 const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
+const { EXPECTED_CHANGED_SPECIES_IDS } = require("../scripts/pokemon-z-sprite-config");
 
 const context = {};
 for (const [file, exportCode] of [
   ["pokemon-z-data.js", "this.catalog = POKEMON_Z_V212;"],
+  ["pokemon-z-sprite-data.js", "this.localSprites = POKEMON_Z_LOCAL_SPRITES;"],
   ["pokemon-z-guide-data.js", "this.documented = POKEMON_Z_GUIDE;"],
   ["pokemon-z-v212-encounter-data.js", "this.encounters = POKEMON_Z_V212_ENCOUNTERS; this.evolutions = POKEMON_Z_V212_EVOLUTIONS;"]
 ]) {
@@ -21,6 +23,25 @@ function normalize(value) {
 }
 
 assert(context.catalog.length === 1018, "Le catalogue Pokémon Z doit contenir 1 018 entrées.");
+const pokemonZById = (speciesId) => context.catalog.find((pokemon) => pokemon.id === `pokemon-z-${speciesId}`);
+assert(pokemonZById(899)?.name === "Zéphyri", "Le nom français du Fakemon Zéphyri doit venir de french.dat.");
+assert(pokemonZById(900)?.name === "Mysdibrute", "Le nom français de Mysdibrute doit venir de french.dat.");
+assert(pokemonZById(1012)?.name === "Stellairoc", "Le nom français de Stellairoc doit venir de french.dat.");
+assert(pokemonZById(1018)?.name === "Auretosk", "Le nom français d'Auretosk doit venir de french.dat.");
+assert(Object.keys(context.localSprites).length >= 31, "Les sprites Pokémon Z déjà isolés doivent rester référencés.");
+assert(EXPECTED_CHANGED_SPECIES_IDS.length === 31, "La liste des sprites modifiés attendus a changé.");
+assert(EXPECTED_CHANGED_SPECIES_IDS.every((speciesId) => pokemonZById(speciesId)), "Un sprite modifié attendu n'existe pas dans le catalogue Z.");
+for (const [speciesId, url] of Object.entries(context.localSprites)) {
+  assert(pokemonZById(Number(speciesId)), `Sprite associé à un numéro Z inconnu : ${speciesId}`);
+  const imagePath = path.resolve(__dirname, `../${url.split("?")[0]}`);
+  assert(fs.existsSync(imagePath), `Sprite Pokémon Z absent : ${url}`);
+  assert(fs.readFileSync(imagePath).subarray(0, 8).toString("hex") === "89504e470d0a1a0a", `Sprite PNG invalide : ${url}`);
+}
+assert(context.localSprites[25]?.includes("025.png"), "Le Pikachu modifié doit utiliser le PNG du jeu.");
+assert(context.localSprites[899]?.includes("899.png"), "Le premier fakemon doit utiliser le PNG du jeu.");
+const fakemon = context.catalog.filter((pokemon) => pokemon.nationalId == null);
+assert(fakemon.length === 18, "Le nombre de fakemon du catalogue Z a changé.");
+assert(fakemon.every((pokemon) => context.localSprites[Number(pokemon.id.slice("pokemon-z-".length))]), "Un fakemon du catalogue Z reste sans sprite local.");
 assert(Object.keys(context.encounters).length === 679, "Le nombre de Pokémon disposant d’une obtention interne a changé.");
 assert(Object.keys(context.evolutions).length === 499, "Le nombre de Pokémon obtenus par évolution interne a changé.");
 

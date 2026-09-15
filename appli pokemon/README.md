@@ -41,6 +41,18 @@ Les equipes se suppriment individuellement depuis leurs slots. Les Pokemon sauve
 
 ## Regenerer les donnees Pokemon Z
 
+### Sprites propres à Pokémon Z
+
+Les PNG isolés sont rangés dans `assets/pokemon-z-sprites` sous leur **numéro interne du jeu** (`025.png`, `899.png`, etc.). Le manifeste `src/pokemon-z-sprite-data.js` les donne en priorité aux cartes de Pokémon Z ; un numéro encore absent conserve le sprite disponible via PokéAPI. Les 18 fakemon ont déjà un PNG.
+
+La liste des 31 Pokémon officiels dont le sprite a changé ou changera se trouve dans `scripts/pokemon-z-sprite-config.js`. Pour ajouter de nouveaux PNG sans perdre ceux déjà importés :
+
+```powershell
+node scripts/import-pokemon-z-sprites.js "C:\chemin\vers\les\nouveaux\PNG"
+```
+
+La commande conserve les fichiers existants, remplace ceux qui ont été refaits, régénère le manifeste avec une version liée au contenu de chaque image et affiche les numéros encore manquants. Si les PNG ont été copiés directement dans `assets/pokemon-z-sprites`, lancer simplement `node scripts/import-pokemon-z-sprites.js`.
+
 Le fichier `src/pokemon-z-data.js` est genere depuis le fichier `PBS/pokemon.txt` de la version francaise v2.12 Patch 1. Pour le reconstruire depuis une installation locale du jeu :
 
 ```powershell

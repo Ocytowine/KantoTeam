@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { loadRubyMarshal } = require("./lib/ruby-marshal");
 
 const sourcePath = process.argv[2];
 if (!sourcePath) {
@@ -59,6 +60,10 @@ async function getOfficialPokemonData() {
 
 async function main() {
   const source = fs.readFileSync(sourcePath, "utf8");
+  const frenchDataPath = path.resolve(path.dirname(sourcePath), "../Data/french.dat");
+  if (!fs.existsSync(frenchDataPath)) throw new Error(`Noms français du jeu introuvables : ${frenchDataPath}`);
+  const gameNames = loadRubyMarshal(fs.readFileSync(frenchDataPath))[1] || [];
+  const gameName = (value) => Buffer.isBuffer(value) ? value.toString("utf8") : String(value || "");
   const headers = [...source.matchAll(/(?:^\uFEFF?|\r?\n)\[(\d+)\]\r?\n/g)];
   const blocks = headers.map((header, index) => ({
     zIndex: Number(header[1]),
@@ -69,13 +74,15 @@ async function main() {
     const read = (field) => body.match(new RegExp(`^${field}=(.*)$`, "m"))?.[1].trim() || "";
     const sourceName = read("Name");
     const nationalId = zIndex <= 898 ? zIndex : idsByName[normalize(sourceName)] || null;
+    const name = nationalId ? frenchNames[nationalId] || sourceName : gameName(gameNames[zIndex]) || sourceName;
     const types = [read("Type1"), read("Type2")].filter(Boolean).map((type) => {
       if (!TYPE_NAMES[type]) throw new Error(`Type inconnu pour ${sourceName}: ${type}`);
       return TYPE_NAMES[type];
     });
     return {
       id: `pokemon-z-${zIndex}`,
-      name: nationalId ? frenchNames[nationalId] || sourceName : sourceName,
+      name,
+      ...(nationalId === null && sourceName !== name ? { sourceName } : {}),
       types,
       nationalId,
       custom: false,

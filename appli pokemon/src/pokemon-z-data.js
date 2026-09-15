@@ -9493,7 +9493,8 @@ const POKEMON_Z_V212 = [
   },
   {
     "id": "pokemon-z-899",
-    "name": "Cefireon",
+    "name": "Zéphyri",
+    "sourceName": "Cefireon",
     "types": [
       "Vol"
     ],
@@ -9503,7 +9504,8 @@ const POKEMON_Z_V212 = [
   },
   {
     "id": "pokemon-z-900",
-    "name": "Maidible",
+    "name": "Mysdibrute",
+    "sourceName": "Maidible",
     "types": [
       "Acier",
       "Fee"
@@ -9514,7 +9516,8 @@ const POKEMON_Z_V212 = [
   },
   {
     "id": "pokemon-z-901",
-    "name": "Zippectre",
+    "name": "Brobsèques",
+    "sourceName": "Zippectre",
     "types": [
       "Spectre"
     ],
@@ -9524,7 +9527,8 @@ const POKEMON_Z_V212 = [
   },
   {
     "id": "pokemon-z-902",
-    "name": "Soundow",
+    "name": "Ouïeamaisnan",
+    "sourceName": "Soundow",
     "types": [
       "Normal",
       "Fee"
@@ -10522,7 +10526,8 @@ const POKEMON_Z_V212 = [
   },
   {
     "id": "pokemon-z-996",
-    "name": "Cherrilier",
+    "name": "Venysos",
+    "sourceName": "Cherrilier",
     "types": [
       "Poison",
       "Plante"
@@ -10533,7 +10538,8 @@ const POKEMON_Z_V212 = [
   },
   {
     "id": "pokemon-z-997",
-    "name": "Royaleon",
+    "name": "Royali",
+    "sourceName": "Royaleon",
     "types": [
       "Normal"
     ],
@@ -10543,7 +10549,8 @@ const POKEMON_Z_V212 = [
   },
   {
     "id": "pokemon-z-998",
-    "name": "Gourmaus",
+    "name": "Famgourmet",
+    "sourceName": "Gourmaus",
     "types": [
       "Normal",
       "Fee"
@@ -10641,7 +10648,8 @@ const POKEMON_Z_V212 = [
   },
   {
     "id": "pokemon-z-1007",
-    "name": "Halcombate",
+    "name": "Reylucha",
+    "sourceName": "Halcombate",
     "types": [
       "Combat",
       "Vol"
@@ -10652,7 +10660,8 @@ const POKEMON_Z_V212 = [
   },
   {
     "id": "pokemon-z-1008",
-    "name": "Serdupla",
+    "name": "Sévipire",
+    "sourceName": "Serdupla",
     "types": [
       "Poison",
       "Dragon"
@@ -10663,7 +10672,8 @@ const POKEMON_Z_V212 = [
   },
   {
     "id": "pokemon-z-1009",
-    "name": "Zanghoul",
+    "name": "Mangoule",
+    "sourceName": "Zanghoul",
     "types": [
       "Normal",
       "Spectre"
@@ -10674,7 +10684,8 @@ const POKEMON_Z_V212 = [
   },
   {
     "id": "pokemon-z-1010",
-    "name": "Freyjynx",
+    "name": "Skadippoutou",
+    "sourceName": "Freyjynx",
     "types": [
       "Psy",
       "Glace"
@@ -10685,7 +10696,8 @@ const POKEMON_Z_V212 = [
   },
   {
     "id": "pokemon-z-1011",
-    "name": "Fobeto",
+    "name": "Hypnomal",
+    "sourceName": "Fobeto",
     "types": [
       "Psy",
       "Tenebres"
@@ -10696,7 +10708,8 @@ const POKEMON_Z_V212 = [
   },
   {
     "id": "pokemon-z-1012",
-    "name": "Constellar",
+    "name": "Stellairoc",
+    "sourceName": "Constellar",
     "types": [
       "Roche",
       "Psy"
@@ -10707,7 +10720,8 @@ const POKEMON_Z_V212 = [
   },
   {
     "id": "pokemon-z-1013",
-    "name": "Luvourne",
+    "name": "Lovdécès",
+    "sourceName": "Luvourne",
     "types": [
       "Eau",
       "Tenebres"
@@ -10718,7 +10732,8 @@ const POKEMON_Z_V212 = [
   },
   {
     "id": "pokemon-z-1014",
-    "name": "Marolier",
+    "name": "Ossassin",
+    "sourceName": "Marolier",
     "types": [
       "Sol",
       "Acier"
@@ -10729,7 +10744,8 @@ const POKEMON_Z_V212 = [
   },
   {
     "id": "pokemon-z-1015",
-    "name": "Sudrasil",
+    "name": "Simulmarbre",
+    "sourceName": "Sudrasil",
     "types": [
       "Roche",
       "Plante"
