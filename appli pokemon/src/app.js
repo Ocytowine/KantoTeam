@@ -149,6 +149,7 @@ const el = {
   openPokemonSearch: document.querySelector("#open-pokemon-search"),
   openPokemonZWiki: document.querySelector("#open-pokemon-z-wiki"),
   openSharedTeams: document.querySelector("#open-shared-teams"),
+  teamModeNav: document.querySelector("#team-mode-nav"),
   accountButton: document.querySelector("#account-button"),
   accountModal: document.querySelector("#account-modal"),
   typeHelperPanel: document.querySelector("#type-helper-panel"),
@@ -1324,6 +1325,11 @@ function bindEvents() {
   el.openPokemonSearch.addEventListener("click", () => openView("pokemonSearch"));
   el.openPokemonZWiki.addEventListener("click", openPokemonZWiki);
   el.openSharedTeams.addEventListener("click", () => openView("sharedTeams"));
+  el.teamModeNav.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-team-view]");
+    if (!button || !getActiveTeam()) return;
+    openView(button.dataset.teamView);
+  });
   el.pokemonZWikiQuery.addEventListener("input", () => {
     pokemonZWikiQuery = el.pokemonZWikiQuery.value;
     pokemonZWikiExpandedMachineId = null;
@@ -2282,13 +2288,30 @@ function renderSlots() {
 function renderActiveView() {
   const hasTeam = Boolean(getActiveTeam());
   const view = ["slots", "savedManager", "typeHelper", "pokemonSearch", "pokemonZWiki", "sharedTeams"].includes(state.activeView) ? state.activeView : hasTeam ? state.activeView : "composition";
+  document.body.dataset.activeView = view;
   el.slots.classList.toggle("hidden", view !== "slots");
   el.backToSlots.classList.toggle("hidden", view === "slots");
-  el.manageSavedPokemon.classList.toggle("hidden", view !== "slots");
-  el.openTypeHelper.classList.toggle("hidden", view !== "slots");
-  el.openPokemonSearch.classList.toggle("hidden", view !== "slots");
-  el.openPokemonZWiki.classList.toggle("hidden", view !== "slots" || getActiveGameKey() !== "pokemon-z");
-  el.openSharedTeams.classList.toggle("hidden", view !== "slots");
+  el.manageSavedPokemon.classList.remove("hidden");
+  el.openTypeHelper.classList.remove("hidden");
+  el.openPokemonSearch.classList.remove("hidden");
+  el.openPokemonZWiki.classList.toggle("hidden", getActiveGameKey() !== "pokemon-z");
+  el.openSharedTeams.classList.remove("hidden");
+  const generalViews = new Map([
+    [el.manageSavedPokemon, "savedManager"],
+    [el.openTypeHelper, "typeHelper"],
+    [el.openPokemonSearch, "pokemonSearch"],
+    [el.openPokemonZWiki, "pokemonZWiki"],
+    [el.openSharedTeams, "sharedTeams"]
+  ]);
+  generalViews.forEach((targetView, button) => {
+    button.toggleAttribute("aria-current", view === targetView);
+  });
+  el.teamModeNav.classList.toggle("hidden", !hasTeam);
+  el.teamModeNav.querySelectorAll("[data-team-view]").forEach((button) => {
+    const targetView = button.dataset.teamView;
+    button.classList.toggle("hidden", Boolean(sharedTeam) && targetView === "simulation");
+    button.toggleAttribute("aria-current", view === targetView);
+  });
   el.savedManagerPanel.classList.toggle("hidden", view !== "savedManager");
   el.sharedTeamsPanel.classList.toggle("hidden", view !== "sharedTeams");
   el.pokemonSearchPanel.classList.toggle("hidden", view !== "pokemonSearch");

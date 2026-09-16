@@ -430,6 +430,41 @@ body[data-game-theme="pokemon-z"] .app-title img {
   justify-content: flex-end;
 }
 
+.team-mode-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--ui-control-soft-bg);
+}
+
+.team-mode-nav button {
+  min-height: 36px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 7px 10px;
+  color: var(--muted);
+  background: transparent;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.team-mode-nav button:hover,
+.team-mode-nav button:focus-visible,
+.team-mode-nav button[aria-current="true"] {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  color: var(--text);
+  background: var(--ui-accent-wash);
+}
+
+.icon-nav-button[aria-current="true"] {
+  box-shadow: 0 0 0 2px rgba(var(--feature-rgb), 0.56), 0 0 24px rgba(var(--feature-rgb), 0.34);
+}
+
 .icon-nav-button {
   --feature-rgb: 244, 200, 74;
   position: relative;
@@ -8478,5 +8513,524 @@ body[data-game-theme="reforged"] .game-version-logo.reforged {
   .wiki-learnset-move-card .wiki-machine-stats span {
     flex: 1 1 0;
     min-width: 0;
+  }
+}
+
+/* Tableau de bord compact pour les téléphones tenus en paysage. */
+@media (orientation: landscape) and (max-height: 600px) {
+  .app-shell {
+    display: grid;
+    grid-template-columns: 108px minmax(0, 1fr);
+    column-gap: 10px;
+    align-items: start;
+    width: calc(100% - 10px);
+    padding: 5px 0 14px;
+  }
+
+  .app-header {
+    position: sticky;
+    z-index: 60;
+    top: 5px;
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    display: grid;
+    gap: 7px;
+    max-height: calc(100dvh - 10px);
+    margin: 0;
+    padding: 6px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--ui-sticky-bg);
+    box-shadow: var(--shadow);
+    scrollbar-width: thin;
+  }
+
+  .app-brand {
+    width: 100%;
+  }
+
+  .app-brand-meta {
+    min-height: 0;
+  }
+
+  .app-brand-meta .eyebrow,
+  .app-brand-meta .account-button {
+    display: none !important;
+  }
+
+  .app-title {
+    width: 72px;
+    height: 48px;
+  }
+
+  .header-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 5px;
+    width: 100%;
+    max-width: none;
+  }
+
+  .header-actions > .ghost-button {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-height: 34px;
+    padding: 5px;
+    font-size: 0.67rem;
+    line-height: 1.1;
+  }
+
+  .icon-nav-button,
+  .wiki-nav-button {
+    width: 100%;
+    height: 51px;
+    border-radius: 10px;
+  }
+
+  .icon-nav-button img {
+    width: 52px;
+    height: 52px;
+  }
+
+  .wiki-nav-button .pokemon-z-guide-nav-logo {
+    width: 57px;
+    height: 57px;
+  }
+
+  body .icon-nav-button::after {
+    display: block;
+    right: 3px;
+    bottom: 2px;
+    left: 3px;
+    width: auto;
+    min-height: 0;
+    padding: 1px 2px;
+    overflow: hidden;
+    border: 0;
+    background: var(--ui-sticky-bg);
+    color: var(--ui-text-gold);
+    font-size: 0.52rem;
+    line-height: 1.05;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    opacity: 0.92;
+    transform: none;
+  }
+
+  .team-mode-nav {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 4px;
+  }
+
+  .team-mode-nav button {
+    min-height: 30px;
+    padding: 4px 2px;
+    font-size: 0.64rem;
+  }
+
+  .game-version-switch,
+  .team-slots,
+  .workspace {
+    grid-column: 2;
+    min-width: 0;
+  }
+
+  .game-version-switch {
+    margin-bottom: 8px;
+    padding: 6px 10px;
+  }
+
+  .team-slots {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .team-slots .slot-card,
+  .team-slots .slot-card:not(.empty) {
+    grid-column: auto;
+    min-height: 132px;
+    padding: 10px;
+  }
+
+  .team-slot-heading {
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .team-slot-logo {
+    width: 34px;
+    height: 34px;
+    flex-basis: 34px;
+  }
+
+  .team-slot-heading .slot-meta {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 0.7rem;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .slot-card strong {
+    margin: 2px 0;
+    overflow: hidden;
+    font-size: 0.88rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .slot-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 5px;
+    margin-top: 8px;
+  }
+
+  .slot-actions .small-button {
+    min-width: 0;
+    min-height: 30px;
+    padding: 4px 5px;
+    font-size: 0.67rem;
+  }
+
+  .slot-actions .icon-action-button {
+    width: 30px;
+    height: 30px;
+    justify-self: end;
+  }
+
+  .team-slot-favorite-backdrop {
+    width: 58%;
+    opacity: 0.35;
+  }
+
+  .team-slot-favorite-backdrop img {
+    width: 130px;
+    height: 130px;
+  }
+
+  .panel {
+    padding: 10px;
+  }
+
+  .composition-panel {
+    position: relative;
+  }
+
+  .panel > .panel-heading {
+    position: sticky;
+    z-index: 35;
+    top: 0;
+    min-height: 48px;
+    margin: -10px -10px 10px;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--line);
+    background: var(--ui-sticky-bg);
+    backdrop-filter: blur(12px);
+  }
+
+  .panel-heading h2 {
+    font-size: 1rem;
+  }
+
+  .panel-heading .eyebrow {
+    font-size: 0.62rem;
+  }
+
+  #composition-list,
+  #saved-pokemon-list,
+  #pokemon-search-results,
+  #helper-pokemon-list,
+  #team-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  #composition-list > .composition-empty-slots,
+  #composition-list > .reserve-section,
+  #composition-list > .composition-add-panel,
+  #pokemon-search-results > .pokemon-comparison-toolbar,
+  #pokemon-search-results > .empty-state,
+  #helper-pokemon-list > .empty-state,
+  #saved-pokemon-list > .empty-state,
+  #team-list > .empty-state {
+    grid-column: 1 / -1;
+  }
+
+  .pokemon-card.collapsible:not(.expanded) .pokemon-card-body {
+    display: none;
+  }
+
+  .pokemon-card {
+    min-width: 0;
+    padding: 8px;
+  }
+
+  .pokemon-card-header {
+    align-items: center;
+    gap: 5px;
+  }
+
+  .pokemon-card-main {
+    min-width: 0;
+  }
+
+  .pokemon-card-toggle {
+    min-width: 0;
+  }
+
+  .pokemon-heading-with-sprite {
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .pokemon-card .pokemon-sprite {
+    width: 50px;
+    height: 50px;
+    flex-basis: 50px;
+  }
+
+  .pokemon-card .pokemon-title {
+    min-width: 0;
+    font-size: 0.76rem;
+  }
+
+  .pokemon-card .pokemon-title > span:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pokemon-card .name-type-logos {
+    gap: 3px;
+  }
+
+  .pokemon-card .name-type-logos .type-logo-only {
+    width: 20px;
+    height: 20px;
+  }
+
+  .pokemon-card-header .card-actions {
+    gap: 2px;
+    flex: 0 0 auto;
+  }
+
+  .pokemon-card-header .icon-action-button {
+    width: 28px;
+    height: 28px;
+  }
+
+  .pokemon-reveal-hint {
+    font-size: 0.58rem;
+  }
+
+  .composition-empty-slots {
+    grid-template-columns: repeat(6, minmax(54px, 1fr));
+    gap: 5px;
+  }
+
+  .composition-add-slot {
+    width: 58px;
+    height: 58px;
+  }
+
+  .composition-add-slot .add-pokeball-icon.large {
+    width: 52px;
+    height: 52px;
+  }
+
+  .share-actions {
+    position: absolute;
+    z-index: 42;
+    top: 5px;
+    right: 68px;
+    margin: 0;
+  }
+
+  .share-icon-button {
+    width: 38px;
+    height: 38px;
+  }
+
+  .pokemon-search-controls {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .pokemon-search-controls > :first-child {
+    grid-column: auto;
+  }
+
+  .pokemon-search-controls .field span {
+    font-size: 0.68rem;
+  }
+
+  .pokemon-search-controls input,
+  .pokemon-search-controls select,
+  .pokemon-search-controls .small-button {
+    min-height: 36px;
+    font-size: 0.7rem;
+  }
+
+  .type-helper-step {
+    padding: 10px;
+  }
+
+  .type-helper-controls {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .summary-grid,
+  .simulation-helper-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* En portrait, la navigation du mode reste accessible sans réoccuper un écran entier. */
+@media (max-width: 640px) and (orientation: portrait) {
+  body:not([data-active-view="slots"]) .app-header {
+    position: sticky;
+    z-index: 60;
+    top: 0;
+    display: block;
+    margin: 0 -9px 10px;
+    padding: 6px 9px;
+    background: var(--ui-sticky-bg);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(12px);
+  }
+
+  body:not([data-active-view="slots"]) .app-brand {
+    display: none;
+  }
+
+  body:not([data-active-view="slots"]) .header-actions {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    width: 100%;
+    padding: 2px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  body:not([data-active-view="slots"]) .header-actions::-webkit-scrollbar {
+    display: none;
+  }
+
+  body:not([data-active-view="slots"]) .header-actions > * {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+
+  body:not([data-active-view="slots"]) .header-actions > .ghost-button {
+    width: 72px;
+    min-height: 64px;
+    padding: 5px;
+    font-size: 0.65rem;
+    line-height: 1.1;
+  }
+
+  body:not([data-active-view="slots"]) .icon-nav-button {
+    width: 58px;
+    height: 64px;
+    padding-bottom: 18px;
+  }
+
+  body:not([data-active-view="slots"]) .team-mode-nav {
+    flex-wrap: nowrap;
+  }
+
+  body:not([data-active-view="slots"]) .panel > .panel-heading {
+    position: sticky;
+    z-index: 35;
+    top: 78px;
+    margin: -18px -18px 10px;
+    padding: 9px 18px;
+    border-bottom: 1px solid var(--line);
+    background: var(--ui-sticky-bg);
+    backdrop-filter: blur(12px);
+  }
+
+  #composition-list,
+  #saved-pokemon-list,
+  #pokemon-search-results,
+  #helper-pokemon-list,
+  #team-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: 8px;
+  }
+
+  #composition-list > .composition-empty-slots,
+  #composition-list > .reserve-section,
+  #composition-list > .composition-add-panel,
+  #pokemon-search-results > .pokemon-comparison-toolbar,
+  #pokemon-search-results > .empty-state,
+  #helper-pokemon-list > .empty-state,
+  #saved-pokemon-list > .empty-state,
+  #team-list > .empty-state {
+    grid-column: 1 / -1;
+  }
+
+  .pokemon-card.collapsible:not(.expanded) .pokemon-card-body {
+    display: none;
+  }
+
+  #composition-list .pokemon-card-header,
+  #saved-pokemon-list .pokemon-card-header,
+  #pokemon-search-results .pokemon-card-header,
+  #helper-pokemon-list .pokemon-card-header,
+  #team-list .pokemon-card-header {
+    align-items: center;
+    flex-direction: row;
+    gap: 4px;
+  }
+
+  #composition-list .pokemon-card-main,
+  #saved-pokemon-list .pokemon-card-main,
+  #pokemon-search-results .pokemon-card-main,
+  #helper-pokemon-list .pokemon-card-main,
+  #team-list .pokemon-card-main {
+    width: auto;
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  #composition-list .pokemon-card .pokemon-sprite,
+  #saved-pokemon-list .pokemon-card .pokemon-sprite,
+  #pokemon-search-results .pokemon-card .pokemon-sprite,
+  #helper-pokemon-list .pokemon-card .pokemon-sprite,
+  #team-list .pokemon-card .pokemon-sprite {
+    width: 52px;
+    height: 52px;
+    flex-basis: 52px;
+  }
+
+  #composition-list .pokemon-card-header .card-actions,
+  #saved-pokemon-list .pokemon-card-header .card-actions,
+  #pokemon-search-results .pokemon-card-header .card-actions,
+  #helper-pokemon-list .pokemon-card-header .card-actions,
+  #team-list .pokemon-card-header .card-actions {
+    width: auto;
+    gap: 1px;
+  }
+
+  #composition-list .pokemon-card-header .icon-action-button,
+  #saved-pokemon-list .pokemon-card-header .icon-action-button,
+  #pokemon-search-results .pokemon-card-header .icon-action-button,
+  #helper-pokemon-list .pokemon-card-header .icon-action-button,
+  #team-list .pokemon-card-header .icon-action-button {
+    width: 27px;
+    height: 27px;
   }
 }

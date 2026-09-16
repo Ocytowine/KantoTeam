@@ -244,6 +244,16 @@
     frame.hidden = false;
     Object.assign(frame.style, { position: "fixed", left: "-10000px", top: "0", width: "915px", height: "412px" });
     await wait(50);
+    const landscapeShellColumns = win.getComputedStyle(doc.querySelector(".app-shell")).gridTemplateColumns.trim().split(/\s+/);
+    const landscapePokemonColumns = win.getComputedStyle(doc.querySelector("#composition-list")).gridTemplateColumns.trim().split(/\s+/);
+    assert(landscapeShellColumns.length === 2, "Le paysage n'utilise pas un rail de navigation et une zone de contenu");
+    assert(win.getComputedStyle(doc.querySelector(".app-header")).position === "sticky", "Le rail de navigation n'est pas ancré en paysage");
+    assert(!doc.querySelector("#back-to-slots").classList.contains("hidden"), "Le retour aux équipes disparaît du rail");
+    assert(!doc.querySelector("#open-pokemon-search").classList.contains("hidden"), "Les modes généraux disparaissent hors de l'accueil");
+    assert(!doc.querySelector("#team-mode-nav").classList.contains("hidden"), "Les modes Équipe, Analyse et Versus ne sont pas persistants");
+    assert(landscapePokemonColumns.length === 3, "Les cartes Pokémon ne sont pas distribuées sur trois colonnes en paysage");
+    assert(win.getComputedStyle(doc.querySelector("#composition-list .pokemon-card-body")).display === "none", "Une carte Pokémon n'est pas réduite par défaut en paysage");
+    assert(win.getComputedStyle(doc.querySelector("#composition-panel > .panel-heading")).position === "sticky", "Les actions du mode ne restent pas ancrées en haut");
     doc.querySelector("#composition-list [data-open-team-add]").click();
     await wait(50);
     const landscapeAddPanel = doc.querySelector("#composition-add-panel:not(.hidden)");
@@ -253,11 +263,29 @@
     assert(landscapeAddRect.left >= 0 && landscapeAddRect.right <= win.innerWidth + 1, "La fenêtre d'ajout déborde horizontalement en paysage");
     assert(doc.documentElement.scrollWidth <= doc.documentElement.clientWidth, "L'application déborde horizontalement en paysage Android");
     landscapeAddPanel.querySelector("[data-team-add-close]").click();
+    doc.querySelector("#team-mode-nav [data-team-view='analysis']").click();
+    assert(doc.querySelector("#analysis-panel:not(.hidden)"), "Le rail ne permet pas d'ouvrir l'analyse de l'équipe");
+    doc.querySelector("#team-mode-nav [data-team-view='composition']").click();
+    assert(doc.querySelector("#composition-panel:not(.hidden)"), "Le rail ne permet pas de revenir à la gestion d'équipe");
     for (const view of ["pokemonSearch", "typeHelper", "analysis", "simulation", "pokemonZWiki"]) {
       win.openView(view);
       await wait(20);
       assert(doc.documentElement.scrollWidth <= doc.documentElement.clientWidth, `La vue ${view} déborde horizontalement en paysage Android`);
     }
+    win.openView("slots");
+    const landscapeSlotColumns = win.getComputedStyle(doc.querySelector("#team-slots")).gridTemplateColumns.trim().split(/\s+/);
+    const landscapeSlotTops = Array.from(doc.querySelectorAll("#team-slots .slot-card"), (card) => Math.round(card.getBoundingClientRect().top));
+    assert(landscapeSlotColumns.length === 3 && new Set(landscapeSlotTops).size === 1, "Les trois slots d'équipe ne partagent pas correctement la largeur en paysage");
+    win.openView("composition");
+    Object.assign(frame.style, { width: "412px", height: "915px" });
+    await wait(50);
+    const portraitPokemonColumns = win.getComputedStyle(doc.querySelector("#composition-list")).gridTemplateColumns.trim().split(/\s+/);
+    assert(portraitPokemonColumns.length === 2, "Les cartes Pokémon ne passent pas sur deux colonnes en portrait");
+    assert(win.getComputedStyle(doc.querySelector(".app-header")).position === "sticky", "La navigation supérieure n'est pas ancrée en portrait");
+    assert(win.getComputedStyle(doc.querySelector("#composition-panel > .panel-heading")).position === "sticky", "Les actions du mode ne sont pas ancrées sous la navigation en portrait");
+    assert(doc.documentElement.scrollWidth <= doc.documentElement.clientWidth, "La gestion d'équipe déborde horizontalement en portrait");
+    win.openView("slots");
+    assert(doc.documentElement.scrollWidth <= doc.documentElement.clientWidth, "L'écran des équipes déborde horizontalement en portrait");
     win.openView("composition");
     Object.assign(frame.style, { width: "300px", height: "150px" });
     await wait(50);
