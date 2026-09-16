@@ -28,7 +28,22 @@
       activeGame: "reforged",
       games: {
         reforged: { ...base, teams: [{ name: "Equipe Reforged", preferredSource: "reforged", pokemon: [], reservePokemonIds: [] }, null, null] },
-        "pokemon-z": { ...base, teams: [{ name: "Equipe Z", preferredSource: "pokemon-z", pokemon: [{ instanceId: "z-bulbizarre", sourceId: "pokemon-z-1", pokemonZId: "pokemon-z-1", nationalId: 1, name: "Bulbizarre", types: ["Plante", "Poison"], attacks: ["Plante", "Poison"] }], reservePokemonIds: [] }, null, null] }
+        "pokemon-z": {
+          ...base,
+          teams: [{ name: "Equipe Z", preferredSource: "pokemon-z", pokemon: [{ instanceId: "z-bulbizarre", sourceId: "pokemon-z-1", pokemonZId: "pokemon-z-1", nationalId: 1, name: "Bulbizarre", types: ["Plante", "Poison"], attacks: ["Plante", "Poison"] }], reservePokemonIds: [] }, null, null],
+          sharedTeams: [{
+            id: "shared-test",
+            name: "Equipe reçue",
+            savedName: "Equipe reçue",
+            senderName: "Alice",
+            preferredSource: "pokemon-z",
+            favoritePokemonInstanceId: "shared-pikachu",
+            pokemon: [
+              { instanceId: "shared-bulbizarre", sourceId: "pokemon-z-1", pokemonZId: "pokemon-z-1", nationalId: 1, name: "Bulbizarre", types: ["Plante", "Poison"], attacks: ["Plante"] },
+              { instanceId: "shared-pikachu", sourceId: "pokemon-z-25", pokemonZId: "pokemon-z-25", nationalId: 25, name: "Pikachu", types: ["Electrik", "Combat"], attacks: ["Electrik"] }
+            ]
+          }]
+        }
       }
     }));
     const reloaded = loaded();
@@ -51,20 +66,24 @@
     const emptyTeamPokeball = doc.querySelector("#team-slots img[data-theme-asset='assets/add-team-pokeball.png']");
     assert(emptyTeamPokeball, "L'icone add-team-pokeball n'est pas affectee au slot libre");
     assert(!emptyTeamPokeball.closest(".empty-team-slot").textContent.trim(), "Le slot d'equipe libre contient encore du texte");
-    assert(win.getComputedStyle(emptyTeamPokeball).width === "82px", "Le logo du slot d'equipe libre n'est pas agrandi");
+    assert(parseFloat(win.getComputedStyle(emptyTeamPokeball).width) >= 82, "Le logo du slot d'equipe libre n'est pas agrandi");
     const filledTeamPokeball = doc.querySelector("#team-slots img[data-theme-asset='assets/team-pokeball.png']");
     assert(filledTeamPokeball, "L'icone team-pokeball n'est pas affectee a l'equipe existante");
     assert(filledTeamPokeball.dataset.themeFallback === "assets/pokeball.png", "Le repli de team-pokeball est absent");
     assert(doc.querySelector("#team-slots").textContent.includes("Equipe Reforged"), "Equipe Reforged absente");
     assert(!win.getPokemonSpriteSources({ id: 25, name: "Pikachu", nationalId: 25, origin: "reforged" }).small.includes("pokemon-z-sprites"), "Les sprites Z contaminent la version Reforged");
-    const reforgedSlotButton = doc.querySelector('#team-slots [data-action="analysis"]');
-    const reforgedButtonColor = win.getComputedStyle(reforgedSlotButton).color.match(/[\d.]+/g)?.slice(0, 3).map(Number) || [];
-    assert(reforgedButtonColor.length === 3 && reforgedButtonColor.reduce((sum, value) => sum + value, 0) / 3 > 180, "Texte sombre sur les boutons de slot Reforged");
+    const reforgedActionLabel = doc.querySelector("#team-slots .slot-action-wheel text");
+    const reforgedLabelStyle = win.getComputedStyle(reforgedActionLabel);
+    assert(reforgedLabelStyle.fontFamily === win.getComputedStyle(doc.body).fontFamily && reforgedLabelStyle.stroke === "none", "Le texte des commandes de slot ne reprend pas le style de l'application");
     doc.querySelector("#game-version-toggle").click();
     await wait(800);
     assert(doc.querySelectorAll("#team-slots .slot-card").length === 3, "Pokemon Z doit afficher 3 slots");
     assert(doc.querySelector("#team-slots").textContent.includes("Equipe Z"), "Equipe Z absente");
     assert(!doc.querySelector("#team-slots").textContent.includes("Equipe Reforged"), "Melange entre les banques");
+    assert(!doc.querySelector("#team-slots").textContent.includes("Slot 1"), "La mention Slot 1 est encore affichée");
+    assert(!doc.querySelector("#team-slots").textContent.includes("v2.12"), "Le nom de version est encore répété dans le slot");
+    assert(!doc.querySelector("#team-slots [data-action='delete']"), "La poubelle est encore affichée dans les slots");
+    assert(doc.querySelector("#team-slots [data-action='composition']")?.getAttribute("aria-label") === "Gestion", "Le bouton Gestion conserve un libellé trop long");
     assert(doc.body.dataset.gameTheme === "pokemon-z", "Palette Pokemon Z non activee");
     assert(doc.querySelector("#open-shared-teams img")?.getAttribute("src") === "assets/share-pokeball_z.webp", "Logo share-pokeball Z absent du partage");
     assert(win.getComputedStyle(doc.querySelector("#open-type-helper")).getPropertyValue("--feature-rgb").trim() === "126, 142, 255", "Couleur du Guide des types absente");
@@ -74,6 +93,16 @@
     const zFilledTeamPokeball = doc.querySelector("#team-slots img[data-theme-asset='assets/team-pokeball.png']");
     assert(zFilledTeamPokeball?.getAttribute("src").endsWith("_z.png"), "La variante Z de l'icone d'equipe n'est pas chargee");
     assert(win.getComputedStyle(doc.querySelector("#team-slots"), "::before").backgroundImage.includes("Titre_Pokemon_Z.png"), "Le titre Pokemon Z n'est pas intégré au fond des slots");
+    win.openView("sharedTeams");
+    assert(doc.querySelectorAll("#shared-teams-list .shared-team-slot-card").length === 3, "Les équipes partagées ne reprennent pas les trois slots circulaires");
+    assert(doc.querySelectorAll("#shared-teams-list .shared-team-empty-slot").length === 2, "Les emplacements partagés libres sont absents");
+    const sharedSlot = doc.querySelector("#shared-teams-list .shared-team-slot-card:not(.empty)");
+    assert(win.getComputedStyle(sharedSlot).borderRadius === "50%" && sharedSlot.querySelectorAll(".slot-action-wheel textPath").length === 3, "Le slot partagé ne reprend pas le visuel circulaire principal");
+    assert(sharedSlot.querySelector(".team-slot-info-wheel")?.textContent.includes("Alice"), "Le nom de l'expéditeur n'est pas affiché sur le slot partagé");
+    sharedSlot.querySelector("[data-open-shared-team]").click();
+    assert(doc.querySelectorAll("#shared-teams-list .shared-team-detail-pokemon .pokemon-card").length === 2, "Les Pokémon partagés ne sont pas présentés sous forme de cartes");
+    assert(!doc.querySelector("#shared-teams-list .shared-team-detail-pokemon .library-kind"), "La version est encore affichée dans les cartes partagées");
+    win.openView("slots");
     assert(doc.querySelector("#catalog-select").options.length === 1018, "Catalogue Pokemon Z incomplet");
     assert(win.getPokemonBaseStats({ id: "pokemon-z-1", nationalId: 1 }).hp === 50, "Les statistiques propres a Pokemon Z ne sont pas utilisees");
     const wikiButton = doc.querySelector("#open-pokemon-z-wiki");
@@ -253,6 +282,7 @@
     const railRect = doc.querySelector(".app-header").getBoundingClientRect();
     const railButtons = Array.from(doc.querySelectorAll(".header-actions .icon-nav-button:not(.hidden)"));
     assert(railButtons.every((button) => button.getBoundingClientRect().bottom <= railRect.bottom + 1), "Tous les boutons du rail ne tiennent pas dans la hauteur disponible");
+    assert(railButtons.every((button) => win.getComputedStyle(button).display === "grid" && win.getComputedStyle(button, "::after").position === "static"), "Les noms du rail vertical restent superposés aux logos");
     assert(doc.querySelector("#context-bar #back-to-slots"), "Le retour aux équipes n'est pas placé dans l'ancrage contextuel");
     assert(!doc.querySelector("#open-pokemon-search").classList.contains("hidden"), "Les modes généraux disparaissent hors de l'accueil");
     assert(!doc.querySelector(".app-header .app-title"), "Le titre occupe encore inutilement le rail vertical");
@@ -342,8 +372,22 @@
     assert(!doc.querySelector("#back-to-slots"), "Le retour aux équipes est affiché alors que l'accueil est déjà ouvert");
     assert(!doc.querySelector("#team-slots .slot-card.active"), "Un slot est présenté comme une équipe ouverte sur l'écran de sélection");
     const landscapeSlotColumns = win.getComputedStyle(doc.querySelector("#team-slots")).gridTemplateColumns.trim().split(/\s+/);
-    const landscapeSlotTops = Array.from(doc.querySelectorAll("#team-slots .slot-card"), (card) => Math.round(card.getBoundingClientRect().top));
-    assert(landscapeSlotColumns.length === 3 && new Set(landscapeSlotTops).size === 1, "Les trois slots d'équipe ne partagent pas correctement la largeur en paysage");
+    const landscapeSlotRects = Array.from(doc.querySelectorAll("#team-slots .slot-card"), (card) => card.getBoundingClientRect());
+    const slotsRect = doc.querySelector("#team-slots").getBoundingClientRect();
+    assert(landscapeSlotColumns.length === 2, "Les slots ne laissent pas une zone centrale en paysage");
+    assert(Math.abs(landscapeSlotRects[0].top - landscapeSlotRects[1].top) <= 1 && landscapeSlotRects[2].top > landscapeSlotRects[0].bottom, "Les slots ne suivent pas la disposition triangulaire attendue");
+    assert(Math.abs((landscapeSlotRects[2].left + landscapeSlotRects[2].width / 2) - (slotsRect.left + slotsRect.width / 2)) <= 2, "Le troisième slot n'est pas centré sous le logo");
+    assert(landscapeSlotRects.every((rect) => Math.abs(rect.width - rect.height) <= 1), "Les slots d'équipe ne sont pas ronds");
+    assert(landscapeSlotRects[1].left - landscapeSlotRects[0].right >= landscapeSlotRects[0].width * 0.7, "Les deux slots supérieurs ne libèrent pas assez le logo central");
+    const curvedSlotActions = Array.from(doc.querySelectorAll("#team-slots .slot-card:not(.empty) .slot-actions .small-button"));
+    assert(curvedSlotActions.length === 3 && curvedSlotActions.every((button) => win.getComputedStyle(button).clipPath !== "none"), "Les commandes du slot ne forment pas trois secteurs circulaires");
+    const actionWheel = curvedSlotActions[0].parentElement.querySelector(".slot-action-wheel");
+    assert(actionWheel?.querySelectorAll(".slot-action-segment").length === 3 && Array.from(actionWheel.querySelectorAll(".slot-action-segment")).every((path) => path.getAttribute("d").includes(" A 99 99 ")), "Les commandes n'utilisent pas trois arcs SVG nets");
+    assert(actionWheel.querySelectorAll("textPath").length === 3 && Array.from(actionWheel.querySelectorAll("textPath")).every((label) => label.getAttribute("startOffset") === "50%"), "Les libellés ne sont pas centrés sur les arcs des commandes");
+    const slotInfoWheel = doc.querySelector("#team-slots .slot-card:not(.empty) .team-slot-info-wheel");
+    assert(slotInfoWheel?.querySelectorAll("textPath").length === 3, "Le nom, l'effectif et la réserve ne suivent pas le cercle du slot");
+    const landscapeTitleLayer = win.getComputedStyle(doc.querySelector("#team-slots"), "::before");
+    assert(parseFloat(landscapeTitleLayer.top) <= 0 && parseFloat(landscapeTitleLayer.bottom) > 0, "Le logo titre n'est pas remonté dans la composition");
     win.openView("composition");
     Object.assign(frame.style, { width: "412px", height: "915px" });
     await wait(50);
@@ -357,6 +401,9 @@
     const portraitSearchColumns = win.getComputedStyle(doc.querySelector("#pokemon-search-results .pokemon-search-card-list")).gridTemplateColumns.trim().split(/\s+/);
     assert(portraitSearchColumns.length === 1, "La recherche Pokémon ne passe pas en liste verticale en portrait");
     win.openView("slots");
+    const portraitSlotRects = Array.from(doc.querySelectorAll("#team-slots .slot-card"), (card) => card.getBoundingClientRect());
+    assert(portraitSlotRects.every((rect) => rect.left >= -1 && rect.right <= doc.documentElement.clientWidth + 1), "Un slot rond sort de l'écran en portrait");
+    assert(Math.abs(portraitSlotRects[0].top - portraitSlotRects[1].top) <= 1 && portraitSlotRects[2].top > portraitSlotRects[0].bottom, "La disposition triangulaire des slots est perdue en portrait");
     assert(doc.documentElement.scrollWidth <= doc.documentElement.clientWidth, "L'écran des équipes déborde horizontalement en portrait");
     win.openView("composition");
     Object.assign(frame.style, { width: "300px", height: "150px" });
@@ -545,6 +592,12 @@
     const favoriteTeamCard = doc.querySelector("#team-slots .slot-card.has-favorite-pokemon");
     assert(favoriteTeamCard, "La carte d'equipe ne reprend pas les types du Pokemon prefere");
     assert(favoriteTeamCard.style.getPropertyValue("--favorite-type-one") && favoriteTeamCard.style.getPropertyValue("--favorite-type-two"), "Les couleurs des types du favori ne sont pas appliquees");
+    const favoriteSpriteContainerStyle = win.getComputedStyle(favoriteTeamCard.querySelector(".team-slot-favorite-backdrop"));
+    const favoriteSpriteStyle = win.getComputedStyle(favoriteTeamCard.querySelector(".team-slot-favorite-backdrop img"));
+    assert(favoriteSpriteContainerStyle.overflow === "visible" && favoriteSpriteContainerStyle.maskImage === "none", "Le conteneur du sprite favori peut encore le recouper");
+    assert(favoriteSpriteStyle.objectFit === "contain" && favoriteSpriteStyle.transform === "none", "Le format du sprite favori n'est pas correctement contenu");
+    assert((favoriteSpriteStyle.filter.match(/drop-shadow/g) || []).length >= 2, "L'ombre colorée du sprite favori est absente");
+    assert(Number(win.getComputedStyle(favoriteTeamCard.querySelector(".slot-actions")).zIndex) > Number(favoriteSpriteContainerStyle.zIndex), "Les boutons du slot peuvent passer derrière le sprite favori");
     const favoriteHaloStyle = win.getComputedStyle(favoriteTeamCard, "::before");
     assert(favoriteHaloStyle.animationName === "favorite-type-halo-flow", "Le halo colore du favori n'est pas anime");
     assert(favoriteHaloStyle.zIndex === "-1" && win.getComputedStyle(favoriteTeamCard).overflow === "visible", "Le halo n'est pas place derriere la carte");
@@ -569,9 +622,18 @@
     query.dispatchEvent(new win.Event("input", { bubbles: true }));
     await wait();
     assert(doc.querySelector("#pokemon-search-results").textContent.includes("Dracaufeu"), "Le filtre des legendaires masque un Pokemon ordinaire");
+    assert(!doc.querySelector("#pokemon-search-results .library-kind"), "La version reste affichée dans une carte de recherche");
+    assert(win.getComputedStyle(doc.querySelector("#pokemon-search-results .pokemon-search-card:not(.expanded) .pokemon-card-toggle")).justifyContent === "center", "Le contenu d'une carte de recherche n'est pas recentré");
     legendaryFilter.click();
     query.value = "";
     query.dispatchEvent(new win.Event("input", { bubbles: true }));
+    searchTypeOne.value = "Eau";
+    searchTypeOne.dispatchEvent(new win.Event("change", { bubbles: true }));
+    const firstSearchBatchCount = doc.querySelectorAll("#pokemon-search-results .pokemon-search-card").length;
+    const searchLoadMore = doc.querySelector("#pokemon-search-results [data-load-more-pokemon-search]");
+    assert(firstSearchBatchCount === 36 && Number(searchLoadMore?.dataset.total) > 36, "La recherche ne propose pas les résultats situés après les 36 premiers Pokémon");
+    searchLoadMore.click();
+    assert(doc.querySelectorAll("#pokemon-search-results .pokemon-search-card").length > 36, "Le lot suivant de Pokémon ne se charge pas");
     searchTypeOne.value = "Dragon";
     searchTypeOne.dispatchEvent(new win.Event("change", { bubbles: true }));
     statSort.click();
