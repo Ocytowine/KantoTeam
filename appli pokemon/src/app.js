@@ -138,18 +138,16 @@ let authState = {
 
 const el = {
   intro: document.querySelector("#app-intro"),
-  appTitleLogo: document.querySelector("#app-title-logo"),
   appFavicon: document.querySelector("#app-favicon"),
   gameVersionSwitch: document.querySelector("#game-version-switch"),
   gameVersionToggle: document.querySelector("#game-version-toggle"),
   slots: document.querySelector("#team-slots"),
-  backToSlots: document.querySelector("#back-to-slots"),
   openTypeHelper: document.querySelector("#open-type-helper"),
   manageSavedPokemon: document.querySelector("#manage-saved-pokemon"),
   openPokemonSearch: document.querySelector("#open-pokemon-search"),
   openPokemonZWiki: document.querySelector("#open-pokemon-z-wiki"),
   openSharedTeams: document.querySelector("#open-shared-teams"),
-  teamModeNav: document.querySelector("#team-mode-nav"),
+  contextBar: document.querySelector("#context-bar"),
   accountButton: document.querySelector("#account-button"),
   accountModal: document.querySelector("#account-modal"),
   typeHelperPanel: document.querySelector("#type-helper-panel"),
@@ -1316,20 +1314,12 @@ function bindEvents() {
   el.gameVersionToggle.addEventListener("click", () => {
     transitionToGame(getActiveGameKey() === "reforged" ? "pokemon-z" : "reforged");
   });
-  el.backToSlots.addEventListener("click", () => {
-    openView("slots");
-  });
-
   el.manageSavedPokemon.addEventListener("click", () => openView("savedManager"));
   el.openTypeHelper.addEventListener("click", () => openView("typeHelper"));
   el.openPokemonSearch.addEventListener("click", () => openView("pokemonSearch"));
   el.openPokemonZWiki.addEventListener("click", openPokemonZWiki);
   el.openSharedTeams.addEventListener("click", () => openView("sharedTeams"));
-  el.teamModeNav.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-team-view]");
-    if (!button || !getActiveTeam()) return;
-    openView(button.dataset.teamView);
-  });
+  el.contextBar.addEventListener("click", handleContextBarClick);
   el.pokemonZWikiQuery.addEventListener("input", () => {
     pokemonZWikiQuery = el.pokemonZWikiQuery.value;
     pokemonZWikiExpandedMachineId = null;
@@ -2134,6 +2124,7 @@ function renderAll() {
   renderPreview();
   renderAnalysis(activeTeam);
   renderAccountControl();
+  renderContextBar();
   syncTypeWheels(document);
   void syncThemedAssets(document);
 }
@@ -2141,7 +2132,6 @@ function renderAll() {
 function renderGameSwitch() {
   const game = getActiveGameKey();
   document.body.dataset.gameTheme = game;
-  el.appTitleLogo.src = game === "pokemon-z" ? "assets/Titre_Pokemon_Z.png" : "assets/Titre.png";
   el.gameVersionSwitch.classList.toggle("hidden", state.activeView !== "slots" || Boolean(sharedTeam));
   el.gameVersionToggle.setAttribute("aria-checked", String(game === "reforged"));
   el.gameVersionToggle.setAttribute("aria-label", game === "reforged" ? "Basculer vers Pokemon Z" : "Basculer vers Kanto Reforged");
@@ -2235,7 +2225,7 @@ function renderSlots() {
   el.slots.innerHTML = "";
   state.teams.forEach((team, index) => {
     const card = document.createElement("article");
-    card.className = `slot-card ${team ? "" : "empty"} ${index === state.selectedSlot ? "active" : ""}`;
+    card.className = `slot-card ${team ? "" : "empty"}`;
     const reserveCount = team ? getTeamReservePokemon(team).length : 0;
     const favoritePokemon = team ? getTeamFavoritePokemon(team) : null;
     if (favoritePokemon) {
@@ -2290,7 +2280,6 @@ function renderActiveView() {
   const view = ["slots", "savedManager", "typeHelper", "pokemonSearch", "pokemonZWiki", "sharedTeams"].includes(state.activeView) ? state.activeView : hasTeam ? state.activeView : "composition";
   document.body.dataset.activeView = view;
   el.slots.classList.toggle("hidden", view !== "slots");
-  el.backToSlots.classList.toggle("hidden", view === "slots");
   el.manageSavedPokemon.classList.remove("hidden");
   el.openTypeHelper.classList.remove("hidden");
   el.openPokemonSearch.classList.remove("hidden");
@@ -2306,12 +2295,6 @@ function renderActiveView() {
   generalViews.forEach((targetView, button) => {
     button.toggleAttribute("aria-current", view === targetView);
   });
-  el.teamModeNav.classList.toggle("hidden", !hasTeam);
-  el.teamModeNav.querySelectorAll("[data-team-view]").forEach((button) => {
-    const targetView = button.dataset.teamView;
-    button.classList.toggle("hidden", Boolean(sharedTeam) && targetView === "simulation");
-    button.toggleAttribute("aria-current", view === targetView);
-  });
   el.savedManagerPanel.classList.toggle("hidden", view !== "savedManager");
   el.sharedTeamsPanel.classList.toggle("hidden", view !== "sharedTeams");
   el.pokemonSearchPanel.classList.toggle("hidden", view !== "pokemonSearch");
@@ -2321,6 +2304,116 @@ function renderActiveView() {
   el.simulationPanel.classList.toggle("hidden", view !== "simulation" || Boolean(sharedTeam));
   el.editorPanel.classList.add("hidden");
   el.analysisPanel.classList.toggle("hidden", view !== "analysis");
+}
+
+function contextViewButton(view, label) {
+  return `<button class="context-action" type="button" data-context-view="${view}">${label}</button>`;
+}
+
+function renderContextBar() {
+  const view = document.body.dataset.activeView || state.activeView;
+  if (view === "slots") {
+    el.contextBar.classList.add("hidden");
+    el.contextBar.innerHTML = "";
+    return;
+  }
+
+  const team = getActiveTeam();
+  const titleByView = {
+    savedManager: "Pokémon sauvegardés",
+    typeHelper: "Assistant des types",
+    pokemonSearch: "Recherche Pokémon",
+    pokemonZWiki: "Guide Pokémon Z",
+    sharedTeams: "Équipes partagées"
+  };
+  let title = titleByView[view] || team?.name || "Équipe";
+  let eyebrow = "Navigation";
+  let meta = "";
+  const actions = [];
+
+  if (["composition", "analysis", "simulation"].includes(view) && team) {
+    eyebrow = view === "composition" ? "Gestion d'équipe" : view === "analysis" ? "Analyse d'équipe" : "Versus";
+    title = team.name || `Équipe ${state.selectedSlot + 1}`;
+    meta = view === "simulation"
+      ? `${simulationDraft.enemies.filter(Boolean).length}/6 adversaires`
+      : `${team.pokemon.length}/6 Pokémon`;
+    const expandedCompositionCard = view === "composition" ? el.compositionList.querySelector(".composition-member-card.expanded") : null;
+    if (expandedCompositionCard) {
+      actions.push(`<button class="context-action primary" type="button" data-context-command="collapse-pokemon-card">Vue équipe</button>`);
+    } else {
+      if (view !== "composition") actions.push(contextViewButton("composition", "Gestion"));
+      if (view !== "analysis") actions.push(contextViewButton("analysis", "Analyse"));
+      if (view !== "simulation" && !sharedTeam) actions.push(contextViewButton("simulation", "Versus"));
+      if (view === "composition") actions.push(`<button class="context-action" type="button" data-context-command="share">Partager</button>`);
+      if (view === "composition" && !sharedTeam) actions.push(`<button class="context-action" type="button" data-context-command="settings">Réglages</button>`);
+      if (view === "simulation") {
+        const hasReserve = getTeamReservePokemon(team).length > 0;
+        actions.push(`<button class="context-action ${simulationDraft.autoOpponent ? "active" : ""}" type="button" data-context-command="toggle-reserve" ${hasReserve ? "" : "disabled"}>${simulationDraft.autoOpponent ? "Équipe + réserve" : "Équipe seule"}</button>`);
+        actions.push(`<button class="context-action primary" type="button" data-context-command="launch-versus">Lancer VS</button>`);
+      }
+    }
+  } else if (view === "pokemonSearch") {
+    eyebrow = "Recherche";
+    meta = el.pokemonSearchCount.textContent;
+    const expandedSearchCard = el.pokemonSearchResults.querySelector(".pokemon-search-card.expanded:not(.pokemon-comparison-card)");
+    if (expandedSearchCard) {
+      actions.push(`<button class="context-action primary" type="button" data-context-command="collapse-pokemon-card">Résultats</button>`);
+    } else {
+      actions.push(`<button class="context-action ${pokemonComparison.active ? "active" : ""}" type="button" data-context-command="comparison">${pokemonComparison.active ? "Quitter le comparatif" : "Comparatif"}</button>`);
+    }
+  } else if (view === "savedManager") {
+    eyebrow = "Bibliothèque";
+    meta = `${state.customPokemon.length} Pokémon`;
+  } else if (view === "typeHelper") {
+    eyebrow = "Guide des types";
+    meta = el.typeHelperCount.textContent;
+  } else if (view === "pokemonZWiki") {
+    eyebrow = "Guide de la version 2.12";
+    meta = el.pokemonZWikiCount.textContent;
+  } else if (view === "sharedTeams") {
+    eyebrow = "Partage";
+    meta = el.sharedTeamsCount.textContent;
+  }
+
+  el.contextBar.innerHTML = `
+    <button class="context-back" id="back-to-slots" type="button" data-context-view="slots" aria-label="Retour au choix des équipes">← <span>Équipes</span></button>
+    <div class="context-identity">
+      <span>${escapeHtml(eyebrow)}</span>
+      <strong>${escapeHtml(title)}</strong>
+    </div>
+    <div class="context-actions">${actions.join("")}${meta ? `<span class="pill">${escapeHtml(meta)}</span>` : ""}</div>
+  `;
+  el.contextBar.classList.remove("hidden");
+}
+
+function handleContextBarClick(event) {
+  const viewButton = event.target.closest("[data-context-view]");
+  if (viewButton) {
+    openView(viewButton.dataset.contextView);
+    return;
+  }
+  const command = event.target.closest("[data-context-command]")?.dataset.contextCommand;
+  if (command === "settings") toggleTeamSettings();
+  else if (command === "share") void shareActiveTeam();
+  else if (command === "comparison") togglePokemonComparison();
+  else if (command === "collapse-pokemon-card") collapseExpandedPokemonCard();
+  else if (command === "toggle-reserve") {
+    el.versusAutoOpponent.checked = !el.versusAutoOpponent.checked;
+    toggleAutomaticOpponent();
+    renderContextBar();
+  }
+  else if (command === "launch-versus") el.simulationConfirm.click();
+}
+
+function collapseExpandedPokemonCard() {
+  const view = document.body.dataset.activeView || state.activeView;
+  const container = view === "composition" ? el.compositionList : view === "pokemonSearch" ? el.pokemonSearchResults : null;
+  const card = container?.querySelector(".pokemon-card.expanded:not(.pokemon-comparison-card)");
+  if (!card) return;
+  card.classList.remove("expanded");
+  card.querySelector("[data-pokemon-card-toggle]")?.setAttribute("aria-expanded", "false");
+  renderContextBar();
+  container.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function loadPokemonZProgress() {
@@ -2525,6 +2618,7 @@ function renderPokemonZWiki() {
     el.pokemonZWikiContent.innerHTML = pokemonZWikiLoadError
       ? `<div class="empty-state">${escapeHtml(pokemonZWikiLoadError)} Ferme puis rouvre le guide pour réessayer.</div>`
       : `<div class="empty-state">Chargement du guide…</div>`;
+    refreshContextBarForView("pokemonZWiki");
     return;
   }
   if (pokemonZWikiCategory === "pokemonMoves") renderPokemonZWikiPokemonMoves(wiki);
@@ -2538,6 +2632,7 @@ function renderPokemonZWiki() {
   else if (pokemonZWikiCategory === "tips") renderPokemonZWikiTips(wiki);
   else if (pokemonZWikiCategory === "mechanics") renderPokemonZWikiMechanics(wiki);
   else renderPokemonZWikiOverview(wiki);
+  refreshContextBarForView("pokemonZWiki");
 }
 
 function renderPokemonZProgressQuestionnaire() {
@@ -4029,14 +4124,15 @@ function renderManagedComposition(team) {
 
   syncTeamSettingsInputs(displayTeam);
 
-  displayTeam.pokemon.forEach((pokemon, index) => {
+  displayTeam.pokemon.forEach((pokemon) => {
     const card = document.createElement("article");
-    card.className = "pokemon-card collapsible";
+    card.className = "pokemon-card collapsible composition-member-card";
     card.setAttribute("style", pokemonCardStyle(pokemon));
     card.innerHTML = renderPokemonCard(pokemon, {
-      index,
+      index: null,
       editable,
       showSprite: true,
+      includePokeball: false,
       showPokemonZLearnset: true,
       favoriteSelectable: editable,
       favorite: displayTeam.favoritePokemonInstanceId === pokemon.instanceId
@@ -4629,6 +4725,7 @@ function renderTypeHelper(selectedTypes = null) {
   el.helperPokemonList.innerHTML = exactTypes.length ? renderHelperPokemonList(filteredPokemon, exactTypes) : "";
   bindTypeHelperGrid(pokemonList);
   bindTypeHelperPokemonActions();
+  refreshContextBarForView("typeHelper");
 }
 
 function resetHelperResultSelection() {
@@ -5093,6 +5190,7 @@ function renderPokemonSearch() {
     el.pokemonSearchCount.textContent = "0 resultat";
     el.pokemonSearchResults.innerHTML = `${renderPokemonComparisonToolbar()}<div class="empty-state">Tape au moins 3 lettres ou choisis un premier type pour afficher les Pokemon.</div>`;
     bindPokemonComparisonActions();
+    refreshContextBarForView("pokemonSearch");
     return;
   }
 
@@ -5120,6 +5218,7 @@ function renderPokemonSearch() {
   if (!matches.length) {
     el.pokemonSearchResults.innerHTML = `${renderPokemonComparisonToolbar()}<div class="empty-state">Aucun Pokemon ne correspond a cette recherche.</div>`;
     bindPokemonComparisonActions();
+    refreshContextBarForView("pokemonSearch");
     return;
   }
 
@@ -5141,6 +5240,11 @@ function renderPokemonSearch() {
       renderSavedCustomOptions();
     });
   });
+  refreshContextBarForView("pokemonSearch");
+}
+
+function refreshContextBarForView(view) {
+  if ((document.body.dataset.activeView || state.activeView) === view) renderContextBar();
 }
 
 function comparePokemonSearchResults(left, right) {
@@ -5227,7 +5331,7 @@ function renderPokemonSearchCard(pokemon, index, comparisonReady) {
         ...pokemon,
         attacks: pokemon.attacks || pokemon.types
       }, {
-        index: comparisonReady ? null : index,
+        index: null,
         showSprite: true,
         includePokeball: false,
         originLabel: helperSourceLabel(pokemon.helperSource),
@@ -5400,6 +5504,7 @@ function renderSharedTeamsManager() {
 
   if (!state.sharedTeams.length) {
     el.sharedTeamsList.innerHTML = `<div class="empty-state">Aucune equipe partagee sauvegardee.</div>`;
+    refreshContextBarForView("sharedTeams");
     return;
   }
 
@@ -5460,6 +5565,7 @@ function renderSharedTeamsManager() {
   el.sharedTeamsList.querySelectorAll("[data-delete-shared]").forEach((button) => {
     button.addEventListener("click", () => deleteSharedTeam(button.dataset.deleteShared));
   });
+  refreshContextBarForView("sharedTeams");
 }
 
 function saveCurrentSharedTeam() {
@@ -6128,8 +6234,17 @@ function bindPokemonCardToggles(container) {
     button.addEventListener("click", () => {
       const card = button.closest(".pokemon-card");
       if (!card) return;
+      const exclusive = card.classList.contains("composition-member-card") || card.classList.contains("pokemon-search-card");
+      if (exclusive && !card.classList.contains("expanded")) {
+        container.querySelectorAll(".pokemon-card.expanded:not(.pokemon-comparison-card)").forEach((openCard) => {
+          if (openCard === card) return;
+          openCard.classList.remove("expanded");
+          openCard.querySelector("[data-pokemon-card-toggle]")?.setAttribute("aria-expanded", "false");
+        });
+      }
       const expanded = card.classList.toggle("expanded");
       button.setAttribute("aria-expanded", String(expanded));
+      if (card.classList.contains("composition-member-card") || card.classList.contains("pokemon-search-card")) renderContextBar();
     });
   });
   container.querySelectorAll("[data-pokemon-info-name]").forEach((button) => {

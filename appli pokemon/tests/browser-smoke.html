@@ -73,7 +73,7 @@
     assert(zEmptyTeamPokeball?.getAttribute("src") === "assets/add-team-pokeball_z.png", "La variante Z de add-team-pokeball n'est pas chargee");
     const zFilledTeamPokeball = doc.querySelector("#team-slots img[data-theme-asset='assets/team-pokeball.png']");
     assert(zFilledTeamPokeball?.getAttribute("src").endsWith("_z.png"), "La variante Z de l'icone d'equipe n'est pas chargee");
-    assert(doc.querySelector("#app-title-logo").getAttribute("src") === "assets/Titre_Pokemon_Z.png", "Logo Pokemon Z non charge");
+    assert(win.getComputedStyle(doc.querySelector("#team-slots"), "::before").backgroundImage.includes("Titre_Pokemon_Z.png"), "Le titre Pokemon Z n'est pas intégré au fond des slots");
     assert(doc.querySelector("#catalog-select").options.length === 1018, "Catalogue Pokemon Z incomplet");
     assert(win.getPokemonBaseStats({ id: "pokemon-z-1", nationalId: 1 }).hp === 50, "Les statistiques propres a Pokemon Z ne sont pas utilisees");
     const wikiButton = doc.querySelector("#open-pokemon-z-wiki");
@@ -248,12 +248,42 @@
     const landscapePokemonColumns = win.getComputedStyle(doc.querySelector("#composition-list")).gridTemplateColumns.trim().split(/\s+/);
     assert(landscapeShellColumns.length === 2, "Le paysage n'utilise pas un rail de navigation et une zone de contenu");
     assert(win.getComputedStyle(doc.querySelector(".app-header")).position === "sticky", "Le rail de navigation n'est pas ancré en paysage");
-    assert(!doc.querySelector("#back-to-slots").classList.contains("hidden"), "Le retour aux équipes disparaît du rail");
+    assert(win.getComputedStyle(doc.querySelector(".app-header")).borderTopWidth === "0px", "Le rail gauche conserve encore son cadre");
+    assert(win.getComputedStyle(doc.querySelector(".app-header")).overflowY !== "auto", "Le rail gauche dépend encore d'un défilement vertical");
+    const railRect = doc.querySelector(".app-header").getBoundingClientRect();
+    const railButtons = Array.from(doc.querySelectorAll(".header-actions .icon-nav-button:not(.hidden)"));
+    assert(railButtons.every((button) => button.getBoundingClientRect().bottom <= railRect.bottom + 1), "Tous les boutons du rail ne tiennent pas dans la hauteur disponible");
+    assert(doc.querySelector("#context-bar #back-to-slots"), "Le retour aux équipes n'est pas placé dans l'ancrage contextuel");
     assert(!doc.querySelector("#open-pokemon-search").classList.contains("hidden"), "Les modes généraux disparaissent hors de l'accueil");
-    assert(!doc.querySelector("#team-mode-nav").classList.contains("hidden"), "Les modes Équipe, Analyse et Versus ne sont pas persistants");
+    assert(!doc.querySelector(".app-header .app-title"), "Le titre occupe encore inutilement le rail vertical");
+    assert(!doc.querySelector("#team-mode-nav"), "L'ancien bloc de modes équipe est encore présent dans le rail global");
+    assert(doc.querySelector("#context-bar [data-context-view='analysis']"), "L'analyse n'est pas proposée dans le contexte de gestion d'équipe");
+    assert(doc.querySelector("#context-bar [data-context-view='simulation']"), "Le versus n'est pas proposé dans le contexte de gestion d'équipe");
+    assert(!doc.querySelector("#context-bar [data-context-view='composition']"), "La vue active est répétée dans ses propres actions contextuelles");
     assert(landscapePokemonColumns.length === 3, "Les cartes Pokémon ne sont pas distribuées sur trois colonnes en paysage");
-    assert(win.getComputedStyle(doc.querySelector("#composition-list .pokemon-card-body")).display === "none", "Une carte Pokémon n'est pas réduite par défaut en paysage");
-    assert(win.getComputedStyle(doc.querySelector("#composition-panel > .panel-heading")).position === "sticky", "Les actions du mode ne restent pas ancrées en haut");
+    const compactCompositionCard = doc.querySelector("#composition-list .composition-member-card");
+    assert(compactCompositionCard, "La carte simplifiée de gestion d'équipe est absente");
+    assert(compactCompositionCard.querySelector(".pokemon-sprite") && compactCompositionCard.querySelector(".pokemon-title") && compactCompositionCard.querySelectorAll(".name-type-logos .type-logo-only").length === 2, "La carte fermée ne conserve pas correctement sprite, nom et types");
+    assert(!compactCompositionCard.querySelector(".pokemon-member-pokeball-icon"), "Le logo décoratif reste visible sur la carte simplifiée");
+    assert(win.getComputedStyle(compactCompositionCard.querySelector(".pokemon-card-body")).display === "none", "Une carte Pokémon n'est pas réduite par défaut en paysage");
+    assert(win.getComputedStyle(compactCompositionCard.querySelector(".card-actions")).display === "none", "Les actions de la carte sont visibles avant l'ouverture du détail");
+    assert(win.getComputedStyle(compactCompositionCard.querySelector(".pokemon-info-toggle")).display === "none", "La loupe est visible avant l'ouverture du détail");
+    compactCompositionCard.querySelector("[data-pokemon-card-toggle]").click();
+    assert(win.getComputedStyle(compactCompositionCard.querySelector(".pokemon-card-body")).display !== "none", "Le détail de la carte ne s'ouvre pas au clic");
+    assert(win.getComputedStyle(compactCompositionCard.querySelector(".card-actions")).display !== "none" && win.getComputedStyle(compactCompositionCard.querySelector(".pokemon-info-toggle")).display !== "none", "Les actions ne sont pas révélées avec le détail");
+    assert(win.getComputedStyle(compactCompositionCard).gridColumnEnd === "-1", "La fiche ouverte ne prend pas toute la largeur de la grille");
+    const compactTitleStyle = win.getComputedStyle(compactCompositionCard.querySelector(".pokemon-title > span:first-child"));
+    assert(compactTitleStyle.whiteSpace === "normal" && compactTitleStyle.textOverflow !== "ellipsis", "Le nom et les types sont encore tronqués par des points de suspension");
+    const returnToTeamButton = doc.querySelector("#context-bar [data-context-command='collapse-pokemon-card']");
+    assert(returnToTeamButton && returnToTeamButton.textContent.includes("Vue équipe"), "Le retour à la grille d'équipe est absent de l'ancrage supérieur");
+    returnToTeamButton.click();
+    assert(!compactCompositionCard.classList.contains("expanded"), "Le retour à la gestion d'équipe ne replie pas la fiche ouverte");
+    const firstEmptyCompositionSlot = doc.querySelector("#composition-list .composition-add-slot");
+    assert(Math.round(firstEmptyCompositionSlot.getBoundingClientRect().height) === Math.round(compactCompositionCard.getBoundingClientRect().height), "Les emplacements Pokémon vides n'ont pas la même hauteur que les cartes");
+    assert(win.getComputedStyle(firstEmptyCompositionSlot).borderTopWidth !== "0px", "Les emplacements Pokémon vides ne sont pas encadrés");
+    assert(win.getComputedStyle(doc.querySelector("#context-bar")).position === "sticky", "L'ancrage contextuel ne reste pas en haut");
+    const contextControlHeights = Array.from(doc.querySelectorAll("#context-bar .context-back, #context-bar .context-action, #context-bar .pill"), (node) => Math.round(node.getBoundingClientRect().height));
+    assert(Math.max(...contextControlHeights) - Math.min(...contextControlHeights) <= 1, "Les contrôles de l'ancrage supérieur n'ont pas une hauteur uniforme");
     doc.querySelector("#composition-list [data-open-team-add]").click();
     await wait(50);
     const landscapeAddPanel = doc.querySelector("#composition-add-panel:not(.hidden)");
@@ -263,16 +293,54 @@
     assert(landscapeAddRect.left >= 0 && landscapeAddRect.right <= win.innerWidth + 1, "La fenêtre d'ajout déborde horizontalement en paysage");
     assert(doc.documentElement.scrollWidth <= doc.documentElement.clientWidth, "L'application déborde horizontalement en paysage Android");
     landscapeAddPanel.querySelector("[data-team-add-close]").click();
-    doc.querySelector("#team-mode-nav [data-team-view='analysis']").click();
-    assert(doc.querySelector("#analysis-panel:not(.hidden)"), "Le rail ne permet pas d'ouvrir l'analyse de l'équipe");
-    doc.querySelector("#team-mode-nav [data-team-view='composition']").click();
-    assert(doc.querySelector("#composition-panel:not(.hidden)"), "Le rail ne permet pas de revenir à la gestion d'équipe");
+    doc.querySelector("#context-bar [data-context-view='analysis']").click();
+    assert(doc.querySelector("#analysis-panel:not(.hidden)"), "L'ancrage contextuel ne permet pas d'ouvrir l'analyse de l'équipe");
+    doc.querySelector("#context-bar [data-context-view='composition']").click();
+    assert(doc.querySelector("#composition-panel:not(.hidden)"), "L'ancrage contextuel ne permet pas de revenir à la gestion d'équipe");
     for (const view of ["pokemonSearch", "typeHelper", "analysis", "simulation", "pokemonZWiki"]) {
       win.openView(view);
       await wait(20);
       assert(doc.documentElement.scrollWidth <= doc.documentElement.clientWidth, `La vue ${view} déborde horizontalement en paysage Android`);
+      if (view === "typeHelper") {
+        const helperColumns = win.getComputedStyle(doc.querySelector("#type-helper-panel")).gridTemplateColumns.trim().split(/\s+/);
+        assert(helperColumns.length === 2, "L'assistant des types n'utilise pas un tableau de bord filtres/résultats en paysage");
+      }
+      if (view === "pokemonSearch") {
+        if (!doc.querySelector("#pokemon-search-results .pokemon-search-card-list")) {
+          const searchInput = doc.querySelector("#pokemon-search-query");
+          searchInput.value = "Bul";
+          searchInput.dispatchEvent(new win.Event("input", { bubbles: true }));
+          await wait(20);
+        }
+        const searchColumns = win.getComputedStyle(doc.querySelector("#pokemon-search-results .pokemon-search-card-list")).gridTemplateColumns.trim().split(/\s+/);
+        assert(searchColumns.length === 3, "La recherche Pokémon n'utilise pas une grille de trois colonnes en paysage");
+      }
+      if (view === "analysis") {
+        const analysisColumns = win.getComputedStyle(doc.querySelector("#analysis-content")).gridTemplateColumns.trim().split(/\s+/);
+        assert(analysisColumns.length === 2, "L'analyse d'équipe reste empilée sur une seule colonne en paysage");
+      }
+      if (view === "simulation") {
+        const versusColumns = win.getComputedStyle(doc.querySelector("#mobile-versus-list")).gridTemplateColumns.trim().split(/\s+/);
+        assert(versusColumns.length === 3, "Les six emplacements du Versus ne sont pas distribués en grille 3 × 2");
+        assert(win.getComputedStyle(doc.querySelector("#simulation-panel > .versus-launcher")).display === "none", "Le lanceur VS est répété sous l'action contextuelle");
+      }
+      if (view === "pokemonZWiki") {
+        const wikiToolbarColumns = win.getComputedStyle(doc.querySelector(".pokemon-z-wiki-toolbar")).gridTemplateColumns.trim().split(/\s+/);
+        assert(wikiToolbarColumns.length === 2, "La recherche et les rubriques du Wiki restent empilées en paysage");
+        assert(win.getComputedStyle(doc.querySelector(".pokemon-z-wiki-tabs")).flexWrap === "nowrap", "Les rubriques du Wiki occupent encore plusieurs lignes");
+      }
+    }
+    Object.assign(frame.style, { width: "667px", height: "375px" });
+    await wait(50);
+    for (const view of ["composition", "analysis", "simulation", "pokemonSearch", "typeHelper", "pokemonZWiki"]) {
+      win.openView(view);
+      await wait(20);
+      assert(doc.documentElement.scrollWidth <= doc.documentElement.clientWidth, `La vue ${view} déborde sur un petit téléphone en paysage`);
     }
     win.openView("slots");
+    assert(doc.querySelector("#context-bar").classList.contains("hidden"), "Des actions contextuelles d'équipe restent visibles sur le choix d'équipe");
+    assert(!doc.querySelector("#back-to-slots"), "Le retour aux équipes est affiché alors que l'accueil est déjà ouvert");
+    assert(!doc.querySelector("#team-slots .slot-card.active"), "Un slot est présenté comme une équipe ouverte sur l'écran de sélection");
     const landscapeSlotColumns = win.getComputedStyle(doc.querySelector("#team-slots")).gridTemplateColumns.trim().split(/\s+/);
     const landscapeSlotTops = Array.from(doc.querySelectorAll("#team-slots .slot-card"), (card) => Math.round(card.getBoundingClientRect().top));
     assert(landscapeSlotColumns.length === 3 && new Set(landscapeSlotTops).size === 1, "Les trois slots d'équipe ne partagent pas correctement la largeur en paysage");
@@ -280,10 +348,14 @@
     Object.assign(frame.style, { width: "412px", height: "915px" });
     await wait(50);
     const portraitPokemonColumns = win.getComputedStyle(doc.querySelector("#composition-list")).gridTemplateColumns.trim().split(/\s+/);
-    assert(portraitPokemonColumns.length === 2, "Les cartes Pokémon ne passent pas sur deux colonnes en portrait");
+    assert(portraitPokemonColumns.length === 1, "La gestion d'équipe ne passe pas en liste verticale 1 × 6 en portrait");
     assert(win.getComputedStyle(doc.querySelector(".app-header")).position === "sticky", "La navigation supérieure n'est pas ancrée en portrait");
-    assert(win.getComputedStyle(doc.querySelector("#composition-panel > .panel-heading")).position === "sticky", "Les actions du mode ne sont pas ancrées sous la navigation en portrait");
+    assert(win.getComputedStyle(doc.querySelector("#context-bar")).position === "sticky", "Les actions du mode ne sont pas ancrées sous la navigation en portrait");
     assert(doc.documentElement.scrollWidth <= doc.documentElement.clientWidth, "La gestion d'équipe déborde horizontalement en portrait");
+    win.openView("pokemonSearch");
+    await wait(20);
+    const portraitSearchColumns = win.getComputedStyle(doc.querySelector("#pokemon-search-results .pokemon-search-card-list")).gridTemplateColumns.trim().split(/\s+/);
+    assert(portraitSearchColumns.length === 1, "La recherche Pokémon ne passe pas en liste verticale en portrait");
     win.openView("slots");
     assert(doc.documentElement.scrollWidth <= doc.documentElement.clientWidth, "L'écran des équipes déborde horizontalement en portrait");
     win.openView("composition");

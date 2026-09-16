@@ -37,16 +37,11 @@
       <header class="app-header">
         <div class="app-brand">
           <div class="app-brand-meta">
-            <p class="eyebrow">Analyse d'equipes Pokemon - Multi-versions</p>
+            <h1 class="sr-only">KantoTeam</h1>
             <button class="account-button" id="account-button" type="button" aria-haspopup="dialog">Connexion</button>
           </div>
-          <h1 class="app-title">
-            <span class="sr-only">KantoTeam</span>
-            <img id="app-title-logo" src="assets/Titre.png" alt="" aria-hidden="true">
-          </h1>
         </div>
         <div class="header-actions">
-          <button class="ghost-button hidden" id="back-to-slots" type="button">Retour aux equipes</button>
           <button class="icon-nav-button" id="open-type-helper" type="button" aria-label="Guide des types">
             <img src="assets/Logo-aide-type.webp" data-theme-asset="assets/Logo-aide-type.webp" alt="" aria-hidden="true">
           </button>
@@ -62,13 +57,10 @@
           <button class="icon-nav-button hidden" id="open-shared-teams" type="button" aria-label="Equipes partagees">
             <img src="assets/share-pokeball.webp" data-theme-asset="assets/share-pokeball.webp" alt="" aria-hidden="true">
           </button>
-          <nav class="team-mode-nav hidden" id="team-mode-nav" aria-label="Modes de l'équipe active">
-            <button type="button" data-team-view="composition">Équipe</button>
-            <button type="button" data-team-view="analysis">Analyse</button>
-            <button type="button" data-team-view="simulation">Versus</button>
-          </nav>
         </div>
       </header>
+
+      <section class="context-bar hidden" id="context-bar" aria-label="Actions de la vue actuelle"></section>
 
       <section class="game-version-switch" id="game-version-switch" aria-label="Version active">
         <span class="game-version-label">Version :</span>
@@ -267,7 +259,7 @@
             </div>
           </section>
 
-          <section class="type-helper-step">
+          <section class="type-helper-step type-helper-response-step" id="helper-response-step">
             <div class="type-helper-step-heading">
               <span class="step-number">3</span>
               <div>
@@ -533,7 +525,7 @@
               </section>
             </div>
 
-            <section>
+            <section class="analysis-offense-panel">
               <h3>Types ennemis couverts par vos attaques</h3>
               <div id="offense-summary" class="badge-cloud"></div>
               <div id="offense-detail" class="offense-detail empty-state">
@@ -566,7 +558,7 @@
               </div>
             </section>
 
-            <section>
+            <section class="analysis-advice-panel">
               <h3>Conseils</h3>
               <div id="advice-list" class="advice-list"></div>
             </section>
