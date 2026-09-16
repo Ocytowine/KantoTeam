@@ -241,6 +241,27 @@
     assert(doc.querySelectorAll("#composition-list .composition-add-slot").length === 5, "Les slots Pokemon libres ne sont pas affiches");
     assert(Array.from(doc.querySelectorAll("#composition-list .composition-add-slot")).every((slot) => !slot.textContent.trim()), "Un slot Pokemon libre contient encore du texte");
     assert(win.getComputedStyle(doc.querySelector("#composition-list .composition-add-slot img")).width === "72px", "Le logo d'ajout Pokemon n'est pas agrandi");
+    frame.hidden = false;
+    Object.assign(frame.style, { position: "fixed", left: "-10000px", top: "0", width: "915px", height: "412px" });
+    await wait(50);
+    doc.querySelector("#composition-list [data-open-team-add]").click();
+    await wait(50);
+    const landscapeAddPanel = doc.querySelector("#composition-add-panel:not(.hidden)");
+    const landscapeAddRect = landscapeAddPanel.getBoundingClientRect();
+    assert(win.getComputedStyle(landscapeAddPanel).position === "fixed", "L'ajout de Pokemon n'est pas présenté comme une fenêtre en paysage");
+    assert(landscapeAddRect.top >= 0 && landscapeAddRect.bottom <= win.innerHeight + 1, "La fenêtre d'ajout déborde verticalement en paysage");
+    assert(landscapeAddRect.left >= 0 && landscapeAddRect.right <= win.innerWidth + 1, "La fenêtre d'ajout déborde horizontalement en paysage");
+    assert(doc.documentElement.scrollWidth <= doc.documentElement.clientWidth, "L'application déborde horizontalement en paysage Android");
+    landscapeAddPanel.querySelector("[data-team-add-close]").click();
+    for (const view of ["pokemonSearch", "typeHelper", "analysis", "simulation", "pokemonZWiki"]) {
+      win.openView(view);
+      await wait(20);
+      assert(doc.documentElement.scrollWidth <= doc.documentElement.clientWidth, `La vue ${view} déborde horizontalement en paysage Android`);
+    }
+    win.openView("composition");
+    Object.assign(frame.style, { width: "300px", height: "150px" });
+    await wait(50);
+    frame.hidden = true;
     const learnsetButton = doc.querySelector("#composition-list [data-open-pokemon-z-learnset='1']");
     assert(learnsetButton, "Le bouton des capacites de Bulbizarre est absent de sa fiche detaillee");
     assert(win.pokemonZSpeciesIdFromPokemon({ id: "ancienne-sauvegarde", nationalId: 1, name: "Bulbizarre" }) === 1, "Une ancienne sauvegarde Pokemon Z ne retrouve pas son learnset");
@@ -465,6 +486,14 @@
     query.value = "Carapuce";
     query.dispatchEvent(new win.Event("input", { bubbles: true }));
     await wait();
+    const searchLearnsetButton = doc.querySelector("#pokemon-search-results [data-open-pokemon-z-learnset='7']");
+    assert(searchLearnsetButton, "Le bouton CT / Capacités est absent d'un Pokémon hors équipe");
+    searchLearnsetButton.click();
+    await wait(200);
+    assert(doc.querySelector("#pokemon-z-wiki-panel:not(.hidden) .wiki-pokemon-learnset-hero")?.textContent.includes("Carapuce"), "Les capacités de Carapuce ne s'ouvrent pas depuis la recherche");
+    assert(doc.querySelector("[data-wiki-pokemon-move-return]")?.textContent.includes("Recherche"), "Le retour des capacités ne conserve pas la recherche comme origine");
+    doc.querySelector("[data-wiki-pokemon-move-return]").click();
+    assert(doc.querySelector("#pokemon-search-panel:not(.hidden)") && query.value === "Carapuce", "Le retour des capacités ne ramène pas à la recherche en cours");
     const infoButton = doc.querySelector("#pokemon-search-results [data-pokemon-info-name]");
     assert(infoButton, "Bouton du guide d'obtention absent");
     infoButton.click();

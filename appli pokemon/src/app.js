@@ -81,6 +81,7 @@ let pokemonZWikiShowFullItems = false;
 let pokemonZWikiItemFilters = { usage: "all", effect: "all", type: "all" };
 let pokemonZWikiSelectedSpeciesId = null;
 let pokemonZWikiPokemonMoveMode = null;
+let pokemonZLearnsetReturnView = "composition";
 let pokemonZProgressEditing = false;
 let pokemonZWikiLoadPromise = null;
 let pokemonZLearnsetLoadPromise = null;
@@ -1361,7 +1362,7 @@ function bindEvents() {
     }
     const pokemonMoveReturnButton = event.target.closest("[data-wiki-pokemon-move-return]");
     if (pokemonMoveReturnButton) {
-      openView("composition");
+      openView(pokemonZLearnsetReturnView);
       return;
     }
     const learnsetEntryButton = event.target.closest("[data-wiki-learnset-entry]");
@@ -2410,6 +2411,7 @@ function pokemonZSpeciesIdFromPokemon(pokemon) {
 async function openPokemonZLearnset(speciesId) {
   const numericSpeciesId = Number(speciesId);
   if (getActiveGameKey() !== "pokemon-z" || !pokemonZCatalogBySpeciesId.has(numericSpeciesId)) return;
+  if (state.activeView !== "pokemonZWiki") pokemonZLearnsetReturnView = state.activeView;
   pokemonZWikiSelectedSpeciesId = numericSpeciesId;
   pokemonZWikiCategory = "pokemonMoves";
   pokemonZWikiPokemonMoveMode = null;
@@ -2648,9 +2650,10 @@ function pokemonZWikiMoveNavigation(mode, machineCount, naturalCount) {
   const choices = [];
   if (mode !== "machines") choices.push(pokemonZWikiMoveChoice("machines", "CT / CS", `${machineCount} compatibles`, "CT"));
   if (mode !== "natural") choices.push(pokemonZWikiMoveChoice("natural", "Par niveau", `${naturalCount} capacités`, "Niv."));
+  const returnLabel = pokemonZLearnsetReturnView === "pokemonSearch" ? "Recherche" : "Équipe";
   choices.push(`
     <button class="wiki-pokemon-move-choice return" type="button" data-wiki-pokemon-move-return>
-      <span aria-hidden="true">←</span><strong>Équipe</strong><small>Retour à la gestion</small>
+      <span aria-hidden="true">←</span><strong>${returnLabel}</strong><small>Retour à la vue précédente</small>
     </button>
   `);
   return `<nav class="wiki-pokemon-move-navigation ${mode ? "sticky" : "initial"}" aria-label="Choisir les capacités à afficher">${choices.join("")}</nav>`;
@@ -4068,7 +4071,9 @@ function renderManagedComposition(team) {
       teamAddAttackMode = null;
       teamAddSlotIndex = Number(button.dataset.slotIndex);
       renderAll();
-      el.compositionAddPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      if (!window.matchMedia("(max-width: 640px), (orientation: landscape) and (max-height: 600px)").matches) {
+        el.compositionAddPanel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
     });
   });
 
@@ -4189,7 +4194,10 @@ function renderTeamAddPanel() {
         <p class="eyebrow">Ajouter un Pokemon</p>
         <h3>${teamAddMode ? teamAddModeLabel(teamAddMode) : "Choisis une methode"}</h3>
       </div>
-      ${teamAddMode ? `<button class="small-button" type="button" data-team-add-back>Retour</button>` : ""}
+      <div class="team-add-heading-actions">
+        ${teamAddMode ? `<button class="small-button" type="button" data-team-add-back>Retour</button>` : ""}
+        <button class="modal-close-button team-add-close" type="button" data-team-add-close aria-label="Fermer l'ajout de Pokémon">&times;</button>
+      </div>
     </div>
     ${teamAddMode ? renderTeamAddMode() : renderTeamAddChoices()}
   `;
@@ -4370,6 +4378,7 @@ function renderTeamAddCustom() {
 }
 
 function bindTeamAddPanel() {
+  el.compositionAddPanel.querySelector("[data-team-add-close]")?.addEventListener("click", closeTeamAddPanel);
   el.compositionAddPanel.querySelector("[data-team-add-back]")?.addEventListener("click", () => {
     teamAddMode = null;
     teamAddSelectedPokemon = null;
@@ -4414,6 +4423,16 @@ function bindTeamAddPanel() {
     addPokemonToManagedTeam(teamAddSelectedPokemon, attacks, getTeamPreferredSource(draftTeam));
   });
   el.compositionAddPanel.querySelector("[data-team-add-confirm-custom]")?.addEventListener("click", addCustomPokemonFromManagedForm);
+}
+
+function closeTeamAddPanel() {
+  teamAddPanelOpen = false;
+  teamAddMode = null;
+  teamAddSelectedPokemon = null;
+  teamAddAttackMode = null;
+  teamAddSlotIndex = null;
+  teamAddListFilters = { query: "", typeOne: "", typeTwo: "" };
+  renderAll();
 }
 
 function updateTeamAddListFilters() {
@@ -4913,7 +4932,8 @@ function renderHelperPokemonList(pokemonList, types) {
         showSprite: true,
         includePokeball: false,
         originLabel: helperSourceLabel(pokemon.helperSource),
-        toggleable: true
+        toggleable: true,
+        showPokemonZLearnset: true
       })}
       <div class="helper-card-actions">
         <button class="small-button" type="button" data-save-helper-pokemon="${escapeHtml(pokemonOptionLabel(pokemon))}" data-helper-source="${pokemon.helperSource}">Ajouter aux sauvegardes</button>
@@ -5189,6 +5209,7 @@ function renderPokemonSearchCard(pokemon, index, comparisonReady) {
         includePokeball: false,
         originLabel: helperSourceLabel(pokemon.helperSource),
         toggleable: !comparisonReady,
+        showPokemonZLearnset: true,
         statsExpanded: false,
         comparedWith: comparisonReady ? opponent : null
       })}
@@ -5314,7 +5335,8 @@ function renderSavedPokemonManager() {
       index,
       showSprite: true,
       originLabel: savedPokemonOriginLabel(pokemon),
-      savedId: pokemon.id
+      savedId: pokemon.id,
+      showPokemonZLearnset: true
     });
     el.savedPokemonList.append(card);
   });

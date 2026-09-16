@@ -1704,6 +1704,108 @@ body.modal-open {
   margin: 3px 0 0;
 }
 
+/* Téléphones : l'ajout reste dans le viewport, y compris en paysage. */
+@media (max-width: 640px), (orientation: landscape) and (max-height: 600px) {
+  .composition-add-panel:not(.hidden) {
+    position: fixed;
+    z-index: 880;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: min(680px, calc(100% - 16px));
+    max-height: calc(100dvh - 16px);
+    margin: 0;
+    padding: 14px;
+    overflow: auto;
+    overscroll-behavior: contain;
+    border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
+    background: var(--ui-modal-bg);
+    box-shadow: 0 0 0 100vmax var(--ui-backdrop), var(--shadow);
+    transform: translate(-50%, -50%);
+  }
+
+  .composition-add-panel .team-add-heading {
+    position: sticky;
+    z-index: 4;
+    top: -14px;
+    margin: -14px -14px 12px;
+    padding: 12px 14px 10px;
+    background: var(--ui-modal-bg);
+    box-shadow: 0 1px 0 var(--line);
+  }
+
+  .composition-add-panel .team-add-close {
+    display: inline-flex;
+  }
+}
+
+/* Les Android larges passent souvent au-dessus du breakpoint mobile en paysage. */
+@media (orientation: landscape) and (max-height: 600px) {
+  .app-shell {
+    width: calc(100% - 12px);
+    padding: 8px 0 18px;
+  }
+
+  .app-header {
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .panel {
+    padding: 12px;
+  }
+
+  .panel-heading,
+  .panel-actions,
+  .form-actions,
+  .card-actions {
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+
+  .pokemon-search-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .pokemon-search-controls > :first-child {
+    grid-column: 1 / -1;
+  }
+
+  .pokemon-search-heading-actions,
+  .pokemon-comparison-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .type-wheel {
+    --wheel-size: min(72dvh, 300px);
+    --wheel-radius: calc(var(--wheel-size) * 0.42);
+  }
+
+  .team-modal-overlay {
+    padding: 8px;
+  }
+
+  .team-modal {
+    max-height: calc(100dvh - 16px);
+  }
+
+  .pokemon-z-wiki-toolbar {
+    position: static;
+  }
+}
+
+.team-add-heading-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.team-add-close {
+  display: none;
+}
+
 .team-add-choice-grid,
 .team-add-mini-grid {
   display: grid;
