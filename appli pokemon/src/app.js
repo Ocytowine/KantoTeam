@@ -6878,7 +6878,8 @@ function renderEvolutionMiniCard(evolution, reforged) {
   const { small: sprite } = getPokemonSpriteSources({
     name: evolution.name,
     nationalId: evolution.id,
-    pokemonZId: evolution.catalogId
+    pokemonZId: reforged ? null : evolution.catalogId,
+    reforgedId: reforged ? evolution.catalogId : null
   });
   const contents = `${sprite ? `<img class="pokemon-info-sprite" src="${escapeHtml(sprite)}" alt="" loading="lazy" onerror="this.remove()">` : ""}
     <strong>${escapeHtml(evolution.name)}</strong>`;
