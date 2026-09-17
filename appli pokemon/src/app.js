@@ -196,6 +196,7 @@ const el = {
   pokemonZWikiContent: document.querySelector("#pokemon-z-wiki-content"),
   sharedTeamsPanel: document.querySelector("#shared-teams-panel"),
   sharedTeamsList: document.querySelector("#shared-teams-list"),
+  sharedTeamDetailHost: document.querySelector("#shared-team-detail-host"),
   sharedTeamsCount: document.querySelector("#shared-teams-count"),
   compositionPanel: document.querySelector("#composition-panel"),
   compositionTitle: document.querySelector("#composition-title"),
@@ -300,6 +301,16 @@ function init() {
   el.addMode.value = "catalog";
   syncAttackChecksFromCurrentSelection();
   renderAll();
+  bindMobileSlotLighting(el.slots);
+  bindMobileSlotLighting(el.sharedTeamsList);
+  const refreshTeamSlotViewport = () => requestAnimationFrame(centerSelectedTeamSlot);
+  window.addEventListener("resize", refreshTeamSlotViewport);
+  window.visualViewport?.addEventListener("resize", refreshTeamSlotViewport);
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || !sharedTeamDetailId || state.activeView !== "sharedTeams") return;
+    sharedTeamDetailId = null;
+    renderSharedTeamsManager();
+  });
   void preloadPokemonZThemeAssets();
   const warmPokemonZNameIndex = () => getPokemonZGuideNameIndex();
   if (typeof window.requestIdleCallback === "function") {
@@ -2144,6 +2155,107 @@ function renderAll() {
   renderContextBar();
   syncTypeWheels(document);
   void syncThemedAssets(document);
+  requestAnimationFrame(centerSelectedTeamSlot);
+}
+
+function centerSelectedTeamSlot() {
+  const usesMobileSlotCarousel = window.matchMedia(
+    "(max-width: 640px) and (orientation: portrait), (orientation: landscape) and (max-height: 600px)"
+  ).matches;
+  const usesPortraitCarousel = window.matchMedia("(max-width: 640px) and (orientation: portrait)").matches;
+  [el.slots, el.sharedTeamsList].forEach((rail) => {
+    if (!usesPortraitCarousel) rail.style.removeProperty("--team-slot-viewport-height");
+  });
+  if (!usesMobileSlotCarousel) return;
+
+  const centerRail = (rail, selectedIndex, fillPortraitViewport = false) => {
+    if (usesPortraitCarousel && fillPortraitViewport) {
+      const viewportHeight = window.visualViewport?.height || window.innerHeight;
+      const carouselTop = Math.max(0, rail.getBoundingClientRect().top);
+      rail.style.setProperty("--team-slot-viewport-height", `${Math.max(1, Math.floor(viewportHeight - carouselTop))}px`);
+    }
+    const selectedCard = rail.querySelectorAll(":scope > .slot-card")[selectedIndex];
+    if (!selectedCard) return;
+    if (usesPortraitCarousel) {
+      rail.scrollTop = selectedCard.offsetTop - ((rail.clientHeight - selectedCard.offsetHeight) / 2);
+    } else {
+      rail.scrollLeft = selectedCard.offsetLeft - ((rail.clientWidth - selectedCard.offsetWidth) / 2);
+    }
+  };
+
+  if (state.activeView === "slots") {
+    centerRail(el.slots, state.selectedSlot, true);
+  } else if (state.activeView === "sharedTeams") {
+    const selectedSharedIndex = Math.max(0, state.sharedTeams.findIndex((team) => String(team.id) === String(sharedTeamDetailId)));
+    centerRail(el.sharedTeamsList, selectedSharedIndex, true);
+  }
+}
+
+function bindMobileSlotLighting(rail) {
+  if (!rail) return;
+  let animationFrame = null;
+  let releaseTimer = null;
+  let cleanupTimer = null;
+  let previousPosition = 0;
+  let previousTime = performance.now();
+  let trailOffset = 0;
+
+  const isPortraitCarousel = () => window.matchMedia("(max-width: 640px) and (orientation: portrait)").matches;
+  const isLandscapeCarousel = () => window.matchMedia("(orientation: landscape) and (max-height: 600px)").matches;
+  const currentPosition = () => isPortraitCarousel() ? rail.scrollTop : rail.scrollLeft;
+
+  const rememberPosition = () => {
+    previousPosition = currentPosition();
+    previousTime = performance.now();
+  };
+
+  const releaseLight = () => {
+    rail.classList.remove("is-slot-gliding");
+    window.clearTimeout(cleanupTimer);
+    cleanupTimer = window.setTimeout(() => {
+      ["--slot-trail-x", "--slot-trail-y", "--slot-halo-scale-x", "--slot-halo-scale-y", "--slot-halo-opacity"]
+        .forEach((property) => rail.style.removeProperty(property));
+      trailOffset = 0;
+    }, 860);
+  };
+
+  rail.addEventListener("pointerdown", rememberPosition, { passive: true });
+  rail.addEventListener("touchstart", rememberPosition, { passive: true });
+  rail.addEventListener("scroll", () => {
+    if (animationFrame !== null) return;
+    animationFrame = requestAnimationFrame(() => {
+      animationFrame = null;
+      if ((!isPortraitCarousel() && !isLandscapeCarousel()) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        releaseLight();
+        return;
+      }
+
+      const now = performance.now();
+      const position = currentPosition();
+      const elapsed = Math.max(16, now - previousTime);
+      const delta = position - previousPosition;
+      const velocity = Math.abs(delta) / elapsed;
+      const strength = Math.min(1, velocity / 0.72);
+      trailOffset = Math.max(-64, Math.min(64, trailOffset + (delta * 0.85)));
+      const portrait = isPortraitCarousel();
+      const slotSize = rail.querySelector(".slot-card")?.offsetWidth || 1;
+      const stretch = Math.min(1.26, 1 + (Math.abs(trailOffset) / slotSize));
+      const haloTranslation = trailOffset / 2;
+
+      window.clearTimeout(cleanupTimer);
+      rail.style.setProperty("--slot-trail-x", `${portrait ? 0 : haloTranslation.toFixed(2)}px`);
+      rail.style.setProperty("--slot-trail-y", `${portrait ? haloTranslation.toFixed(2) : 0}px`);
+      rail.style.setProperty("--slot-halo-scale-x", (portrait ? 1 : stretch).toFixed(3));
+      rail.style.setProperty("--slot-halo-scale-y", (portrait ? stretch : 1).toFixed(3));
+      rail.style.setProperty("--slot-halo-opacity", (0.26 + (strength * 0.58)).toFixed(2));
+      rail.classList.add("is-slot-gliding");
+
+      previousPosition = position;
+      previousTime = now;
+      window.clearTimeout(releaseTimer);
+      releaseTimer = window.setTimeout(releaseLight, 210);
+    });
+  }, { passive: true });
 }
 
 function renderGameSwitch() {
@@ -2251,9 +2363,11 @@ function renderSlots() {
     }
     const status = team ? `${team.pokemon.length}/6 Pokémon · ${reserveCount} réserve${reserveCount > 1 ? "s" : ""}` : "Équipe vide";
     const teamName = team?.name || `Equipe ${index + 1}`;
+    card.setAttribute("aria-label", `${teamName}, équipe ${index + 1} sur 3`);
     const pokemonCountLabel = team ? `${team.pokemon.length}/6 Pokémon` : "";
     const reserveCountLabel = team ? `${reserveCount} réserve${reserveCount > 1 ? "s" : ""}` : "";
     card.innerHTML = team ? `
+      <span class="slot-motion-halo" aria-hidden="true"></span>
       ${renderTeamFavoriteBackdrop(favoritePokemon)}
       ${favoritePokemon ? "" : `<img class="team-slot-logo" src="assets/team-pokeball.png" data-theme-asset="assets/team-pokeball.png" data-theme-fallback="assets/pokeball.png" alt="" aria-hidden="true">`}
       <svg class="team-slot-info-wheel" viewBox="0 0 200 200" aria-hidden="true">
@@ -2291,6 +2405,7 @@ function renderSlots() {
         </svg>
       </div>
     ` : `
+      <span class="slot-motion-halo" aria-hidden="true"></span>
       <button class="empty-team-slot" type="button" data-action="composition" data-slot="${index}" data-version="${getActiveGameKey()}" data-tooltip="Ajouter une équipe" aria-label="Ajouter une équipe">
         <img class="empty-team-logo" src="assets/add-team-pokeball.png" data-theme-asset="assets/add-team-pokeball.png" alt="" aria-hidden="true">
       </button>
@@ -5579,23 +5694,32 @@ function removePokemonFromCurrentTeam(instanceId) {
 function renderSharedTeamsManager() {
   el.sharedTeamsCount.textContent = `${state.sharedTeams.length}/3`;
   el.sharedTeamsList.innerHTML = "";
+  el.sharedTeamDetailHost.innerHTML = "";
   if (sharedTeamDetailId && !state.sharedTeams.some((team) => String(team.id) === String(sharedTeamDetailId))) sharedTeamDetailId = null;
 
   Array.from({ length: 3 }, (_, index) => state.sharedTeams[index] || null).forEach((team, index) => {
     const card = document.createElement("article");
     if (!team) {
       card.className = "slot-card empty shared-team-slot-card shared-team-empty-slot";
-      card.innerHTML = `<img class="empty-team-logo" src="assets/share-pokeball.webp" data-theme-asset="assets/share-pokeball.webp" alt="Emplacement d'équipe partagée libre">`;
+      card.setAttribute("aria-label", `Emplacement d'équipe partagée ${index + 1} sur 3, vide`);
+      card.innerHTML = `
+        <span class="slot-motion-halo" aria-hidden="true"></span>
+        <img class="empty-team-logo" src="assets/share-pokeball.webp" data-theme-asset="assets/share-pokeball.webp" alt="Emplacement d'équipe partagée libre">
+      `;
       el.sharedTeamsList.append(card);
       return;
     }
     const featuredPokemon = getTeamFavoritePokemon(team) || team.pokemon[0] || null;
-    const senderLabel = team.senderName ? `Par ${team.senderName}` : "Auteur inconnu";
+    const senderLabel = "Partagée";
+    const senderName = team.senderName || "Expéditeur inconnu";
     card.className = `slot-card shared-team-card shared-team-slot-card${featuredPokemon ? " has-favorite-pokemon" : ""}${String(sharedTeamDetailId) === String(team.id) ? " active" : ""}`;
+    card.setAttribute("aria-label", `${team.savedName || team.name}, reçue de ${senderName}, équipe partagée ${index + 1} sur 3`);
     if (featuredPokemon) card.setAttribute("style", teamFavoriteCardStyle(featuredPokemon));
     card.innerHTML = `
+      <span class="slot-motion-halo" aria-hidden="true"></span>
       ${renderTeamFavoriteBackdrop(featuredPokemon)}
       ${featuredPokemon ? "" : `<img class="team-slot-logo" src="assets/share-pokeball.webp" data-theme-asset="assets/share-pokeball.webp" alt="" aria-hidden="true">`}
+      <span class="shared-team-sender-badge">Reçue de <strong>${escapeHtml(senderName)}</strong></span>
       <svg class="team-slot-info-wheel" viewBox="0 0 200 200" aria-hidden="true">
         <defs>
           <path id="shared-team-name-${index}" d="M 27.5 66.2 A 80 80 0 0 1 172.5 66.2"></path>
@@ -5617,14 +5741,23 @@ function renderSharedTeamsManager() {
   });
 
   const detailedTeam = state.sharedTeams.find((team) => String(team.id) === String(sharedTeamDetailId));
-  if (detailedTeam) el.sharedTeamsList.insertAdjacentHTML("beforeend", renderSharedTeamDetail(detailedTeam));
+  if (detailedTeam) el.sharedTeamDetailHost.innerHTML = renderSharedTeamDetail(detailedTeam);
+  document.body.classList.toggle("shared-team-detail-open", Boolean(detailedTeam) && state.activeView === "sharedTeams");
 
   el.sharedTeamsList.querySelectorAll("[data-open-shared-team]").forEach((button) => {
     button.addEventListener("click", () => {
       sharedTeamDetailId = String(sharedTeamDetailId) === String(button.dataset.openSharedTeam) ? null : button.dataset.openSharedTeam;
       renderSharedTeamsManager();
+      requestAnimationFrame(centerSelectedTeamSlot);
+      window.setTimeout(() => el.sharedTeamDetailHost.querySelector("[data-close-shared-detail]")?.focus(), 0);
     });
   });
+
+  el.sharedTeamDetailHost.onclick = (event) => {
+    if (event.target !== el.sharedTeamDetailHost && !event.target.closest("[data-close-shared-detail]")) return;
+    sharedTeamDetailId = null;
+    renderSharedTeamsManager();
+  };
 
   el.sharedTeamsList.querySelectorAll("[data-load-shared-versus]").forEach((button) => {
     button.addEventListener("click", () => {
@@ -5645,19 +5778,19 @@ function renderSharedTeamsManager() {
     });
   });
 
-  el.sharedTeamsList.querySelectorAll("[data-rename-shared]").forEach((button) => {
+  el.sharedTeamsPanel.querySelectorAll("[data-rename-shared]").forEach((button) => {
     button.addEventListener("click", () => renameSharedTeam(button.dataset.renameShared));
   });
-  el.sharedTeamsList.querySelectorAll("[data-edit-shared-sender]").forEach((button) => {
+  el.sharedTeamsPanel.querySelectorAll("[data-edit-shared-sender]").forEach((button) => {
     button.addEventListener("click", () => editSharedTeamSender(button.dataset.editSharedSender));
   });
-  el.sharedTeamsList.querySelectorAll("[data-replace-shared]").forEach((button) => {
+  el.sharedTeamsPanel.querySelectorAll("[data-replace-shared]").forEach((button) => {
     button.addEventListener("click", () => replaceSharedTeam(button.dataset.replaceShared));
   });
-  el.sharedTeamsList.querySelectorAll("[data-delete-shared]").forEach((button) => {
+  el.sharedTeamsPanel.querySelectorAll("[data-delete-shared]").forEach((button) => {
     button.addEventListener("click", () => deleteSharedTeam(button.dataset.deleteShared));
   });
-  bindPokemonCardToggles(el.sharedTeamsList);
+  bindPokemonCardToggles(el.sharedTeamDetailHost);
   refreshContextBarForView("sharedTeams");
 }
 
@@ -5681,13 +5814,14 @@ function renderSharedSlotActionWheel(index) {
 
 function renderSharedTeamDetail(team) {
   return `
-    <section class="shared-team-detail" aria-label="Détail de ${escapeHtml(team.savedName || team.name)}">
+    <section class="shared-team-detail" role="dialog" aria-modal="true" aria-label="Détail de ${escapeHtml(team.savedName || team.name)}">
       <header class="shared-team-detail-heading">
         <div>
           <p class="eyebrow">Reçue de <strong>${escapeHtml(team.senderName || "Expéditeur non renseigné")}</strong></p>
           <h3>${escapeHtml(team.savedName || team.name)}</h3>
         </div>
         <div class="card-actions">
+          <button class="small-button" type="button" data-close-shared-detail>Fermer</button>
           <button class="small-button" type="button" data-edit-shared-sender="${escapeHtml(team.id)}">Expéditeur</button>
           <button class="small-button" type="button" data-rename-shared="${escapeHtml(team.id)}">Renommer</button>
           ${sharedTeam ? `<button class="small-button" type="button" data-replace-shared="${escapeHtml(team.id)}">Remplacer</button>` : ""}

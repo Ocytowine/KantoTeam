@@ -99,9 +99,11 @@
     const sharedSlot = doc.querySelector("#shared-teams-list .shared-team-slot-card:not(.empty)");
     assert(win.getComputedStyle(sharedSlot).borderRadius === "50%" && sharedSlot.querySelectorAll(".slot-action-wheel textPath").length === 3, "Le slot partagé ne reprend pas le visuel circulaire principal");
     assert(sharedSlot.querySelector(".team-slot-info-wheel")?.textContent.includes("Alice"), "Le nom de l'expéditeur n'est pas affiché sur le slot partagé");
+    assert(sharedSlot.querySelector(".shared-team-sender-badge")?.textContent.includes("Alice"), "Le nom de l'expéditeur n'est pas lisible dans le médaillon partagé");
     sharedSlot.querySelector("[data-open-shared-team]").click();
-    assert(doc.querySelectorAll("#shared-teams-list .shared-team-detail-pokemon .pokemon-card").length === 2, "Les Pokémon partagés ne sont pas présentés sous forme de cartes");
-    assert(!doc.querySelector("#shared-teams-list .shared-team-detail-pokemon .library-kind"), "La version est encore affichée dans les cartes partagées");
+    assert(win.getComputedStyle(doc.querySelector("#shared-team-detail-host")).position === "fixed", "Les options de l'équipe partagée ne s'affichent pas au premier plan");
+    assert(doc.querySelectorAll("#shared-team-detail-host .shared-team-detail-pokemon .pokemon-card").length === 2, "Les Pokémon partagés ne sont pas présentés sous forme de cartes");
+    assert(!doc.querySelector("#shared-team-detail-host .shared-team-detail-pokemon .library-kind"), "La version est encore affichée dans les cartes partagées");
     win.openView("slots");
     assert(doc.querySelector("#catalog-select").options.length === 1018, "Catalogue Pokemon Z incomplet");
     assert(win.getPokemonBaseStats({ id: "pokemon-z-1", nationalId: 1 }).hp === 50, "Les statistiques propres a Pokemon Z ne sont pas utilisees");
