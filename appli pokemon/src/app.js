@@ -2504,6 +2504,9 @@ function renderContextBar() {
       if (view === "composition" && !sharedTeam) actions.push(`<button class="context-action" type="button" data-context-command="settings">Réglages</button>`);
       if (view === "simulation") {
         const hasReserve = getTeamReservePokemon(team).length > 0;
+        if (state.sharedTeams.length || getActiveGameKey() === "pokemon-z") {
+          actions.push(`<button class="context-action context-opponent-team" type="button" data-context-command="choose-opponent-team" aria-label="Choisir une équipe adverse" title="Choisir une équipe adverse"><img src="assets/share-pokeball.webp" data-theme-asset="assets/share-pokeball.webp" alt="" aria-hidden="true"><span>Équipe adverse</span></button>`);
+        }
         actions.push(`<button class="context-action ${simulationDraft.autoOpponent ? "active" : ""}" type="button" data-context-command="toggle-reserve" ${hasReserve ? "" : "disabled"}>${simulationDraft.autoOpponent ? "Équipe + réserve" : "Équipe seule"}</button>`);
         actions.push(`<button class="context-action primary" type="button" data-context-command="launch-versus">Lancer VS</button>`);
       }
@@ -2553,6 +2556,10 @@ function handleContextBarClick(event) {
   else if (command === "share") void shareActiveTeam();
   else if (command === "comparison") togglePokemonComparison();
   else if (command === "collapse-pokemon-card") collapseExpandedPokemonCard();
+  else if (command === "choose-opponent-team") {
+    versusSharedModalOpen = true;
+    renderVersusSharedModal();
+  }
   else if (command === "toggle-reserve") {
     el.versusAutoOpponent.checked = !el.versusAutoOpponent.checked;
     toggleAutomaticOpponent();
@@ -5649,12 +5656,11 @@ function renderSavedPokemonManager() {
 
   state.customPokemon.forEach((pokemon, index) => {
     const card = document.createElement("article");
-    card.className = "pokemon-card collapsible";
+    card.className = "pokemon-card collapsible saved-pokemon-card";
     card.setAttribute("style", pokemonCardStyle(pokemon));
     card.innerHTML = renderPokemonCard(pokemon, {
       index,
       showSprite: true,
-      originLabel: savedPokemonOriginLabel(pokemon),
       savedId: pokemon.id,
       showPokemonZLearnset: true
     });
@@ -6523,7 +6529,7 @@ function bindPokemonCardToggles(container) {
     button.addEventListener("click", () => {
       const card = button.closest(".pokemon-card");
       if (!card) return;
-      const exclusive = card.classList.contains("composition-member-card") || card.classList.contains("pokemon-search-card");
+      const exclusive = card.classList.contains("composition-member-card") || card.classList.contains("pokemon-search-card") || card.classList.contains("saved-pokemon-card");
       if (exclusive && !card.classList.contains("expanded")) {
         container.querySelectorAll(".pokemon-card.expanded:not(.pokemon-comparison-card)").forEach((openCard) => {
           if (openCard === card) return;
@@ -7400,7 +7406,7 @@ function renderSimulation(team) {
       card.innerHTML = renderDesktopDuel(team, enemy, index);
     } else {
       card.classList.add("empty");
-      card.innerHTML = `<button class="mobile-duel-add" type="button" data-add-enemy="${index}"><img class="add-pokeball-icon" src="assets/add-pokeball.png" data-theme-asset="assets/add-pokeball.png" alt="" aria-hidden="true"> Ajouter l'adversaire ${index + 1}</button>`;
+      card.innerHTML = `<button class="mobile-duel-add" type="button" data-add-enemy="${index}" aria-label="Ajouter l'adversaire ${index + 1}"><img class="add-pokeball-icon" src="assets/add-pokeball.png" data-theme-asset="assets/add-pokeball.png" alt="" aria-hidden="true"><span class="mobile-duel-add-label"><span class="mobile-duel-add-prefix">Ajouter l'</span>adversaire ${index + 1}</span></button>`;
     }
 
     enemyContainer.append(card);
@@ -7496,80 +7502,13 @@ function renderSimulation(team) {
 
 function renderVersusStoryTrainers() {
   if (!el.versusStoryTrainers) return;
-  if (getActiveGameKey() !== "pokemon-z") {
-    el.versusStoryTrainers.innerHTML = "";
-    el.versusStoryTrainers.classList.add("hidden");
-    return;
-  }
-  el.versusStoryTrainers.classList.remove("hidden");
-  const wiki = getPokemonZWikiData();
-  if (!wiki) {
-    el.versusStoryTrainers.innerHTML = `<div class="versus-story-loading">Chargement des adversaires de Pokémon Z…</div>`;
+  el.versusStoryTrainers.innerHTML = "";
+  el.versusStoryTrainers.classList.add("hidden");
+  if (getActiveGameKey() === "pokemon-z" && !getPokemonZWikiData()) {
     void ensurePokemonZWikiData().then(() => {
-      if (state.activeView === "simulation") renderSimulation(state.teams[state.selectedSlot]);
-    }).catch(() => {
-      el.versusStoryTrainers.innerHTML = `<div class="versus-story-loading">Adversaires indisponibles.</div>`;
-    });
-    return;
+      if (versusSharedModalOpen) renderVersusSharedModal();
+    }).catch(() => {});
   }
-  if (!pokemonZProgress) {
-    el.versusStoryTrainers.innerHTML = `
-      <div class="versus-story-locked">
-        <div><strong>Équipes du jeu</strong><small>Renseigne ta progression avant de révéler des personnages.</small></div>
-        <button class="small-button" type="button" data-open-versus-progress>Questionnaire anti-spoiler</button>
-      </div>`;
-    el.versusStoryTrainers.querySelector("[data-open-versus-progress]").addEventListener("click", () => {
-      pokemonZWikiCategory = "adventure";
-      pokemonZProgressEditing = false;
-      void openPokemonZWiki();
-    });
-    return;
-  }
-  const stage = pokemonZEffectiveProgressStage();
-  const available = wiki.notableTrainers
-    .filter((trainer) => trainer.requiredBadges <= stage && trainer.minLevel <= pokemonZProgress.level + 5)
-    .sort((left, right) => left.requiredBadges - right.requiredBadges || left.maxLevel - right.maxLevel || left.name.localeCompare(right.name, "fr"));
-  const labelCounts = new Map();
-  available.forEach((trainer) => {
-    const key = `${trainer.title} ${trainer.name}`;
-    labelCounts.set(key, (labelCounts.get(key) || 0) + 1);
-  });
-  el.versusStoryTrainers.innerHTML = `
-    <div class="versus-story-picker">
-      <div><strong>Charger une équipe du jeu</strong><small>${available.length} équipe${available.length > 1 ? "s" : ""} révélée${available.length > 1 ? "s" : ""} selon ${pokemonZProgress.badges} badge${pokemonZProgress.badges > 1 ? "s" : ""} et le niveau ${pokemonZProgress.level}.</small></div>
-      <label><span>Personnalité</span><select data-versus-story-trainer>${available.map((trainer) => {
-        const key = `${trainer.title} ${trainer.name}`;
-        const variant = labelCounts.get(key) > 1 ? ` · équipe ${trainer.partyId + 1}` : "";
-        return `<option value="${escapeHtml(trainer.id)}">${escapeHtml(key)}${variant} · niv. ${trainer.minLevel}–${trainer.maxLevel}</option>`;
-      }).join("")}</select></label>
-      <button class="small-button" type="button" data-load-versus-story-team ${available.length ? "" : "disabled"}>Charger</button>
-      <button class="small-button subtle" type="button" data-open-versus-progress>Progression</button>
-    </div>`;
-  el.versusStoryTrainers.querySelector("[data-load-versus-story-team]")?.addEventListener("click", () => {
-    const id = el.versusStoryTrainers.querySelector("[data-versus-story-trainer]")?.value;
-    const trainer = available.find((entry) => entry.id === id);
-    if (!trainer) return;
-    simulationDraft.enemies = trainer.team.slice(0, 6).map((pokemon) => {
-      const catalogPokemon = pokemonZCatalogBySpeciesId.get(pokemon.speciesId);
-      return {
-        name: pokemon.name,
-        level: pokemon.level,
-        types: pokemon.types,
-        attacks: pokemon.attacks,
-        nationalId: catalogPokemon?.nationalId || null,
-        pokemonZId: catalogPokemon?.id || `pokemon-z-${pokemon.speciesId}`
-      };
-    });
-    simulationDraft.editingIndex = null;
-    simulationDraft.showResults = false;
-    renderSimulation(state.teams[state.selectedSlot]);
-    void syncPokemonSprites(simulationDraft.enemies).then(() => renderSimulation(state.teams[state.selectedSlot]));
-  });
-  el.versusStoryTrainers.querySelector("[data-open-versus-progress]")?.addEventListener("click", () => {
-    pokemonZWikiCategory = "adventure";
-    pokemonZProgressEditing = true;
-    void openPokemonZWiki();
-  });
 }
 
 function renderDesktopDuel(team, enemy, index) {
@@ -8217,26 +8156,65 @@ function renderMatchupChoice(matchup) {
 }
 
 function renderVersusSharedLoader() {
-  if (!state.sharedTeams.length) {
-    el.versusSharedLoader.innerHTML = "";
+  const canChooseTeam = state.sharedTeams.length > 0 || getActiveGameKey() === "pokemon-z";
+  el.versusSharedLoader.innerHTML = "";
+  if (!canChooseTeam) {
     closeVersusSharedModal();
     return;
   }
-  el.versusSharedLoader.innerHTML = `
-    <button class="versus-shared-trigger" type="button" data-open-versus-shared>
-      <span class="versus-shared-icon"><img src="assets/share-pokeball.webp" data-theme-asset="assets/share-pokeball.webp" alt="" aria-hidden="true"></span>
-      <span>Utiliser une equipe partagee</span>
-    </button>
-  `;
-  el.versusSharedLoader.querySelector("[data-open-versus-shared]").addEventListener("click", () => {
-    versusSharedModalOpen = true;
-    renderVersusSharedModal();
-  });
   renderVersusSharedModal();
 }
 
+function getAvailableVersusStoryTrainers() {
+  if (getActiveGameKey() !== "pokemon-z" || !pokemonZProgress) return [];
+  const wiki = getPokemonZWikiData();
+  if (!wiki) return [];
+  const stage = pokemonZEffectiveProgressStage();
+  return wiki.notableTrainers
+    .filter((trainer) => trainer.requiredBadges <= stage && trainer.minLevel <= pokemonZProgress.level + 5)
+    .sort((left, right) => left.requiredBadges - right.requiredBadges || left.maxLevel - right.maxLevel || left.name.localeCompare(right.name, "fr"));
+}
+
+function renderVersusStoryTeamSource() {
+  if (getActiveGameKey() !== "pokemon-z") return "";
+  const wiki = getPokemonZWikiData();
+  if (!wiki) {
+    return `<section class="versus-team-source"><div class="versus-story-loading">Chargement des équipes du jeu…</div></section>`;
+  }
+  if (!pokemonZProgress) {
+    return `
+      <section class="versus-team-source">
+        <div class="versus-team-source-heading"><strong>Équipes du jeu</strong><small>Protégées contre les spoilers</small></div>
+        <div class="versus-story-locked">
+          <div><small>Renseigne ta progression pour révéler les adversaires disponibles.</small></div>
+          <button class="small-button" type="button" data-open-versus-progress>Questionnaire anti-spoiler</button>
+        </div>
+      </section>`;
+  }
+  const available = getAvailableVersusStoryTrainers();
+  const labelCounts = new Map();
+  available.forEach((trainer) => {
+    const key = `${trainer.title} ${trainer.name}`;
+    labelCounts.set(key, (labelCounts.get(key) || 0) + 1);
+  });
+  return `
+    <section class="versus-team-source">
+      <div class="versus-team-source-heading"><strong>Équipes du jeu</strong><small>${available.length} disponible${available.length > 1 ? "s" : ""}</small></div>
+      <div class="versus-story-picker">
+        <label><span>Adversaire</span><select data-versus-story-trainer>${available.map((trainer) => {
+          const key = `${trainer.title} ${trainer.name}`;
+          const variant = labelCounts.get(key) > 1 ? ` · équipe ${trainer.partyId + 1}` : "";
+          return `<option value="${escapeHtml(trainer.id)}">${escapeHtml(key)}${variant} · niv. ${trainer.minLevel}–${trainer.maxLevel}</option>`;
+        }).join("")}</select></label>
+        <button class="small-button primary" type="button" data-load-versus-story-team ${available.length ? "" : "disabled"}>Utiliser</button>
+        <button class="small-button subtle" type="button" data-open-versus-progress>Progression</button>
+      </div>
+    </section>`;
+}
+
 function renderVersusSharedModal() {
-  if (!versusSharedModalOpen || !state.sharedTeams.length) {
+  const canChooseTeam = state.sharedTeams.length > 0 || getActiveGameKey() === "pokemon-z";
+  if (!versusSharedModalOpen || !canChooseTeam) {
     el.versusSharedModal.classList.add("hidden");
     el.versusSharedModal.innerHTML = "";
     return;
@@ -8250,21 +8228,28 @@ function renderVersusSharedModal() {
           <span class="versus-shared-icon"><img src="assets/share-pokeball.webp" data-theme-asset="assets/share-pokeball.webp" alt="" aria-hidden="true"></span>
           <div>
             <p class="eyebrow">Versus</p>
-            <h2 id="versus-shared-title">Equipe partagee</h2>
+            <h2 id="versus-shared-title">Choisir l'équipe adverse</h2>
           </div>
         </div>
         <button class="modal-close-button" type="button" data-close-versus-shared aria-label="Fermer">&times;</button>
       </div>
-      <div class="versus-shared-team-list">
-        ${state.sharedTeams.map((team) => `
-          <button class="versus-shared-team-option" type="button" data-use-versus-shared="${escapeHtml(team.id)}">
-            <span>
-              <strong>${escapeHtml(team.savedName || team.name)}</strong>
-              <small>${team.pokemon.length}/6 Pokemon</small>
-            </span>
-            <span class="versus-shared-team-names">${team.pokemon.map((pokemon) => escapeHtml(pokemon.name)).join(" · ")}</span>
-          </button>
-        `).join("")}
+      <div class="versus-team-source-list">
+        ${state.sharedTeams.length ? `
+          <section class="versus-team-source">
+            <div class="versus-team-source-heading"><strong>Équipes partagées</strong><small>${state.sharedTeams.length} enregistrée${state.sharedTeams.length > 1 ? "s" : ""}</small></div>
+            <div class="versus-shared-team-list">
+              ${state.sharedTeams.map((team) => `
+                <button class="versus-shared-team-option" type="button" data-use-versus-shared="${escapeHtml(team.id)}">
+                  <span>
+                    <strong>${escapeHtml(team.savedName || team.name)}</strong>
+                    <small>${team.pokemon.length}/6 Pokémon</small>
+                  </span>
+                  <span class="versus-shared-team-names">${team.pokemon.map((pokemon) => escapeHtml(pokemon.name)).join(" · ")}</span>
+                </button>
+              `).join("")}
+            </div>
+          </section>` : ""}
+        ${renderVersusStoryTeamSource()}
       </div>
     </div>
   `;
@@ -8274,6 +8259,33 @@ function renderVersusSharedModal() {
   };
   el.versusSharedModal.querySelectorAll("[data-use-versus-shared]").forEach((button) => {
     button.addEventListener("click", () => loadSharedTeamIntoVersus(button.dataset.useVersusShared));
+  });
+  el.versusSharedModal.querySelector("[data-load-versus-story-team]")?.addEventListener("click", () => {
+    const id = el.versusSharedModal.querySelector("[data-versus-story-trainer]")?.value;
+    const trainer = getAvailableVersusStoryTrainers().find((entry) => entry.id === id);
+    if (!trainer) return;
+    simulationDraft.enemies = trainer.team.slice(0, 6).map((pokemon) => {
+      const catalogPokemon = pokemonZCatalogBySpeciesId.get(pokemon.speciesId);
+      return {
+        name: pokemon.name,
+        level: pokemon.level,
+        types: pokemon.types,
+        attacks: pokemon.attacks,
+        nationalId: catalogPokemon?.nationalId || null,
+        pokemonZId: catalogPokemon?.id || `pokemon-z-${pokemon.speciesId}`
+      };
+    });
+    simulationDraft.editingIndex = null;
+    simulationDraft.showResults = false;
+    closeVersusSharedModal();
+    renderSimulation(state.teams[state.selectedSlot]);
+    void syncPokemonSprites(simulationDraft.enemies).then(() => renderSimulation(state.teams[state.selectedSlot]));
+  });
+  el.versusSharedModal.querySelector("[data-open-versus-progress]")?.addEventListener("click", () => {
+    closeVersusSharedModal();
+    pokemonZWikiCategory = "adventure";
+    pokemonZProgressEditing = true;
+    void openPokemonZWiki();
   });
 }
 

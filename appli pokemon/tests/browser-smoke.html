@@ -755,10 +755,13 @@
     await wait();
     const versusPanel = doc.querySelector("#simulation-panel");
     assert(lightBackground(versusPanel), "Fond sombre dans le panneau Versus Pokemon Z");
-    const storyTrainerSelect = doc.querySelector("#versus-story-trainers [data-versus-story-trainer]");
+    const opponentTeamTrigger = doc.querySelector('[data-context-command="choose-opponent-team"]');
+    assert(opponentTeamTrigger?.querySelector("img[data-theme-asset='assets/share-pokeball.webp']"), "Le selecteur d'equipe adverse n'utilise pas le logo des equipes partagees");
+    opponentTeamTrigger.click();
+    const storyTrainerSelect = doc.querySelector("#versus-shared-modal [data-versus-story-trainer]");
     assert(storyTrainerSelect && storyTrainerSelect.options.length > 0, "Aucune equipe du jeu accessible n'est proposee dans le Versus");
     assert(!storyTrainerSelect.textContent.includes("Lysandre") && !storyTrainerSelect.textContent.includes("Myrtin"), "Le Versus revele un adversaire futur");
-    doc.querySelector("#versus-story-trainers [data-load-versus-story-team]").click();
+    doc.querySelector("#versus-shared-modal [data-load-versus-story-team]").click();
     await wait(100);
     assert(doc.querySelectorAll("#mobile-versus-list .mobile-duel").length >= 3, "L'equipe complete du personnage n'est pas chargee");
     assert(doc.querySelector("#mobile-versus-list .duel-pokemon-level"), "Le niveau des Pokemon du jeu n'est pas affiche dans le Versus");
